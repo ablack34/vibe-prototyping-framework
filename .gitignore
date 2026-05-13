@@ -1,0 +1,30 @@
+# Session tracking (engagement state, research, plans)
+.copilot-tracking/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+
+# IDE
+.vs/
+*.swp
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+*.local
+
+# Azure
+.azure/

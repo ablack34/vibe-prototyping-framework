@@ -1,0 +1,30 @@
+name: Deploy API (App Service)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scaffold/api/**"
+      - ".github/workflows/deploy-api.yml"
+
+jobs:
+  deploy:
+    name: Build & Deploy .NET API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Publish
+        working-directory: scaffold/api
+        run: dotnet publish -c Release -o ./publish
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.API_APP_NAME }}
+          publish-profile: ${{ secrets.API_PUBLISH_PROFILE }}
+          package: scaffold/api/publish

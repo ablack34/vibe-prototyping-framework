@@ -1,0 +1,37 @@
+name: Deploy Frontend (SWA)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scaffold/web/**"
+      - ".github/workflows/deploy-swa.yml"
+
+jobs:
+  deploy:
+    name: Build & Deploy to Azure Static Web Apps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: scaffold/web/package-lock.json
+
+      - name: Install & Build
+        working-directory: scaffold/web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to SWA
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: scaffold/web
+          output_location: dist
+          skip_app_build: true
