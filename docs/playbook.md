@@ -14,9 +14,29 @@
 - Azure subscription for deployment
 - Access to Azure DevOps for backlog tracking
 
-### Record Your Meetings
+### Day-One Checklist
 
-**This is the single most important thing you can do.** If customer workshops and check-ins are recorded in Teams, the framework can automatically extract all context — no manual note-taking required. Tell participants up front that meetings will be recorded for documentation purposes.
+- [ ] **Record all customer meetings in Teams** — this is the single most important thing. The framework extracts context automatically.
+- [ ] **Use the naming convention** for all meetings: `[VIBE] Customer Name — Meeting Type` (e.g., `[VIBE] Contoso — Kickoff`). This ensures transcript search works reliably.
+- [ ] **Send questionnaires early** — run `/vibe-questionnaire` and send the customer pre-workshop questionnaire 3-5 days before the first session.
+- [ ] **Drop customer docs in `sources/`** — any decks, RFPs, or briefs shared by the customer or account team.
+
+### Meeting Naming Convention
+
+All engagement meetings should follow this pattern:
+
+```
+[VIBE] {{Customer}} — {{Meeting Type}}
+```
+
+Examples:
+
+- `[VIBE] Contoso — Kickoff`
+- `[VIBE] Contoso — Workshop 1`
+- `[VIBE] Contoso — Check-in 2`
+- `[VIBE] Contoso — Handoff`
+
+The `[VIBE]` prefix + customer name makes every meeting findable by the transcript analysis agent. Meeting invite templates are auto-generated during `/vibe-kickoff` — just copy them into Outlook.
 
 ---
 
@@ -24,9 +44,12 @@
 
 ### Week 0: Pre-Engagement
 
-1. Complete `templates/engagement-brief.md` with account team input
-2. Confirm squad, engagement size, and start date
-3. Ensure customer data is obtainable (CSV/Excel preferred)
+1. Run `/vibe-kickoff` to create the engagement workspace
+2. Run `/vibe-questionnaire` to generate questionnaire prompts — paste into M365 Copilot to create Forms
+3. Send the **account team intake** form to the account team
+4. Send the **customer pre-workshop** form to the customer sponsor
+5. Schedule meetings using the invite templates in `sources/meeting-templates.md`
+6. Drop any customer-shared documents into `sources/`
 
 ### Week 1: Discover
 
@@ -38,11 +61,31 @@ In Copilot Chat, type:
 /vibe-kickoff customer="Contoso" problem="Field technicians waste 2hrs/day on manual scheduling" size=S
 ```
 
-This creates the engagement tracking structure and initializes your PROJECT-CONTEXT.md.
+This creates the engagement tracking structure, initialises PROJECT-CONTEXT.md, and generates meeting invite templates.
 
-#### Days 1-2: Process Transcripts
+#### Days 1-3: Gather Context (Sources Come to You)
 
-After each customer meeting, type:
+Context flows in from multiple sources — you don't need to collect it all manually:
+
+| Source | How It Arrives | What You Do |
+|--------|---------------|-------------|
+| Customer questionnaire | Customer fills the Microsoft Form | Drop responses in `sources/` |
+| Account team intake | Account team fills the internal Form | Drop responses in `sources/` |
+| Customer documents | Customer emails decks/briefs | Drop in `sources/` |
+| Meeting transcripts | Meetings recorded in Teams | Run `/vibe-transcript` |
+| Workshop observations | You notice something in a meeting | Run `/vibe-capture "observation text"` |
+
+#### During workshops: Quick capture
+
+Don't stop facilitating to take notes. Just type quick captures:
+
+```
+/vibe-capture "Customer sponsor said scheduling errors cost $2M in overtime. 3 people nodded."
+/vibe-capture "They have an API for scheduling but it's SOAP-based and undocumented" speaker="Dave Wilson"
+/vibe-capture "Non-negotiable: demo by end of week 2 for board presentation" category=decision
+```
+
+#### After each customer meeting: Process the transcript
 
 ```
 /vibe-transcript engagement=contoso-scheduling
@@ -56,17 +99,20 @@ This pulls the Teams meeting transcript and extracts:
 - Requirements and decisions
 - Action items
 
-#### Days 2-3: Deep Discovery
+#### Days 2-3: Run Discovery (Source-First)
 
-Talk to `@VIBE Discover` to:
+Talk to `@VIBE Discover`. It will:
 
-- Review and enrich transcript findings
-- Conduct JTBD analysis (delegates to `@UX UI Designer`)
-- Run deep research on the problem domain (delegates to `@Task Researcher`)
+1. **Automatically ingest** everything in `sources/` (customer docs, questionnaire responses, workshop notes)
+2. **Process transcripts** if work-iq-mcp is configured
+3. **Read the engagement brief** for account team context
+4. **Show a readiness dashboard** — what's known vs what's missing
+5. **Only ask about gaps** — not the 20 questions it already has answers to
+6. Optionally delegate to `@UX UI Designer` (JTBD analysis) and `@Task Researcher` (domain research) to enrich findings
 
-#### Day 3-4: Stakeholder Alignment
+#### Day 3-4: Check Readiness
 
-Use `/vibe-consolidate` to synthesize all findings into a structured view and present to the customer.
+Ask `@VIBE Engagement Lead` "what's next?" to see the readiness dashboard. It shows which of the 9 discovery fields are filled and which gaps remain. Close the gaps, then move to Disrupt.
 
 ### Week 1-2: Disrupt
 
@@ -161,6 +207,8 @@ Creates Epics → Features → User Stories in Azure DevOps.
 | What To Do | Command | When |
 |-----------|---------|------|
 | Start engagement | `/vibe-kickoff` | Day 1 |
+| Generate questionnaires | `/vibe-questionnaire` | Day 1 (send before first workshop) |
+| Capture workshop insight | `/vibe-capture "note"` | During any meeting |
 | Process meeting recording | `/vibe-transcript` | After any customer meeting |
 | Process check-in notes | `/vibe-check-in` | After each check-in |
 | Consolidate findings | `/vibe-consolidate` | End of discovery |
@@ -169,6 +217,7 @@ Creates Epics → Features → User Stories in Azure DevOps.
 | Deploy to Azure | `/vibe-deploy` | When ready to share |
 | Generate backlog | `/vibe-backlog-gen` | Before handoff |
 | Generate handoff | `/vibe-handoff` | End of engagement |
+| Create new engagement repo | `/vibe-new` | Before anything else |
 | Ask what to do next | Talk to `@VIBE Engagement Lead` | Anytime |
 
 ---

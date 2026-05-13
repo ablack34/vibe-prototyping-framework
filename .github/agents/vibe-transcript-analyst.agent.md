@@ -68,16 +68,25 @@ Map meeting participants to these VIBE-specific tiers:
 4. Determine context: Is this for initial discovery or a check-in transcript?
 5. Get the engagement name to locate the tracking directory
 
-### Step 2: Meeting Discovery
+### Step 2: Meeting Discovery (Multi-Signal Search)
 
-Ask the user for context to find relevant meetings:
+Gather context for the search. Check `state.json` first for pre-registered meetings (from kickoff). Then ask the user to confirm or add:
 
 - Customer name or project name
 - Approximate date range
 - Key participant names
 - Meeting type (workshop, kick-off, check-in, design review)
 
-Query `mcp_workiq_ask_work_iq` to find matching meetings. Present results as a numbered list for user selection. Identify participants and infer authority tiers.
+**Run multiple overlapping queries** to maximize recall. Do not rely on any single signal — meeting names are often generic ("Weekly Sync", "Call with Dave") and won't match a topic search.
+
+| Query Strategy | Example | Why |
+|---------------|---------|-----|
+| By customer name | "meetings about Contoso" | Catches well-named meetings |
+| By participant names | "meetings with Jane Smith and Bob Chen in the last 2 weeks" | Catches poorly-named meetings if you know who attended |
+| By date range + topic | "meetings about scheduling in the last week" | Catches meetings where the customer name wasn't mentioned |
+| By registered meeting names | "meeting called [VIBE] Contoso — Kickoff" | Catches meetings that follow the naming convention |
+
+Run 2-3 queries using different signals. Deduplicate results by date + participants. Present the combined results as a numbered list for user selection. Identify participants and infer authority tiers.
 
 ### Step 3: Transcript Extraction
 

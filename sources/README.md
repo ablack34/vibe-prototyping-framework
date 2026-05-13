@@ -1,0 +1,26 @@
+# Engagement Sources
+
+Drop customer-provided materials and captured workshop notes here. The `@VIBE Discover` agent reads everything in this folder as its **first step** before asking any questions.
+
+## What Goes Here
+
+| Type | Examples | How It Gets Here |
+|------|---------|-----------------|
+| **Customer documents** | Slide decks, RFPs, process diagrams, strategy docs | Customer shares them — you drop them in |
+| **Questionnaire responses** | Pre-workshop questionnaire answers | Export from Microsoft Forms or paste into `questionnaire-responses.md` |
+| **Workshop notes** | Live capture during workshops | Auto-created by `/vibe-capture` prompt |
+| **Meeting agendas** | Invite templates for scheduling | Auto-created by `/vibe-kickoff` |
+
+## Supported File Types
+
+Copilot can read: `.md`, `.txt`, `.csv`, `.json`, `.pdf`, `.docx`, `.pptx`, `.xlsx`
+
+For best results, use markdown or plain text. If the customer sends a PDF or PowerPoint, drop it in — Copilot will extract what it can.
+
+## Auto-Generated Files
+
+These are created by the framework prompts:
+
+- `meeting-templates.md` — Meeting invite templates (from `/vibe-kickoff`)
+- `workshop-notes.md` — Live workshop capture (from `/vibe-capture`)
+- `questionnaire-responses.md` — Customer questionnaire answers (pasted after Forms submission)

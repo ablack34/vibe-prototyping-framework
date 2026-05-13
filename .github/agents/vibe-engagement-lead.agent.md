@@ -71,9 +71,40 @@ Initialize `state.json`:
     "disrupt": { "status": "not-started", "artifacts": [] },
     "design-develop": { "status": "not-started", "artifacts": [] },
     "deliver": { "status": "not-started", "artifacts": [] }
-  }
+  },
+  "readiness": {
+    "sources": {
+      "customerDocs": { "status": "empty", "count": 0 },
+      "questionnaire": { "status": "empty" },
+      "engagementBrief": { "status": "empty" },
+      "workshopNotes": { "status": "empty", "count": 0 },
+      "transcripts": { "status": "empty", "count": 0 },
+      "projectContext": { "status": "partial" }
+    },
+    "fields": {
+      "problemStatement": { "status": "partial", "source": "kickoff" },
+      "targetUsers": { "status": "empty", "source": null },
+      "businessImpact": { "status": "empty", "source": null },
+      "currentState": { "status": "empty", "source": null },
+      "desiredOutcome": { "status": "empty", "source": null },
+      "dataInventory": { "status": "empty", "source": null },
+      "stakeholderMap": { "status": "empty", "source": null },
+      "successCriteria": { "status": "empty", "source": null },
+      "constraints": { "status": "empty", "source": null }
+    }
+  },
+  "meetings": []
 }
 ```
+
+Generate meeting invite templates and save to `sources/meeting-templates.md`. Create templates for 4 meeting types:
+
+- **Kickoff**: `[VIBE] {{Customer}} — Kickoff` (60 min). Talking points: Introductions, problem overview, current state walkthrough, desired outcomes, data discussion, next steps.
+- **Workshop**: `[VIBE] {{Customer}} — Workshop {{N}}` (90-120 min). Talking points: Recap of last session, deep-dive topic, pain point exploration, prioritization, data review, wrap-up.
+- **Check-in**: `[VIBE] {{Customer}} — Check-in {{N}}` (30 min). Talking points: Demo progress, customer feedback, decisions needed, scope changes, action items.
+- **Handoff**: `[VIBE] {{Customer}} — Handoff` (60 min). Talking points: Final prototype walkthrough, limitations review, roadmap discussion, Q&A, next steps.
+
+Each template should be copy-paste-ready for an Outlook meeting invite (title + description body).
 
 Proceed to Phase 2 when setup is complete.
 
@@ -125,14 +156,71 @@ Deliverables include:
 
 ## "What's Next?" Guidance
 
-When the user asks what to do next, read `state.json` and provide specific guidance:
+When the user asks what to do next (or at the start of any conversation), read `state.json` and present the **readiness dashboard**:
 
-- If in `discover` with no transcripts processed: suggest `/vibe-transcript`
-- If in `discover` with transcripts done but no requirements: suggest moving to `disrupt`
-- If in `disrupt` with no requirements doc: suggest filling requirements-summary.md
-- If in `design-develop` with no data prepared: suggest `/vibe-data-prep`
-- If in `design-develop` with no scaffold: suggest `/vibe-prototype-scaffold`
-- If in `design-develop` with scaffold but not deployed: suggest `/vibe-deploy`
-- If in `deliver` with no backlog: suggest `/vibe-backlog-gen`
+```
+┌─────────────────────────────────────────────┐
+│  VIBE: {{Customer}} — {{Engagement}}        │
+│  Phase: {{currentPhase}}                    │
+├─────────────────────────────────────────────┤
+│  CONTEXT SOURCES                            │
+│  ✅ / ⬜ Customer documents (N in sources/) │
+│  ✅ / ⬜ Questionnaire responses            │
+│  ✅ / ⬜ Engagement brief                   │
+│  ✅ / ⬜ Workshop notes (N captured)        │
+│  ✅ / ⬜ Teams transcripts (N processed)    │
+├─────────────────────────────────────────────┤
+│  DISCOVERY READINESS (N/9 fields)           │
+│  ✅ / ⬜ Problem statement                  │
+│  ✅ / ⬜ Target users                       │
+│  ✅ / ⬜ Business impact                    │
+│  ✅ / ⬜ Current state                      │
+│  ✅ / ⬜ Desired outcome                    │
+│  ✅ / ⬜ Data inventory                     │
+│  ✅ / ⬜ Stakeholder map                    │
+│  ✅ / ⬜ Success criteria                   │
+│  ✅ / ⬜ Constraints                        │
+├─────────────────────────────────────────────┤
+│  NEXT ACTIONS                               │
+│  → specific action to close each gap        │
+└─────────────────────────────────────────────┘
+```
+
+### Phase-specific guidance
+
+**Discover phase:**
+
+- If no sources processed yet: suggest `/vibe-questionnaire` to generate questionnaires, then `/vibe-transcript` if meetings exist
+- If sources exist but not ingested: suggest running `@VIBE Discover` to process them
+- If 7+ readiness fields filled: suggest moving to Disrupt phase
+- If gaps remain: list each gap with a specific action to close it
+
+**Disrupt phase:**
+
+- If no requirements doc: suggest talking to `@VIBE Disrupt`
+- If requirements exist but no solution design: suggest completing solution-design.md
+- If both exist: suggest moving to Design & Develop
+
+**Design & Develop phase:**
+
+- If no data files in `scaffold/data/`: suggest getting customer data and running `/vibe-data-prep`
+- If no scaffold customized: suggest `/vibe-prototype-scaffold`
+- If scaffold exists but not deployed: suggest `/vibe-deploy`
+- After each check-in: suggest `/vibe-check-in` to process feedback
+
+**Deliver phase:**
+
+- If no backlog generated: suggest `/vibe-backlog-gen`
+- If no handoff package: suggest `/vibe-handoff`
+
+### Phase transition gates
+
+Do not suggest moving to the next phase until the current phase's minimum criteria are met:
+
+- **Discover → Disrupt**: 7/9 readiness fields filled
+- **Disrupt → Design & Develop**: requirements-summary.md and solution-design.md exist with content
+- **Design & Develop → Deliver**: prototype is deployed (state.json has deployment URL)
+
+If criteria are not met, explain what's missing and how to close the gap.
 
 Always present the next step as a simple action the user can take.
