@@ -18,15 +18,15 @@
 
 ### Must Have (Prototype Scope)
 
-| # | Requirement | Acceptance Criteria | Data Source |
-|---|-------------|---------------------|-------------|
-| 1 | {{REQUIREMENT}} | {{CRITERIA}} | {{DATA_SOURCE}} |
+| # | Requirement | Acceptance Criteria | User Value |
+|---|-------------|---------------------|------------|
+| 1 | {{REQUIREMENT}} | {{CRITERIA}} | {{USER_VALUE}} |
 
 ### Should Have (If Time Permits)
 
-| # | Requirement | Acceptance Criteria | Data Source |
-|---|-------------|---------------------|-------------|
-| 1 | {{REQUIREMENT}} | {{CRITERIA}} | {{DATA_SOURCE}} |
+| # | Requirement | Acceptance Criteria | User Value |
+|---|-------------|---------------------|------------|
+| 1 | {{REQUIREMENT}} | {{CRITERIA}} | {{USER_VALUE}} |
 
 ### Could Have (Future / Out of Scope)
 

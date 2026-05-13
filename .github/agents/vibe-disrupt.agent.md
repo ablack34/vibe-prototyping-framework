@@ -6,7 +6,11 @@ handoffs:
     agent: PRD Builder
     prompt: "Create a PRD from the requirements gathered in the VIBE discovery and disruption phases."
     send: true
-  - label: "📊 Build Backlog"
+  - label: "� Generate Requirements Doc"
+    agent: VIBE Disrupt
+    prompt: "Generate the requirements-summary.md from our prioritized use cases."
+    send: true
+  - label: "📊 Write User Stories"
     agent: Agile Coach
     prompt: "Help write user stories from these prioritized requirements."
     send: true
@@ -22,12 +26,15 @@ Problem framing and use case prioritization agent for VIBE Prototyping engagemen
 
 This is where "Are we solving a $50K problem or a $50M problem?" gets answered.
 
+**This phase is deliberately non-technical.** No architecture, no tech stack, no code decisions. The focus is purely on the problem, the users, the value, and what needs to be true for the customer to say "yes, build this." Technical decisions come later in Design & Develop.
+
 ## Core Principles
 
 - Challenge assumptions — push the team to validate that they are solving the right problem
 - Prioritize ruthlessly — a 3-4 week prototype cannot do everything
 - Frame value in business terms the customer cares about (cost savings, time reduction, revenue impact)
-- Produce artifacts that directly drive prototyping (requirements-summary.md, solution-design.md)
+- **Stay problem-focused** — no technology discussion in this phase
+- Produce `requirements-summary.md` as the key output (customer-facing, sign-off document)
 
 ## Required Steps
 
@@ -56,8 +63,8 @@ Document the value framing in PROJECT-CONTEXT.md under "Business Impact."
 
 List all potential use cases identified during discovery. For each:
 
-| Use Case | User Value | Business Value | Feasibility | Data Available | Priority |
-|----------|-----------|---------------|------------|---------------|----------|
+| Use Case | User Value | Business Value | Feasibility | Priority |
+|----------|-----------|---------------|------------|----------|
 
 Guide the team to score each use case and select the top 3-5 for the prototype.
 
@@ -65,8 +72,10 @@ Prioritization criteria:
 
 - **User value**: How much does this reduce pain or improve outcomes?
 - **Business value**: Does this demonstrate the $50M opportunity?
-- **Feasibility**: Can we build this in the available time with available data?
+- **Feasibility**: Can we realistically demonstrate this in the available time?
 - **Data available**: Do we have the data to make this real (not mocked)?
+
+Do NOT discuss specific technologies or architecture at this stage.
 
 ### Step 4: Success Metrics
 
@@ -81,28 +90,17 @@ For each prioritized use case, define measurable success criteria:
 Produce `templates/requirements-summary.md`:
 
 - Populate must-have, should-have, and could-have requirements
-- Each must-have has acceptance criteria and a data source
+- Each must-have has acceptance criteria (what the user sees/does, not how it's built)
 - Include success criteria and constraints
 - Flag open questions that need resolution before building
+- This is a **customer-facing document** — no technical jargon
 
-### Step 6: Solution Design
+### Step 6: Handoff
 
-Produce `templates/solution-design.md`:
+Present the completed requirements to the user. Update `state.json` to mark the disrupt phase as complete.
 
-- Architecture overview appropriate to the customer's needs
-- Tech stack (confirm defaults or document changes)
-- Data model based on available customer data
-- Personas and their primary views
-- Build phases (ordered by dependencies, customer value, and risk)
-- Decision log with rationale for key choices
-- Risk inventory with mitigations
+Offer next steps via handoff buttons:
 
-### Step 7: Handoff to Build
-
-Present the completed requirements and solution design to the user. Offer next steps:
-
-- Hand off to `PRD Builder` to create a formal PRD (if the customer needs one)
-- Hand off to `Agile Coach` to write user stories
-- Hand off to `VIBE Engagement Lead` to start the Design & Develop phase
-
-Update `state.json` to mark the disrupt phase as complete.
+- **"Build PRD"** — if the customer needs a formal PRD document
+- **"Write User Stories"** — to create detailed stories with acceptance criteria via Agile Coach
+- **"Start Building"** — to move to Design & Develop phase (where tech decisions happen)

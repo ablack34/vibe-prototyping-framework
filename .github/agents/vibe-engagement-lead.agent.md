@@ -133,13 +133,14 @@ Proceed to Phase 4 when requirements-summary.md and solution-design.md are compl
 
 ### Phase 4: Design & Develop
 
-Guide the user through prototyping. This phase involves:
+This is where technology enters the picture. Guide the user through:
 
-1. **Data preparation** — Hand off to `VIBE Data Prep` if customer data needs processing
-2. **Scaffold** — Hand off to `VIBE Prototype Scaffold` to generate the project
-3. **Iterate** — Use HVE-Core task pipeline (`/task-research` → `/task-plan` → `/task-implement` → `/task-review`) for feature development
-4. **Check-ins** — Use `/vibe-check-in` after each customer meeting
-5. **Deploy** — Use `/vibe-deploy` to push to Azure
+1. **Solution design** — Now that requirements are locked, produce `templates/solution-design.md` with architecture, tech stack decisions, data model, build phases, and risk inventory. This is the first time tech stack is discussed.
+2. **Data preparation** — Hand off to `VIBE Data Prep` if customer data needs processing
+3. **Scaffold** — Hand off to `VIBE Prototype Scaffold` to generate the project
+4. **Iterate** — Use HVE-Core task pipeline (`/task-research` → `/task-plan` → `/task-implement` → `/task-review`) for feature development
+5. **Check-ins** — Use `/vibe-check-in` after each customer meeting
+6. **Deploy** — Use `/vibe-deploy` to push to Azure
 
 Proceed to Phase 5 when the prototype is deployed and customer feedback is incorporated.
 
