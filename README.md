@@ -4,11 +4,44 @@
 
 A reusable IP framework for Studio 42 **VIBE Prototyping** engagements (Visualize, Ideate, Build, Evaluate). Provides custom AI agents, prompt workflows, document templates, a React+.NET prototype scaffold, and CI/CD pipelines — all integrated with GitHub Copilot and HVE-Core.
 
-## Quick Start
+## How It Works
 
-1. Open this repo in VS Code with GitHub Copilot + HVE-Core extension
-2. Type `/vibe-kickoff` in Copilot Chat to start a new engagement
-3. Follow the [playbook](docs/playbook.md) for step-by-step guidance
+This repo is a **GitHub Template Repository** — the source of truth for all VIBE engagements. You don't work in this repo directly. Each engagement gets its own repo created from this template.
+
+Only the framework maintainer (Adam) modifies this repo. Everyone else creates engagement repos from it.
+
+## Quick Start: New Engagement
+
+### One-command setup
+
+Download and run the bootstrap script:
+
+```powershell
+# From any terminal — creates a new engagement repo, clones it, installs deps, opens VS Code
+irm https://raw.githubusercontent.com/ablack34/vibe-prototyping-framework/main/new-engagement.ps1 | iex
+# Or if you have the repo cloned locally:
+.\new-engagement.ps1 -Customer "Contoso" -Engagement "field-scheduling"
+```
+
+This will:
+
+1. Create a **new private repo** from this template (e.g., `contoso-field-scheduling`)
+2. Clone it locally
+3. Install frontend (npm) and backend (.NET) dependencies
+4. Open the workspace in VS Code
+
+### Prerequisites
+
+- VS Code with **GitHub Copilot** and **HVE-Core extension** (v3.2+)
+- **GitHub CLI** (`gh`) — authenticated (`gh auth login`)
+- **Node.js** 22+, **.NET 9 SDK**, **Azure Developer CLI** (`azd`)
+- MCP servers configured — see [docs/mcp-setup.md](docs/mcp-setup.md)
+
+### Then start the engagement
+
+1. Open Copilot Chat (**Ctrl+Shift+I**) in **Agent mode**
+2. Type: `/vibe-kickoff customer="Contoso" problem="describe the problem" size=S`
+3. Follow the [playbook](docs/playbook.md)
 
 ## What's Included
 
