@@ -11,6 +11,7 @@ jobs:
   deploy:
     name: Build & Deploy .NET API
     runs-on: ubuntu-latest
+    if: vars.API_APP_NAME != ''
     steps:
       - uses: actions/checkout@v4
 
