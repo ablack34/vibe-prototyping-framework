@@ -12,23 +12,36 @@ Only the framework maintainer (Adam) modifies this repo. Everyone else creates e
 
 ## Quick Start: New Engagement
 
-### One-command setup
+There are two ways to create a new engagement. Pick whichever is easier for you.
 
-Download and run the bootstrap script:
+### Option A: From Copilot Chat (Easiest)
 
-```powershell
-# From any terminal — creates a new engagement repo, clones it, installs deps, opens VS Code
-irm https://raw.githubusercontent.com/ablack34/vibe-prototyping-framework/main/new-engagement.ps1 | iex
-# Or if you have the repo cloned locally:
-.\new-engagement.ps1 -Customer "Contoso" -Engagement "field-scheduling"
+Open Copilot Chat in **any** VS Code workspace (or even an empty window), switch to **Agent mode**, and type:
+
+```
+/vibe-new customer="Contoso" engagement="field-scheduling"
 ```
 
-This will:
+It walks you through creating the repo, cloning, installing, and opening — all from chat.
 
-1. Create a **new private repo** from this template (e.g., `contoso-field-scheduling`)
-2. Clone it locally
-3. Install frontend (npm) and backend (.NET) dependencies
-4. Open the workspace in VS Code
+### Option B: From GitHub.com
+
+1. Go to [github.com/ablack34/vibe-prototyping-framework](https://github.com/ablack34/vibe-prototyping-framework)
+2. Click the green **"Use this template"** button → **"Create a new repository"**
+3. Name it `contoso-field-scheduling` (customer-engagement), set to **Private**, click **Create**
+4. Clone your new repo and open in VS Code:
+
+```powershell
+gh repo clone contoso-field-scheduling
+cd contoso-field-scheduling
+code .
+```
+
+### Option C: From terminal (Power users)
+
+```powershell
+.\new-engagement.ps1 -Customer "Contoso" -Engagement "field-scheduling"
+```
 
 ### Prerequisites
 
