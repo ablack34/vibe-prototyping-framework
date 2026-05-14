@@ -230,23 +230,27 @@ Or paste raw notes:
 /vibe-deploy
 ```
 
-Deploy to Azure SWA + App Service. Share the URL with the customer.
+Deploy or share the prototype. The deploy prompt adapts to the form factor — web apps go to Azure, Copilot Studio bots are already hosted, Spark mockups are already shareable.
 
 ### Week 3-4: Deliver
 
-#### Generate Deliverables
+#### Generate Handoff Package
 
 ```
 /vibe-handoff
 ```
 
-Produces the roadmap, limitations doc, and handoff package.
+Produces `handoff-data.json` step by step — you approve each section before it moves to the next:
 
-#### Generate ADO Backlog
+1. **Verify artifacts** — checks what's ready
+2. **Vision** — problem statement, selected concept, desired outcome
+3. **Roadmap** — Prototype → MVP → Production phases
+4. **Backlog** — Epics → Features → User Stories (with acceptance criteria)
+5. **Limitations** — honest gaps with severity and production workaround
+6. **Cross-reference validation** — checks consistency across all sections
+7. **Compile** — assembles the final `handoff-data.json`
 
-```
-/vibe-backlog-gen project="<your ADO project name>"
-```
+The backlog is included in the handoff data. If you also want it in Azure DevOps, run `/vibe-backlog-gen` separately after the handoff is complete.
 
 Creates Epics → Features → User Stories in Azure DevOps.
 
@@ -263,11 +267,11 @@ Creates Epics → Features → User Stories in Azure DevOps.
 | Process check-in notes | `/vibe-check-in` | After each check-in |
 | Consolidate findings | `/vibe-consolidate` | End of discovery |
 | Brainstorm concepts | `/vibe-ideate` | After requirements are locked |
-| Prepare data | `/vibe-data-prep` | Before scaffolding |
-| Scaffold prototype | `/vibe-prototype-scaffold` | Start of build |
-| Deploy to Azure | `/vibe-deploy` | When ready to share |
-| Generate backlog | `/vibe-backlog-gen` | Before handoff |
-| Generate handoff | `/vibe-handoff` | End of engagement |
+| Prepare data | `/vibe-data-prep` | Before scaffolding (engineer) |
+| Scaffold prototype | `/vibe-prototype-scaffold` | Start of build (engineer) |
+| Deploy / share prototype | `/vibe-deploy` | When ready to share |
+| Generate handoff package | `/vibe-handoff` | End of engagement (includes backlog) |
+| Push backlog to ADO | `/vibe-backlog-gen` | Optional — after handoff, if ADO needed |
 | Create new engagement repo | `/vibe-new` | Before anything else |
 | Ask what to do next | Talk to `@VIBE Engagement Lead` | Anytime |
 

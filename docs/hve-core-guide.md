@@ -28,7 +28,7 @@ Agents are specialized AI assistants. Each one has a defined role, protocol, and
 | `@VIBE Disrupt` | Disrupt | Frames the $50K vs $50M value, prioritizes use cases, produces requirements |
 | `@VIBE Ideate` | Ideate | Brainstorms AI-powered concepts across form factors, produces Spark prompts + engineering brief |
 | `@VIBE Data Prep` | Build | Prepares customer data — generates TypeScript/C# models from CSV files |
-| `@VIBE Deliver` | Deliver | Generates roadmap, limitations, ADO backlog, and handoff package |
+| `@VIBE Deliver` | Deliver | Step-by-step handoff: vision → roadmap → backlog → limitations → validation → `handoff-data.json` |
 
 **Built-in HVE-Core agents we use:**
 
@@ -66,9 +66,9 @@ Prompts are one-click workflows. Type `/` in Copilot Chat to see available promp
 | `/vibe-ideate` | Ideate | Brainstorms AI-powered prototype concepts |
 | `/vibe-data-prep` | Build | Prepares customer data, generates typed models |
 | `/vibe-prototype-scaffold` | Build | Scaffolds the prototype from engineering brief |
-| `/vibe-deploy` | Build | Deploys to Azure (SWA + App Service) |
-| `/vibe-backlog-gen` | Deliver | Generates ADO work items (Epics → Features → Stories) |
-| `/vibe-handoff` | Deliver | Generates roadmap, limitations, handoff package |
+| `/vibe-deploy` | Build | Deploys or shares the prototype (adapts to form factor) |
+| `/vibe-handoff` | Deliver | Step-by-step handoff package → `handoff-data.json` (includes backlog) |
+| `/vibe-backlog-gen` | Deliver | Optional: push backlog from handoff-data.json into ADO |
 | `/vibe-new` | Setup | Creates a new engagement repo from the template |
 
 **Built-in HVE-Core prompts we use:**

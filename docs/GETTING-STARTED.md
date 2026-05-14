@@ -208,10 +208,13 @@ The engineering brief is ready. Roles diverge:
 
 ```
 /vibe-handoff
-/vibe-backlog-gen project="<your ADO project name>"
 ```
 
-Produces: product roadmap, prototype limitations, ADO backlog (Epics → Features → Stories), and the full handoff package.
+Produces `handoff-data.json` step by step — you approve each section:
+
+1. Vision → 2. Roadmap → 3. Backlog → 4. Limitations → 5. Validation → 6. Final package
+
+The backlog (Epics → Features → Stories) is included in the handoff data. To also push it to Azure DevOps, run `/vibe-backlog-gen` separately.
 
 ---
 

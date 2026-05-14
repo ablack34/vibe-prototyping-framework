@@ -60,10 +60,10 @@ If you're ever lost: click **"❓ What's Next?"**
 |------|-----------|-------------|
 | **Start** | `/vibe-kickoff` | Creates the engagement, generates meeting templates and questionnaires |
 | **After meetings** | `/vibe-transcript` | Extracts context from Teams recordings automatically |
-| **After discovery** | `/vibe-ideate` | Brainstorms 2-3 AI-powered prototype concepts |
-| **Build time** | `/vibe-prototype-scaffold` | Engineer scaffolds the prototype from the concept |
-| **Share it** | `/vibe-deploy` | Deploys to Azure so the customer can see it |
-| **Wrap up** | `/vibe-handoff` | Generates roadmap, backlog, and handoff package |
+| **After discovery** | `/vibe-ideate` | Brainstorms 2-3 AI-powered prototype concepts (validated against requirements) |
+| **Build time** | `/vibe-prototype-scaffold` | Engineer scaffolds the prototype from the engineering brief |
+| **Share it** | `/vibe-deploy` | Deploys or shares the prototype (adapts to form factor) |
+| **Wrap up** | `/vibe-handoff` | Step-by-step handoff: vision → roadmap → backlog → limitations → all in `handoff-data.json` |
 
 There are more prompts for specific situations (see [full reference](docs/playbook.md#quick-reference)), but these six cover the core flow.
 
