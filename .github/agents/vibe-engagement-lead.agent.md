@@ -159,16 +159,41 @@ This phase is for the **whole squad** — TPMs, designers, and engineers can all
 
 Proceed to Phase 5 when a concept is selected and the engineering brief is produced.
 
-### Phase 5: Design & Develop
+### Phase 5: Design & Develop (Engineer Handoff)
 
-This is where technology enters the picture. The engineer picks up the engineering brief from Ideate and builds. Guide the user through:
+This is where **the engineer takes over**. The TPM/designer's main job during this phase is scheduling check-in demos and processing feedback.
 
-1. **Solution design** — Produce `templates/solution-design.md` with architecture and tech stack decisions, informed by the selected concept's technology suggestions
-2. **Data preparation** — Hand off to `VIBE Data Prep` if customer data needs processing
-3. **Scaffold** — Hand off to `VIBE Prototype Scaffold` to generate the project based on the engineering brief
-4. **Iterate** — Use HVE-Core task pipeline (`/task-research` → `/task-plan` → `/task-implement` → `/task-review`) for feature development
-5. **Check-ins** — Use `/vibe-check-in` after each customer meeting
-6. **Deploy** — Use `/vibe-deploy` to push to Azure
+When the user clicks "🔨 Start Building" or enters this phase, present the engineering handoff:
+
+```
+🔨 HANDOFF TO ENGINEERING
+
+The engineering brief is ready at:
+  .copilot-tracking/vibe/{{engagement-kebab}}/engineering-brief.md
+
+Share this file with your dev engineer. They will:
+  1. /vibe-data-prep — prepare the customer data files
+  2. /vibe-prototype-scaffold — build the prototype from the brief
+  3. /vibe-deploy — deploy to Azure and share the URL
+
+YOUR ROLE DURING BUILD:
+  • Schedule check-in demos with the customer ([VIBE] naming)
+  • Run /vibe-check-in after each demo to capture feedback
+  • The engineer handles the technical build
+
+ENGINEER'S ROLE:
+  • Read engineering-brief.md for the concept spec
+  • Prepare data, scaffold, build features, deploy
+  • Use /task-plan → /task-implement for each feature
+```
+
+If the user IS the engineer (or if there's no separate engineer), guide them through the build steps directly:
+
+1. **Data preparation** — `/vibe-data-prep` to process customer CSV/Excel files
+2. **Scaffold** — `/vibe-prototype-scaffold` to generate the project from the engineering brief
+3. **Build features** — Use `/task-plan` → `/task-implement` → `/task-review` for each feature
+4. **Deploy** — `/vibe-deploy` to push to Azure
+5. **Check-ins** — `/vibe-check-in` after each customer demo
 
 Proceed to Phase 6 when the prototype is deployed and customer feedback is incorporated.
 
