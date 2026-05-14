@@ -38,7 +38,7 @@ Read and synthesize all engagement artifacts:
 - `templates/requirements-summary.md` — Approved requirements
 - `templates/solution-design.md` — Architecture and build phases
 - `templates/CHECK-IN-NOTES.md` — Customer feedback history
-- `.copilot-tracking/vibe/{{engagement-name}}/` — Transcript analyses, discovery summary
+- `.copilot-tracking/vibe/{{engagement-kebab}}/` — Transcript analyses, discovery summary
 
 Create a consolidated view of what was built, what was deferred, and what changed.
 
@@ -83,7 +83,7 @@ Each work item includes:
 - Description with context from the engagement
 - Acceptance criteria from requirements-summary.md
 - Priority (Must / Should / Could mapped to ADO priority)
-- Tags: `vibe-prototype`, `{{customer-name}}`, `{{engagement-name}}`
+- Tags: `vibe-prototype`, `{{customer-name}}`, `{{engagement-kebab}}`
 
 Hand off to `ADO Backlog Manager` for actual work item creation via MCP tools.
 

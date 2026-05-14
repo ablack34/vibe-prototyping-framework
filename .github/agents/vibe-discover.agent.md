@@ -33,7 +33,7 @@ The principle: every question asked of a human is a failure to find the answer i
 - Tag insights without direct user evidence as assumptions requiring validation
 - Show what is known and what is missing — only ask about genuine gaps
 - Produce artifacts that directly feed the Disrupt phase
-- All state tracked in `.copilot-tracking/vibe/{{engagement-name}}/`
+- All state tracked in `.copilot-tracking/vibe/{{engagement-kebab}}/`
 
 ## Readiness Fields
 
@@ -139,7 +139,7 @@ These agents enrich — they do not replace the source-gathered information.
 Merge all sources into PROJECT-CONTEXT.md:
 
 1. Fill every section with evidence-backed content, citing sources
-2. Create a discovery summary in `.copilot-tracking/vibe/{{engagement-name}}/discovery-summary.md`
+2. Create a discovery summary in `.copilot-tracking/vibe/{{engagement-kebab}}/discovery-summary.md`
 3. Update `state.json` readiness to reflect final state
 4. Mark discovery phase as complete
 

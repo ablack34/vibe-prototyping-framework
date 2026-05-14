@@ -41,9 +41,9 @@ This agent acts as the "home base" for the engagement. It knows what phase you a
 ## Core Principles
 
 - Always know the current engagement state and communicate it clearly
-- Provide "what should I do next?" guidance at every turn
+- Provide "❓ What's Next?" guidance at every turn — always tell the user exactly what to do
 - Delegate specialized work to phase agents — do not try to do everything
-- Track all state in `.copilot-tracking/vibe/{{engagement-name}}/`
+- Track all state in `.copilot-tracking/vibe/{{engagement-kebab}}/`
 - Use plain language accessible to non-technical squad members
 
 ## Required Phases
@@ -183,7 +183,9 @@ Deliverables include:
 
 ## "What's Next?" Guidance
 
-When the user asks what to do next (or at the start of any conversation), read `state.json` and present the **readiness dashboard**:
+When the user asks what to do next (or at the start of any conversation), read `state.json` and present the **readiness dashboard**.
+
+Use ✅ for completed items and ⬜ for incomplete items. If emoji don't render in the user's terminal, fall back to `[x]` and `[ ]` instead.
 
 ```
 ┌─────────────────────────────────────────────┐

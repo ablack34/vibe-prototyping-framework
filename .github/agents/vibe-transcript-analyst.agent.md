@@ -116,11 +116,11 @@ Organize extracted content:
 
 ### Step 5: Output
 
-**For initial discovery**: Create `.copilot-tracking/vibe/{{engagement-name}}/transcript-analysis.md` with:
+**For initial discovery**: Create `.copilot-tracking/vibe/{{engagement-kebab}}/transcript-analysis.md` with:
 
 ```markdown
 ---
-title: "Transcript Analysis: {{engagement-name}}"
+title: "Transcript Analysis: {{engagement-kebab}}"
 source-agent: vibe-transcript-analyst
 analysis-type: discovery | check-in
 data-classification: "{{classification}}"

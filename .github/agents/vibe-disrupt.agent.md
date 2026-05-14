@@ -43,8 +43,8 @@ This is where "Are we solving a $50K problem or a $50M problem?" gets answered.
 Read and synthesize:
 
 - `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Problem statement, personas, stakeholders
-- `.copilot-tracking/vibe/{{engagement-name}}/transcript-analysis.md` — Customer voice data (if exists)
-- `.copilot-tracking/vibe/{{engagement-name}}/discovery-summary.md` — Research findings (if exists)
+- `.copilot-tracking/vibe/{{engagement-kebab}}/transcript-analysis.md` — Customer voice data (if exists)
+- `.copilot-tracking/vibe/{{engagement-kebab}}/discovery-summary.md` — Research findings (if exists)
 - `sources/` — Any additional customer documents
 
 Summarize the current understanding and confirm with the user.

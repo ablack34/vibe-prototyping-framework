@@ -93,7 +93,7 @@ Read:
 
 - `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Problem, personas, desired outcome
 - `templates/requirements-summary.md` — Prioritized requirements
-- `.copilot-tracking/vibe/{{engagement-name}}/` — Transcript analysis, discovery summary, any ideation artifacts
+- `.copilot-tracking/vibe/{{engagement-kebab}}/` — Transcript analysis, discovery summary, any ideation artifacts
 - `sources/` — Any customer documents, questionnaire responses, workshop notes
 
 Summarize the core challenge in one sentence before proceeding.
@@ -157,6 +157,14 @@ Generate **2-3 concepts** across different form factors. For each concept:
 - Concepts should represent genuinely different approaches, not variations of the same idea
 - At least one concept should be low-complexity (prototypable in 3-5 days)
 
+### Complexity Definitions
+
+| Level | Engineering Days | What It Means |
+|-------|-----------------|---------------|
+| **Low** | 3-5 days | Single view/interaction, one data source, straightforward AI usage |
+| **Medium** | 5-8 days | Multiple views or interactions, 2-3 data sources, moderate AI integration |
+| **High** | 8-12 days | Complex multi-screen app, multiple data sources, deep AI integration |
+
 ### Step 4: Compare and Recommend
 
 Present a comparison table:
@@ -209,7 +217,7 @@ This narrative is what the customer reacts to and what the engineer uses to buil
 
 ### Step 6: Produce Outputs
 
-Save to `.copilot-tracking/vibe/{{engagement-name}}/`:
+Save to `.copilot-tracking/vibe/{{engagement-kebab}}/`:
 
 1. **`ideation-concepts.md`** — Full concept descriptions and comparison
 2. **`selected-concept.md`** — Chosen concept with screen/interaction narrative
