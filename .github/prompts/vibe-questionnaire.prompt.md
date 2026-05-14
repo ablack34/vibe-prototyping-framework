@@ -100,6 +100,11 @@ Make all sections visible. Use the Microsoft brand theme.
 
 Tell the user:
 
-1. Export responses from Microsoft Forms (Download results → Excel)
-2. Drop the file in `sources/` in the engagement repo, or paste key answers into `sources/questionnaire-responses.md`
-3. Run `/vibe-discover` — the agent will read the responses and auto-fill PROJECT-CONTEXT.md fields
+1. Open Microsoft Forms and go to the form you created
+2. Click the **"Responses"** tab at the top
+3. Click **"Open in Excel"** to download all responses
+4. Save the Excel file to the `sources/` folder in your engagement repo
+5. Alternatively, copy key answers and paste them into `sources/questionnaire-responses.md`
+6. Run `@VIBE Discover` — the agent will read the responses and auto-fill PROJECT-CONTEXT.md fields
+
+> **Tip:** The discover agent reads everything in `sources/` automatically. Just drop the file there and it will be picked up.

@@ -24,7 +24,7 @@ A framework that guides you through running a VIBE Prototyping engagement using 
   Anyone              Anyone              Anyone
   1-3 days            1-2 days            1 day
        │                                       │
-       │         4. BUILD              5. DELIVER
+       │    4. DESIGN & DEVELOP        5. DELIVER
        │         ┌──────────┐       ┌──────────┐
        └────────▶│ Engineer │──────▶│ Hand off  │
                  │ the      │       │ to the    │

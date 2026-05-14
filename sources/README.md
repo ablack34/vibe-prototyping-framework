@@ -15,7 +15,9 @@ Drop customer-provided materials and captured workshop notes here. The `@VIBE Di
 
 Copilot can read: `.md`, `.txt`, `.csv`, `.json`, `.pdf`, `.docx`, `.pptx`, `.xlsx`
 
-For best results, use markdown or plain text. If the customer sends a PDF or PowerPoint, drop it in — Copilot will extract what it can.
+> **Best results with plain text or markdown.** Office files (PDF, Word, PowerPoint, Excel) are supported but may not parse perfectly — if accuracy matters, copy key content into a markdown file.
+>
+> **Keep files under 10MB** for best performance. If a customer shares large datasets, put them in `scaffold/data/` instead.
 
 ## Auto-Generated Files
 

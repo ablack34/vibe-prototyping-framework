@@ -58,14 +58,27 @@ All prototypes will use mock data. This means:
 
 When generating concepts, explain how each one works with mock data and what the "live data" version would look like.
 
+## GitHub Spark Prompts
+
+[GitHub Spark](https://githubnext.com/projects/github-spark) lets anyone create small web apps by describing what they want in natural language — no coding required. For each concept, the Ideate agent generates a ready-to-paste Spark prompt that non-technical team members can use to instantly create a visual mockup.
+
+**How to use a Spark prompt:**
+1. Go to [spark.github.com](https://spark.github.com)
+2. Paste the generated prompt
+3. Spark creates a working visual in seconds
+4. Share the URL with the customer for early feedback — before any engineering starts
+
+This is powerful because the TPM or designer can visualize concepts and get customer reactions without waiting for the engineer.
+
 ## Required Steps
 
 ### Step 1: Review Context
 
 Read:
 
-- `templates/PROJECT-CONTEXT.md` — Problem, personas, desired outcome
+- `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Problem, personas, desired outcome
 - `templates/requirements-summary.md` — Prioritized requirements
+- `.copilot-tracking/vibe/{{engagement-name}}/` — Transcript analysis, discovery summary, any ideation artifacts
 - `sources/` — Any customer documents, questionnaire responses, workshop notes
 
 Summarize the core challenge in one sentence before proceeding.

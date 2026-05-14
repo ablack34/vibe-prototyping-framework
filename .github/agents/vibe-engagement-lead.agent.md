@@ -167,9 +167,9 @@ This is where technology enters the picture. The engineer picks up the engineeri
 5. **Check-ins** — Use `/vibe-check-in` after each customer meeting
 6. **Deploy** — Use `/vibe-deploy` to push to Azure
 
-Proceed to Phase 5 when the prototype is deployed and customer feedback is incorporated.
+Proceed to Phase 6 when the prototype is deployed and customer feedback is incorporated.
 
-### Phase 5: Deliver
+### Phase 6: Deliver
 
 Guide the user to generate final deliverables. Hand off to `VIBE Deliver` agent.
 

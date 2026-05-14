@@ -11,17 +11,17 @@ A reusable framework for Studio 42 **VIBE Prototyping** engagements. Guides your
 ## The VIBE Process
 
 ```
- DISCOVER        DISRUPT         IDEATE          BUILD           DELIVER
+ DISCOVER        DISRUPT         IDEATE          DESIGN & DEV    DELIVER
  ─────────      ─────────      ─────────      ─────────      ─────────
  Understand     Frame the      Brainstorm     Engineer the   Hand off to
  the problem    value & scope  AI concepts    prototype      the customer
 
  Who: Anyone    Who: Anyone    Who: Anyone    Who: Engineer  Who: Anyone
  ───────────────────────────────────────────────────────────────────────
- /vibe-kickoff  /vibe-disrupt  /vibe-ideate   /vibe-data     /vibe-backlog
- /vibe-transcript               (Spark        /vibe-scaffold  /vibe-handoff
- /vibe-capture                   prompts)     /vibe-deploy
- /vibe-questionnaire
+ /vibe-kickoff  @VIBE Disrupt  /vibe-ideate   /vibe-data-prep  /vibe-backlog-gen
+ /vibe-transcript               (Spark        /vibe-prototype  /vibe-handoff
+ /vibe-capture                   prompts)      -scaffold
+ /vibe-questionnaire                          /vibe-deploy
 ```
 
 **Most of the process doesn't require an engineer.** TPMs and designers drive Discover, Disrupt, and Ideate. Engineers join at Build.

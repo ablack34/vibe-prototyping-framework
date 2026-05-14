@@ -15,17 +15,17 @@
 | **Start Date** | {{START_DATE}} |
 | **End Date** | {{END_DATE}} |
 | **S42 Lead** | {{LEAD_NAME}} |
-| **Status** | Discovery |
+| **Status** | Discover |
 
 ## 2. Squad
 
-| Role | Name | Availability |
-|------|------|-------------|
-| Technical Product Manager | {{TPM_NAME}} | Full-time |
-| Dev Engineer | {{DEV_NAME}} | Full-time |
-| Designer | {{DESIGNER_NAME}} | Part-time |
-| Data Scientist | {{DATA_SCIENTIST}} | As needed |
-| Architect | {{ARCHITECT}} | As needed |
+| Role | Name | Availability | Required? |
+|------|------|-------------|----------|
+| Technical Product Manager | {{TPM_NAME}} | Full-time | Required |
+| Dev Engineer | {{DEV_NAME}} | Full-time | Required |
+| Designer | {{DESIGNER_NAME}} | Part-time | Recommended |
+| Data Scientist | {{DATA_SCIENTIST}} | As needed | Optional |
+| Architect | {{ARCHITECT}} | As needed | Optional |
 
 ## 3. Problem Statement
 
@@ -40,6 +40,8 @@
 ### What is the business impact?
 
 > Frame this as: "Are we solving a $50K problem or a $50M problem?"
+> A $50K problem saves one team some time. A $50M problem transforms the customer's business model.
+> This affects how ambitious the prototype should be.
 
 {{BUSINESS_IMPACT}}
 
@@ -53,13 +55,18 @@
 
 ## 4. Tech Stack
 
+> **Determined after the Ideate phase.** The prototype's form factor and technology
+> should be driven by the selected concept, not prescribed upfront.
+> The engineer fills this section during Design & Develop.
+
 | Layer | Technology | Notes |
 |-------|------------|-------|
-| IDE | VS Code + GitHub Copilot | Standard rapid-prototyping setup |
-| Frontend | React + TypeScript + Vite + Tailwind | SPA served by Azure Static Web Apps |
-| Backend | .NET 9 Minimal APIs | Hosted on Azure App Service |
+| Form factor | {{FORM_FACTOR}} | e.g., Web app, Conversational, Agentic, Copilot extension |
+| Frontend | {{FRONTEND}} | Determined by concept |
+| Backend | {{BACKEND}} | Determined by concept |
+| AI | {{AI_SERVICE}} | e.g., Azure OpenAI, Copilot Studio, Foundry Agents |
 | Data | Customer-provided CSVs/Excel | Anonymized, stored in `/data/` |
-| Hosting | Azure (SWA + App Service) | Deployed via GitHub Actions |
+| Hosting | Azure | Specific services TBD |
 | CI/CD | GitHub Actions | Auto-deploy on push to main |
 
 ## 5. Data Available
