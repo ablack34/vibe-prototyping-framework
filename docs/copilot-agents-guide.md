@@ -1,12 +1,12 @@
-# HVE-Core Guide for Studio 42
+# Copilot Agents & Prompts Guide
 
-> A practical guide to using HVE-Core extension features in VIBE Prototyping engagements.
+> How the AI agents and prompts work in the VIBE framework.
 
 ---
 
-## What Is HVE-Core?
+## What Powers the VIBE Framework?
 
-HVE-Core is a VS Code extension that adds specialized AI agents, reusable prompts, coding instructions, and skills to GitHub Copilot Chat. Instead of writing long prompts from scratch, you invoke pre-built workflows.
+The VIBE framework runs on **GitHub Copilot** with the **HVE-Core extension** — a VS Code extension that adds specialized AI agents, reusable prompts, and coding instructions. Instead of writing long prompts from scratch, you invoke pre-built workflows.
 
 It's already installed — you just need to know how to use it.
 
