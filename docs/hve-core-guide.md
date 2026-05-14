@@ -20,14 +20,15 @@ Agents are specialized AI assistants. Each one has a defined role, protocol, and
 
 **VIBE agents we built:**
 
-| Agent | What It Does |
-|-------|-------------|
-| `@VIBE Engagement Lead` | Orchestrates the full engagement — start here when unsure |
-| `@VIBE Discover` | Guides discovery research and stakeholder analysis |
-| `@VIBE Transcript Analyst` | Extracts context from Teams meeting transcripts |
-| `@VIBE Disrupt` | Frames problems and prioritizes use cases |
-| `@VIBE Data Prep` | Prepares customer data for the prototype |
-| `@VIBE Deliver` | Generates final deliverables and handoff |
+| Agent | Phase | What It Does |
+|-------|-------|-------------|
+| `@VIBE Engagement Lead` | All | Orchestrates the full engagement — start here when unsure. Has "❓ What's Next?" |
+| `@VIBE Discover` | Discover | Source-first context gathering — reads docs, transcripts, questionnaires, then asks about gaps |
+| `@VIBE Transcript Analyst` | Discover | Extracts context from Teams meeting transcripts (local files or via work-iq) |
+| `@VIBE Disrupt` | Disrupt | Frames the $50K vs $50M value, prioritizes use cases, produces requirements |
+| `@VIBE Ideate` | Ideate | Brainstorms AI-powered concepts across form factors, produces Spark prompts + engineering brief |
+| `@VIBE Data Prep` | Build | Prepares customer data — generates TypeScript/C# models from CSV files |
+| `@VIBE Deliver` | Deliver | Generates roadmap, limitations, ADO backlog, and handoff package |
 
 **Built-in HVE-Core agents we use:**
 
@@ -51,13 +52,24 @@ Prompts are one-click workflows. Type `/` in Copilot Chat to see available promp
 |--------|-------------|
 | `/vibe-kickoff` | Starts a new engagement |
 | `/vibe-transcript` | Processes meeting transcripts |
-| `/vibe-check-in` | Processes customer check-in feedback |
-| `/vibe-consolidate` | Consolidates all findings |
-| `/vibe-data-prep` | Prepares customer data |
-| `/vibe-prototype-scaffold` | Scaffolds the prototype |
-| `/vibe-deploy` | Deploys to Azure |
-| `/vibe-backlog-gen` | Generates ADO backlog |
-| `/vibe-handoff` | Generates final deliverables |
+**Our VIBE prompts:**
+
+| Prompt | Phase | What It Does |
+|--------|-------|-------------|
+| `/vibe-kickoff` | Discover | Starts the engagement, generates meeting templates |
+| `/vibe-questionnaire` | Discover | Generates Forms prompts for account team + customer questionnaires |
+| `/vibe-transcript` | Discover | Extracts context from Teams transcripts (local files or work-iq) |
+| `/vibe-capture` | Discover | Quick insight capture during workshops |
+| `/vibe-check-in` | Build | Processes customer check-in feedback |
+| `/vibe-consolidate` | Discover | Consolidates all findings from sources |
+| `/vibe-disrupt` | Disrupt | Frames value and prioritizes use cases |
+| `/vibe-ideate` | Ideate | Brainstorms AI-powered prototype concepts |
+| `/vibe-data-prep` | Build | Prepares customer data, generates typed models |
+| `/vibe-prototype-scaffold` | Build | Scaffolds the prototype from engineering brief |
+| `/vibe-deploy` | Build | Deploys to Azure (SWA + App Service) |
+| `/vibe-backlog-gen` | Deliver | Generates ADO work items (Epics → Features → Stories) |
+| `/vibe-handoff` | Deliver | Generates roadmap, limitations, handoff package |
+| `/vibe-new` | Setup | Creates a new engagement repo from the template |
 
 **Built-in HVE-Core prompts we use:**
 

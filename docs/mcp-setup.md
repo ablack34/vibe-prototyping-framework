@@ -1,16 +1,32 @@
 # MCP Server Setup Guide
 
-> Configure MCP servers to unlock the full VIBE framework capabilities.
+> MCP servers are **pre-configured** in every engagement repo. This page explains what they do and how to verify they're working.
 
 ---
 
 ## What Are MCP Servers?
 
-MCP (Model Context Protocol) servers give Copilot Chat access to external tools — Azure DevOps, Teams transcripts, GitHub, Playwright, and more. They run as background processes that Copilot communicates with.
+MCP (Model Context Protocol) servers give Copilot Chat access to external tools — Teams transcripts, GitHub, Azure AI, and more. They run as background processes that Copilot communicates with.
+
+**Good news:** When you create an engagement from the template, the MCP servers are already configured in `.vscode/mcp.json`. You just need to **enable the tools** on first use and **sign in** when prompted.
 
 ---
 
-## Required Servers
+## First-Time Setup (One-Time, 2 Minutes)
+
+1. Open the engagement repo in VS Code
+2. Open Copilot Chat (`Ctrl+Shift+I`)
+3. Click the **🔧 tools icon** (wrench) at the top of Copilot Chat
+4. **Enable all tools** — this gives the AI access to Teams transcripts, GitHub, and other services
+5. When prompted, sign in with your Microsoft account (for Teams transcript access)
+
+That's it. The MCP servers start automatically when VS Code opens the workspace.
+
+---
+
+## Pre-Configured Servers
+
+These are defined in `.vscode/mcp.json` and start automatically:
 
 ### 1. GitHub MCP (Likely Already Active)
 

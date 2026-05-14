@@ -38,6 +38,44 @@ A framework that guides you through running a VIBE Prototyping engagement using 
 
 ---
 
+## How Sources Become Deliverables
+
+The delivery person captures sources. The AI produces documents. You review and approve.
+
+```
+SOURCES YOU CAPTURE              AI PRODUCES                DELIVERED TO CUSTOMER
+───────────────────              ───────────                ──────────────────────
+                                 
+Teams transcripts ──┐                                      
+Customer docs    ──┤            PROJECT-                   
+Questionnaires   ──┼──▶ DISCOVER ──▶ CONTEXT.md            
+Workshop notes   ──┤                    │                  
+Engagement brief ──┘                    │                  
+                                        ▼                  
+                                 DISRUPT ──▶ requirements- ──▶ Customer
+                                              summary.md       sign-off
+                                                   │           
+                                                   ▼           
+                                 IDEATE ──▶ concepts +     ──▶ Spark mockups
+                                            engineering-       for customer
+                                            brief.md           review
+                                                   │           
+                                                   ▼           
+Customer data  ────────▶ BUILD ──▶ prototype    ──▶ Deployed
+(CSVs/Excel)                      solution-         prototype URL
+                                  design.md         
+                                        │           
+Check-in feedback ─────────────────────▶│           
+                                        ▼           
+                                 DELIVER ──▶ roadmap       ──▶ Handoff
+                                            limitations        package
+                                            ADO backlog        
+```
+
+**You never fill a document manually.** Every document is auto-generated from your sources.
+
+---
+
 ## Before Your First Engagement
 
 ### One-time setup (do this once, takes 10 minutes)
@@ -45,7 +83,7 @@ A framework that guides you through running a VIBE Prototyping engagement using 
 1. **Install VS Code** with GitHub Copilot (you probably already have this)
 2. **Install HVE-Core extension** from the VS Code marketplace
 3. **Install GitHub CLI**: `winget install GitHub.cli`, then `gh auth login`
-4. **Configure work-iq-mcp** for Teams transcript analysis — see [MCP Setup](mcp-setup.md)
+4. **MCP servers are pre-configured** — just enable tools on first use (click the 🔧 icon in Copilot Chat)
 
 Engineers also need: Node.js, .NET 9 SDK, Azure Developer CLI (`azd`)
 
@@ -141,14 +179,22 @@ Click **"💡 Ideate Concepts"** (or type `/vibe-ideate`):
 
 **Non-technical team members:** Use the Spark prompts to create quick visual mockups. Show these to the customer before engineering starts.
 
-### Build Phase (Engineer Takes Over)
+### Build Phase (Roles Split)
 
-The engineer reads the engineering brief and:
+The engineering brief is ready. Roles diverge:
+
+**Engineer does:**
 
 1. `/vibe-data-prep` — prepares customer data
 2. `/vibe-prototype-scaffold` — scaffolds the prototype (shaped by the concept, not a template)
 3. Builds features using `/task-plan` → `/task-implement`
 4. `/vibe-deploy` — deploys to Azure
+
+**TPM/Designer does:**
+
+1. Share the engineering brief with the engineer (`.copilot-tracking/vibe/*/engineering-brief.md`)
+2. Schedule check-in demos with the customer
+3. `/vibe-check-in` after each demo to capture feedback
 
 ### After Each Customer Demo
 

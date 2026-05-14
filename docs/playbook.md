@@ -167,13 +167,23 @@ Pick the concept that best demonstrates the customer's value. It's also valid to
 
 ### Week 2-3: Design & Develop
 
-This is where **technology enters the picture** and the **engineer takes the lead**.
+This is where **technology enters the picture**. The roles split:
 
-#### Solution Design
+```
+┌─────────────────────────────────────────────────────┐
+│  ENGINEER                    TPM / DESIGNER          │
+│  ─────────                   ──────────────          │
+│  /vibe-data-prep             Schedule check-in demos │
+│  /vibe-prototype-scaffold    /vibe-check-in (after   │
+│  /task-plan → /task-implement  each customer demo)   │
+│  /vibe-deploy                Share prototype URL     │
+│                              Collect feedback        │
+└─────────────────────────────────────────────────────┘
+```
 
-The engineer produces `templates/solution-design.md` using the engineering brief from Ideate — architecture, tech stack, data model, build phases, and risk inventory.
+**Engineer receives:** `engineering-brief.md` from Ideate — contains the selected concept, screen spec, data requirements, AI integration points, and suggested build order.
 
-#### Prepare Data
+#### Engineer: Prepare Data
 
 Place customer data files in `scaffold/data/`, then:
 
