@@ -11,6 +11,11 @@ handoffs:
     agent: VIBE Prototype Scaffold
     prompt: "Data is prepared. Scaffold the prototype using the data models generated."
     send: true
+  - label: "❓ What's Next?"
+    agent: VIBE Engagement Lead
+    prompt: "Data prep done. What should I do next?"
+    send: true
+    send: true
 ---
 
 # VIBE Data Prep

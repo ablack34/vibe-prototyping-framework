@@ -8,12 +8,16 @@ tools:
   - run_in_terminal
 handoffs:
   - label: "📋 Generate ADO Backlog"
-    agent: ADO Backlog Manager
-    prompt: "Create Azure DevOps work items from the VIBE engagement requirements."
-    send: false
+    agent: VIBE Deliver
+    prompt: "Generate ADO work items (Epics → Features → User Stories) from the engagement requirements using /vibe-backlog-gen."
+    send: true
   - label: "✅ Review Deliverables"
     agent: Task Reviewer
     prompt: /task-review
+    send: true
+  - label: "❓ What's Next?"
+    agent: VIBE Engagement Lead
+    prompt: "Deliver phase in progress. What should I do next?"
     send: true
 ---
 

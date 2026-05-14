@@ -14,6 +14,10 @@ handoffs:
     agent: VIBE Disrupt
     prompt: "Revisit requirements based on ideation insights."
     send: true
+  - label: "❓ What's Next?"
+    agent: VIBE Engagement Lead
+    prompt: "Ideation in progress. What should I do next?"
+    send: true
 ---
 
 # VIBE Ideate
