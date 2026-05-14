@@ -92,7 +92,7 @@ If you're using GitHub Copilot, this is usually pre-configured. Check your VS Co
 
 **Note**: The work-iq-mcp server has a query budget of approximately 30 queries per session. If you hit the limit, start a new Copilot Chat session to reset it.
 
-**If transcripts aren't found**: Make sure meetings were named with the `[VIBE]` prefix (e.g., `[VIBE] Contoso — Kickoff`). The transcript agent searches by customer name, participant names, and date range — the more specific you are, the better the results.
+**If transcripts aren't found**: Make sure meetings were named with the `[VIBE]` prefix (e.g., `[VIBE] <Your Customer> — Kickoff`). The transcript agent searches by customer name, participant names, and date range — the more specific you are, the better the results.
 
 ---
 

@@ -24,7 +24,7 @@ The handoff agent generates a three-phase roadmap:
 ### ADO Backlog
 
 ```
-/vibe-backlog-gen project="Contoso Scheduling"
+/vibe-backlog-gen project="<your ADO project name>"
 ```
 
 Generates a work item hierarchy:

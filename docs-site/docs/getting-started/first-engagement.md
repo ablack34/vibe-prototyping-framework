@@ -12,7 +12,7 @@ A step-by-step walkthrough of running a complete VIBE engagement.
 Open Copilot Chat in any VS Code window and type:
 
 ```
-/vibe-new customer="Contoso" engagement="field-scheduling"
+/vibe-new customer="<your-customer>" engagement="<short-name>"
 ```
 
 This creates a private GitHub repo with the full framework and opens it in VS Code.
@@ -20,7 +20,7 @@ This creates a private GitHub repo with the full framework and opens it in VS Co
 ## Step 2: Kick Off
 
 ```
-/vibe-kickoff customer="Contoso" problem="Field technicians waste 2hrs/day on manual scheduling" size=S
+/vibe-kickoff customer="<your-customer>" problem="<describe the problem>" size=S
 ```
 
 **What happens:**
@@ -38,7 +38,7 @@ Generates prompts you paste into M365 Copilot to create Microsoft Forms — one 
 
 ## Step 4: Record and Process Meetings
 
-**Name every meeting:** `[VIBE] Contoso — Kickoff`
+**Name every meeting:** `[VIBE] <Your Customer> — Kickoff`
 
 After each meeting:
 
@@ -93,7 +93,7 @@ The engineer picks up the engineering brief and:
 ## Step 9: Deliver
 
 ```
-/vibe-backlog-gen project="Contoso Scheduling"
+/vibe-backlog-gen project="<your ADO project name>"
 /vibe-handoff
 ```
 

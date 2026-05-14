@@ -58,7 +58,7 @@ Engineers also need: Node.js, .NET 9 SDK, Azure Developer CLI (`azd`)
 Open VS Code and type in Copilot Chat:
 
 ```
-/vibe-new customer="Contoso" engagement="field-scheduling"
+/vibe-new customer="<your-customer>" engagement="<short-name>"
 ```
 
 This creates a private repo with everything you need.
@@ -66,7 +66,7 @@ This creates a private repo with everything you need.
 ### Day 1: Kick off
 
 ```
-/vibe-kickoff customer="Contoso" problem="Field techs waste 2hrs/day on manual scheduling" size=S
+/vibe-kickoff customer="<your-customer>" problem="<describe the customer's problem>" size=S
 ```
 
 **What happens:**
@@ -91,9 +91,9 @@ Send both out right away.
 **This is the most important thing.** Name every meeting:
 
 ```
-[VIBE] Contoso — Kickoff
-[VIBE] Contoso — Workshop 1
-[VIBE] Contoso — Check-in 1
+[VIBE] <Your Customer> — Kickoff
+[VIBE] <Your Customer> — Workshop 1
+[VIBE] <Your Customer> — Check-in 1
 ```
 
 After each meeting, run:
@@ -162,7 +162,7 @@ The engineer reads the engineering brief and:
 
 ```
 /vibe-handoff
-/vibe-backlog-gen project="Contoso Scheduling"
+/vibe-backlog-gen project="<your ADO project name>"
 ```
 
 Produces: product roadmap, prototype limitations, ADO backlog (Epics → Features → Stories), and the full handoff package.

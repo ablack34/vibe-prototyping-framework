@@ -35,7 +35,7 @@ A reusable framework for Studio 42 **VIBE Prototyping** engagements. Guides your
 Open Copilot Chat in VS Code and type:
 
 ```
-/vibe-new customer="Contoso" engagement="field-scheduling"
+/vibe-new customer="<your-customer>" engagement="<short-name>"
 ```
 
 Or click **"Use this template"** on [GitHub](https://github.com/ablack34/vibe-prototyping-framework) and clone.
@@ -43,7 +43,7 @@ Or click **"Use this template"** on [GitHub](https://github.com/ablack34/vibe-pr
 ### 2. Start the engagement
 
 ```
-/vibe-kickoff customer="Contoso" problem="Field techs waste 2hrs/day on manual scheduling" size=S
+/vibe-kickoff customer="<your-customer>" problem="<describe the customer's problem>" size=S
 ```
 
 ### 3. Follow the buttons

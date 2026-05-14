@@ -34,10 +34,10 @@ All engagement meetings should follow this pattern:
 
 Examples:
 
-- `[VIBE] Contoso — Kickoff`
-- `[VIBE] Contoso — Workshop 1`
-- `[VIBE] Contoso — Check-in 2`
-- `[VIBE] Contoso — Handoff`
+- `[VIBE] <Your Customer> — Kickoff`
+- `[VIBE] <Your Customer> — Workshop 1`
+- `[VIBE] <Your Customer> — Check-in 2`
+- `[VIBE] <Your Customer> — Handoff`
 
 The `[VIBE]` prefix + customer name makes every meeting findable by the transcript analysis agent. Meeting invite templates are auto-generated during `/vibe-kickoff` — just copy them into Outlook.
 
@@ -61,7 +61,7 @@ The `[VIBE]` prefix + customer name makes every meeting findable by the transcri
 In Copilot Chat, type:
 
 ```
-/vibe-kickoff customer="Contoso" problem="Field technicians waste 2hrs/day on manual scheduling" size=S
+/vibe-kickoff customer="<your-customer>" problem="<describe the problem>" size=S
 ```
 
 This creates the engagement tracking structure, initialises PROJECT-CONTEXT.md, and generates meeting invite templates.
@@ -91,7 +91,7 @@ Don't stop facilitating to take notes. Just type quick captures:
 #### After each customer meeting: Process the transcript
 
 ```
-/vibe-transcript engagement=contoso-scheduling
+/vibe-transcript engagement=<your-engagement-name>
 ```
 
 This pulls the Teams meeting transcript and extracts:
@@ -235,7 +235,7 @@ Produces the roadmap, limitations doc, and handoff package.
 #### Generate ADO Backlog
 
 ```
-/vibe-backlog-gen project="Contoso Scheduling"
+/vibe-backlog-gen project="<your ADO project name>"
 ```
 
 Creates Epics → Features → User Stories in Azure DevOps.
