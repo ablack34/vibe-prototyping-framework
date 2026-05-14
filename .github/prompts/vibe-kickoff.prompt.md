@@ -17,6 +17,12 @@ Start a new VIBE Prototyping engagement. Creates the engagement tracking structu
 
 ## Requirements
 
+0. **Check for existing engagement first.** Look in `.copilot-tracking/vibe/` for any existing engagement directories. If one already exists:
+   - Tell the user: "An engagement already exists: {{existing-name}}. Each repo should have ONE engagement."
+   - Ask: "Do you want to continue with the existing engagement, or replace it with a new one?"
+   - If continuing: skip to showing the readiness dashboard and next steps
+   - If replacing: delete the old directory before creating the new one
+
 1. Create the engagement tracking directory at `.copilot-tracking/vibe/` using a kebab-case name derived from the customer and project.
 2. Copy `templates/PROJECT-CONTEXT.md` into the engagement directory and fill in the provided inputs.
 3. Copy `templates/engagement-brief.md` and populate known fields.

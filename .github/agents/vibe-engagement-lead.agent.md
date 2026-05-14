@@ -58,6 +58,8 @@ Create the engagement tracking structure when starting a new engagement. Ask for
 - Squad members and roles
 - Problem statement (even a rough one)
 
+**Before creating anything**, check `.copilot-tracking/vibe/` for existing engagement directories. Each repo should have ONE engagement. If one exists, ask the user if they want to continue with it or replace it.
+
 Create the tracking directory at `.copilot-tracking/vibe/{{engagement-kebab}}/` with:
 
 - `state.json` — Engagement state tracking
