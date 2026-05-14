@@ -40,16 +40,72 @@ VIBE Prototyping follows five phases. The first three don't require an engineer 
   </div>
 </div>
 
-## How It's Different from Traditional Design Thinking
+---
 
-We evolved the classic design thinking framework for an AI-first world:
+## Week-by-Week Timeline (Small Engagement)
+
+<div className="timeline">
+  <div className="timeline-item">
+    <div className="timeline-week">Week 1 — Discover</div>
+    <h3>Uncover user needs, business goals, and AI opportunities</h3>
+    <p>Through <strong>focused</strong> research and stakeholder alignment. Process meeting transcripts, send questionnaires, capture workshop insights. The framework automatically extracts context from Teams recordings.</p>
+    <p><strong>Outputs:</strong> Product Vision & Strategy · Personas & User Journey · Filled PROJECT-CONTEXT.md</p>
+  </div>
+  <div className="timeline-item">
+    <div className="timeline-week">Week 1-2 — Disrupt</div>
+    <h3>Frame the problem, prioritize use cases, establish success metrics</h3>
+    <p>That guide <strong>live</strong> prototyping efforts. Answer the key question: "Are we solving a $50K problem or a $50M problem?"</p>
+    <p><strong>Outputs:</strong> Requirements Summary (customer sign-off) · Prioritized use cases</p>
+  </div>
+  <div className="timeline-item">
+    <div className="timeline-week">Week 2 — Ideate</div>
+    <h3>Brainstorm AI-powered concepts across form factors</h3>
+    <p>Generate 2-3 concepts — web apps, conversational agents, Copilot extensions, agentic solutions. Visualize with GitHub Spark prompts. Select the best approach.</p>
+    <p><strong>Outputs:</strong> Concept comparison · Screen narratives · Engineering brief · Spark prompts</p>
+  </div>
+  <div className="timeline-item">
+    <div className="timeline-week">Week 2-3 — Design & Develop</div>
+    <h3>Rapidly prototype and iterate AI-powered solutions</h3>
+    <p>With cross-functional collaboration. Engineer builds from the engineering brief, iterates based on customer check-in feedback.</p>
+    <p><strong>Outputs:</strong> Prototype V1 → V2 → Final Prototype (deployed to Azure)</p>
+  </div>
+  <div className="timeline-item">
+    <div className="timeline-week">Week 3-4 — Deliver</div>
+    <h3>Validate the prototype, gather feedback, prepare handoff</h3>
+    <p>Generate the product roadmap, ADO backlog (Epics → Features → Stories), prototype limitations, and complete handoff package.</p>
+    <p><strong>Outputs:</strong> Product Roadmap · Product Backlog · Handoff Package</p>
+  </div>
+</div>
+
+---
+
+## Evolved Design Thinking
 
 > "Are we solving a $50,000 problem? Could we be solving a **$50 million** problem?"
 
-| Traditional | VIBE |
-|-------------|------|
-| Weeks of research before building | Sources auto-ingested — transcripts, docs, questionnaires |
-| Workshop post-it notes | AI-extracted requirements with evidence tracking |
-| Static wireframes | Multiple AI-powered concepts across form factors |
-| One-size-fits-all dashboard | Prototype shaped by the problem, not a template |
-| Manual handoff docs | Auto-generated roadmap, backlog, and handoff package |
+<div className="problem-grid">
+  <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-start)'}}>
+    <h3>🔍 Problem</h3>
+    <p><strong>Find and validate an important problem to solve.</strong> Talk to real users, key experts, and analyze data to identify opportunities that create measurable benefit such as time or cost savings.</p>
+  </div>
+  <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-end)'}}>
+    <h3>💡 Solution</h3>
+    <p><strong>Imagine and validate a revolutionary solution.</strong> Quickly iterate on increasingly refined prototypes. At each iteration, user feedback points towards improvements and real needs.</p>
+  </div>
+  <div className="problem-card" style={{borderTopColor: '#10b981'}}>
+    <h3>🔨 Implement</h3>
+    <p><strong>Implement and validate a live prototype.</strong> Integrate user testing feedback into every iteration for critical alignment and high velocity improvement.</p>
+  </div>
+</div>
+
+---
+
+## Squad Setup
+
+| Role | Source | Responsibility |
+|------|--------|---------------|
+| Technical Product Manager | Studio 42 | Drives Discover, Disrupt, Ideate, Deliver |
+| Dev Engineer | Studio 42 | Leads Build phase |
+| Designer | Studio 42 | UX research, concept development |
+| Data Scientist | EAG | Data analysis, AI model guidance |
+| Architect | ISD/EAG | Technical architecture review |
