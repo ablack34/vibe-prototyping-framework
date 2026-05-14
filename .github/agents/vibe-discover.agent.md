@@ -53,7 +53,7 @@ After generating PROJECT-CONTEXT.md, present it and ask: **"Does this look right
 
 ## Readiness Fields
 
-Track these fields in `state.json` under `readiness`. Each field has a status (`filled`, `partial`, `empty`) and a source (where the data came from):
+Track these fields in `state.json` under `readiness`. Each field has a status (`filled`, `partial`, `empty`), a source, and a **quality grade**.
 
 | Field | What It Answers |
 |-------|----------------|
@@ -66,6 +66,37 @@ Track these fields in `state.json` under `readiness`. Each field has a status (`
 | `stakeholderMap` | Who are the key people and their authority? |
 | `successCriteria` | How do we know the prototype succeeded? |
 | `constraints` | Timeline, tech, data access limitations |
+
+### Quality Grading Rubric
+
+When filling each field from sources, grade its quality. **Do NOT mark discovery complete until all fields are Grade B or higher.**
+
+| Field | Grade A (Strong) | Grade B (Sufficient) | Grade C (Incomplete — needs follow-up) |
+|-------|-----------------|---------------------|---------------------------------------|
+| **Problem** | "When [persona] tries to [task], they [pain]. Costs $X/year." + source cited | Clear problem with some quantification | "There's an efficiency opportunity" — too vague |
+| **Target Users** | 2-3 detailed personas with names, roles, JTBD, current workarounds | 1-2 personas with role and pain description | Just "operations team" — no specifics |
+| **Business Impact** | Quantified: "$400K lost account", "$1.2M annual waste" with source | Estimated range with rationale | "It's important to the business" — no numbers |
+| **Current State** | Specific tools, processes, workarounds described | General description of current approach | "They use spreadsheets" — too generic |
+| **Desired Outcome** | Specific measurable outcome: "find stock in 30 seconds not 30 minutes" | Clear direction with some measurability | "Make it better" — not actionable |
+| **Data Inventory** | Files listed with row counts, columns, quality, gaps, usability per use case | Files listed with basic descriptions | "They have data" — no specifics |
+| **Stakeholder Map** | 3+ people with names, roles, authority tiers, confirmed by user | 2+ people with roles and tiers | Just "the customer team" |
+| **Success Criteria** | Specific: "customer says 'yes, build this' if they see X" | General criteria with some specificity | "Customer is happy" — not measurable |
+| **Constraints** | Timeline, budget, tech, data access all documented | Major constraints identified | "There might be some constraints" |
+
+Show the grading dashboard in the readiness assessment:
+
+```
+DISCOVERY READINESS
+  ✅ A — Problem statement: "Supply chain managers can't see real-time inventory..." [source: transcript]
+  ✅ A — Target users: 3 personas (Sarah, Marcus, Priya) with JTBD [source: questionnaire]
+  ✅ A — Business impact: $400K lost account + $1.2M waste [source: transcript + questionnaire]
+  ⚠️ B — Current state: SAP + Excel described [source: customer-background.md] — could be more specific
+  ✅ A — Desired outcome: "Find stock in 30 seconds" [source: questionnaire]
+  ⚠️ B — Data inventory: 4 CSVs listed — quality not fully assessed
+  ✅ A — Stakeholder map: 5 people mapped with tiers [source: transcript]
+  ❌ C — Success criteria: NEEDS FOLLOW-UP — ask "what would make you say yes?"
+  ✅ B — Constraints: Board deadline Q4, mock data only
+```
 
 ## Required Steps
 

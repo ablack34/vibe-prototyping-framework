@@ -198,6 +198,31 @@ Present a comparison table:
 
 Recommend one concept with rationale but let the team decide. It is also valid to combine elements from multiple concepts.
 
+### Step 4b: Concept Validation (Quality Gate)
+
+Before producing the engineering brief, validate each concept against this rubric:
+
+| Validation Check | Question | Pass/Fail |
+|-----------------|----------|-----------|
+| **AI Essentiality** | Remove all AI from this concept. Is it still compelling? If YES → AI is decorative → FAIL | |
+| **Mock Data Feasibility** | Using ONLY the CSV/data files in `scaffold/data/`, can we demonstrate all claimed AI features? What would break? | |
+| **Requirement Coverage** | Map each must-have requirement to a part of this concept. Which requirements are NOT demonstrated? | |
+| **Build Estimate Reality** | Count: screens/interactions, data integrations, AI API calls, unique components. Does the day estimate match? | |
+| **Handoff Readiness** | Could an engineer start building from this concept description alone without asking clarifying questions? | |
+
+**For each concept, present the validation results:**
+
+```
+CONCEPT A VALIDATION:
+  ✅ AI Essential — without AI, health score is just a formula, no actionable recommendations
+  ✅ Mock Data — all 4 CSVs support the demo (inventory, orders, products, warehouses)
+  ⚠️ Requirement Coverage — covers 4/5 must-haves; missing: "demand forecasting" (deferred to Phase 2)
+  ⚠️ Build Estimate — 5 screens + 3 AI calls + 4 data sources = more like 8-9 days, not 7
+  ✅ Handoff Ready — engineering brief has screen specs, data mapping, AI integration points
+```
+
+If any concept has 2+ FAILs, revise it or flag it as not recommended. If the build estimate is off by >30%, adjust it before presenting.
+
 **Proactively produce all outputs for the recommended concept** (Steps 5-6) without waiting for explicit selection. This saves time — if the user agrees with the recommendation, they can immediately proceed. If they prefer a different concept, regenerate the outputs for that one.
 
 ### Step 5: Screen-by-Screen Narrative

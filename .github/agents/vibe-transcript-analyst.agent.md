@@ -140,12 +140,33 @@ Use 1-2 queries per meeting. Track query count and warn at 20 and 25.
 
 ### Step 4: Synthesis
 
-Organize extracted content:
+Organize extracted content with **tier-weighted confidence** and **conflict detection**:
 
-- Requirements: ID format `VT-001`, with confidence level (confirmed / inferred / needs-validation)
-- Apply authority attribution: Tier 3-4 statements default to needs-validation
-- Group findings by theme (user experience, data, technical, business)
-- Flag contradictions between stakeholders
+**Requirements format:**
+
+| ID | Requirement | Primary Speaker (Tier) | Agreed By Others? | Confidence | Status | Follow-up? |
+|----|-------------|----------------------|-------------------|------------|--------|-----------|
+| VT-001 | Need real-time inventory | Marcus (Tier 1) | Sarah (Tier 2) agrees | Confirmed | MUST | No |
+| VT-002 | AI-powered forecasting | Priya (Tier 3) | No Tier 1-2 agreement | Needs-validation | SHOULD | YES — confirm with sponsor |
+
+**Confidence rules:**
+
+- **Confirmed**: Tier 1 or 2 stated it AND at least one other person agreed
+- **Inferred**: Tier 1-2 implied it but didn't state explicitly, OR Tier 3-4 stated with partial agreement
+- **Needs-validation**: Tier 3-4 stated without Tier 1-2 agreement, OR any contested statement
+
+**Conflict detection — actively look for and flag these:**
+
+| Conflict | Speaker A (Tier) | Speaker B (Tier) | Status |
+|----------|-----------------|-----------------|--------|
+| "Must have auth" vs "Skip auth for now" | IT Lead (Tier 3) | VP Sponsor (Tier 1) | NEEDS CLARIFICATION — Tier 1 overrides but may not be aware of security implications |
+| "Top priority is dashboards" vs "Top priority is chat" | Ops Manager (Tier 2) | Analyst (Tier 3) | NEEDS ALIGNMENT — different personas have different needs |
+
+- If same topic raised 3+ times with different framing → flag as **INCONSISTENT PRIORITY**
+- If Tier 1 contradicts Tier 2-3 → flag as **NEEDS CLARIFICATION** (Tier 1 may override but should be informed)
+- Present conflict report BEFORE producing the final transcript-analysis.md
+
+Group findings by theme (user experience, data, technical, business).
 
 ### Step 5: Output
 

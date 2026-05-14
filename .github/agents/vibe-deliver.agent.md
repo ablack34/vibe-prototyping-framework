@@ -156,24 +156,56 @@ Present the backlog hierarchy and ask for approval. Note: "This backlog is viewa
 
 Read: `solution-design.md`, `CHECK-IN-NOTES.md`, prototype code
 
-Produce `handoff-data.json → limitations` section:
+Produce `handoff-data.json → limitations` section with **severity + mitigation**:
 
 ```json
 {
   "limitations": {
     "items": [
-      { "area": "Authentication", "limitation": "...", "productionRequirement": "..." },
-      { "area": "Data", "limitation": "...", "productionRequirement": "..." }
+      {
+        "area": "Authentication",
+        "limitation": "No authentication — open access",
+        "severity": "Workaround Required",
+        "productionRequirement": "Integrate Entra ID with RBAC",
+        "rationale": "3-week timeline didn't allow federated auth setup"
+      }
     ]
   }
 }
 ```
 
+**Severity levels:**
+
+- **Gotcha** — minor, won't block production use
+- **Workaround Required** — needs attention before production
+- **Blocks Production** — cannot go live without this
+- **N/A** — informational only
+
+Each limitation MUST have a production workaround and a rationale explaining why it was deferred. This reframes limitations from "what we couldn't do" to "what we chose to defer for speed."
+
 Also fill `templates/PROTOTYPE-LIMITATIONS.md` from this data.
 
 Present limitations and ask for approval.
 
-### Step 6: Compile About + Finalize
+### Step 6: Cross-Reference Validation (Quality Gate)
+
+**Before compiling the final handoff-data.json, validate consistency across all sections:**
+
+| Check | Question | Status |
+|-------|----------|--------|
+| **Vision ↔ Backlog** | Every feature claimed in the vision → at least one epic/feature in the backlog? | |
+| **Backlog ↔ Requirements** | Every must-have requirement → at least one user story? No orphan stories without a requirement? | |
+| **Roadmap ↔ Limitations** | Every limitation → has a mitigation in the MVP or Production roadmap phase? | |
+| **Roadmap ↔ Backlog** | Backlog scope is achievable within the prototype timeline? No "should" items accidentally scoped as "must"? | |
+| **About ↔ Reality** | Deployment URL is live? Squad list is accurate? Timeline matches state.json? | |
+
+**If any check fails:**
+
+- Present the mismatch to the user
+- Suggest a fix (e.g., "Vision claims 'autonomous agents' but backlog has no agent stories — add one or remove the claim")
+- Do NOT finalize until resolved
+
+### Step 7: Compile About + Finalize
 
 Produce `handoff-data.json → about` section:
 
@@ -218,5 +250,6 @@ After each step, end with a specific directive:
 - After Step 2: `👉 NEXT: Vision approved. Generating Roadmap next.`
 - After Step 3: `👉 NEXT: Roadmap approved. Generating Backlog next.`
 - After Step 4: `👉 NEXT: Backlog approved. Generating Limitations next.`
-- After Step 5: `👉 NEXT: Limitations approved. Compiling final handoff package.`
-- After Step 6: `👉 NEXT: Handoff complete! Share the prototype URL and handoff-data.json with the customer. 🎉`
+- After Step 5: `👉 NEXT: Limitations approved. Running consistency validation.`
+- After Step 6: `👉 NEXT: Validation passed. Compiling final handoff package.`
+- After Step 7: `👉 NEXT: Handoff complete! Share the prototype URL and handoff-data.json with the customer. 🎉`

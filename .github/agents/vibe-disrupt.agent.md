@@ -77,14 +77,24 @@ Document the value framing in PROJECT-CONTEXT.md under "Business Impact."
 
 ### Step 3: Use Case Prioritization
 
-List all potential use cases identified during discovery. For each:
+List all potential use cases identified during discovery. Score each systematically:
 
-| Use Case | User Value | Business Value | Feasibility | Priority |
-|----------|-----------|---------------|------------|----------|
+| ID | Use Case | User Value (1-5) | Business Value (1-5) | Feasibility (1-5) | Data Ready? | Priority | Source & Rationale |
+|----|----------|-------------------|---------------------|-------------------|------------|----------|-------------------|
 
-Guide the team to score each use case and select the top 3-5 for the prototype.
+**Grounding rules — every score must cite a source:**
 
-Prioritization criteria:
+- **User value score** must reference a specific pain point from a named persona: `[Sarah, transcript 10:22: "15 phone calls a day"]`
+- **Business value score** must reference a quantified impact: `[Marcus, questionnaire: "$400K lost account"]`
+- **Feasibility score** must reference available data or known constraints: `[data: inventory.csv has 40 rows across 12 warehouses]`
+- **Data ready** must reference actual files in `scaffold/data/` or `sources/`: `[CSV: warehouses.csv, 12 rows]` or `[NOT AVAILABLE — would need synthetic data]`
+- **Priority** must include a one-sentence rationale: `"Highest priority because it directly addresses the $400K account loss and we have the data to demo it"`
+
+**If a score cannot be grounded in a source, mark it as `[ASSUMED]` and flag for customer validation.**
+
+Guide the team to select the top 3-5 use cases for the prototype.
+
+Prioritization critieria:
 
 - **User value**: How much does this reduce pain or improve outcomes?
 - **Business value**: Does this demonstrate the $50M opportunity?
