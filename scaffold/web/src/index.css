@@ -1,25 +1,18 @@
 @import "tailwindcss";
 
-/* Fluent-inspired design tokens */
-@theme {
-  --color-bg: #1a1a2e;
-  --color-bg-surface: #16213e;
-  --color-bg-card: #0f3460;
-  --color-bg-hover: #1a3a6a;
-  --color-text: #e8e8e8;
-  --color-text-muted: #a0a0b0;
-  --color-text-dim: #6a6a7a;
-  --color-border: #2a2a4a;
-  --color-brand: #0078d4;
-  --color-brand-light: #4da6ff;
-  --color-accent: #00b4d8;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-}
+/*
+ * No pre-set theme. The /vibe-prototype-scaffold prompt will
+ * generate a visual tone that fits the customer's context.
+ *
+ * Options the scaffold prompt may apply:
+ * - Enterprise (clean, professional, Fluent-inspired)
+ * - Clinical (high contrast, accessible, minimal)
+ * - Consumer (friendly, colorful, rounded)
+ * - Creative (bold, expressive, dynamic)
+ *
+ * Add custom theme tokens here after scaffolding.
+ */
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
 }

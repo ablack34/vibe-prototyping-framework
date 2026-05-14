@@ -7,6 +7,22 @@ applyTo: "scaffold/**"
 
 Standards for prototype code. Prototypes prioritize speed and clarity over production hardening.
 
+## Design Philosophy
+
+**The prototype's UI must be driven by the engagement's requirements, personas, and use cases — not by a pre-built template.**
+
+Before building any UI:
+
+1. Read `templates/requirements-summary.md` for what needs to be demonstrated
+2. Read `templates/PROJECT-CONTEXT.md` for personas and desired outcomes
+3. Choose layout patterns that fit the problem (dashboard, wizard, chat, form, map, timeline — whatever is appropriate)
+4. Choose a visual tone that fits the customer's context (enterprise, clinical, consumer, creative)
+5. Only build components the requirements call for
+
+Do NOT default to a dark sidebar + dashboard + KPI cards layout.
+Do NOT include placeholder content that isn't connected to a requirement.
+Every screen, component, and interaction should trace back to a specific requirement or use case.
+
 ## Frontend (React + TypeScript + Vite)
 
 ### Project Structure
