@@ -23,9 +23,14 @@ By evolving proven design thinking methods, this service helps us identify and s
 
 ---
 
-## RIVED — Our Principles
+## DRIVE — Our Principles
 
 <div className="rived-grid">
+  <div className="rived-card">
+    <div className="rived-letter">D</div>
+    <h3>Design</h3>
+    <p>Start with intent, not specifications</p>
+  </div>
   <div className="rived-card">
     <div className="rived-letter">R</div>
     <h3>Rapid</h3>
@@ -45,11 +50,6 @@ By evolving proven design thinking methods, this service helps us identify and s
     <div className="rived-letter">E</div>
     <h3>Execute</h3>
     <p>Ship with confidence</p>
-  </div>
-  <div className="rived-card">
-    <div className="rived-letter">D</div>
-    <h3>Design</h3>
-    <p>Start with intent, not specifications</p>
   </div>
 </div>
 
