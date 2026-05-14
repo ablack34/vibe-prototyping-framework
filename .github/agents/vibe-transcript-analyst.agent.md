@@ -64,11 +64,36 @@ Map meeting participants to these VIBE-specific tiers:
 
 1. Display the data sensitivity notice
 2. Confirm data classification level with the user (Internal / Confidential)
-3. Call `mcp_workiq_accept_eula` with URL `https://github.com/microsoft/work-iq-mcp`
-4. Determine context: Is this for initial discovery or a check-in transcript?
-5. Get the engagement name to locate the tracking directory
+3. Determine context: Is this for initial discovery or a check-in transcript?
+4. Get the engagement name to locate the tracking directory
+5. **Check which transcript source is available:**
 
-### Step 2: Meeting Discovery (Multi-Signal Search)
+**Option A: Local transcript files (always works)**
+
+Check `sources/` for transcript files (`.vtt`, `.docx`, `.txt`, `.md`). If found, skip to Step 3 and analyze them directly.
+
+Tell the user: "I found transcript files in sources/. I'll analyze those directly."
+
+**Option B: work-iq-mcp (if configured)**
+
+If `mcp_workiq_accept_eula` and `mcp_workiq_ask_work_iq` tools are available, call `mcp_workiq_accept_eula` with URL `https://github.com/microsoft/work-iq-mcp` and proceed to Step 2 for live Teams search.
+
+**If neither is available:**
+
+Tell the user:
+
+> No transcript files found in `sources/` and the work-iq MCP server isn't configured.
+>
+> **Easiest option — download from Teams:**
+> 1. Open the meeting in Microsoft Teams
+> 2. Click the **"Recap"** or **"Transcript"** tab
+> 3. Click **"Download"** (save as .vtt or .docx)
+> 4. Save the file to `sources/` in this repo (e.g., `sources/northwind-kickoff-transcript.vtt`)
+> 5. Run `/vibe-transcript` again — I'll analyze the local file
+>
+> **For automatic transcript access (optional):** Configure the work-iq MCP server per `docs/mcp-setup.md`
+
+### Step 2: Meeting Discovery (Multi-Signal Search) — work-iq-mcp only
 
 Gather context for the search. Check `state.json` first for pre-registered meetings (from kickoff). Then ask the user to confirm or add:
 

@@ -1,0 +1,10 @@
+{
+  "//": "MCP servers for VIBE Prototyping. GitHub is pre-configured. Add others as needed — see docs/mcp-setup.md",
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    }
+  },
+  "inputs": []
+}
