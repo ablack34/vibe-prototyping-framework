@@ -1,0 +1,51 @@
+import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+
+const sidebars: SidebarsConfig = {
+  vibeSidebar: [
+    {
+      type: 'category',
+      label: 'Why VIBE',
+      collapsed: false,
+      items: [
+        'why-vibe/overview',
+        'why-vibe/process',
+        'why-vibe/case-studies',
+        'why-vibe/impact',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Getting Started',
+      collapsed: false,
+      items: [
+        'getting-started/setup',
+        'getting-started/first-engagement',
+        'getting-started/roles',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'The Five Phases',
+      collapsed: false,
+      items: [
+        'phases/discover',
+        'phases/disrupt',
+        'phases/ideate',
+        'phases/build',
+        'phases/deliver',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Reference',
+      collapsed: true,
+      items: [
+        'reference/prompts',
+        'reference/agents',
+        'reference/templates',
+      ],
+    },
+  ],
+};
+
+export default sidebars;

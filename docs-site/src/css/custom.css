@@ -1,0 +1,70 @@
+:root {
+  --ifm-color-primary: #0078d4;
+  --ifm-color-primary-dark: #006cbe;
+  --ifm-color-primary-darker: #0063b1;
+  --ifm-color-primary-darkest: #005192;
+  --ifm-color-primary-light: #1a86d9;
+  --ifm-color-primary-lighter: #2e91de;
+  --ifm-color-primary-lightest: #4da6e8;
+  --ifm-font-family-base: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --ifm-code-font-size: 95%;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #4da6ff;
+  --ifm-color-primary-dark: #2e91ff;
+  --ifm-color-primary-darker: #1f86ff;
+  --ifm-color-primary-darkest: #006de0;
+  --ifm-color-primary-light: #6cbbff;
+  --ifm-color-primary-lighter: #7bc3ff;
+  --ifm-color-primary-lightest: #a9daff;
+  --ifm-background-color: #1a1a2e;
+  --ifm-background-surface-color: #16213e;
+}
+
+.hero { padding: 4rem 0; }
+.hero__title { font-size: 3rem; font-weight: 700; }
+.hero__subtitle { font-size: 1.3rem; opacity: 0.85; max-width: 600px; }
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.phase-card {
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.phase-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.phase-card h3 { margin-top: 0; font-size: 1.1rem; }
+.phase-card .phase-number { font-size: 2rem; font-weight: 700; color: var(--ifm-color-primary); margin-bottom: 0.5rem; }
+.phase-card .phase-who { font-size: 0.85rem; opacity: 0.7; margin-top: 0.5rem; }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--ifm-background-surface-color);
+  border-radius: 12px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.stat-card .stat-number { font-size: 2.5rem; font-weight: 700; color: var(--ifm-color-primary); }
+.stat-card .stat-label { font-size: 0.9rem; opacity: 0.7; }

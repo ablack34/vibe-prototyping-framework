@@ -1,0 +1,48 @@
+---
+sidebar_position: 2
+title: Agent Reference
+---
+
+# Agent Reference
+
+All VIBE agents and their roles.
+
+## VIBE Agents
+
+| Agent | Phase | Description |
+|-------|-------|-------------|
+| `@VIBE Engagement Lead` | All | Orchestrator — manages all 5 phases, shows readiness dashboard, tells you what to do next |
+| `@VIBE Discover` | Discover | Source-first context gathering — ingests docs, transcripts, questionnaires, then asks about gaps |
+| `@VIBE Transcript Analyst` | Discover | Extracts VIBE-specific signals from Teams meeting transcripts |
+| `@VIBE Disrupt` | Disrupt | Problem framing, value analysis, use case prioritization |
+| `@VIBE Ideate` | Ideate | Brainstorms AI-powered concepts across form factors |
+| `@VIBE Data Prep` | Build | Guides preparation of customer data files for the prototype |
+| `@VIBE Deliver` | Deliver | Generates roadmap, backlog, limitations doc, and handoff package |
+
+## Built-in HVE-Core Agents We Use
+
+| Agent | When Used | Description |
+|-------|-----------|-------------|
+| `@UX UI Designer` | Discover | Creates JTBD analyses and user journey maps |
+| `@PRD Builder` | Disrupt | Builds formal Product Requirements Documents |
+| `@Agile Coach` | Disrupt | Helps write clear user stories with acceptance criteria |
+| `@Task Researcher` | Build | Deep research on technical approaches |
+| `@Task Planner` | Build | Creates implementation plans from research |
+| `@Task Implementor` | Build | Executes implementation plans |
+| `@Task Reviewer` | Build | Reviews completed work for quality |
+
+## How to Use Agents
+
+In VS Code Copilot Chat (Agent mode), type `@` followed by the agent name:
+
+```
+@VIBE Engagement Lead what should I do next?
+```
+
+Agents provide **handoff buttons** at the bottom of their responses. Click these to transition between phases or delegate to another agent.
+
+## The Golden Rule
+
+**If you're lost, talk to `@VIBE Engagement Lead` or click "❓ What's Next?"**
+
+It reads your engagement state and recommends the exact next step.
