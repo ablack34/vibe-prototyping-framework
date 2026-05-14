@@ -34,7 +34,12 @@ Generate ready-to-paste prompts that create Microsoft Forms questionnaires.
 
 ## Customer Pre-Workshop Questionnaire
 
-Generate a prompt for the M365 Copilot Forms agent using this structure. Replace `{{CUSTOMER_NAME}}` and `{{PROBLEM_AREA}}` with actual values from PROJECT-CONTEXT.md:
+Generate a prompt for the M365 Copilot Forms agent using this structure. **You MUST replace all placeholders with real values** from PROJECT-CONTEXT.md before presenting to the user:
+
+- Replace `{{CUSTOMER_NAME}}` with the actual customer name (e.g., "Northwind Traders")
+- Replace `{{PROBLEM_AREA}}` with the actual problem statement (e.g., "supply chain visibility")
+
+Do NOT show `{{CUSTOMER_NAME}}` in the output — the user will copy-paste this directly.
 
 ```
 Create a Microsoft Form called "{{CUSTOMER_NAME}} — Pre-Workshop Questionnaire" with the following:
@@ -72,7 +77,7 @@ Make all sections visible. Use the Microsoft brand theme.
 
 ## Account Team Intake Questionnaire
 
-Generate a prompt for the M365 Copilot Forms agent using this structure:
+Generate a prompt for the M365 Copilot Forms agent. **Replace `{{CUSTOMER_NAME}}` with the actual customer name** before presenting to the user:
 
 ```
 Create a Microsoft Form called "{{CUSTOMER_NAME}} — S42 Engagement Intake" with the following:
