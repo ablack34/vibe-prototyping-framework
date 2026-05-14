@@ -135,30 +135,30 @@ Read `templates/PROJECT-CONTEXT.md` for any fields already filled during kickoff
 
 ### Step 2: Readiness Assessment (Show the Gaps)
 
-After ingesting all sources, present a readiness dashboard:
+After ingesting all sources, present a readiness dashboard using the **EXACT format below**. Every field MUST show a letter grade (A/B/C), a one-line summary, and the source file it came from:
 
 ```
 CONTEXT SOURCES PROCESSED
-  ✅ / ⬜ Customer documents in sources/
+  ✅ / ⬜ Customer documents in sources/ (N files)
   ✅ / ⬜ Questionnaire responses
   ✅ / ⬜ Engagement brief
   ✅ / ⬜ Workshop notes
   ✅ / ⬜ Teams transcripts
   ✅ / ⬜ PROJECT-CONTEXT.md from kickoff
 
-DISCOVERY READINESS
-  ✅ / ⬜ Problem statement — [source or "Missing"]
-  ✅ / ⬜ Target users — [source or "Missing"]
-  ✅ / ⬜ Business impact — [source or "Missing"]
-  ✅ / ⬜ Current state — [source or "Missing"]
-  ✅ / ⬜ Desired outcome — [source or "Missing"]
-  ✅ / ⬜ Data inventory — [source or "Missing"]
-  ✅ / ⬜ Stakeholder map — [source or "Missing"]
-  ✅ / ⬜ Success criteria — [source or "Missing"]
-  ✅ / ⬜ Constraints — [source or "Missing"]
+DISCOVERY READINESS — QUALITY GRADED
+  ✅ A — Problem statement: "..." [source: filename.md]
+  ✅ A — Target users: N personas with JTBD [source: filename.md]
+  ✅ A — Business impact: $X quantified [source: filename.vtt]
+  ⚠️ B — Current state: tools described but gaps in detail [source: filename.md]
+  ❌ C — Success criteria: NEEDS FOLLOW-UP [no source found]
 ```
 
-Update `state.json` with the readiness status.
+**You MUST use this exact format.** Do not simplify or omit the letter grades. The letter grades come from the Quality Grading Rubric above. If a field is Grade C, mark it with ❌ and explain what follow-up is needed.
+
+**Gate check:** Count fields at Grade B or higher. If 7+ of 9 are B or higher → "READY to proceed to Disrupt." If fewer → list the C-graded fields and what actions would raise them.
+
+Update `state.json` with the readiness status including grades.
 
 ### Step 3: Gap-Fill (Ask Only What's Missing)
 
