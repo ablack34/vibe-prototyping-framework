@@ -108,3 +108,16 @@ When the prototype is being handed to a production team that was not involved in
 - Data dictionary from `scaffold/data/README.md`
 - Local development setup instructions (from `scaffold/web/README.md` and `scaffold/api/README.md`)
 - Deployment guide (GitHub Actions workflows + Azure resource setup)
+
+## Response Format — Next Step Directive
+
+Every response MUST end with a specific next-step directive pointing at a button or action.
+
+Examples:
+
+- After producing roadmap but before backlog: `👉 NEXT: Click "📋 Generate ADO Backlog" below to create work items from the requirements.`
+- After backlog is generated: `👉 NEXT: Review the ADO work items, then click "✅ Review Deliverables" to validate the full handoff package.`
+- After all deliverables are complete: `👉 NEXT: Share the handoff package with the customer. The engagement is complete! 🎉`
+- If prototype hasn't been deployed yet: `👉 NEXT: The prototype needs to be deployed first. Run /vibe-deploy to push to Azure, then come back for deliverables.`
+
+Never end with a generic "what would you like to do?" — always recommend a specific action.

@@ -153,3 +153,16 @@ Discovery is complete when:
 - PROJECT-CONTEXT.md has problem statement, stakeholders, personas, and data sections filled
 - At least one persona has a JTBD analysis
 - The team can articulate the problem in one clear sentence
+
+## Response Format — Next Step Directive
+
+Every response MUST end with a specific next-step directive pointing at a button.
+
+Examples:
+
+- After ingesting sources with gaps remaining: `👉 NEXT: Tell me about [specific gap] and I'll update the context. Or click "🎙️ Process Transcript" if you have more meetings to analyze.`
+- After completing discovery: `👉 NEXT: Click "💡 Move to Disrupt" below to begin problem framing and use case prioritization.`
+- After processing one source with more available: `👉 NEXT: Drop more customer documents in sources/ and tell me, or click "🎙️ Process Transcript" to pull meeting context.`
+- When UX research would help: `👉 NEXT: Click "👤 UX Research" to create journey maps from the pain points we've identified.`
+
+Never end with a generic "what would you like to do?" — always recommend a specific action.
