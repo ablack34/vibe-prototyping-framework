@@ -129,9 +129,46 @@ Talk to `@VIBE Disrupt` to:
 The Disrupt agent produces:
 
 - `templates/requirements-summary.md` — Get customer sign-off on this
-- `templates/solution-design.md` — Internal technical decisions
+
+**Note:** No technology decisions are made in this phase. That comes later.
+
+### Week 2: Ideate
+
+#### Brainstorm AI-Powered Concepts
+
+This is the creative phase — for the **whole squad**, not just engineers. Run:
+
+```
+/vibe-ideate
+```
+
+The Ideate agent will:
+
+1. Analyze the AI opportunity (what's possible with AI that isn't possible without it?)
+2. Generate 2-3 prototype concepts across **different form factors** — web app, conversational agent, Copilot extension, agentic AI, low-code, or something else entirely
+3. Each concept explains how AI is essential, how it works with mock data, and what Microsoft tech enables it
+4. Compare concepts on wow factor, complexity, and customer value
+5. Produce screen/interaction narratives the customer can react to
+6. Generate **GitHub Spark prompts** so non-technical team members can quickly visualize concepts
+7. Produce an **engineering brief** the dev engineer uses to build
+
+**Key constraint:** All concepts must work with **mock data** (no live system connections).
+
+#### Quick Visualization
+
+Non-technical team members can paste the generated Spark prompts into GitHub Spark to create instant visual prototypes — no coding needed. These help the customer react to concepts before engineering starts.
+
+#### Select a Concept
+
+Pick the concept that best demonstrates the customer's value. It's also valid to combine elements from multiple concepts. The Ideate agent produces an engineering brief that the dev engineer will pick up next.
 
 ### Week 2-3: Design & Develop
+
+This is where **technology enters the picture** and the **engineer takes the lead**.
+
+#### Solution Design
+
+The engineer produces `templates/solution-design.md` using the engineering brief from Ideate — architecture, tech stack, data model, build phases, and risk inventory.
 
 #### Prepare Data
 
@@ -212,6 +249,7 @@ Creates Epics → Features → User Stories in Azure DevOps.
 | Process meeting recording | `/vibe-transcript` | After any customer meeting |
 | Process check-in notes | `/vibe-check-in` | After each check-in |
 | Consolidate findings | `/vibe-consolidate` | End of discovery |
+| Brainstorm concepts | `/vibe-ideate` | After requirements are locked |
 | Prepare data | `/vibe-data-prep` | Before scaffolding |
 | Scaffold prototype | `/vibe-prototype-scaffold` | Start of build |
 | Deploy to Azure | `/vibe-deploy` | When ready to share |
