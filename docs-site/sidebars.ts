@@ -11,6 +11,7 @@ const sidebars: SidebarsConfig = {
         'why-vibe/process',
         'why-vibe/case-studies',
         'why-vibe/impact',
+        'why-vibe/leadership',
       ],
     },
     {
