@@ -1,6 +1,6 @@
 ---
 name: VIBE Transcript Analyst
-description: "Extracts engagement context from Teams meeting transcripts using work-iq-mcp"
+description: "Extracts engagement context from Teams meeting transcripts"
 tools:
   - mcp_workiq_accept_eula
   - mcp_workiq_ask_work_iq
@@ -8,13 +8,21 @@ tools:
   - read_file
   - replace_string_in_file
 handoffs:
+  - label: "❓ What's Next?"
+    agent: VIBE Engagement Lead
+    prompt: "Transcript analysis done. What should I do next?"
+    send: true
   - label: "🔍 Continue Discovery"
     agent: VIBE Discover
-    prompt: "Transcript analysis complete. Continue discovery with these findings."
+    prompt: "Transcript analysis complete. Ingest these findings and continue the source-first discovery process."
     send: true
-  - label: "📝 Update Check-in Notes"
+  - label: "🎙️ Process Another Transcript"
+    agent: VIBE Transcript Analyst
+    prompt: "Process another meeting transcript for this engagement."
+    send: true
+  - label: "📝 Process Check-in Feedback"
     agent: VIBE Engagement Lead
-    prompt: "Transcript processed. Update check-in notes with extracted feedback."
+    prompt: "Transcript processed as check-in. Update check-in notes and PROJECT-CONTEXT.md with new findings."
     send: true
 ---
 
@@ -197,5 +205,32 @@ Cost, revenue, time, scale indicators.
 
 ### Step 6: Handoff
 
-- For discovery: hand off to `VIBE Discover` to continue with research and UX analysis
-- For check-ins: hand off to `VIBE Engagement Lead` to update engagement state
+After presenting the analysis summary, end with a specific next-step directive based on context:
+
+**If this was a discovery transcript (kick-off, workshop):**
+
+```
+───────────────────────────────────────────
+👉 NEXT: Click "🔍 Continue Discovery" to have @VIBE Discover read these
+   findings and fill out PROJECT-CONTEXT.md automatically.
+   Or click "🎙️ Process Another Transcript" if you have more meetings to analyze.
+───────────────────────────────────────────
+```
+
+**If this was a check-in transcript:**
+
+```
+───────────────────────────────────────────
+👉 NEXT: Click "📝 Process Check-in Feedback" to update CHECK-IN-NOTES.md
+   and PROJECT-CONTEXT.md with the new findings.
+───────────────────────────────────────────
+```
+
+**If unsure what to do:**
+
+```
+───────────────────────────────────────────
+👉 NEXT: Click "❓ What's Next?" to check your engagement progress
+   and get a recommendation on what to do.
+───────────────────────────────────────────
+```
