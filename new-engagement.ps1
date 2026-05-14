@@ -13,13 +13,19 @@
 .PARAMETER Engagement
     Short engagement name (e.g., "field-scheduling"). Used for the repo name.
 .PARAMETER Owner
-    GitHub org or username to create the repo under. Defaults to current user.
+    GitHub org or username to create the repo under. Defaults to current authenticated user.
+.PARAMETER Template
+    GitHub template repo to create from. Defaults to env:VIBE_TEMPLATE_REPO or 'ablack34/vibe-prototyping-framework'.
+    Set the environment variable to avoid passing this every time:
+        $env:VIBE_TEMPLATE_REPO = "my-org/vibe-prototyping-framework"
 .PARAMETER Location
     Local directory to clone into. Defaults to ~/repos/
 .EXAMPLE
     .\new-engagement.ps1 -Customer "Contoso" -Engagement "field-scheduling"
 .EXAMPLE
     .\new-engagement.ps1 -Customer "Northwind" -Engagement "inventory-ai" -Owner "my-org"
+.EXAMPLE
+    .\new-engagement.ps1 -Customer "Fabrikam" -Engagement "logistics" -Template "my-org/vibe-framework"
 #>
 
 param(
@@ -31,13 +37,23 @@ param(
 
     [string]$Owner = "",
 
+    [string]$Template = "",
+
     [string]$Location = (Join-Path $env:USERPROFILE "repos")
 )
 
 $ErrorActionPreference = "Stop"
 
 $repoName = "$($Customer.ToLower() -replace '\s+','-')-$($Engagement.ToLower() -replace '\s+','-')"
-$templateRepo = "ablack34/vibe-prototyping-framework"
+
+# Resolve template repo: parameter > env var > default
+if ($Template) {
+    $templateRepo = $Template
+} elseif ($env:VIBE_TEMPLATE_REPO) {
+    $templateRepo = $env:VIBE_TEMPLATE_REPO
+} else {
+    $templateRepo = "ablack34/vibe-prototyping-framework"
+}
 $localPath = Join-Path $Location $repoName
 
 Write-Host ""
@@ -47,6 +63,7 @@ Write-Host ""
 Write-Host "  Customer:    $Customer" -ForegroundColor White
 Write-Host "  Engagement:  $Engagement" -ForegroundColor White
 Write-Host "  Repo name:   $repoName" -ForegroundColor White
+Write-Host "  Template:    $templateRepo" -ForegroundColor White
 Write-Host "  Local path:  $localPath" -ForegroundColor White
 Write-Host ""
 
