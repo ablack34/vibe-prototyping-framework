@@ -11,14 +11,15 @@ Generate ready-to-paste prompts that create Microsoft Forms questionnaires.
 ## How This Works
 
 1. This prompt generates text prompts (one for account team, one for customer)
-2. You copy each prompt and paste it into **Microsoft 365 Copilot** (NOT GitHub Copilot — these are different tools)
-3. M365 Copilot creates a Microsoft Form from the prompt
-4. You send the Form links to the account team and customer
-5. When responses arrive, export them to `sources/` in the engagement repo
+2. Go to [Microsoft Forms](https://forms.cloud.microsoft.com) and create a new blank form
+3. Click **"Draft with Copilot"** (the Copilot icon in the form editor)
+4. Paste the generated prompt into the Copilot draft box
+5. Copilot generates the form with all sections and questions
+6. Review, adjust if needed, then click **"Collect responses"** to get the share link
+7. Send the link to the account team or customer
+8. When responses arrive, export them to `sources/` in the engagement repo
 
-**Where to find M365 Copilot:** Open [microsoft365.com](https://www.microsoft365.com), click the Copilot icon in the sidebar, or open it in Teams.
-
-**Alternative if you don't have M365 Copilot:** Go to [forms.microsoft.com](https://forms.microsoft.com) and create the form manually using the questions below as a guide.
+**Where to create forms:** [forms.cloud.microsoft.com](https://forms.cloud.microsoft.com) → New Form → Draft with Copilot
 
 ## Inputs
 
