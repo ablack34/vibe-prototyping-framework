@@ -4,7 +4,7 @@
 
 A reusable framework for Studio 42 **VIBE Prototyping** engagements. Guides your team through five phases — from understanding the customer's problem to delivering a working AI-powered prototype — using AI agents in VS Code that tell you exactly what to do next.
 
-**You don't need to be technical to use this.** The framework guides you step by step.
+**You don't need to be technical, you just need a +1.** The framework guides you step by step.
 
 ---
 

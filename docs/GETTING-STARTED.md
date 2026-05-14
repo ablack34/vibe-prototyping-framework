@@ -8,7 +8,7 @@
 
 A framework that guides you through running a VIBE Prototyping engagement using AI assistants in VS Code. You type commands, the AI does the heavy lifting.
 
-**You don't need to be technical.** The AI tells you what to do at every step.
+**You don't need to be technical, you just need a +1.** The AI tells you what to do at every step.
 
 ---
 
