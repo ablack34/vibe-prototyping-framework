@@ -27,12 +27,17 @@ Start a new VIBE Prototyping engagement. Creates the engagement tracking structu
 ```
 ✅ Engagement created: {{customer}} — {{engagement}}
 
+⚠️ FIRST TIME SETUP (do this once):
+  If you see a 🔧 tools icon in Copilot Chat with a notification badge,
+  click it and enable all tools. This gives the AI access to Teams
+  transcripts, GitHub, and other services. You only need to do this once.
+
 📁 Files created:
   • .copilot-tracking/vibe/{{engagement-kebab}}/state.json
   • .copilot-tracking/vibe/{{engagement-kebab}}/PROJECT-CONTEXT.md
   • sources/meeting-templates.md (4 meeting invite templates — copy into Outlook)
 
-📋 Next steps (do these in any order):
+📋 Next steps (do these in order):
   1. Schedule meetings: Copy invite templates from sources/meeting-templates.md
   2. Send questionnaires: Run /vibe-questionnaire to generate Forms prompts
   3. Drop customer docs: Put any shared files in sources/

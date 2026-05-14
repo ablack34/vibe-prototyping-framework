@@ -1,0 +1,29 @@
+{
+  // VIBE Prototyping Framework — Workspace Settings
+  // These settings are included in the template so every engagement repo is pre-configured.
+
+  // Copilot Chat: default to Agent mode (needed for /vibe-* prompts)
+  "chat.agent.enabled": true,
+
+  // MCP: auto-approve tool calls so users don't have to click "Allow" every time
+  "chat.mcp.discovery.enabled": true,
+
+  // GitHub Copilot: enable all features
+  "github.copilot.enable": {
+    "*": true
+  },
+
+  // Files: exclude tracking directory from explorer noise
+  "files.exclude": {
+    ".copilot-tracking": false
+  },
+
+  // Search: exclude build artifacts
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/bin": true,
+    "**/obj": true
+  }
+}

@@ -1,9 +1,22 @@
 {
-  "//": "MCP servers for VIBE Prototyping. GitHub is pre-configured. Add others as needed — see docs/mcp-setup.md",
   "servers": {
     "github": {
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "workiq": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/workiq", "mcp"]
+    },
+    "Azure AI Foundry MCP Server": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--prerelease=allow",
+        "--from",
+        "git+https://github.com/azure-ai-foundry/mcp-foundry.git",
+        "run-azure-ai-foundry-mcp"
+      ]
     }
   },
   "inputs": []
