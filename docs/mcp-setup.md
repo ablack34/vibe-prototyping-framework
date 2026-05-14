@@ -35,8 +35,11 @@ If you're using GitHub Copilot, this is usually pre-configured. Check your VS Co
 
 **Setup**:
 
-1. Generate a Personal Access Token (PAT) in Azure DevOps with Work Items read/write scope
-2. Add to your VS Code `mcp.json` (found at `%APPDATA%\Code\User\mcp.json`):
+1. Go to [dev.azure.com](https://dev.azure.com) → Your profile (top right) → **Personal access tokens**
+2. Click **New Token**, give it a name like "VIBE Framework"
+3. Set scope: **Work Items** → Read & Write
+4. Copy the token (you won't see it again)
+5. Add to your VS Code `mcp.json` (found at `%APPDATA%\\Code\\User\\mcp.json`):
 
 ```json
 {
@@ -66,10 +69,11 @@ If you're using GitHub Copilot, this is usually pre-configured. Check your VS Co
 
 **Purpose**: Extract requirements from Teams meeting transcripts. Required for `/vibe-transcript`.
 
+**Prerequisites**: Your Microsoft 365 tenant must have Teams meeting transcription enabled. If you're not sure, try recording a Teams meeting — if you see a "Transcript" tab afterwards, it's enabled. If not, ask your IT admin to enable it.
+
 **Setup**:
 
-1. Ensure you have Microsoft 365 access with Teams meeting transcription enabled
-2. Add to your VS Code `mcp.json`:
+1. Add to your VS Code `mcp.json`:
 
 ```json
 {
@@ -86,7 +90,9 @@ If you're using GitHub Copilot, this is usually pre-configured. Check your VS Co
 3. On first use, accept the EULA when prompted
 4. Sign in with your Microsoft 365 account when prompted
 
-**Note**: Transcripts must be enabled in your Teams admin settings. If you don't see transcripts, check with your IT admin.
+**Note**: The work-iq-mcp server has a query budget of approximately 30 queries per session. If you hit the limit, start a new Copilot Chat session to reset it.
+
+**If transcripts aren't found**: Make sure meetings were named with the `[VIBE]` prefix (e.g., `[VIBE] Contoso — Kickoff`). The transcript agent searches by customer name, participant names, and date range — the more specific you are, the better the results.
 
 ---
 

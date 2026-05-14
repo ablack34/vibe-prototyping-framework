@@ -183,7 +183,23 @@ The engagement lead reads your progress and tells you exactly which button to cl
 - **Send questionnaires early** — responses auto-fill discovery fields
 - **Drop customer docs in `sources/`** — the discover agent reads them automatically
 - **Don't skip Ideate** — it's where creative concepts emerge that go beyond "another dashboard"
-- **Use Spark prompts** — non-technical team members can visualize concepts without coding
+- **Use [GitHub Spark](https://spark.github.com) prompts** — non-technical team members can visualize concepts without coding
+- **Use [Copilot Studio](https://copilotstudio.microsoft.com)** — for conversational/chat-based concept prototyping
+
+---
+
+## Troubleshooting
+
+| Problem | Cause | Fix |
+|---------|-------|-----|
+| `/vibe-*` prompts don't appear | You're in Chat or Plan mode, not Agent mode | Click the mode picker at the top of Copilot Chat and select **Agent** |
+| Transcript extraction fails | work-iq-mcp isn't configured | Follow the [MCP Setup Guide](mcp-setup.md) to configure it |
+| "Transcripts not available" | Teams transcription is disabled in your tenant | Ask your IT admin to enable Teams meeting transcription |
+| Agent says "I can't create files" | File editing tools are disabled | Click the tools icon (wrench) in Copilot Chat and enable file editing |
+| Deployment fails with auth error | Not logged into Azure | Run `azd auth login` in the terminal and sign in via browser |
+| Azure quota exceeded | Your subscription has resource limits | Check your subscription quotas in [Azure Portal](https://portal.azure.com) or try a different region |
+| Agent seems confused | Context window is full from a long conversation | Start a new Copilot Chat session and reference your engagement by name |
+| `.copilot-tracking/` missing | First time running — directory needs to be created | Run `/vibe-kickoff` which creates it automatically |
 
 ---
 

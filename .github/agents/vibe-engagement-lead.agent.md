@@ -77,6 +77,7 @@ Initialize `state.json`:
   "phases": {
     "discover": { "status": "not-started", "artifacts": [] },
     "disrupt": { "status": "not-started", "artifacts": [] },
+    "ideate": { "status": "not-started", "artifacts": [] },
     "design-develop": { "status": "not-started", "artifacts": [] },
     "deliver": { "status": "not-started", "artifacts": [] }
   },

@@ -67,7 +67,22 @@ When generating concepts, explain how each one works with mock data and what the
 2. Paste the generated prompt
 3. Spark creates a working visual in seconds
 4. Share the URL with the customer for early feedback — before any engineering starts
+## Copilot Studio Prompts
 
+For **conversational or chat-based concepts**, the Ideate agent generates [Copilot Studio](https://copilotstudio.microsoft.com) prompts instead. Copilot Studio lets you prototype AI chat experiences without code.
+
+**How to use a Copilot Studio prompt:**
+1. Go to [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com)
+2. Create a new Copilot
+3. Paste the generated prompt as the system instructions
+4. Test the conversational flow directly in Studio
+
+**When to use which:**
+
+| Tool | Best For | Output |
+|------|----------|--------|
+| **GitHub Spark** | Visual UI concepts (dashboards, forms, workflows) | A shareable web app mockup |
+| **Copilot Studio** | Conversational concepts (chat bots, Q&A, assistants) | A working chat prototype |
 This is powerful because the TPM or designer can visualize concepts and get customer reactions without waiting for the engineer.
 
 ## Required Steps

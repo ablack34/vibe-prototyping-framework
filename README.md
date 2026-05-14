@@ -136,4 +136,49 @@ Each engagement gets its own repo created from this template. Only the framework
 
 ---
 
+## Document Guide
+
+The framework uses three main documents. Each serves a different purpose:
+
+| Document | Who Creates It | When | Purpose |
+|----------|---------------|------|---------|
+| `engagement-brief.md` | Account team | Before engagement starts | Pre-engagement intake — customer info, deal context, problem space |
+| `PROJECT-CONTEXT.md` | Framework + squad | During Discover | Single source of truth — updated throughout the engagement |
+| `requirements-summary.md` | Disrupt agent + squad | During Disrupt | Customer-facing requirements — needs sign-off before building |
+| `solution-design.md` | Engineer | During Design & Develop | Internal technical decisions — architecture, tech stack, build phases |
+
+---
+
+## Useful Links
+
+| Tool | URL | Used For |
+|------|-----|----------|
+| Microsoft Forms | [forms.microsoft.com](https://forms.microsoft.com) | Creating pre-workshop questionnaires |
+| GitHub Spark | [spark.github.com](https://spark.github.com) | Quick visual mockups from text prompts (no coding) |
+| Copilot Studio | [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com) | Prototyping conversational AI experiences |
+| Azure Portal | [portal.azure.com](https://portal.azure.com) | Managing Azure resources and deployments |
+| Azure DevOps | [dev.azure.com](https://dev.azure.com) | Work item tracking and backlog management |
+| HVE-Core Extension | [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ise-hve-essentials.hve-core-all) | AI agents and prompts in VS Code |
+| Azure Developer CLI | [learn.microsoft.com/azure/developer/azure-developer-cli](https://learn.microsoft.com/azure/developer/azure-developer-cli/) | Deployment tooling |
+
+---
+
+## Glossary
+
+| Term | What It Means |
+|------|--------------|
+| **MCP** | Model Context Protocol — lets Copilot connect to external tools (Teams transcripts, ADO, etc.) |
+| **Persona** | A representative user type (e.g., "Field Supervisor Sara" — describes their role, goals, and pain points) |
+| **JTBD** | Jobs To Be Done — a framework for understanding what users are trying to accomplish |
+| **Form factor** | The type of app or experience (web app, chat bot, AI agent, dashboard, etc.) |
+| **Mock data** | Customer data in a safe format (CSV/Excel) — makes the prototype feel real without exposing confidential information |
+| **Authority tier** | How much decision-making power a stakeholder has (Tier 1 = decision-maker, Tier 4 = observer) |
+| **Readiness field** | One of 9 discovery topics the framework tracks (problem, users, impact, etc.) |
+| **Spark prompt** | A text description you paste into [GitHub Spark](https://spark.github.com) to generate a visual mockup instantly |
+| **ADO** | Azure DevOps — Microsoft's work item tracking and project management tool |
+| **SWA** | Static Web App — an Azure service for hosting websites |
+| **TPM** | Technical Product Manager |
+
+---
+
 *Studio 42 — Internal Microsoft*
