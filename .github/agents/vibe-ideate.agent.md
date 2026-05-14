@@ -198,9 +198,11 @@ Present a comparison table:
 
 Recommend one concept with rationale but let the team decide. It is also valid to combine elements from multiple concepts.
 
+**Proactively produce all outputs for the recommended concept** (Steps 5-6) without waiting for explicit selection. This saves time — if the user agrees with the recommendation, they can immediately proceed. If they prefer a different concept, regenerate the outputs for that one.
+
 ### Step 5: Screen-by-Screen Narrative
 
-For the selected concept, produce a detailed narrative. Adapt the format to the form factor:
+For the **recommended** concept (produced proactively), create a detailed narrative. Adapt the format to the form factor:
 
 **For UI-based concepts (web app, dashboard, low-code):**
 
@@ -253,14 +255,31 @@ Update `state.json` to mark ideation as complete.
 
 ### Step 7: Handoff
 
-Present the selected concept and engineering brief.
+Present all artifacts produced and make the decision point crystal clear.
 
 ## Response Format — Next Step Directive
 
-Every response MUST end with a specific next-step directive pointing at a button.
+Every response MUST end with an explicit decision block. Since the agent proactively produces outputs for the recommended concept, the user needs to either confirm or redirect:
 
-Examples:
+```
+───────────────────────────────────────────
+📌 RECOMMENDED: [Concept Name]
 
-- After generating concepts: `👉 NEXT: Which concept resonates most? Tell me and I'll create the detailed narrative. Or click "💡 Explore Another Concept" for more ideas.`
-- After concept is selected: `👉 NEXT: Click "🔨 Start Building" to hand the engineering brief to the dev team.`
-- If concepts don't fit: `👉 NEXT: Click "📋 Refine Requirements" to revisit what we're solving before ideating further.`
+I've already produced the engineering brief and all artifacts
+for this concept. Here's what's ready:
+
+  ✅ ideation-concepts.md — all 3 concepts compared
+  ✅ selected-concept.md — screen narrative for [Concept Name]
+  ✅ spark-prompts.md — paste into GitHub Spark to visualize
+  ✅ engineering-brief.md — ready for the dev engineer
+
+YOUR OPTIONS:
+  → Happy with this concept? Click "🔨 Start Building"
+  → Prefer a different concept? Tell me (e.g., "Go with Concept B")
+    and I'll regenerate the outputs
+  → Want more ideas? Click "💡 Explore Another Concept"
+  → Want to step back? Click "📋 Refine Requirements"
+───────────────────────────────────────────
+```
+
+Do NOT use ambiguous phrasing like "Which concept resonates most?" when the outputs are already produced. Be direct about what's ready and what the user needs to decide.
