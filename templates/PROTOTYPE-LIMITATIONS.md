@@ -1,6 +1,12 @@
-# Prototype Limitations — {{PROJECT_NAME}}
+# Prototype Limitations
 
-> **Scoping expectations.** Share before handoff to prevent post-engagement scope creep.
+> **Scoping expectations.** **Auto-generated** by `@VIBE Deliver` at the end of the engagement.
+> Share with the customer to set expectations about what the prototype does and doesn't do.
+>
+> **How this document gets populated:**
+> 1. `@VIBE Deliver` reads the prototype code, solution design, and check-in feedback
+> 2. Generates honest limitations based on what was built
+> 3. You review and share with the customer before handoff
 
 ---
 

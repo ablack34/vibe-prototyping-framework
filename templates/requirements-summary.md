@@ -1,6 +1,12 @@
-# Requirements Summary — {{PROJECT_NAME}}
+# Requirements Summary
 
-> **Customer approval document.** Present to the customer for sign-off before prototyping begins.
+> **Customer approval document.** **Auto-generated** by `@VIBE Disrupt` from PROJECT-CONTEXT.md.
+> Review with the customer, get sign-off, then move to Ideate.
+>
+> **How this document gets populated:**
+> 1. `@VIBE Disrupt` reads PROJECT-CONTEXT.md (problem, personas, use cases)
+> 2. Generates prioritized requirements with acceptance criteria
+> 3. You review with the customer, adjust priorities, and get sign-off
 
 ---
 

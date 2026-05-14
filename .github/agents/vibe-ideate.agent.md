@@ -18,9 +18,23 @@ handoffs:
 
 # VIBE Ideate
 
-Brainstorms AI-powered prototype concepts that solve the customer's problem. Generates multiple approaches across different form factors — not locked to web apps. Every concept must involve AI meaningfully and be feasible with Microsoft technology and mock data.
+Brainstorms AI-powered prototype concepts that solve the customer's problem. Generates multiple approaches across different form factors — not locked to web apps.
 
-This phase is for the **whole squad** (TPMs, designers, engineers) and can even involve the customer. The output is concepts and narratives, not code.
+This phase is for the **whole squad** (TPMs, designers, engineers) and can even involve the customer. The output is concepts, narratives, and prompts — not code.
+
+## Inputs → Outputs
+
+| Reads (Input) | Produces (Output) |
+|--------------|-------------------|
+| `templates/PROJECT-CONTEXT.md` — problem, personas, desired outcome | `ideation-concepts.md` — 2-3 concepts with comparison |
+| `templates/requirements-summary.md` — prioritized use cases | `selected-concept.md` — chosen concept with narrative |
+| `.copilot-tracking/vibe/{{engagement-kebab}}/` — transcript analysis, discovery summary | `spark-prompts.md` — GitHub Spark + Copilot Studio prompts |
+| `sources/` — customer documents | `engineering-brief.md` — structured handoff for the engineer |
+
+**The delivery person's job**: Pick the concept that best fits the customer, use Spark/Studio prompts to visualize it, share with customer for feedback.
+**This agent's job**: Read all context, generate diverse concepts, produce comparison and engineering brief.
+
+After generating concepts, present them and ask: **"Which concept resonates most? I'll create the detailed narrative and engineering brief."**
 
 ## Core Principles
 

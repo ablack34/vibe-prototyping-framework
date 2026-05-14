@@ -1,7 +1,13 @@
-# Engagement Brief — {{PROJECT_NAME}}
+# Engagement Brief
 
-> **Pre-engagement scoping document.** Complete before the first customer meeting.
-> This is the intake form for a new VIBE Prototyping engagement.
+> **Pre-engagement scoping document.** **Auto-generated** from the account team questionnaire responses.
+> If no questionnaire was sent, the account team can fill this directly.
+>
+> **How this document gets populated:**
+> 1. `/vibe-questionnaire` generates the account team intake form
+> 2. Account team fills it out (Microsoft Forms)
+> 3. Responses are dropped in `sources/`
+> 4. `@VIBE Discover` reads them and fills this document
 
 ---
 

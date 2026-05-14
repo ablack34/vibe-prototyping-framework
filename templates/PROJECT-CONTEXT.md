@@ -1,7 +1,12 @@
-# Project Context — {{PROJECT_NAME}}
+# Project Context
 
-> **Single source of truth** for the engagement. Update this document throughout the build.
-> Created by `/vibe-kickoff` prompt. Maintained by all VIBE agents.
+> **Single source of truth** for the engagement. **Auto-generated** by `@VIBE Discover` from your sources (transcripts, questionnaires, customer documents, workshop notes). Review and approve — don't fill manually.
+>
+> **How this document gets populated:**
+> 1. `/vibe-kickoff` creates it with the customer name and problem statement
+> 2. `@VIBE Discover` reads all sources and fills every section it can
+> 3. You review, correct anything wrong, and approve
+> 4. Agents update it throughout the engagement as new information arrives
 
 ---
 

@@ -1,6 +1,11 @@
-# Solution Design — {{PROJECT_NAME}}
+# Solution Design
 
-> **Internal technical document.** Captures architecture decisions, tech stack rationale, and build phases.
+> **Internal technical document.** **Auto-generated** by the engineer during Design & Develop from the engineering brief produced in Ideate.
+>
+> **How this document gets populated:**
+> 1. `/vibe-ideate` produces an engineering brief with concept, data needs, and suggested technology
+> 2. The engineer reviews the brief and produces this solution design
+> 3. Architecture, tech stack, data model, and build phases are filled from the brief
 
 ---
 

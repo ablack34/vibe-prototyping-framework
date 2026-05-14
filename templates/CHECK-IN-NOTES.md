@@ -1,7 +1,8 @@
-# Check-in Notes — {{PROJECT_NAME}}
+# Check-in Notes
 
-> **Feedback tracking.** Append after each customer check-in. Roll decisions into PROJECT-CONTEXT.md.
-> Updated by `/vibe-check-in` prompt (from notes or Teams transcript).
+> **Feedback tracking.** **Auto-populated** by `/vibe-check-in` after each customer meeting.
+> The agent extracts feedback from Teams transcripts or your pasted notes, structures it, and appends here.
+> New decisions are automatically rolled into PROJECT-CONTEXT.md.
 
 ---
 
