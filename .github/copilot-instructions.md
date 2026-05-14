@@ -1,59 +1,35 @@
 # VIBE Prototyping Framework
 
-This repo is a reusable IP framework for Studio 42 VIBE Prototyping engagements. It provides custom agents, prompts, instructions, templates, and a prototype scaffold for running repeatable AI-first envisioning and prototyping engagements.
+This repo is a VIBE Prototyping engagement workspace. It provides AI agents, prompts, templates, and a prototype scaffold for running AI-first envisioning and prototyping engagements.
 
-## Quick Start (for all team members)
+## The Process (5 Phases)
 
-1. **Start a new engagement**: Type `/vibe-kickoff` in Copilot Chat
-2. **Process meeting transcripts**: Type `/vibe-transcript`
-3. **Process check-in feedback**: Type `/vibe-check-in`
-4. **Consolidate findings**: Type `/vibe-consolidate`
-5. **Scaffold a prototype**: Type `/vibe-prototype-scaffold`
-6. **Generate ADO backlog**: Type `/vibe-backlog-gen`
-7. **Deploy to Azure**: Type `/vibe-deploy`
-8. **Generate final handoff**: Type `/vibe-handoff`
+```
+Discover → Disrupt → Ideate → Design & Develop → Deliver
+```
 
-## Engagement Phases
+## Essential Prompts
 
-This framework follows the VIBE Prototyping methodology:
+| Phase | Prompt | What It Does |
+|-------|--------|-------------|
+| Discover | `/vibe-kickoff` | Start the engagement |
+| Discover | `/vibe-transcript` | Extract context from Teams recordings |
+| Discover | `/vibe-capture` | Quick-capture insights during workshops |
+| Disrupt | `/vibe-consolidate` | Synthesize all findings |
+| Ideate | `/vibe-ideate` | Brainstorm AI-powered prototype concepts |
+| Build | `/vibe-prototype-scaffold` | Scaffold the prototype from the concept |
+| Build | `/vibe-deploy` | Deploy to Azure |
+| Deliver | `/vibe-backlog-gen` | Generate ADO backlog |
+| Deliver | `/vibe-handoff` | Final deliverables package |
+| Anytime | `@VIBE Engagement Lead` | Tells you what to do next |
 
-| Phase | Focus | Key Prompts |
-|-------|-------|-------------|
-| **Discover** | User needs, business goals, AI opportunities | `/vibe-kickoff`, `/vibe-transcript` |
-| **Disrupt** | Problem framing, use case prioritization, success metrics | `/vibe-consolidate` |
-| **Design & Develop** | Rapid prototyping with cross-functional collaboration | `/vibe-prototype-scaffold`, `/vibe-deploy` |
-| **Deliver** | Validation, feedback, roadmap, handoff | `/vibe-backlog-gen`, `/vibe-handoff` |
+## Key Rules
 
-## Repo Structure
-
-- `.github/agents/` — Custom VIBE agents for each engagement phase
-- `.github/prompts/` — Quick-launch prompts for common actions
-- `.github/instructions/` — Auto-applied conventions for docs and code
-- `.github/workflows/` — GitHub Actions CI/CD for deployment
-- `templates/` — Engagement document templates (copy per engagement)
-- `scaffold/` — React + .NET prototype starter code
-- `docs/` — Playbook, HVE-Core guide, MCP setup guide
-
-## Conventions
-
+- **Discover and Disrupt are non-technical** — no architecture or tech stack discussion
+- **Ideate explores multiple form factors** — not just web apps. Conversational, agentic, Copilot extensions, low-code, etc.
+- **AI must be essential in every concept** — not bolted on
+- **All prototypes use mock data** — no live system connections
+- **All technology must be Microsoft** — Azure, M365, Power Platform, etc.
 - **Engagement state** lives in `.copilot-tracking/vibe/{{engagement-name}}/` (gitignored)
-- **Templates** use `{{placeholder}}` syntax for customer-specific values
-- **Data files** go in `scaffold/data/` with a README documenting the schema
-- **Prototypes** deploy to Azure Static Web Apps (frontend) + App Service (API)
-
-## Required MCP Servers
-
-| Server | Purpose | Priority |
-|--------|---------|----------|
-| GitHub MCP | Repo operations, PR creation | Core |
-| ADO MCP | Work item tracking, backlog generation | Core |
-| work-iq-mcp | Teams meeting transcript analysis | Core |
-| Playwright MCP | Screenshot capture for documentation | Recommended |
-
-## Tech Stack Defaults
-
-- **Frontend**: React 19 + TypeScript + Vite + Tailwind CSS + TanStack Query + Zustand
-- **Backend**: .NET 9 Minimal APIs + CsvHelper
-- **Infrastructure**: Bicep (Azure SWA + App Service + Log Analytics)
-- **CI/CD**: GitHub Actions
-- **Tracking**: Azure DevOps
+- **Customer sources** go in `sources/` — the discover agent reads them automatically
+- **Every agent response ends with a specific next-step directive** pointing at a button

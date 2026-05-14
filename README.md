@@ -2,109 +2,138 @@
 
 > Accelerating presales with AI prototyping to unlock business potential at speed.
 
-A reusable IP framework for Studio 42 **VIBE Prototyping** engagements (Visualize, Ideate, Build, Evaluate). Provides custom AI agents, prompt workflows, document templates, a React+.NET prototype scaffold, and CI/CD pipelines — all integrated with GitHub Copilot and HVE-Core.
+A reusable framework for Studio 42 **VIBE Prototyping** engagements. Guides your team through five phases — from understanding the customer's problem to delivering a working AI-powered prototype — using AI agents in VS Code that tell you exactly what to do next.
 
-## How It Works
+**You don't need to be technical to use this.** The framework guides you step by step.
 
-This repo is a **GitHub Template Repository** — the source of truth for all VIBE engagements. You don't work in this repo directly. Each engagement gets its own repo created from this template.
+---
 
-Only the framework maintainer (Adam) modifies this repo. Everyone else creates engagement repos from it.
+## The VIBE Process
 
-## Quick Start: New Engagement
+```
+ DISCOVER        DISRUPT         IDEATE          BUILD           DELIVER
+ ─────────      ─────────      ─────────      ─────────      ─────────
+ Understand     Frame the      Brainstorm     Engineer the   Hand off to
+ the problem    value & scope  AI concepts    prototype      the customer
 
-There are two ways to create a new engagement. Pick whichever is easier for you.
+ Who: Anyone    Who: Anyone    Who: Anyone    Who: Engineer  Who: Anyone
+ ───────────────────────────────────────────────────────────────────────
+ /vibe-kickoff  /vibe-disrupt  /vibe-ideate   /vibe-data     /vibe-backlog
+ /vibe-transcript               (Spark        /vibe-scaffold  /vibe-handoff
+ /vibe-capture                   prompts)     /vibe-deploy
+ /vibe-questionnaire
+```
 
-### Option A: From Copilot Chat (Easiest)
+**Most of the process doesn't require an engineer.** TPMs and designers drive Discover, Disrupt, and Ideate. Engineers join at Build.
 
-Open Copilot Chat in **any** VS Code workspace (or even an empty window), switch to **Agent mode**, and type:
+---
+
+## Get Started in 2 Minutes
+
+### 1. Create your engagement workspace
+
+Open Copilot Chat in VS Code and type:
 
 ```
 /vibe-new customer="Contoso" engagement="field-scheduling"
 ```
 
-It walks you through creating the repo, cloning, installing, and opening — all from chat.
+Or click **"Use this template"** on [GitHub](https://github.com/ablack34/vibe-prototyping-framework) and clone.
 
-### Option B: From GitHub.com
-
-1. Go to [github.com/ablack34/vibe-prototyping-framework](https://github.com/ablack34/vibe-prototyping-framework)
-2. Click the green **"Use this template"** button → **"Create a new repository"**
-3. Name it `contoso-field-scheduling` (customer-engagement), set to **Private**, click **Create**
-4. Clone your new repo and open in VS Code:
-
-```powershell
-gh repo clone contoso-field-scheduling
-cd contoso-field-scheduling
-code .
-```
-
-### Option C: From terminal (Power users)
-
-```powershell
-.\new-engagement.ps1 -Customer "Contoso" -Engagement "field-scheduling"
-```
-
-### Prerequisites
-
-- VS Code with **GitHub Copilot** and **HVE-Core extension** (v3.2+)
-- **GitHub CLI** (`gh`) — authenticated (`gh auth login`)
-- **Node.js** 22+, **.NET 9 SDK**, **Azure Developer CLI** (`azd`)
-- MCP servers configured — see [docs/mcp-setup.md](docs/mcp-setup.md)
-
-### Then start the engagement
-
-1. Open Copilot Chat (**Ctrl+Shift+I**) in **Agent mode**
-2. Type: `/vibe-kickoff customer="Contoso" problem="describe the problem" size=S`
-3. Follow the [playbook](docs/playbook.md)
-
-## What's Included
-
-| Component | Description |
-|-----------|-------------|
-| **6 Custom Agents** | VIBE Engagement Lead, Discover, Transcript Analyst, Disrupt, Data Prep, Deliver |
-| **9 Prompt Workflows** | Kickoff, Transcript, Check-in, Consolidate, Data Prep, Scaffold, Deploy, Backlog Gen, Handoff |
-| **3 Instruction Sets** | Engagement docs, prototype code, and data handling conventions |
-| **6 Document Templates** | Project Context, Requirements, Solution Design, Check-in Notes, Limitations, Engagement Brief |
-| **Prototype Scaffold** | React 19 + Vite + Tailwind frontend, .NET 9 Minimal API backend, Bicep infra |
-| **CI/CD Pipelines** | GitHub Actions for build validation and Azure deployment |
-| **Documentation** | Playbook, HVE-Core guide, MCP setup guide |
-
-## Engagement Phases
+### 2. Start the engagement
 
 ```
-Discover → Disrupt → Design & Develop → Deliver
-   │          │            │                │
-   │          │            │                ├── /vibe-handoff
-   │          │            │                └── /vibe-backlog-gen
-   │          │            ├── /vibe-data-prep
-   │          │            ├── /vibe-prototype-scaffold
-   │          │            └── /vibe-deploy
-   │          └── @VIBE Disrupt
-   ├── /vibe-transcript
-   └── @VIBE Discover
+/vibe-kickoff customer="Contoso" problem="Field techs waste 2hrs/day on manual scheduling" size=S
 ```
+
+### 3. Follow the buttons
+
+After every step, the agent tells you exactly what to do next with a `👉 NEXT:` directive pointing at a specific button. **Click the recommended button and keep going.**
+
+If you're ever lost: click **"❓ What's Next?"**
+
+---
+
+## Essential Prompts (the 6 you actually need)
+
+| When | Type This | What Happens |
+|------|-----------|-------------|
+| **Start** | `/vibe-kickoff` | Creates the engagement, generates meeting templates and questionnaires |
+| **After meetings** | `/vibe-transcript` | Extracts context from Teams recordings automatically |
+| **After discovery** | `/vibe-ideate` | Brainstorms 2-3 AI-powered prototype concepts |
+| **Build time** | `/vibe-prototype-scaffold` | Engineer scaffolds the prototype from the concept |
+| **Share it** | `/vibe-deploy` | Deploys to Azure so the customer can see it |
+| **Wrap up** | `/vibe-handoff` | Generates roadmap, backlog, and handoff package |
+
+There are more prompts for specific situations (see [full reference](docs/playbook.md#quick-reference)), but these six cover the core flow.
+
+---
+
+## Role Guide
+
+### If you're a TPM or Designer
+
+You drive most of the engagement. Your path:
+
+1. `/vibe-kickoff` — start the engagement
+2. `/vibe-questionnaire` — send questionnaires to the customer and account team
+3. `/vibe-transcript` — process meeting recordings (no note-taking needed!)
+4. `/vibe-capture` — capture quick insights during workshops
+5. `@VIBE Discover` — consolidate all sources into a clear problem statement
+6. `@VIBE Disrupt` — frame the value and prioritize use cases
+7. `/vibe-ideate` — brainstorm concepts, share Spark prompts with the team
+8. Hand off to the engineer with the engineering brief
+
+### If you're an Engineer
+
+You join at the Build phase with a clear brief. Your path:
+
+1. Read the **engineering brief** in `.copilot-tracking/vibe/*/engineering-brief.md`
+2. `/vibe-data-prep` — prepare the customer's data files
+3. `/vibe-prototype-scaffold` — scaffold the prototype from the brief
+4. `/task-plan` → `/task-implement` — build features using the HVE-Core task pipeline
+5. `/vibe-deploy` — deploy to Azure
+6. `/vibe-check-in` — process customer feedback after demos
+
+### If you're on the Account Team
+
+Fill out the intake questionnaire (generated by `/vibe-questionnaire`) and share customer documents. That's it — the framework does the rest.
+
+---
+
+## Prerequisites
+
+| Tool | Required For | Install |
+|------|-------------|---------|
+| VS Code + GitHub Copilot | Everything | Standard Microsoft setup |
+| HVE-Core extension (v3.2+) | Agents and prompts | VS Code Marketplace |
+| GitHub CLI (`gh`) | Creating engagement repos | `winget install GitHub.cli` |
+| work-iq-mcp | Transcript analysis | See [MCP setup](docs/mcp-setup.md) |
+| Node.js 22+ | Prototype frontend | [nodejs.org](https://nodejs.org) |
+| .NET 9 SDK | Prototype backend | [dot.net](https://dot.net/download) |
+| Azure Developer CLI (`azd`) | Deployment | `winget install Microsoft.Azd` |
+
+**Only engineers need** Node.js, .NET, and azd. TPMs and designers just need VS Code + Copilot + HVE-Core.
+
+---
 
 ## Documentation
 
-- [Playbook](docs/playbook.md) — How to run a VIBE engagement end-to-end
-- [HVE-Core Guide](docs/hve-core-guide.md) — How to use agents, prompts, and instructions
-- [MCP Setup](docs/mcp-setup.md) — Configure MCP servers for full functionality
+| Doc | What It Covers | Who Should Read It |
+|-----|---------------|-------------------|
+| **[Getting Started](docs/GETTING-STARTED.md)** | Visual walkthrough of the full process | Everyone (start here) |
+| [Playbook](docs/playbook.md) | Detailed week-by-week engagement guide | Engagement leads |
+| [MCP Setup](docs/mcp-setup.md) | Configure MCP servers | One-time setup |
+| [HVE-Core Guide](docs/hve-core-guide.md) | How agents, prompts, and instructions work | Curious learners |
 
-## Local Development
+---
 
-```powershell
-pwsh start.ps1
-```
+## How This Repo Works
 
-Starts both the .NET API (port 5264) and Vite dev server (port 5173).
+This is a **GitHub Template Repository**. You don't work in it directly.
 
-## Deployment
+Each engagement gets its own repo created from this template. Only the framework maintainer modifies this repo — improvements benefit all future engagements.
 
-```powershell
-pwsh deploy.ps1 -EnvironmentName my-engagement -Location uksouth
-```
+---
 
-Or push to `main` for automatic deployment via GitHub Actions.
-
-## License
-
-Internal Microsoft — Studio 42
+*Studio 42 — Internal Microsoft*
