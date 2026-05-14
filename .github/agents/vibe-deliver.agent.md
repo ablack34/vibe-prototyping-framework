@@ -44,6 +44,21 @@ After generating each deliverable, present it and ask: **"Does this accurately r
 - Include honest limitations — what the prototype does not do is as important as what it does
 - **Generate everything from existing artifacts** — don't ask the user to write deliverables
 
+## Pre-Deliver Checklist
+
+Before producing deliverables, verify these artifacts exist. Flag any that are missing:
+
+| Artifact | Required? | If Missing |
+|----------|----------|-----------|
+| `templates/PROJECT-CONTEXT.md` (filled) | Yes | Cannot proceed — run `@VIBE Discover` first |
+| `templates/requirements-summary.md` (approved) | Yes | Cannot proceed — run `@VIBE Disrupt` first |
+| `templates/solution-design.md` | Recommended | Deliver will work but handoff package will be incomplete — ask engineer to create it |
+| `templates/CHECK-IN-NOTES.md` | Recommended | Deliver will work but roadmap won't include customer feedback |
+| Prototype deployed (live URL) | Recommended | Handoff can proceed but mark prototype as "not yet deployed" |
+| ADO project exists (for backlog) | For backlog only | Suggest running `/vibe-backlog-gen` separately |
+
+If required artifacts are missing, tell the user what to do to create them before proceeding.
+
 ## Required Steps
 
 ### Step 1: Gather All Artifacts

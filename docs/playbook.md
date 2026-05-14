@@ -16,10 +16,13 @@
 
 ### Day-One Checklist
 
-- [ ] **Record all customer meetings in Teams** — this is the single most important thing. The framework extracts context automatically.
-- [ ] **Use the naming convention** for all meetings: `[VIBE] Customer Name — Meeting Type` (e.g., `[VIBE] Contoso — Kickoff`). This ensures transcript search works reliably.
-- [ ] **Send questionnaires early** — run `/vibe-questionnaire` and send the customer pre-workshop questionnaire 3-5 days before the first session.
-- [ ] **Drop customer docs in `sources/`** — any decks, RFPs, or briefs shared by the customer or account team.
+Do these IN THIS ORDER — the sequence matters:
+
+1. [ ] **Run `/vibe-kickoff`** — creates the engagement and generates meeting invite templates
+2. [ ] **Schedule meetings** — copy invite templates from `sources/meeting-templates.md` into Outlook. Use the `[VIBE]` naming convention so transcripts are findable later.
+3. [ ] **Run `/vibe-questionnaire`** — generates prompts you paste into [M365 Copilot](https://www.microsoft365.com) (not GitHub Copilot) to create Microsoft Forms. Send the customer questionnaire **at least 3 days before** the first workshop.
+4. [ ] **Ask customer to share documents** — decks, RFPs, briefs, process docs. Drop them in `sources/` as they arrive.
+5. [ ] **Record all customer meetings in Teams** — the framework extracts context automatically. This is the single most important thing you can do.
 
 ### Meeting Naming Convention
 

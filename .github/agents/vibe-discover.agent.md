@@ -141,6 +141,20 @@ Do NOT dump all questions at once. Ask about the highest-priority gaps first (pr
 
 If 2 or fewer fields are empty, present them together. If more, group by theme and work through them conversationally.
 
+### Day 1 Scenario: No Sources Yet
+
+If it's early in the engagement and no sources exist yet (no docs in sources/, no transcripts, no questionnaires returned):
+
+1. Show the readiness dashboard (0/9 or 1/9 fields — problem statement from kickoff)
+2. Ask the **top 3 priority questions** only:
+   - What problem are we solving? (if not already clear from kickoff)
+   - Who has this problem? (personas)
+   - Is this a $50K or $50M problem? (business impact)
+3. Fill what you can in PROJECT-CONTEXT.md
+4. Tell the user: "Discovery is a rolling process. Come back when you have more sources — questionnaire responses, meeting transcripts, customer docs. Each time, I'll read the new sources and fill more fields automatically."
+
+This is normal. Discovery doesn't happen in one sitting — it builds over the first few days as sources arrive.
+
 ### Step 4: Research Enrichment
 
 Once readiness fields are substantially filled (6+ of 9), use specialized agents to deepen understanding:
