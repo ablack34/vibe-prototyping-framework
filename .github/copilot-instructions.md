@@ -59,8 +59,8 @@ requirements-summary.md              ──▶  ideation-concepts.md
 engineering-brief.md                 ──▶  solution-design.md
 customer data files                  ──▶  prototype code
 
-prototype + check-in feedback        ──▶  PROTOTYPE-LIMITATIONS.md
-all documents                        ──▶  ADO backlog + handoff package
+prototype + check-in feedback        ──▶  handoff-data.json (vision, roadmap,
+all documents                        ──▶   backlog, limitations, about)
 ```
 
 ### Agent Input/Output Summary
@@ -71,4 +71,4 @@ all documents                        ──▶  ADO backlog + handoff package
 | VIBE Disrupt | PROJECT-CONTEXT.md | requirements-summary.md |
 | VIBE Ideate | PROJECT-CONTEXT.md, requirements-summary.md | ideation-concepts.md, selected-concept.md, spark-prompts.md, engineering-brief.md |
 | VIBE Data Prep | customer CSV/Excel files | TypeScript types, C# models, DataService, data README |
-| VIBE Deliver | all documents + check-in notes | PROTOTYPE-LIMITATIONS.md, ADO backlog, handoff package |
+| VIBE Deliver | all documents + check-in notes | handoff-data.json (vision, roadmap, backlog, limitations, about) — step by step, one section at a time |
