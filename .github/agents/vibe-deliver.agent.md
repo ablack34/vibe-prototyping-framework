@@ -35,7 +35,7 @@ The handoff data is form-factor agnostic — how it's displayed depends on the p
 | `templates/requirements-summary.md` | `templates/PROTOTYPE-LIMITATIONS.md` — honest limitations |
 | `templates/solution-design.md` | Updated `state.json` — deliver phase complete |
 | `templates/CHECK-IN-NOTES.md` | |
-| `.copilot-tracking/vibe/{{engagement-kebab}}/selected-concept.md` | |
+| `engagement/{{engagement-kebab}}/selected-concept.md` | |
 
 **The delivery person's job**: Review each section as it's generated, approve or correct.
 **This agent's job**: Produce handoff-data.json step by step, one section at a time.
@@ -69,7 +69,7 @@ Execute these steps IN ORDER. After each step, present the output and ask: **"Do
 ### Step 1: Verify Artifacts + Initialize
 
 1. Run the Pre-Deliver Checklist — flag missing artifacts
-2. Create `handoff-data.json` at `.copilot-tracking/vibe/{{engagement-kebab}}/handoff-data.json`
+2. Create `handoff-data.json` at `engagement/{{engagement-kebab}}/handoff-data.json`
 3. Populate the metadata section (engagement name, customer, squad, dates)
 4. Present the checklist results
 

@@ -14,7 +14,7 @@ Process feedback from a customer check-in meeting. Supports two input modes:
 ## Inputs
 
 - ${input:source:notes}: (Optional, defaults to notes) Input source: `notes` or `transcript`.
-- ${input:engagement}: (Optional) Engagement name. Auto-detected from `.copilot-tracking/vibe/` if only one engagement exists.
+- ${input:engagement}: (Optional) Engagement name. Auto-detected from `engagement/` if only one engagement exists.
 
 ## Requirements
 

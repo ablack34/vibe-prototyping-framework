@@ -15,7 +15,7 @@
 .PARAMETER Owner
     GitHub org or username to create the repo under. Defaults to current authenticated user.
 .PARAMETER Template
-    GitHub template repo to create from. Defaults to env:VIBE_TEMPLATE_REPO or 'ablack34/vibe-prototyping-framework'.
+    GitHub template repo to create from. Defaults to env:VIBE_TEMPLATE_REPO or the framework's canonical org (set VIBE_TEMPLATE_REPO before running).
     Set the environment variable to avoid passing this every time:
         $env:VIBE_TEMPLATE_REPO = "my-org/vibe-prototyping-framework"
 .PARAMETER Location
@@ -52,6 +52,7 @@ if ($Template) {
 } elseif ($env:VIBE_TEMPLATE_REPO) {
     $templateRepo = $env:VIBE_TEMPLATE_REPO
 } else {
+    # Default for the current preview — update this constant (or set $env:VIBE_TEMPLATE_REPO) when the template moves to the canonical Studio 42 org.
     $templateRepo = "ablack34/vibe-prototyping-framework"
 }
 $localPath = Join-Path $Location $repoName
@@ -155,8 +156,7 @@ Write-Host ""
 Write-Host "  Next steps:" -ForegroundColor Cyan
 Write-Host "  1. Open Copilot Chat (Ctrl+Shift+I) in Agent mode" -ForegroundColor White
 Write-Host "  2. Type: /vibe-kickoff customer=`"$Customer`" problem=`"describe the problem`" size=S" -ForegroundColor White
-Write-Host "  3. Follow the playbook: docs/playbook.md" -ForegroundColor White
+Write-Host "  3. Full guide: https://aka.ms/vibe-prototyping (or docs/README.md)" -ForegroundColor White
 Write-Host ""
-Write-Host "  MCP servers needed: work-iq-mcp (transcripts), ADO MCP (backlog)" -ForegroundColor Gray
-Write-Host "  Setup guide: docs/mcp-setup.md" -ForegroundColor Gray
+Write-Host "  MCP servers are pre-configured. Click the tools icon in Copilot Chat to enable them." -ForegroundColor Gray
 Write-Host ""

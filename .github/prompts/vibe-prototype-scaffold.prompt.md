@@ -8,11 +8,29 @@ argument-hint: "[engagement=...]"
 
 Scaffolds a prototype that is **shaped by the problem and requirements**, not a generic template. The UI, navigation, and page structure emerge from what was discovered and prioritized — not from a pre-built dashboard pattern.
 
+:::warning Form-factor check first
+The scaffold in `scaffold/` is a **React 19 + .NET 9** stack for **web-app** form factors. If the selected concept is conversational (Copilot Studio), agentic (Foundry Agents), a Copilot extension (M365 Agents Toolkit), or low-code (Power Platform), **skip this prompt** — the engineer scaffolds directly in that platform's authoring environment. Run `/vibe-deploy` for the form-factor-specific routing.
+:::
+
 ## Inputs
 
 - ${input:engagement}: (Optional) Engagement name. Auto-detected if only one engagement exists.
 
 ## Requirements
+
+0. **Form-factor pre-check.** Read `engagement/{{engagement-kebab}}/selected-concept.md` (or `engineering-brief.md` if selected-concept.md doesn't exist). If `formFactor` is anything other than `webapp` / `web-app` / unspecified, stop and tell the user:
+
+   ```
+   The selected concept is a {{formFactor}} prototype, not a web app.
+   The scaffold/ directory is web-app only. For this concept you should:
+     — Conversational → author in Copilot Studio (copilotstudio.microsoft.com)
+     — Agentic → author in Azure AI Foundry Agents
+     — Copilot extension → use M365 Agents Toolkit (teamsapp create)
+     — Low-code → author in maker.powerapps.com
+   Run /vibe-deploy for the form-factor-specific path.
+   ```
+
+   Only continue past this step if the form factor is web-app or the user explicitly overrides.
 
 1. Read these files to understand what needs to be built:
    - `templates/PROJECT-CONTEXT.md` — Problem, personas, desired outcome

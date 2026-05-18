@@ -16,13 +16,14 @@ These live in `templates/` and are populated as you progress through phases.
 | `PROJECT-CONTEXT.md` | Discover | Single source of truth — problem, personas, stakeholders, data, decisions |
 | `engagement-brief.md` | Pre-engagement | Intake form with customer info, problem space, and squad |
 | `requirements-summary.md` | Disrupt | Customer-facing requirements with acceptance criteria — needs sign-off |
+| `engineering-brief.md` | Ideate (reference template) | Structural reference for the engineer-facing brief the Ideate agent generates into `engagement/<name>/engineering-brief.md` |
 | `solution-design.md` | Build | Internal technical document — architecture, tech stack, build phases |
 | `CHECK-IN-NOTES.md` | Ongoing | Append-only log of customer check-in feedback and decisions |
 | `PROTOTYPE-LIMITATIONS.md` | Deliver | Honest scoping of what the prototype does and doesn't do |
 
 ## Tracking Artifacts
 
-These are auto-generated in `.copilot-tracking/vibe/{{engagement-name}}/`:
+These are auto-generated in `engagement/{{engagement-name}}/` (committed) and `.copilot-tracking/vibe/{{engagement-name}}/` (per-user state):
 
 | File | Created By | Purpose |
 |------|-----------|---------|

@@ -5,7 +5,7 @@ argument-hint: "note=... [speaker=...] [category={problem|pain|requirement|decis
 
 # VIBE Capture
 
-Quick in-chat capture during workshops. Type a note and the agent classifies, timestamps, and appends it to the engagement's workshop notes.
+Quick in-chat capture during workshops. Type a note and the agent classifies it, timestamps it, and appends it to `sources/workshop-notes.md` for the discovery agent to pick up later. **Zero friction by design** — no follow-up questions, no deep formatting, just "✅ captured" and the meeting moves on.
 
 ## Inputs
 

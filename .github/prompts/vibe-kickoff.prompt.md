@@ -17,14 +17,14 @@ Start a new VIBE Prototyping engagement. Creates the engagement tracking structu
 
 ## Requirements
 
-0. **Check for existing engagement first.** Look in `.copilot-tracking/vibe/` for any existing engagement directories. If one already exists:
+0. **Check for existing engagement first.** Look in `engagement/` for any existing engagement directories. If one already exists:
    - Tell the user: "An engagement already exists: {{existing-name}}. Each repo should have ONE engagement."
    - Ask: "Do you want to continue with the existing engagement, or replace it with a new one?"
    - If continuing: skip to showing the readiness dashboard and next steps
    - If replacing: delete the old directory before creating the new one
 
-1. Create the engagement tracking directory at `.copilot-tracking/vibe/` using a kebab-case name derived from the customer and project.
-2. Copy `templates/PROJECT-CONTEXT.md` into the engagement directory and fill in the provided inputs.
+1. Create `engagement/{{engagement-kebab}}/` (committed shared artifacts) and `.copilot-tracking/vibe/{{engagement-kebab}}/` (gitignored per-user state), using a kebab-case name derived from the customer and project.
+2. Fill `templates/PROJECT-CONTEXT.md` with the provided inputs (this is the canonical copy — don't duplicate it).
 3. Copy `templates/engagement-brief.md` and populate known fields.
 4. Initialize `state.json` with engagement metadata, readiness tracking, and set phase to `discover`.
 5. Generate meeting invite templates in `sources/meeting-templates.md` with 4 meeting types (Kickoff, Workshop, Check-in, Handoff) using the `[VIBE] {{Customer}} — {{Type}}` naming convention. Each template has a title, description, suggested talking points, and recommended duration — ready to copy-paste into Outlook.
@@ -39,8 +39,9 @@ Start a new VIBE Prototyping engagement. Creates the engagement tracking structu
   transcripts, GitHub, and other services. You only need to do this once.
 
 📁 Files created:
-  • .copilot-tracking/vibe/{{engagement-kebab}}/state.json
-  • .copilot-tracking/vibe/{{engagement-kebab}}/PROJECT-CONTEXT.md
+  • .copilot-tracking/vibe/{{engagement-kebab}}/state.json (per-user, gitignored)
+  • engagement/{{engagement-kebab}}/ (committed — agent outputs land here)
+  • templates/PROJECT-CONTEXT.md (filled in)
   • sources/meeting-templates.md (4 meeting invite templates — copy into Outlook)
 
 📋 Next steps (do these in order):

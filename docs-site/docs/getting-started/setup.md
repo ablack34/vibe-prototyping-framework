@@ -5,7 +5,7 @@ title: Setup
 
 # One-Time Setup
 
-Get your machine ready for VIBE engagements. This takes about 10 minutes.
+Get your machine ready for VIBE engagements. **5 minutes for non-engineers, 10 minutes for engineers.**
 
 ## For Everyone (TPMs, Designers, Account Teams)
 
@@ -25,56 +25,46 @@ Install from the VS Code marketplace:
 3. Search for **"HVE Core"**
 4. Install the extension (v3.2+)
 
-### 3. GitHub CLI
+### 3. Get Comfortable With Copilot Chat Modes
 
-```powershell
-winget install GitHub.cli
-```
+VIBE prompts only work in **Agent mode**. Open Copilot Chat (`Ctrl+Shift+I`) and look at the mode picker at the top:
 
-Then authenticate:
+| Mode | What it does | Use it for |
+|------|-------------|-----------|
+| **Ask** | Quick Q&A, code explanations | Asking general questions |
+| **Plan** | Read-only planning and analysis | When you don't want the AI to change files |
+| **Agent** | Run prompts, talk to agents, create/edit files | **All VIBE work** |
 
-```powershell
-gh auth login
-```
+If you type `/` and don't see `/vibe-*` prompts, you're in the wrong mode — switch to Agent.
 
-Select: GitHub.com → HTTPS → Yes → Login with browser
+### 4. (Engineers only) Tooling for Build
 
-### 4. work-iq-mcp (Teams Transcript Analysis)
+Engineers also need these for the Build phase, but they can install on demand:
 
-This lets the framework automatically extract context from your Teams meeting recordings. See the [MCP Setup Guide](/reference/prompts) for detailed instructions.
+- **Node.js 22+** — `winget install OpenJS.NodeJS.LTS`
+- **.NET 9 SDK** — `winget install Microsoft.DotNet.SDK.9`
+- **Azure CLI** — `winget install Microsoft.AzureCLI` (only if deploying a web-app form factor; other form factors have their own tooling — see `/vibe-deploy`)
 
-## For Engineers Only
+## Configure MCP Tools (First Engagement Only)
 
-Engineers also need these for the Build phase:
+When you open your first engagement repo, click the **🔧 tools icon** in Copilot Chat and enable all tools. This gives Copilot access to Teams transcripts, GitHub, Azure DevOps, and Azure AI Foundry.
 
-### Node.js 22+
-
-```powershell
-winget install OpenJS.NodeJS.LTS
-```
-
-### .NET 9 SDK
-
-```powershell
-winget install Microsoft.DotNet.SDK.9
-```
-
-### Azure Developer CLI
-
-```powershell
-winget install Microsoft.Azd
-```
+You only need to do this once per machine. Full details: [MCP Server Setup](/reference/mcp).
 
 ## Verify Your Setup
 
-Open VS Code, then open Copilot Chat (`Ctrl+Shift+I`). Switch to **Agent mode** and type:
+Open VS Code, open Copilot Chat, switch to **Agent mode**, and type:
 
 ```
 What MCP tools do you have available?
 ```
 
-You should see tools prefixed with `mcp_workiq_` (for transcript analysis) and `mcp_github_` (for repo operations).
+You should see tools prefixed with `mcp_workiq_`, `mcp_github_`, `mcp_ado_`, and `mcp_foundry_`. If any are missing, check [Troubleshooting](/reference/troubleshooting).
 
 :::tip
-If tools are missing, restart VS Code after configuring MCP servers.
+You don't need an engagement repo open to verify Copilot itself works — but to test the VIBE prompts you need an engagement repo created from the template (see [Your First Engagement](/getting-started/first-engagement)).
+:::
+
+:::info Want to see what the framework looks like end-to-end before you start?
+See [What to Expect](/getting-started/walkthrough) for realistic agent output from every phase, run against the Contoso demo fixture.
 :::

@@ -1,102 +1,66 @@
 ---
-description: "Deploy the prototype to Azure (SWA + App Service)"
-argument-hint: "[location=uksouth] [environment=...]"
+description: "Engineer guidance for deploying the prototype (form-factor aware)"
+argument-hint: "[formFactor={webapp|conversational|agentic|copilot-extension|low-code|other}]"
 ---
 
 # VIBE Deploy
 
-Deploy the VIBE prototype to Azure. Verifies prerequisites, runs deployment, and provides the live URL.
+Deployment guidance for the engineer. Because VIBE prototypes can take many forms (web app, conversational bot, agentic AI, Copilot extension, low-code), there is no single "deploy" command. This prompt routes you to the right Microsoft hosting path for your chosen form factor.
+
+**This prompt does NOT auto-deploy.** It produces a deployment plan you review and run yourself.
 
 ## Inputs
 
-- ${input:location:uksouth}: (Optional, defaults to uksouth) Azure region.
-- ${input:environment}: (Optional) Environment name. Defaults to engagement-kebab-name.
+- ${input:formFactor}: (Optional) Form factor. If omitted, the agent reads `engineering-brief.md` to detect it.
 
 ## Requirements
 
-### Step 1: Check Prerequisites
+### Step 1: Detect the Form Factor
 
-Run these checks in order. Stop and help the user fix any failures before continuing.
+Read `engagement/{{engagement-kebab}}/engineering-brief.md` and `selected-concept.md` to determine which form factor was selected during Ideate. Confirm with the user.
 
-**Tool checks** (run each in terminal):
+### Step 2: Present the Deployment Plan for That Form Factor
 
-- `dotnet --version` — if missing, tell the user: "Install .NET 9 SDK from https://dot.net/download"
-- `node --version` — if missing: "Install Node.js from https://nodejs.org"
-- `azd version` — if missing: "Install Azure Developer CLI: run `winget install Microsoft.Azd`"
+Use the table below. Present the steps inline, ask the user to confirm before running anything.
 
-**Azure authentication check** (run in terminal):
+| Form Factor | Hosting | Deploy Method | Auth | Custom Domain |
+|----|----|----|----|----|
+| **Web app** (React/Vue/Blazor + API) | Azure Static Web Apps + App Service / Container Apps | Per-engagement Bicep + GitHub Actions, or `az deployment sub create` against the engagement's `infra/` | Anonymous for prototype; Entra ID for production | SWA built-in custom domain |
+| **Conversational** (chat / Q&A bot) | [Copilot Studio](https://copilotstudio.microsoft.com) | Built-in publish from Studio (Teams, web channel, etc.). No Azure deploy needed for the prototype | Studio-managed | Studio-managed |
+| **Agentic** (autonomous AI agents) | Azure AI Foundry Agents | Foundry portal: create agent → publish → get endpoint | Foundry-managed | Endpoint URL only |
+| **Copilot extension** (M365 Copilot plugin) | Teams App / Declarative Agent manifest | M365 Agents Toolkit (`teamsapp provision` + `teamsapp deploy`) | M365 SSO | M365-managed |
+| **Low-code** (Power Apps / Automate) | Power Platform environment | Export solution from maker.powerapps.com, import to target environment | Dataverse-managed | N/A |
+| **Other** (custom Azure stack) | Engineer's choice | Engineer writes Bicep/Terraform; deploy with `az deployment` or `terraform apply` | Engineer's choice | Engineer's choice |
 
-```powershell
-azd auth login --check-status 2>&1
-```
+### Step 3: Web App Path (Detail)
 
-If this returns an error or "Not logged in", present this to the user:
+If form factor is **web app**, the engineer typically needs:
 
-```
-⚠️ You're not logged into Azure. Let's fix that.
+- An `azure.yaml` at the repo root (if using `azd`) OR a per-engagement deploy script using `az deployment sub create --template-file infra/main.bicep`.
+- Static Web Apps deployment token in GitHub secrets as `SWA_DEPLOYMENT_TOKEN` (the workflow at `.github/workflows/deploy-swa.yml` will then run on push to main).
+- App Service publish profile for the API (or use the deploy-api workflow).
 
-Run this command and follow the browser prompt:
+The framework's `infra/main.bicep` provisions SWA + App Service + Log Analytics. The engineer wires it up per-engagement — there's no one-size-fits-all deploy script.
 
-    azd auth login
+### Step 4: Verify & Update State
 
-This opens a browser window — sign in with your Microsoft account
-that has access to an Azure subscription.
+After the engineer deploys, capture:
 
-After signing in, come back here and I'll continue.
-```
+- The live URL(s)
+- A simple health check (e.g., `curl https://<api>/health`)
+- Update `state.json` in the engagement tracking directory with the deployment URL
 
-Wait for the user to confirm, then re-check.
-
-If Bicep deployment is needed, also check `az` CLI:
-
-```powershell
-az account show 2>&1
-```
-
-If not logged in:
-
-```
-⚠️ Azure CLI also needs to be signed in.
-
-Run:
-
-    az login
-
-Sign in with the same Microsoft account, then set your subscription:
-
-    az account set --subscription "Your Subscription Name"
-```
-
-Do NOT proceed past Step 1 until all tools are installed and authenticated.
-
-### Step 2: Verify Builds
-
-Run in terminal:
-
-```powershell
-cd scaffold/web; npm ci; npm run build
-cd ../api; dotnet build
-```
-
-If either fails, show the error and help debug.
-
-### Step 3: Deploy
-
-- If GitHub Actions are configured (check for `vars.SWA_CONFIGURED`): instruct user to push to main for auto-deploy
-- Otherwise run `azd up` with the provided location and environment
-- If deployment fails with auth errors: go back to Step 1
-
-### Step 4: Verify & Share
-
-- Present the live URLs (SWA frontend + API endpoint)
-- Run a health check: `Invoke-RestMethod https://<api-url>/health`
-- Update `state.json` with the deployment URL
-
-Present each step with confirmation gates. Always end with:
+### Step 5: Present the Result
 
 ```
 ─────────────────────────────────────────
-👉 NEXT: Share the prototype URL with the customer.
-   Then run /vibe-check-in after their feedback session.
+👉 NEXT: Share the URL with the customer.
+   Run /vibe-check-in after their feedback session.
 ─────────────────────────────────────────
 ```
+
+## Notes
+
+- **Prerequisites are form-factor specific.** For web app: Azure subscription + `az` CLI signed in. For Copilot Studio: Studio license. For Foundry Agents: AI Foundry resource. For Power Platform: maker.powerapps.com access. The engineer verifies prerequisites for the chosen path.
+- **`azd` is not pre-configured.** If the engineer wants to use Azure Developer CLI, they need to author `azure.yaml` for their specific stack. Plain `az deployment` against `infra/main.bicep` works without it.
+- **Local dev shortcut.** For web-app form factor, `start.ps1` at the repo root runs the .NET API and Vite dev server together for local iteration.

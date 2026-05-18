@@ -20,5 +20,5 @@ Process Teams meeting transcripts using work-iq-mcp to extract requirements, dec
 1. Follow the VIBE Transcript Analyst protocol, starting with the data sensitivity notice.
 2. Search for meetings matching the engagement context.
 3. Extract VIBE-specific signals (problem statements, business value, pain points, feasibility).
-4. Save analysis to `.copilot-tracking/vibe/{{engagement-name}}/transcript-analysis.md`.
+4. Save analysis to `engagement/{{engagement-name}}/transcript-analysis.md`.
 5. For check-in transcripts, also append findings to `templates/CHECK-IN-NOTES.md`.

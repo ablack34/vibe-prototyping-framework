@@ -40,7 +40,7 @@ New VIBE Engagement:
 Run in terminal:
 
 ```powershell
-gh repo create {{customer-kebab}}-{{engagement-kebab}} --template ablack34/vibe-prototyping-framework --private --clone --description "VIBE Prototyping: {{customer}} - {{engagement}}"
+gh repo create {{customer-kebab}}-{{engagement-kebab}} --template ${env:VIBE_TEMPLATE_REPO ?? 'ablack34/vibe-prototyping-framework'} --private --clone --description "VIBE Prototyping: {{customer}} - {{engagement}}"
 ```
 
 If this fails because `gh` is not installed or not authenticated, provide step-by-step instructions:
@@ -70,6 +70,6 @@ Tell the user:
 > 1. Open Copilot Chat (Ctrl+Shift+I) and switch to **Agent mode**
 > 2. Type: `/vibe-kickoff customer="{{customer}}" problem="describe the problem" size={{size}}`
 > 3. If you have Teams meeting recordings, run `/vibe-transcript` next
-> 4. Full guide: open `docs/playbook.md`
+> 4. Full guide: see `docs/README.md` or the docs site (link in the root `README.md`)
 >
-> Need MCP servers? Open `docs/mcp-setup.md` for setup instructions.
+> MCP servers are pre-configured. Click the 🔧 tools icon in Copilot Chat to enable them on first use.

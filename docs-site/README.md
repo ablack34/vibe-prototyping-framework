@@ -1,41 +1,51 @@
-# Website
+# VIBE Docs Site
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+The Docusaurus source for the canonical VIBE Prototyping documentation. Everything user-facing lives here — root `README.md` and `docs/README.md` just point at this site.
 
-## Installation
+## Run locally
 
-```bash
-yarn
+```powershell
+cd docs-site
+npm install
+npm run start
 ```
 
-## Local Development
-
-```bash
-yarn start
-```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+Then open <http://localhost:3000>. Edits to `docs/` hot-reload.
 
 ## Build
 
-```bash
-yarn build
+```powershell
+npm run build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+Static output lands in `docs-site/build/`.
 
-## Deployment
+## Where to edit what
 
-Using SSH:
+| You want to change… | Edit… |
+|---------------------|-------|
+| Landing page | [`docs/index.mdx`](docs/index.mdx) |
+| One-time setup guide | [`docs/getting-started/setup.md`](docs/getting-started/setup.md) |
+| Step-by-step engagement walkthrough | [`docs/getting-started/first-engagement.md`](docs/getting-started/first-engagement.md) |
+| "What to expect" phase-by-phase demo output | [`docs/getting-started/walkthrough.md`](docs/getting-started/walkthrough.md) |
+| Role guides (TPM / Engineer / Account team) | [`docs/getting-started/roles.md`](docs/getting-started/roles.md) |
+| Per-phase deep-dive content | [`docs/phases/*.md`](docs/phases/) |
+| Prompt reference | [`docs/reference/prompts.md`](docs/reference/prompts.md) |
+| Agent reference | [`docs/reference/agents.md`](docs/reference/agents.md) |
+| MCP setup | [`docs/reference/mcp.md`](docs/reference/mcp.md) |
+| Troubleshooting | [`docs/reference/troubleshooting.md`](docs/reference/troubleshooting.md) |
+| Leadership/ROI/case studies | [`docs/why-vibe/*.md`](docs/why-vibe/) |
+| Visual styling / landing-page CSS | [`src/css/custom.css`](src/css/custom.css) |
+| Navigation order | [`sidebars.ts`](sidebars.ts) |
+| Site config (title, repo URL, footer) | [`docusaurus.config.ts`](docusaurus.config.ts) |
 
-```bash
-USE_SSH=true yarn deploy
-```
+## Deploying
 
-Not using SSH:
+The site isn't auto-deployed today — preview with `npm run start` locally, or `npm run build` and serve `build/` from any static host. If you wire this up to GitHub Pages or SWA in future, document the steps here.
 
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
+## Conventions
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+- Pages are plain Markdown (`.md`) except the landing which is `.mdx` so it can use React components for the styled hero/cards.
+- Every page has YAML frontmatter with `sidebar_position` and `title`. Without these, Docusaurus orders pages alphabetically.
+- Internal links should be **slug-based** (e.g. `/getting-started/setup`) so they survive file moves; absolute file-path links (`docs/getting-started/setup.md`) only work in raw GitHub view.
+- The framework's principles ("delivery person facilitates, AI does the paperwork", "engineer chooses form factor at Build", etc.) are repeated across pages on purpose — readers don't read sequentially.

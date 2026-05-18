@@ -7,14 +7,9 @@ tools:
   - read_file
   - replace_string_in_file
 handoffs:
-  - label: "🚀 Scaffold Prototype"
-    agent: VIBE Prototype Scaffold
-    prompt: "Data is prepared. Scaffold the prototype using the data models generated."
-    send: true
   - label: "❓ What's Next?"
     agent: VIBE Engagement Lead
     prompt: "Data prep done. What should I do next?"
-    send: true
     send: true
 ---
 
@@ -130,4 +125,14 @@ After completing all steps, present:
 - Summary of files processed (name, rows, columns)
 - Generated artifacts (types file, models file, service file, README)
 - Any issues or warnings discovered
-- Recommended next step: scaffold the prototype
+- Recommended next step: hand the prepared data to the engineer to scaffold the prototype in the form factor selected during Ideate (web app, conversational, agentic, Copilot extension, low-code, etc.)
+
+End with a directive:
+
+```
+───────────────────────────────────────────
+👉 NEXT: Share `scaffold/data/README.md` with the engineer. They'll scaffold
+   the prototype in the form factor chosen during Ideate. If you ARE the
+   engineer, click "❓ What's Next?" for guidance.
+───────────────────────────────────────────
+```

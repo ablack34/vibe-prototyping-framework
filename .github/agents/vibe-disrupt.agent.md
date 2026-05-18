@@ -34,8 +34,8 @@ This is where "Are we solving a $50K problem or a $50M problem?" gets answered.
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
 | `templates/PROJECT-CONTEXT.md` — filled by Discover | `templates/requirements-summary.md` — prioritized requirements with acceptance criteria |
-| `.copilot-tracking/vibe/{{engagement-kebab}}/transcript-analysis.md` | Updated PROJECT-CONTEXT.md (business impact, use case priorities) |
-| `.copilot-tracking/vibe/{{engagement-kebab}}/discovery-summary.md` | |
+| `engagement/{{engagement-kebab}}/transcript-analysis.md` | Updated PROJECT-CONTEXT.md (business impact, use case priorities) |
+| `engagement/{{engagement-kebab}}/discovery-summary.md` | |
 | `sources/` — any additional customer documents | |
 
 **The delivery person's job**: Facilitate the value conversation with the customer, confirm priorities.
@@ -58,8 +58,8 @@ After generating requirements-summary.md, present it and ask: **"Review this wit
 Read and synthesize:
 
 - `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Problem statement, personas, stakeholders
-- `.copilot-tracking/vibe/{{engagement-kebab}}/transcript-analysis.md` — Customer voice data (if exists)
-- `.copilot-tracking/vibe/{{engagement-kebab}}/discovery-summary.md` — Research findings (if exists)
+- `engagement/{{engagement-kebab}}/transcript-analysis.md` — Customer voice data (if exists)
+- `engagement/{{engagement-kebab}}/discovery-summary.md` — Research findings (if exists)
 - `sources/` — Any additional customer documents
 
 Summarize the current understanding and confirm with the user.

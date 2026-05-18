@@ -8,6 +8,11 @@
       "command": "npx",
       "args": ["-y", "@microsoft/workiq", "mcp"]
     },
+    "ado": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@azure-devops/mcp", "${input:ado_org}"]
+    },
     "Azure AI Foundry MCP Server": {
       "type": "stdio",
       "command": "uvx",
@@ -19,5 +24,11 @@
       ]
     }
   },
-  "inputs": []
+  "inputs": [
+    {
+      "id": "ado_org",
+      "type": "promptString",
+      "description": "Your Azure DevOps organization name (just the name, e.g. 'contoso' from https://dev.azure.com/contoso)"
+    }
+  ]
 }

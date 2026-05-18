@@ -99,7 +99,7 @@ Tell the user:
 > 4. Save the file to `sources/` in this repo (e.g., `sources/northwind-kickoff-transcript.vtt`)
 > 5. Run `/vibe-transcript` again — I'll analyze the local file
 >
-> **For automatic transcript access (optional):** Configure the work-iq MCP server per `docs/mcp-setup.md`
+> **For automatic transcript access (optional):** The work-iq MCP server is pre-configured in `.vscode/mcp.json`. Enable it via the 🔧 tools icon in Copilot Chat on first use.
 
 ### Step 2: Meeting Discovery (Multi-Signal Search) — work-iq-mcp only
 
@@ -170,7 +170,7 @@ Group findings by theme (user experience, data, technical, business).
 
 ### Step 5: Output
 
-**For initial discovery**: Create `.copilot-tracking/vibe/{{engagement-kebab}}/transcript-analysis.md` with:
+**For initial discovery**: Create `engagement/{{engagement-kebab}}/transcript-analysis.md` with:
 
 ```markdown
 ---

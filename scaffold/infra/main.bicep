@@ -1,9 +1,21 @@
 targetScope = 'subscription'
 
 @description('Azure region for all resources')
+@allowed([
+  'uksouth'
+  'ukwest'
+  'westeurope'
+  'northeurope'
+  'eastus'
+  'eastus2'
+  'westus2'
+  'westus3'
+])
 param location string = 'uksouth'
 
-@description('Environment name (used for resource naming)')
+@description('Environment name (used for resource naming — lowercase letters, numbers, hyphens; 3-20 chars)')
+@minLength(3)
+@maxLength(20)
 param environmentName string
 
 @description('Tags applied to all resources')

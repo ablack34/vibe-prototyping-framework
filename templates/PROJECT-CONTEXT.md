@@ -147,4 +147,4 @@
 > "I'm working on the {{PROJECT_NAME}} VIBE engagement for {{CUSTOMER_NAME}}.
 > Read `templates/PROJECT-CONTEXT.md` for full context. We are currently in the
 > {{CURRENT_PHASE}} phase. The engagement tracking directory is at
-> `.copilot-tracking/vibe/{{ENGAGEMENT_KEBAB}}/`."
+> `engagement/{{ENGAGEMENT_KEBAB}}/` (shared artifacts) and `.copilot-tracking/vibe/{{ENGAGEMENT_KEBAB}}/` (per-user state)."

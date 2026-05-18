@@ -1,12 +1,27 @@
 {
   // VIBE Prototyping Framework — Workspace Settings
   // These settings are included in the template so every engagement repo is pre-configured.
+  //
+  // FIRST-TIME TIPS for new VIBE users:
+  //   1. Open Copilot Chat with Ctrl+Shift+I and switch to AGENT mode
+  //      (Ask and Plan modes won't run /vibe-* prompts).
+  //   2. Click the 🔧 tools icon in Copilot Chat and enable all MCP servers
+  //      the first time you open this repo — the framework needs work-iq,
+  //      github, ado, and foundry tools to be reachable.
+  //   3. If you're not sure where to start, type:  @VIBE Engagement Lead
+  //   4. If something feels off, run:  /vibe-doctor
+  //   5. To try the framework without a real customer, run:  /vibe-demo
 
   // Copilot Chat: default to Agent mode (needed for /vibe-* prompts)
   "chat.agent.enabled": true,
 
   // MCP: auto-approve tool calls so users don't have to click "Allow" every time
-  "chat.mcp.discovery.enabled": true,
+  "chat.mcp.discovery.enabled": {
+    "claude-desktop": true,
+    "windsurf": true,
+    "cursor-global": true,
+    "cursor-workspace": true
+  },
 
   // GitHub Copilot: enable all features
   "github.copilot.enable": {

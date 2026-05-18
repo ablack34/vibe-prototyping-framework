@@ -18,10 +18,12 @@ Discover → Disrupt → Ideate → Design & Develop → Deliver
 | Disrupt | `/vibe-consolidate` | Synthesize all findings |
 | Ideate | `/vibe-ideate` | Brainstorm AI-powered prototype concepts |
 | Build | `/vibe-prototype-scaffold` | Scaffold the prototype from the concept |
-| Build | `/vibe-deploy` | Deploy to Azure |
+| Build | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
 | Deliver | `/vibe-backlog-gen` | Generate ADO backlog |
 | Deliver | `/vibe-handoff` | Final deliverables package |
 | Anytime | `@VIBE Engagement Lead` | Tells you what to do next |
+| Anytime | `/vibe-doctor` | Health-check the engagement and recommend the single highest-value next step |
+| Demo | `/vibe-demo` | Seed the engagement with the Contoso fixture so every phase can be run end-to-end without a real customer |
 
 ## Key Rules
 
@@ -32,7 +34,8 @@ Discover → Disrupt → Ideate → Design & Develop → Deliver
 - **AI must be essential in every concept** — not bolted on
 - **All prototypes use mock data** — no live system connections
 - **All technology must be Microsoft** — Azure, M365, Power Platform, etc.
-- **Engagement state** lives in `.copilot-tracking/vibe/{{engagement-kebab}}/` (gitignored)
+- **Engagement artifacts** (shared with the team) live in `engagement/{{engagement-kebab}}/` (committed). Includes `engineering-brief.md`, `selected-concept.md`, `handoff-data.json`, etc.
+- **Per-user state** (`state.json`) lives in `.copilot-tracking/vibe/{{engagement-kebab}}/` (gitignored). Each teammate regenerates their own view of phase progress from the committed artifacts.
 - **Customer sources** go in `sources/` — agents read them automatically
 - **Every agent response ends with a specific next-step directive** pointing at a button
 

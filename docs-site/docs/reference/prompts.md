@@ -14,11 +14,15 @@ These six prompts cover the main engagement flow:
 | Prompt | Phase | What It Does |
 |--------|-------|-------------|
 | `/vibe-kickoff` | Discover | Creates the engagement, generates meeting templates and questionnaires |
+| `/vibe-questionnaire` | Discover | Generates M365 Copilot prompts for the account team and customer questionnaires |
 | `/vibe-transcript` | Discover | Extracts context from Teams recordings automatically |
 | `/vibe-ideate` | Ideate | Brainstorms 2-3 AI-powered prototype concepts |
-| `/vibe-prototype-scaffold` | Build | Scaffolds the prototype from the engineering brief |
-| `/vibe-deploy` | Build | Deploys to Azure so the customer can see it |
+| `/vibe-deploy` | Build | Form-factor-aware deployment guidance for the engineer |
 | `/vibe-handoff` | Deliver | Generates roadmap, backlog, and handoff package |
+
+:::note Build-phase prompts
+`/vibe-data-prep` and `/vibe-prototype-scaffold` are useful when the chosen concept is a web-app. Other form factors (conversational, agentic, Copilot extension, low-code) skip them — the engineer scaffolds directly in Copilot Studio, Foundry Agents, M365 Agents Toolkit, or Power Platform.
+:::
 
 ## All Prompts
 
@@ -45,7 +49,7 @@ These six prompts cover the main engagement flow:
 |--------|-------------|--------|
 | `/vibe-data-prep` | Prepare customer data files | `dataPath` |
 | `/vibe-prototype-scaffold` | Scaffold the prototype from requirements | `engagement` |
-| `/vibe-deploy` | Deploy to Azure (SWA + App Service) | `location`, `environment` |
+| `/vibe-deploy` | Deployment guidance per form factor (web app, Copilot Studio, Foundry Agents, M365 plugin, Power Platform) | `formFactor` |
 
 ### Deliver Phase
 
@@ -59,3 +63,5 @@ These six prompts cover the main engagement flow:
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
 | `/vibe-new` | Create a new engagement repo from the template | `customer` (required), `engagement` (required), `size` |
+| `/vibe-demo` | Seed the engagement with the Contoso Field Services fixture so every phase can be demonstrated end-to-end without a real customer | `demo` (optional, defaults to `contoso`) |
+| `/vibe-doctor` | Health-check the engagement (missing artifacts, stale state, form-factor mismatches) and recommend the single highest-value next step | `engagement` (optional) |

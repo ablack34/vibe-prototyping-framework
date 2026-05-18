@@ -11,6 +11,18 @@ Write-Host "`n  VIBE Prototype — starting locally...`n" -ForegroundColor Cyan
 
 $root = $PSScriptRoot
 
+# Preflight: confirm engineer tooling is installed before we touch anything
+$missing = @()
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) { $missing += "Node.js 22+  (winget install OpenJS.NodeJS.LTS)" }
+if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { $missing += ".NET 9 SDK   (winget install Microsoft.DotNet.SDK.9)" }
+if ($missing.Count -gt 0) {
+    Write-Host "  Missing engineer tools:" -ForegroundColor Red
+    $missing | ForEach-Object { Write-Host "    • $_" -ForegroundColor Red }
+    Write-Host ""
+    Write-Host "  start.ps1 is for the Build phase only — see docs-site setup guide." -ForegroundColor Yellow
+    exit 1
+}
+
 # Install web deps if needed
 if (-not (Test-Path "$root/scaffold/web/node_modules")) {
     Write-Host "  Installing web dependencies..." -ForegroundColor Yellow

@@ -2,184 +2,86 @@
 
 > Accelerating presales with AI prototyping to unlock business potential at speed.
 
-A reusable framework for Studio 42 **VIBE Prototyping** engagements. Guides your team through five phases — from understanding the customer's problem to delivering a working AI-powered prototype — using AI agents in VS Code that tell you exactly what to do next.
+A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery squad through five phases — Discover → Disrupt → Ideate → Build → Deliver — using AI agents in VS Code that tell you exactly what to do next.
 
-**You don't need to be technical, you just need a +1.** The framework guides you step by step.
-
----
-
-## The VIBE Process
-
-```
- DISCOVER        DISRUPT         IDEATE          DESIGN & DEV    DELIVER
- ─────────      ─────────      ─────────      ─────────      ─────────
- Understand     Frame the      Brainstorm     Engineer the   Hand off to
- the problem    value & scope  AI concepts    prototype      the customer
-
- Who: Anyone    Who: Anyone    Who: Anyone    Who: Engineer  Who: Anyone
- ───────────────────────────────────────────────────────────────────────
- /vibe-kickoff  @VIBE Disrupt  /vibe-ideate   /vibe-data-prep  /vibe-backlog-gen
- /vibe-transcript               (Spark        /vibe-prototype  /vibe-handoff
- /vibe-capture                   prompts)      -scaffold
- /vibe-questionnaire                          /vibe-deploy
-```
-
-**Most of the process doesn't require an engineer.** TPMs and designers drive Discover, Disrupt, and Ideate. Engineers join at Build.
+**You don't need to be technical, you just need a +1.**
 
 ---
 
-## Get Started in 2 Minutes
+## Start a New Engagement
 
-### 1. Create your engagement workspace
+1. Click **"Use this template" → "Create a new repository"** at the top of this page.
+2. Name it `<customer>-<engagement>` (e.g. `contoso-field-scheduling`), make it private, and clone it locally.
+3. Open in VS Code, open Copilot Chat (`Ctrl+Shift+I`), switch to **Agent mode**, and run:
 
-Open Copilot Chat in VS Code and type:
+   ```
+   /vibe-kickoff customer="<your-customer>" problem="<describe the problem>" size=S
+   ```
 
-```
-/vibe-new customer="<your-customer>" engagement="<short-name>"
-```
+4. After every step the agent ends with a `👉 NEXT:` directive. **Click the recommended button and keep going.** If you're ever lost, click **❓ What's Next?**.
 
-Or click **"Use this template"** on [GitHub](https://github.com/ablack34/vibe-prototyping-framework) and clone.
-
-### 2. Start the engagement
-
-```
-/vibe-kickoff customer="<your-customer>" problem="<describe the customer's problem>" size=S
-```
-
-### 3. Follow the buttons
-
-After every step, the agent tells you exactly what to do next with a `👉 NEXT:` directive pointing at a specific button. **Click the recommended button and keep going.**
-
-If you're ever lost: click **"❓ What's Next?"**
+> Already inside another engagement? Run `/vibe-new customer="…" engagement="…"` and it'll `gh repo create` a sibling for you.
 
 ---
 
-## Essential Prompts (the 6 you actually need)
+## Where to Read More
+
+| What you want | Where to look |
+|---------------|---------------|
+| Full walkthrough, role guides, phase deep-dives, prompt/agent reference | **The docs site** — `cd docs-site && npm install && npm run start`, then open `http://localhost:3000`. Or browse the source under [`docs-site/docs/`](docs-site/docs/). |
+| First-time machine setup | [`docs-site/docs/getting-started/setup.md`](docs-site/docs/getting-started/setup.md) |
+| Step-by-step engagement walkthrough | [`docs-site/docs/getting-started/first-engagement.md`](docs-site/docs/getting-started/first-engagement.md) |
+| What each phase actually looks like (run against the demo) | [`docs-site/docs/getting-started/walkthrough.md`](docs-site/docs/getting-started/walkthrough.md) |
+| MCP servers + troubleshooting | [`docs-site/docs/reference/mcp.md`](docs-site/docs/reference/mcp.md) · [`docs-site/docs/reference/troubleshooting.md`](docs-site/docs/reference/troubleshooting.md) |
+
+---
+
+## The Six Prompts You Actually Need
 
 | When | Type This | What Happens |
 |------|-----------|-------------|
 | **Start** | `/vibe-kickoff` | Creates the engagement, generates meeting templates and questionnaires |
+| **Send forms** | `/vibe-questionnaire` | M365 Copilot prompts for the account-team and customer questionnaires |
 | **After meetings** | `/vibe-transcript` | Extracts context from Teams recordings automatically |
-| **After discovery** | `/vibe-ideate` | Brainstorms 2-3 AI-powered prototype concepts (validated against requirements) |
-| **Build time** | `/vibe-prototype-scaffold` | Engineer scaffolds the prototype from the engineering brief |
-| **Share it** | `/vibe-deploy` | Deploys or shares the prototype (adapts to form factor) |
-| **Wrap up** | `/vibe-handoff` | Step-by-step handoff: vision → roadmap → backlog → limitations → all in `handoff-data.json` |
+| **After discovery** | `/vibe-ideate` | 2-3 AI-powered prototype concepts across form factors |
+| **Share it** | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
+| **Wrap up** | `/vibe-handoff` | Step-by-step handoff: vision → roadmap → backlog → limitations |
 
-There are more prompts for specific situations (see [full reference](docs/playbook.md#quick-reference)), but these six cover the core flow.
+Full list with inputs and outputs: [`docs-site/docs/reference/prompts.md`](docs-site/docs/reference/prompts.md).
 
 ---
 
-## Role Guide
+## Try Without a Customer
 
-### If you're a TPM or Designer
+You can run a full engagement end-to-end against a fixture customer before doing it for real. After creating a fresh engagement repo from this template, in Copilot Chat run:
 
-You drive most of the engagement. Your path:
+```
+/vibe-demo
+```
 
-1. `/vibe-kickoff` — start the engagement
-2. `/vibe-questionnaire` — send questionnaires to the customer and account team
-3. `/vibe-transcript` — process meeting recordings (no note-taking needed!)
-4. `/vibe-capture` — capture quick insights during workshops
-5. `@VIBE Discover` — consolidate all sources into a clear problem statement
-6. `@VIBE Disrupt` — frame the value and prioritize use cases
-7. `/vibe-ideate` — brainstorm concepts, share Spark prompts with the team
-8. Hand off to the engineer with the engineering brief
-
-### If you're an Engineer
-
-You join at the Build phase with a clear brief. Your path:
-
-1. Read the **engineering brief** in `.copilot-tracking/vibe/*/engineering-brief.md`
-2. `/vibe-data-prep` — prepare the customer's data files
-3. `/vibe-prototype-scaffold` — scaffold the prototype from the brief
-4. `/task-plan` → `/task-implement` — build features using the HVE-Core task pipeline
-5. `/vibe-deploy` — deploy to Azure
-6. `/vibe-check-in` — process customer feedback after demos
-
-### If you're on the Account Team
-
-Fill out the intake questionnaire (generated by `/vibe-questionnaire`) and share customer documents. That's it — the framework does the rest.
+This seeds [`sources/`](sources/) and [`templates/PROJECT-CONTEXT.md`](templates/PROJECT-CONTEXT.md) with the **Contoso Field Services — Dispatcher AI** fixture (customer brief, questionnaire responses, two Teams transcripts, three CSVs). From there `@VIBE Discover`, `@VIBE Disrupt`, `/vibe-ideate` and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/contoso/`](demo/contoso/).
 
 ---
 
 ## Prerequisites
 
-| Tool | Required For | Install | Who Needs It |
-|------|-------------|---------|-------------|
-| VS Code + GitHub Copilot | Everything | Standard Microsoft setup | Everyone |
-| HVE-Core extension (v3.2+) | Agents and prompts | VS Code Marketplace | Everyone |
-| GitHub CLI (`gh`) | Creating engagement repos | `winget install GitHub.cli` | Everyone |
-| Node.js 22+ | Prototype frontend | [nodejs.org](https://nodejs.org) | Engineers only |
-| .NET 9 SDK | Prototype backend | [dot.net](https://dot.net/download) | Engineers only |
-| Azure Developer CLI (`azd`) | Deployment | `winget install Microsoft.Azd` | Engineers only |
+| Tool | Required For | Who Needs It |
+|------|-------------|--------------|
+| VS Code + GitHub Copilot | Everything | Everyone |
+| [HVE-Core extension](https://marketplace.visualstudio.com/items?itemName=ise-hve-essentials.hve-core-all) v3.2+ | Agents and prompts | Everyone |
+| GitHub CLI (`gh`) | `/vibe-new` to spin up sibling engagement repos | Optional |
+| Node.js 22+, .NET 9 SDK, Azure CLI | Building / deploying web-app form factors | Engineers only |
 
-**MCP servers** (Teams transcripts, GitHub, Azure AI) are **pre-configured** in every engagement repo. Just enable tools on first use by clicking the 🔧 icon in Copilot Chat.
-
-**Only engineers need** Node.js, .NET, and azd. TPMs and designers just need VS Code + Copilot + HVE-Core.
-
----
-
-## Documentation
-
-| Doc | What It Covers | Who Should Read It |
-|-----|---------------|-------------------|
-| **[Getting Started](docs/GETTING-STARTED.md)** | Visual walkthrough of the full process | Everyone (start here) |
-| [Playbook](docs/playbook.md) | Detailed week-by-week engagement guide | Engagement leads |
-| [MCP Setup](docs/mcp-setup.md) | Configure MCP servers | One-time setup |
-| [Copilot Agents Guide](docs/copilot-agents-guide.md) | How agents, prompts, and instructions work | Curious learners |
+**MCP servers** (Teams transcripts, GitHub, Azure DevOps, Azure AI Foundry) are pre-configured in `.vscode/mcp.json`. Enable them via the 🔧 icon in Copilot Chat on first use.
 
 ---
 
 ## How This Repo Works
 
-This is a **GitHub Template Repository**. You don't work in it directly.
+This is a **GitHub Template Repository**. You don't work in it directly — each engagement gets its own repo from the **Use this template** button above. Only the framework maintainer modifies this repo; improvements benefit all future engagements.
 
-Each engagement gets its own repo created from this template. Only the framework maintainer modifies this repo — improvements benefit all future engagements.
-
----
-
-## Document Guide
-
-The framework uses three main documents. Each serves a different purpose:
-
-| Document | Who Creates It | When | Purpose |
-|----------|---------------|------|---------|
-| `engagement-brief.md` | Account team | Before engagement starts | Pre-engagement intake — customer info, deal context, problem space |
-| `PROJECT-CONTEXT.md` | Framework + squad | During Discover | Single source of truth — updated throughout the engagement |
-| `requirements-summary.md` | Disrupt agent + squad | During Disrupt | Customer-facing requirements — needs sign-off before building |
-| `solution-design.md` | Engineer | During Design & Develop | Internal technical decisions — architecture, tech stack, build phases |
+Shared artifacts a squad generates during an engagement live under `engagement/<engagement-name>/` (committed). Per-user phase state lives under `.copilot-tracking/vibe/<engagement-name>/state.json` (gitignored — each teammate regenerates their own).
 
 ---
 
-## Useful Links
-
-| Tool | URL | Used For |
-|------|-----|----------|
-| Microsoft Forms | [forms.microsoft.com](https://forms.microsoft.com) | Creating pre-workshop questionnaires |
-| GitHub Spark | [spark.github.com](https://spark.github.com) | Quick visual mockups from text prompts (no coding) |
-| Copilot Studio | [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com) | Prototyping conversational AI experiences |
-| Azure Portal | [portal.azure.com](https://portal.azure.com) | Managing Azure resources and deployments |
-| Azure DevOps | [dev.azure.com](https://dev.azure.com) | Work item tracking and backlog management |
-| HVE-Core Extension | [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ise-hve-essentials.hve-core-all) | AI agents and prompts in VS Code |
-| Azure Developer CLI | [learn.microsoft.com/azure/developer/azure-developer-cli](https://learn.microsoft.com/azure/developer/azure-developer-cli/) | Deployment tooling |
-
----
-
-## Glossary
-
-| Term | What It Means |
-|------|--------------|
-| **MCP** | Model Context Protocol — lets Copilot connect to external tools (Teams transcripts, ADO, etc.) |
-| **Persona** | A representative user type (e.g., "Field Supervisor Sara" — describes their role, goals, and pain points) |
-| **JTBD** | Jobs To Be Done — a framework for understanding what users are trying to accomplish |
-| **Form factor** | The type of app or experience (web app, chat bot, AI agent, dashboard, etc.) |
-| **Mock data** | Customer data in a safe format (CSV/Excel) — makes the prototype feel real without exposing confidential information |
-| **Authority tier** | How much decision-making power a stakeholder has (Tier 1 = decision-maker, Tier 4 = observer) |
-| **Readiness field** | One of 9 discovery topics the framework tracks (problem, users, impact, etc.) |
-| **Spark prompt** | A text description you paste into [GitHub Spark](https://spark.github.com) to generate a visual mockup instantly |
-| **ADO** | Azure DevOps — Microsoft's work item tracking and project management tool |
-| **SWA** | Static Web App — an Azure service for hosting websites |
-| **TPM** | Technical Product Manager |
-
----
-
-*Studio 42 — Internal Microsoft*
+*Studio 42 — Microsoft Internal*

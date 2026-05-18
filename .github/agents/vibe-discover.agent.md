@@ -33,7 +33,7 @@ The principle: every question asked of a human is a failure to find the answer i
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
 | `sources/` — customer documents, questionnaire responses, workshop notes | `templates/PROJECT-CONTEXT.md` — fully populated |
-| Meeting transcripts via work-iq-mcp | `.copilot-tracking/vibe/{{engagement-kebab}}/discovery-summary.md` |
+| Meeting transcripts via work-iq-mcp | `engagement/{{engagement-kebab}}/discovery-summary.md` |
 | `templates/engagement-brief.md` — account team context | Updated `state.json` readiness fields |
 | `/vibe-kickoff` initial inputs (customer, problem) | |
 
@@ -49,7 +49,7 @@ After generating PROJECT-CONTEXT.md, present it and ask: **"Does this look right
 - Tag insights without direct user evidence as assumptions requiring validation
 - Show what is known and what is missing — only ask about genuine gaps
 - **Generate documents, don't ask users to fill them** — produce PROJECT-CONTEXT.md from sources
-- All state tracked in `.copilot-tracking/vibe/{{engagement-kebab}}/`
+- Shared engagement artifacts go in `engagement/{{engagement-kebab}}/` (committed). Per-user state stays in `.copilot-tracking/vibe/{{engagement-kebab}}/` (gitignored).
 
 ## Readiness Fields
 
@@ -200,7 +200,7 @@ These agents enrich — they do not replace the source-gathered information.
 Merge all sources into PROJECT-CONTEXT.md:
 
 1. Fill every section with evidence-backed content, citing sources
-2. Create a discovery summary in `.copilot-tracking/vibe/{{engagement-kebab}}/discovery-summary.md`
+2. Create a discovery summary in `engagement/{{engagement-kebab}}/discovery-summary.md`
 3. Update `state.json` readiness to reflect final state
 4. Mark discovery phase as complete
 

@@ -2,14 +2,20 @@
 
 Drop customer-provided materials and captured workshop notes here. The `@VIBE Discover` agent reads everything in this folder as its **first step** before asking any questions.
 
+:::tip Just want to try the framework?
+Run `/vibe-demo` in Copilot Chat — it copies the **Contoso Field Services** fixture (customer brief, two questionnaires, two transcripts, three CSVs) into this folder so you can run every phase end-to-end without a real customer. Source: [`demo/contoso/`](../demo/contoso/).
+:::
+
 ## What Goes Here
 
 | Type | Examples | How It Gets Here |
 |------|---------|-----------------|
 | **Customer documents** | Slide decks, RFPs, process diagrams, strategy docs | Customer shares them — you drop them in |
 | **Questionnaire responses** | Pre-workshop questionnaire answers | Export from Microsoft Forms or paste into `questionnaire-responses.md` |
+| **Meeting transcripts** | Teams transcript exports for offline analysis | Paste content or save as `transcript-<meeting>.md` |
 | **Workshop notes** | Live capture during workshops | Auto-created by `/vibe-capture` prompt |
 | **Meeting agendas** | Invite templates for scheduling | Auto-created by `/vibe-kickoff` |
+| **Customer data (small)** | CSV/Excel under ~10MB for the prototype | Put under `sources/sample-data/` so `/vibe-data-prep` finds it |
 
 ## Supported File Types
 
@@ -17,7 +23,7 @@ Copilot can read: `.md`, `.txt`, `.csv`, `.json`, `.pdf`, `.docx`, `.pptx`, `.xl
 
 > **Best results with plain text or markdown.** Office files (PDF, Word, PowerPoint, Excel) are supported but may not parse perfectly — if accuracy matters, copy key content into a markdown file.
 >
-> **Keep files under 10MB** for best performance. If a customer shares large datasets, put them in `scaffold/data/` instead.
+> **Keep individual files under 10MB** for best performance. Large datasets that aren't needed for the AI to *read* should go in `scaffold/data/` instead (the engineer wires them in via `/vibe-data-prep`).
 
 ## Auto-Generated Files
 

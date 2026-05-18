@@ -32,7 +32,7 @@ This phase is for the **whole squad** (TPMs, designers, engineers) and can even 
 |--------------|-------------------|
 | `templates/PROJECT-CONTEXT.md` — problem, personas, desired outcome | `ideation-concepts.md` — 2-3 concepts with comparison |
 | `templates/requirements-summary.md` — prioritized use cases | `selected-concept.md` — chosen concept with narrative |
-| `.copilot-tracking/vibe/{{engagement-kebab}}/` — transcript analysis, discovery summary | `spark-prompts.md` — GitHub Spark + Copilot Studio prompts |
+| `engagement/{{engagement-kebab}}/` — transcript analysis, discovery summary | `spark-prompts.md` — GitHub Spark + Copilot Studio prompts |
 | `sources/` — customer documents | `engineering-brief.md` — structured handoff for the engineer |
 
 **The delivery person's job**: Pick the concept that best fits the customer, use Spark/Studio prompts to visualize it, share with customer for feedback.
@@ -111,7 +111,7 @@ Read:
 
 - `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Problem, personas, desired outcome
 - `templates/requirements-summary.md` — Prioritized requirements
-- `.copilot-tracking/vibe/{{engagement-kebab}}/` — Transcript analysis, discovery summary, any ideation artifacts
+- `engagement/{{engagement-kebab}}/` — Transcript analysis, discovery summary, any ideation artifacts
 - `sources/` — Any customer documents, questionnaire responses, workshop notes
 
 Summarize the core challenge in one sentence before proceeding.
@@ -262,7 +262,7 @@ This narrative is what the customer reacts to and what the engineer uses to buil
 
 ### Step 6: Produce Outputs
 
-Save to `.copilot-tracking/vibe/{{engagement-kebab}}/`:
+Save to `engagement/{{engagement-kebab}}/`:
 
 1. **`ideation-concepts.md`** — Full concept descriptions and comparison
 2. **`selected-concept.md`** — Chosen concept with screen/interaction narrative
