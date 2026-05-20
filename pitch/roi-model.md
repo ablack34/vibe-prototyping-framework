@@ -1,6 +1,8 @@
-# ROI Model — VIBE Prototyping Framework
+# ROI Model — VIBE Delivery Harness
 
 **Purpose:** Anchor the SLT conversation in numbers without pretending the numbers are bulletproof. This is a *defensible framework*, not an audit.
+
+**Framing note:** VIBE Prototyping is the existing Studio 42 AI-first consulting offering. This ROI model measures the impact of **adopting the delivery harness** to scale that offering — not the impact of VIBE itself.
 
 ---
 
@@ -12,38 +14,37 @@
 | Annual $ saved (Studio 42 time) | **$40K** | **$150K** | **$360K** |
 | Annual pipeline lift (deal velocity) | $0 | $250K | $500K |
 | **Total annual impact** | **$40K** | **$400K** | **$860K** |
-| Break-even threshold | 1 of 3 pilots succeed | — | — |
 
-**Bottom line:** Even in the conservative case — assuming *zero* deal-velocity benefit and just counting Studio 42 hours saved — the framework pays for itself if 1 of 3 pilots succeeds.
+**Bottom line:** The harness has $0 build cost (already built) and ~$7.5K of measurement overhead during adoption. Even in the conservative case, payback is immediate.
 
 ---
 
 ## Inputs (sanity-check before the meeting)
 
-These are the levers. If your view of any of them differs, edit this file and the numbers update automatically.
+These are the levers. If your view of any of them differs, edit this file and the numbers update accordingly.
 
 | Input | Conservative | Realistic | Optimistic | Source / assumption |
 |-------|--------------|-----------|------------|---------------------|
-| Engagements / year | 10 | 15 | 20 | Studio 42 historical run-rate (sanity-check with delivery ops) |
+| VIBE engagements / year | 10 | 15 | 20 | Studio 42 historical run-rate (sanity-check with delivery ops) |
 | Hours saved / engagement | 20 | 40 | 60 | [leadership.md](../docs-site/docs/why-vibe/leadership.md) baseline: "20+ hours of manual documentation per engagement" |
 | Studio 42 blended rate ($/hr) | 200 | 250 | 300 | Placeholder — replace with actual blended rate before sharing |
-| Average engagement deal size ($) | $5M | $5M | $5M | Studio 42 historical avg (sanity-check) |
-| Deal-velocity lift (days earlier close) | 0 | 7 | 14 | Conservative = no claim; realistic = 1 week earlier on prototype-driven deals |
+| Average VIBE engagement deal size ($) | $5M | $5M | $5M | Studio 42 historical avg (sanity-check) |
+| Deal-velocity lift (days earlier close) | 0 | 7 | 14 | Conservative = no claim; realistic = 1 week earlier on harness-delivered engagements |
 | % of engagements that convert to deals | n/a | 30% | 50% | Used to attribute pipeline lift |
 
 ---
 
 ## Scenario 1 — Conservative
 
-**Stance:** Assume the framework only saves Studio 42 internal time. No customer impact. No deal-velocity claim.
+**Stance:** Assume the harness only saves Studio 42 internal time on VIBE delivery. No customer impact. No deal-velocity claim.
 
 ```
 10 engagements/yr × 20 hours saved × $200/hr = $40,000/yr
 ```
 
-**What this assumes:** The framework is purely an internal productivity tool. Customers don't notice. Deals close at the same pace.
+**What this assumes:** The harness is purely an internal productivity tool for the VIBE practice. Customers don't notice. Deals close at the same pace.
 
-**Why this matters:** Even with this floor, the framework pays for itself if 1 of the 3 pilots succeeds (rough estimate of pilot opportunity cost: ~$30K equivalent in tracking/measurement overhead).
+**Why this matters:** Even with this floor, the harness covers its measurement overhead in the first engagement. There's no "validate it first" risk to absorb — the harness is built and the engagements are happening anyway.
 
 **What we explicitly don't claim:** Win-rate lift, deal-size lift, customer NPS lift, retention lift.
 
@@ -51,7 +52,7 @@ These are the levers. If your view of any of them differs, edit this file and th
 
 ## Scenario 2 — Realistic
 
-**Stance:** Framework saves internal time *and* shortens deal cycles by ~1 week on prototype-driven engagements.
+**Stance:** Harness saves internal time *and* shortens deal cycles by ~1 week on harness-delivered VIBE engagements.
 
 ```
 Time saved:
@@ -66,15 +67,15 @@ Total: $400,000/yr
 
 **The 1.1% revenue-lift number explained:** A 1-week-earlier deal close on a $5M engagement, assuming a 12-month average sales cycle, captures roughly 2% additional revenue per deal (week early × 52 weeks/yr × discount factor). We're using 1.1% as a deliberately conservative version of that — half the upside, to avoid over-claiming.
 
-**What this assumes:** Most engagements use the framework; some customers notice faster turnaround; ~1 in 4 prototype-driven deals close measurably earlier.
+**What this assumes:** Most VIBE engagements use the harness; some customers notice faster turnaround; ~1 in 4 harness-delivered deals close measurably earlier.
 
-**Why this is the "realistic" case:** It assumes the framework works as designed but doesn't transform the business. Studio 42 does what Studio 42 already does, just faster and more consistently.
+**Why this is the "realistic" case:** It assumes the harness works as designed but doesn't transform the business. Studio 42 does what Studio 42 already does, just faster and more consistently.
 
 ---
 
 ## Scenario 3 — Optimistic
 
-**Stance:** Framework saves significant internal time, shortens deal cycles by ~2 weeks, and enables 25% more engagements per year (because squads aren't bottlenecked on engineers).
+**Stance:** Harness saves significant internal time, shortens deal cycles by ~2 weeks, and enables 25% more VIBE engagements per year (because squads aren't bottlenecked on engineers).
 
 ```
 Time saved:
@@ -87,9 +88,9 @@ Deal-velocity impact:
 Total: $860,000/yr
 ```
 
-**What this assumes:** Framework becomes the default way Studio 42 prototypes. Non-engineer squad members drive engagements end-to-end (engineering becomes the bottleneck-buster, not the bottleneck). Customers actively choose Studio 42 because of the framework.
+**What this assumes:** The harness becomes the default way Studio 42 delivers VIBE. Non-engineer squad members drive engagements end-to-end (engineering becomes the bottleneck-buster, not the bottleneck). Customers actively choose Studio 42 because the harness enables faster, more consistent VIBE delivery.
 
-**Why this is "optimistic":** It assumes a behavioral shift across the org, not just a tooling adoption. Treat as a stretch goal, not a forecast.
+**Why this is "optimistic":** It assumes a behavioral shift across the practice, not just tooling adoption. Treat as a stretch goal, not a forecast.
 
 ---
 
@@ -130,41 +131,42 @@ If you don't like the realistic-case rate or volume assumption, this is how the 
 
 This is here so we don't get blindsided in Q&A. If someone tries to expand the claim, point at this section.
 
-- ❌ **Win-rate lift** — we don't have data correlating framework usage with deal close-rate
-- ❌ **Customer satisfaction lift** — no NPS deltas yet
-- ❌ **Average deal size lift** — no evidence prototype quality drives larger deals
+- ❌ **Win-rate lift** — we don't have data correlating harness usage with deal close-rate
+- ❌ **Customer satisfaction lift** — no NPS deltas yet (one of the things adoption will measure)
+- ❌ **Average deal size lift** — no evidence harness-driven artifact quality drives larger deals
 - ❌ **Account retention lift** — out of scope
-- ❌ **Replacement of engineering capacity** — engineers still build the prototype; the framework changes *what they receive*, not whether they're needed
-- ❌ **Universal applicability** — framework is designed for Studio 42-style prototyping engagements; not validated for production builds or non-prototype work
+- ❌ **Replacement of engineering capacity** — engineers still build the prototype; the harness changes *what they receive*, not whether they're needed
+- ❌ **VIBE offering improvement** — the harness scales the existing offering; it doesn't change what VIBE delivers
 
 ---
 
-## Pilot economics
+## Adoption economics
 
-The pilot is the *measurement* exercise that turns this model from "assumption" to "data."
+The 3-engagement adoption period is the *measurement* exercise that turns this model from "assumption" to "data."
 
-| Pilot input | Assumption |
-|-------------|------------|
-| Pilot engagements | 3 |
-| Pilot duration | 8-12 weeks (sequential with overlap) |
-| Incremental cost | $0 (engagements are happening anyway) |
+| Adoption input | Assumption |
+|----------------|------------|
+| Engagements covered | 3 (next qualifying VIBE engagements) |
+| Adoption duration | 8-12 weeks (sequential with overlap) |
+| Incremental delivery cost | $0 (engagements are happening anyway, harness is built) |
 | Measurement overhead | ~10 hrs / engagement (tracking time, customer NPS, squad-lead survey) = ~$7.5K total |
-| **Pilot total cost** | **~$7.5K equivalent** (measurement only) |
+| **Adoption period total cost** | **~$7.5K equivalent** (measurement only) |
 
-### Pilot success thresholds
+### Adoption success thresholds
 
 | Metric | Target | Why this threshold |
 |--------|--------|--------------------|
 | Time-to-first-prototype | < 5 days | Reference: today's manual baseline = 1-2 weeks (per [leadership.md](../docs-site/docs/why-vibe/leadership.md)) |
+| Squad-lead would use again | Yes (qualitative) | Tells us whether the harness helps or hinders the squad — the most important signal |
 | Customer NPS | ≥ 8 | Standard threshold for "would actively recommend" |
-| Squad lead would use again | Yes (qualitative) | Tells us whether the framework helps or hinders the squad |
+| Harness gaps surfaced | Catalogued | Every adoption engagement should surface things to improve — that's expected, not a failure |
 
-### Pilot decision logic
+### Adoption decision logic
 
 ```
-IF 3 of 3 hit  → Recommend default adoption + identify next-gen capabilities
-IF 2 of 3 hit  → Recommend default adoption, identify what failed and iterate
-IF 1 of 3 hits → Identify the success pattern, narrow framework scope to that
+IF 3 of 3 hit  → Formalize harness as standard Studio 42 VIBE tooling
+IF 2 of 3 hit  → Formalize harness, prioritize fixes for the failure mode
+IF 1 of 3 hits → Identify the success pattern, narrow harness scope to that
 IF 0 of 3 hit  → Retire or fundamentally rebuild
 ```
 
@@ -174,7 +176,7 @@ IF 0 of 3 hit  → Retire or fundamentally rebuild
 
 Edit the input table at the top of "Inputs." All the scenario sections reference those numbers, so updating the inputs and re-computing the math will keep the doc consistent. **Don't change just the totals** — the audit trail matters.
 
-If you need to add a new scenario (e.g., "What if we charged customers for VIBE-accelerated engagements at a premium?"), add it as Scenario 4 — don't rewrite the existing three.
+If you need to add a new scenario (e.g., "What if we charged customers for harness-accelerated engagements at a premium?"), add it as Scenario 4 — don't rewrite the existing three.
 
 ---
 
@@ -182,7 +184,7 @@ If you need to add a new scenario (e.g., "What if we charged customers for VIBE-
 
 - "20+ hours of manual documentation per engagement" — from [docs-site/docs/why-vibe/leadership.md](../docs-site/docs/why-vibe/leadership.md), "The Problem" section
 - "40% of engagement time spent on docs" — same source
-- Siemens $19M deal / $140M 5yr consumption — from [docs-site/docs/why-vibe/case-studies.md](../docs-site/docs/why-vibe/case-studies.md) (not used in ROI math; only as context for "what an engagement can be worth")
+- Siemens $19M deal / $140M 5yr consumption — from [docs-site/docs/why-vibe/case-studies.md](../docs-site/docs/why-vibe/case-studies.md) (not used in ROI math; only as context for "what a VIBE engagement can be worth")
 - Contoso €12M addressable pain — from [demo/contoso/customer-brief.md](../demo/contoso/customer-brief.md) (illustrative customer-side ROI; not used in Studio 42 ROI math)
 - Blended hourly rate ($250) — **placeholder, not sourced**. Replace before sharing externally.
-- Engagement volume (15/yr) — **placeholder, not sourced**. Replace before sharing externally.
+- VIBE engagement volume (15/yr) — **placeholder, not sourced**. Replace before sharing externally.

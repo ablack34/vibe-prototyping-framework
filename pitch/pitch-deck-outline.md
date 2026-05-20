@@ -1,8 +1,8 @@
-# Pitch Deck Outline — VIBE Prototyping Framework
+# Pitch Deck Outline — Scaling VIBE: The Delivery Harness for AI-First Consulting
 
 **Audience:** Studio 42 / ISE leadership
 **Format:** 10-15 min live presentation, no demo
-**Goal:** Approve a 3-engagement pilot
+**Goal:** Approve graduated adoption of the harness on next 3 VIBE engagements
 
 ---
 
@@ -21,122 +21,146 @@ Paste the bullets into Studio 42's deck template. The speaker notes are for *you
 
 ---
 
-## Slide 1 — The shift (1 min)
+## Slide 1 — Scaling VIBE (1 min)
 
-**Title:** *"Prototyping that scales"*
+**Title:** *Scaling VIBE — The Delivery Harness for AI-First Consulting*
 
 **What to show:**
 - Studio 42 logo / branding
-- Subtitle: "Agents do the paperwork. Humans facilitate."
-- One line: "A repeatable, AI-powered engagement framework"
+- Subtitle: *"You just need a +1."*
+- One line: "A delivery harness for the VIBE Prototyping practice"
 
 **What to say:**
-> "I'm going to spend 10 minutes showing you how Studio 42 prototyping changes if we treat the AI as the documenter, not the prototype itself. The ask at the end is small — approve a 3-engagement pilot — but the change in how we work is significant."
+> "VIBE Prototyping is already how Studio 42 delivers AI-first consulting. I'm not here to validate the offering — we know it works. I'm here to talk about how we scale it. In 10 minutes, I'll show you a delivery harness that's already built, makes every VIBE engagement faster and more consistent, and lets non-engineers drive most of the work. The ask at the end is small: adopt it as default tooling on the next 3 VIBE engagements."
 
-**Don't:** Open with a feature list. Open with the outcome.
+**Don't:** Open with a feature list. Open with the strategic frame: we already have the offering, this is how we scale it.
 
 ---
 
-## Slide 2 — Where Studio 42 time goes today (1.5 min)
+## Slide 2 — Where VIBE time goes today (1.5 min)
 
-**Title:** *"The problem isn't the prototypes. It's everything around them."*
+**Title:** *"The offering works. The throughput is the constraint."*
 
 **What to show:**
 A simple chart or four big numbers:
-- **20+ hrs** — manual documentation per engagement
-- **40%** — of engagement time spent on docs, not delivery
-- **0%** — reuse between engagements
-- **1** — person (the engineer) who can build the prototype
+- **20+ hrs** — manual documentation per VIBE engagement
+- **40%** — of engagement time spent on delivery paperwork, not prototype work
+- **0%** — reuse between engagements (every engagement starts from scratch)
+- **1** — person (the engineer) who can build the prototype today
 
 **What to say:**
-> "We already prototype well — Siemens, Novartis, Coca-Cola Hellenic. The output is good. The cost of producing it is the problem. Roughly 40% of every engagement disappears into meeting notes, discovery write-ups, ideation summaries, handoff decks. None of that compounds. Every new engagement starts from scratch."
+> "VIBE works — Siemens, Novartis, Coca-Cola Hellenic. The output is good. The cost of producing it is the problem. Roughly 40% of every VIBE engagement disappears into meeting notes, discovery write-ups, ideation summaries, handoff decks. None of it compounds. Every engagement starts from scratch. If we want to scale AI-first consulting — more engagements, more squads, more impact — we have to fix the throughput. Not the offering."
 
 **Don't:** Apologize for current quality. The work is good; the cost is wrong.
 
 ---
 
-## Slide 3 — What VIBE changes (1.5 min)
+## Slide 3 — What's a delivery harness (1.5 min)
 
-**Title:** *"5 phases. 3 of them now run without an engineer."*
+**Title:** *"From methodology in heads → methodology in tooling"*
 
 **What to show:**
-The 5-phase strip with role labels:
+A simple two-column visual:
+
 ```
-Discover → Disrupt → Ideate → Build → Deliver
-[TPM]     [TPM]     [Anyone] [Engineer] [Anyone]
+TODAY: VIBE methodology lives in people's heads
+   ↓ Skill transfer is shadowing
+   ↓ Quality varies by squad composition
+   ↓ Non-engineers block on engineers
+
+WITH THE HARNESS: VIBE methodology is codified tooling
+   → Prompts encode the workflow steps
+   → Agents do the synthesis and documentation
+   → Templates standardize the artifacts
+   → Validation gates check consistency
 ```
-Subtitle: "AI agents do the paperwork. Delivery person facilitates."
+
+Plus a short caption: *"Think test harness → delivery harness."*
 
 **What to say:**
-> "The framework codifies our methodology into AI agents that run inside VS Code. The delivery person facilitates workshops and captures sources — transcripts, customer documents, questionnaires. The AI does the synthesis, documentation, ideation, and handoff. 3 of the 5 phases can now run without an engineer in the room — which means engineers spend their time on the prototype, not the paperwork."
+> "Quick definition before I go further. A *delivery harness* is the same idea as a test harness for code — codified tooling that turns a methodology into an executable workflow. Today, the VIBE methodology lives in our heads. New TPMs learn by shadowing. Quality varies by who's on the squad.
+>
+> The harness moves that methodology into tooling — prompts that encode the workflow steps, agents that do the synthesis, templates that standardize the artifacts, validation gates that check consistency. The result: any squad can deliver to the standard of our best squads."
 
-**Don't:** Walk every phase in detail. They have the 1-pager for that.
+**Don't:** Get lost in tooling details. Stay at the conceptual level. Engineers in the room will recognize the pattern instantly.
 
 ---
 
-## Slide 4 — "But we already prototype" (2.5 min) ⭐ CRITICAL SLIDE
+## Slide 4 — Why adopt the harness (2.5 min) ⭐ CRITICAL SLIDE
 
-**Title:** *"What's actually different?"*
+**Title:** *"Why adopt a harness — why not let good squads keep doing what they do?"*
 
 **What to show:**
-Three columns:
+Three reasons, big and clear:
 
-| Today | With VIBE |
-|-------|-----------|
-| Quality varies by who's on the squad | Best practices encoded in agents |
-| "Let's build a dashboard" (default form factor) | Multi-form-factor exploration is structural |
-| Handoff is a slide deck | Handoff is `handoff-data.json` with source-cited claims |
+```
+1. SCALE
+   Good squads are scarce. The harness lets ANY squad deliver to good-squad standard
+   → More VIBE engagements without doubling headcount
+
+2. CONSISTENCY
+   Today's quality varies by squad composition
+   → Every customer gets the Siemens-standard engagement, not a coin flip
+
+3. EMPOWERMENT
+   3 of 5 phases run without an engineer
+   → AI-first consulting becomes a TPM-led practice, not engineer-bottlenecked
+```
 
 **What to say:**
-> "This is the question I'd ask if I were you. Three things are genuinely different.
-> 
-> *One — quality is process-dependent, not person-dependent.* A junior TPM with the framework produces the same artifacts as a senior one. The best practices aren't in someone's head anymore — they're in the agents.
-> 
-> *Two — form-factor exploration is structural.* Today, our default answer is 'another web dashboard.' The framework forces explicit evaluation of agentic, conversational, Copilot extension, and low-code paths every time. We stop building the same prototype shape over and over.
-> 
-> *Three — the handoff is a machine-readable package, not a deck.* Every claim in the handoff cross-references its source. No more 'the prototype was great but we lost the context.'"
+> "If I were you, I'd ask: 'good squads already deliver good VIBE engagements — why introduce tooling?' Three reasons.
+>
+> *One — scale.* Good squads are scarce. We can't hire our way to 50 VIBE engagements a year. The harness lets *any* squad — junior TPM, designer, new joiner — deliver to good-squad standard. We unlock more engagements without doubling Studio 42 headcount.
+>
+> *Two — consistency.* Today's quality is a coin flip depending on who's on the engagement. The harness encodes our best practices into the tooling, so every customer gets the Siemens-standard engagement. Not 'pretty good if you got the right TPM.'
+>
+> *Three — empowerment.* Three of the five phases — Discover, Disrupt, Ideate — now run without an engineer in the room. AI-first consulting becomes a TPM-led practice. Engineers stop being the bottleneck and start being the multiplier."
 
-**Don't:** Get defensive about today's work. Frame it as the next iteration of what's already good.
+**Don't:** Make this sound like a demotion for engineers. Frame it as engineers spending time on the prototype, not the paperwork.
 
-**Anticipate:** "Doesn't this just slow people down with process?" → "It's the opposite — the agents *are* the process. You type one command instead of writing the document."
+**Anticipate:** "Won't this dilute quality if anyone can do it?" → "The opposite — quality goes up because best practices are enforced by the tooling, not dependent on whoever's on the squad."
 
 ---
 
 ## Slide 5 — Contoso in action (1.5 min)
 
-**Title:** *"This works end-to-end today."*
+**Title:** *"The harness, end-to-end. Today."*
 
 **What to show:**
 - Screenshot of the docs site (or Contoso `customer-brief.md`) showing the €12M scenario
 - Inset: list of artifacts the demo produces (`PROJECT-CONTEXT.md`, `requirements-summary.md`, `selected-concept.md`, `engineering-brief.md`, scaffold code, `handoff-data.json`)
 
 **What to say:**
-> "There's a Contoso Field Services fixture in the framework — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief. Type `/vibe-demo`, hit enter, and you walk every phase of the framework against a fully-formed scenario. I'm not asking you to take this on faith — anyone in this room can run it in 15 minutes. I'd love to walk you through it after this meeting."
+> "There's a Contoso Field Services fixture in the harness — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief modeled on the kind of VIBE engagement we run today. Type `/vibe-demo`, hit enter, and the harness walks the full engagement — Discover, Disrupt, Ideate, engineering brief, handoff package — against a fully-formed scenario.
+>
+> I'm not asking you to take this on faith. Anyone in this room can run it in 15 minutes. I'd love to walk you through it after this meeting."
 
 **Don't:** Switch to a live demo. Save it for the follow-up.
 
 ---
 
-## Slide 6 — Track record (1 min)
+## Slide 6 — The floor we're raising (1 min)
 
-**Title:** *"This codifies what already worked."*
+**Title:** *"The harness codifies what already worked"*
 
 **What to show:**
 Three logos with one-line outcomes:
-- **Siemens Healthineers** — $19M deal · $140M 5yr consumption · "S42 was instrumental"
+- **Siemens Healthineers** — $19M deal · $140M 5yr consumption · *"S42 was instrumental"*
 - **Coca-Cola Hellenic** — Live workshop prototyping, Athens
 - **Novartis** — Synthetic audience personas, AI-native concept testing
 
-**What to say:**
-> "Worth being clear: this isn't a speculative bet. The framework codifies patterns from the engagements that already worked — Siemens' high-stakes design discipline, Coca-Cola's live-workshop iteration, Novartis' AI-native concept exploration. We're not inventing new methodology; we're making the existing methodology repeatable and faster."
+Caption: *"These engagements set the standard. The harness makes that standard reachable every time."*
 
-**Don't:** Overclaim. The deals weren't won *by* the framework — the framework codifies the patterns that won them.
+**What to say:**
+> "Important framing: the harness isn't a bet on something unproven. It codifies the patterns from the VIBE engagements that already worked — Siemens' high-stakes design discipline, Coca-Cola's live-workshop iteration, Novartis' AI-native concept exploration. These engagements set the standard. The harness makes that standard reachable on every VIBE engagement, not just the ones with our most experienced squads."
+
+**Don't:** Overclaim. The deals weren't won *by* the harness — the harness raises the floor so more engagements can hit that bar.
 
 ---
 
 ## Slide 7 — The economics (1 min)
 
-**Title:** *"Conservative case pays for itself if 1 of 3 pilots succeeds."*
+**Title:** *"Scaling AI-first consulting without scaling headcount"*
 
 **What to show:**
 A simplified version of the ROI table (full version in [roi-model.md](roi-model.md)):
@@ -149,59 +173,61 @@ A simplified version of the ROI table (full version in [roi-model.md](roi-model.
 | **Total / yr** | **$40K** | **$400K** | **$860K** |
 
 **What to say:**
-> "I'm not going to pretend the numbers are bulletproof — they depend on engagement volume and what we count as a deal-velocity lift. The point isn't the exact figure. The point is: even in the conservative case, where we assume no deal-velocity impact at all and just count Studio 42 hours saved, the framework pays for itself if 1 of 3 pilots succeeds. The full math is in the ROI doc — happy to walk through it after."
+> "I'm not going to pretend the numbers are bulletproof — they depend on VIBE engagement volume and what we count as a deal-velocity lift. The point isn't the exact figure. The point is: even in the conservative case, where we count only Studio 42 hours saved and zero deal velocity, the harness pays for itself many times over with no incremental cost. Full math in the ROI doc — happy to walk through it after."
 
 **Don't:** Defend every assumption from the slide. Refer them to the model.
 
 ---
 
-## Slide 8 — What "good" looks like (1.5 min)
+## Slide 8 — What changes for the squad (1.5 min)
 
-**Title:** *"Three squad scenarios after VIBE"*
+**Title:** *"Three squad scenarios after harness adoption"*
 
 **What to show:**
 Three short scenarios:
 
-> **TPM on a new engagement** — Day 1: kickoff transcript in, `PROJECT-CONTEXT.md` out by lunch. Day 3: validated concept selected. Day 5: engineering brief handed off.
+> **TPM on a new VIBE engagement** — Day 1: kickoff transcript in, `PROJECT-CONTEXT.md` out by lunch. Day 3: validated concept selected. Day 5: engineering brief handed off.
 
 > **Engineer on a Build phase** — Receives a structured brief with screen specs and data mapping, not a verbal "figure it out." Spends Day 1 building, not interviewing.
 
 > **Squad lead at handoff** — `handoff-data.json` validates internally before the customer sees it. Roadmap, backlog, limitations, vision — every claim source-cited.
 
 **What to say:**
-> "What does this actually look like in a squad's week? Three short scenarios. The throughline is: more time on the parts that need human judgment, less time on the parts that don't."
+> "What does this actually look like in a squad's week? Three short scenarios. The throughline: more time on the parts that need human judgment, less time on the parts that don't. The squad still does VIBE. The squad just doesn't do the paperwork."
 
 **Don't:** Promise speed without quality. Lead with quality, let speed follow.
 
 ---
 
-## Slide 9 — The pilot (1.5 min)
+## Slide 9 — The ask (1.5 min)
 
-**Title:** *"3 engagements. 8-12 weeks. 3 metrics."*
+**Title:** *"Adopt as default on the next 3 VIBE engagements"*
 
 **What to show:**
 ```
 THE ASK
-└── Approve a 3-engagement pilot on next qualifying Studio 42 engagements
+└── Adopt the harness as default tooling on the next 3 qualifying VIBE engagements
 
 DURATION
 └── 8-12 weeks (sequential with overlap)
 
 COST
-└── $0 — engagements are happening anyway
+└── $0 — engagements are happening anyway; harness is built
 
-EXIT CRITERIA
-├── Time-to-first-prototype < 5 days
-├── Customer NPS ≥ 8
-└── Squad lead would use again
+WHAT WE MEASURE
+├── Time-to-first-prototype (target < 5 days)
+├── Squad-lead receptiveness ("would use again")
+├── Customer NPS (target ≥ 8)
+└── Harness gaps surfaced during real engagements
 
 DECISION POINT
-├── 2 of 3 hit → recommend default adoption
-└── Otherwise → cheap learning, framework retired or rebuilt
+└── After engagement 3: formalize as standard tooling, or iterate
 ```
 
 **What to say:**
-> "Concrete ask: approve a 3-engagement pilot. Three engagements that are happening anyway. Eight to twelve weeks to run them. Three exit criteria, agreed up front, measured at the end. If 2 of 3 hit, I come back recommending default adoption across Studio 42. If they don't, we've spent zero incremental dollars and we know."
+> "Concrete ask: adopt the harness as default tooling on the next 3 VIBE engagements. Eight to twelve weeks to run them. We measure four things, agreed up front. After the third engagement, we either formalize the harness as standard Studio 42 tooling or iterate based on what we learn.
+>
+> This is *graduated adoption*, not a validation pilot. We're not testing whether VIBE works — we're scaling how we deliver it."
 
 **Don't:** Soften the ask. Be specific about what "yes" means.
 
@@ -213,13 +239,13 @@ DECISION POINT
 
 **What to show:**
 ```
-1. ✅  Approve the 3-engagement pilot
-2. 🎯  Help me identify the first 3 candidate engagements
-3. 📣  Endorse it openly — squad leads need air cover to try it
+1. ✅  Approve the harness as default tooling for next 3 VIBE engagements
+2. 🎯  Help identify the first 3 candidate engagements (range, not easy wins)
+3. 📣  Endorse it openly — squad leads need air cover to adopt new tooling mid-quarter
 ```
 
 **What to say:**
-> "Three things from you. One: approve the pilot. Two: help me pick the first 3 candidate engagements — I want ones that represent the range of what we do, not just easy wins. Three: endorse it openly. Squad leads need to know it's safe to try something new mid-engagement. That's it."
+> "Three things from you today. One: approve adoption of the harness on the next 3 VIBE engagements. Two: help me pick the right 3 — I want engagements that represent the range of what Studio 42 does, not just easy wins. Three: endorse it openly. Squad leads need to know it's safe to change how they deliver mid-quarter. That's it."
 
 **Don't:** End on a feature recap. End on the explicit ask.
 
@@ -227,11 +253,11 @@ DECISION POINT
 
 ## Appendix slides (have ready, don't show unless asked)
 
-- **Architecture overview** — what's in `.github/`, how agents are wired, where state lives
+- **Harness architecture overview** — what's in `.github/`, how agents are wired, where state lives
 - **The 14 prompts and 7 agents** — list with one-line descriptions (from [docs site reference](../docs-site/docs/reference/prompts.md))
 - **HVE alignment** — task pipeline, evidence-based decisions, opinionated prompts (from [impact.md](../docs-site/docs/why-vibe/impact.md))
-- **Risk register** — what could go wrong in pilot and how it's mitigated (see [demo-script.md](demo-script.md) Q&A section for objection handlers)
-- **Comparison: VIBE vs incumbent SI approach** — 4-week prototype vs 9-month roadmap PDF (from Contoso scenario)
+- **Risk register** — what could go wrong in adoption and how it's mitigated (see [demo-script.md](demo-script.md) Q&A section for objection handlers)
+- **Comparison: harness-enabled VIBE vs incumbent SI approach** — 4-week prototype vs 9-month roadmap PDF (from Contoso scenario)
 
 ---
 
@@ -239,15 +265,15 @@ DECISION POINT
 
 | Slide | Target | Cumulative |
 |-------|--------|-----------|
-| 1 — The shift | 1:00 | 1:00 |
+| 1 — Scaling VIBE | 1:00 | 1:00 |
 | 2 — Time today | 1:30 | 2:30 |
-| 3 — What changes | 1:30 | 4:00 |
-| 4 — Differentiation ⭐ | 2:30 | 6:30 |
+| 3 — What's a harness | 1:30 | 4:00 |
+| 4 — Why adopt ⭐ | 2:30 | 6:30 |
 | 5 — Contoso | 1:30 | 8:00 |
-| 6 — Track record | 1:00 | 9:00 |
+| 6 — Floor we're raising | 1:00 | 9:00 |
 | 7 — Economics | 1:00 | 10:00 |
-| 8 — What good looks like | 1:30 | 11:30 |
-| 9 — The pilot | 1:30 | 13:00 |
+| 8 — Squad scenarios | 1:30 | 11:30 |
+| 9 — The ask | 1:30 | 13:00 |
 | 10 — Decisions | 1:00 | 14:00 |
 | Q&A buffer | 1:00 | 15:00 |
 
@@ -258,7 +284,7 @@ If you're tight on time, the cuts in priority order are: slide 8 → slide 6 →
 ## Final sanity check before the meeting
 
 - [ ] Numbers in slides 2, 6, 7 sanity-checked against [roi-model.md](roi-model.md) and source docs
-- [ ] Demo confirmed runnable (`/vibe-demo` on a fresh clone) in case anyone asks to see it
+- [ ] Harness confirmed runnable (`/vibe-demo` on a fresh clone) in case anyone asks to see it
 - [ ] 1-pager sent as pre-read 24-48hrs before
-- [ ] Identified 3 candidate engagements so you can answer "which ones?" in the room
-- [ ] Practiced slide 4 out loud at least twice
+- [ ] Identified 3 candidate VIBE engagements so you can answer "which ones?" in the room
+- [ ] Practiced slide 4 out loud at least twice — the "why adopt a harness" answer is the make-or-break moment

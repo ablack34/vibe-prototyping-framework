@@ -1,27 +1,31 @@
-# VIBE Prototyping Framework — Executive Summary
+# Scaling VIBE — The Delivery Harness for AI-First Consulting
+
+> **"You just need a +1."**
 
 **For: Studio 42 / ISE Leadership** · One page. Read in 90 seconds.
 
 ---
 
-## The shift
+## Where we are
 
-Studio 42 already prototypes. We're good at it — Siemens Healthineers ($19M deal / $140M 5yr consumption), Coca-Cola Hellenic (built live in an Athens workshop), Novartis. The problem isn't the *output*; it's the *cost of producing it*.
+**VIBE Prototyping is already how Studio 42 delivers AI-first consulting.** It's working — Siemens Healthineers ($19M deal / $140M 5yr consumption), Coca-Cola Hellenic (built live in an Athens workshop), Novartis. The offering isn't the question.
 
-**Today: roughly 40% of every engagement is manual paperwork** — meeting notes, discovery write-ups, requirements docs, ideation summaries, handoff decks. That's 20+ hours per engagement, person-dependent quality, and zero reuse between customers.
+**Throughput is.** Roughly **40% of every VIBE engagement disappears into manual delivery work** — meeting notes, discovery synthesis, requirements docs, ideation summaries, handoff decks. 20+ hours per engagement, quality dependent on who's on the squad, zero reuse between customers.
 
-**The VIBE Prototyping Framework codifies our methodology into AI agents that run inside VS Code.** The delivery person facilitates workshops and captures sources. The AI does the paperwork. **3 of 5 phases now run without an engineer in the room.**
+To scale AI-first consulting, we don't need a new offering. We need a **delivery harness**: codified prompts, agents, and instructions that turn the VIBE methodology into a repeatable, AI-assisted workflow.
+
+> **Harness?** Like a test harness for code — a *delivery harness* is the tooling that turns a methodology into an executable workflow. The methodology used to live in people's heads. Now it lives in the harness.
 
 ---
 
-## Why this matters now
+## What the harness changes
 
 | | |
 |---|---|
-| 🛠️ **Already built** | Framework, docs site, demo fixture, agents — all complete and runnable today |
-| 📈 **Differentiates ISE** | Customers see a working prototype in days, not the 9-month "roadmap PDF" their incumbent SI is selling |
-| 🎓 **Empowers the squad** | A TPM with the framework produces the same quality as an experienced one — best practices are encoded in the tooling |
-| ♻️ **Compounds** | Every engagement improves the framework; every improvement helps the next engagement |
+| 🤖 **Agents do the paperwork** | TPM facilitates and captures sources; the harness handles synthesis, documentation, ideation, and handoff |
+| 👥 **3 of 5 phases run without an engineer** | Discover, Disrupt, Ideate driven by TPM or designer — engineers spend Build time on the prototype, not interviewing the squad |
+| 📊 **Process-dependent quality** | A junior TPM with the harness produces the same artifacts as a senior one — best practices encoded in the tooling, not tribal knowledge |
+| ♻️ **Improvements compound** | Every engagement that uses the harness surfaces an improvement that helps the next one |
 
 ---
 
@@ -29,30 +33,32 @@ Studio 42 already prototypes. We're good at it — Siemens Healthineers ($19M de
 
 - **Run it yourself**: `/vibe-demo` in any clone of the template seeds a full Contoso Field Services scenario — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief — and walks Discover → Disrupt → Ideate → Build → Deliver end-to-end
 - **Browse the docs**: [https://wonderful-flower-0a2a87e03.7.azurestaticapps.net](https://wonderful-flower-0a2a87e03.7.azurestaticapps.net)
-- **Track record**: the framework codifies the patterns that delivered Siemens, Novartis, and Coca-Cola
+- **Track record**: the harness codifies the patterns that delivered Siemens, Novartis, and Coca-Cola. **The floor we're raising.**
 
 ---
 
 ## The ask
 
-**Approve a 3-engagement pilot** on the next 3 qualifying Studio 42 engagements.
+**Adopt the harness as the default tooling on the next 3 VIBE engagements, then formalize across the practice.**
 
 | | |
 |---|---|
-| **Cost** | None. The framework runs on engagements that are happening anyway. |
+| **Cost** | $0 — the harness is built and the engagements are happening anyway |
 | **Duration** | 8-12 weeks (3 engagements sequentially, with overlap) |
-| **Exit criteria** | Time-to-first-prototype < 5 days · Customer NPS ≥ 8 · Squad lead would use again |
-| **Decision point** | If 2 of 3 pilots hit → recommend default adoption. If not → cheap learning. |
+| **What we measure** | Time-to-first-prototype · squad-lead receptiveness · customer NPS · harness gaps |
+| **Decision point** | After engagement 3: formalize as standard Studio 42 tooling, or iterate based on what we learn |
+
+This is *graduated adoption*, not a validation pilot. We're not testing whether VIBE works — we're scaling the way we deliver it.
 
 ---
 
-## "But we already prototype — what's actually different?"
+## "Why adopt a harness — why not let good squads keep doing what they do?"
 
-Three things:
+Three reasons:
 
-1. **Quality is process-dependent, not person-dependent.** A junior TPM produces the same artifacts as a senior one because best practices are encoded in the agents, not in tribal knowledge.
-2. **Form-factor exploration is structural, not optional.** Every engagement evaluates web / agentic / conversational / Copilot extension / low-code paths before defaulting to "another dashboard."
-3. **The handoff is a validated machine-readable package, not a deck.** `handoff-data.json` cross-references every claim against its source — no more "the prototype was great but we lost the context."
+1. **Scale.** Good squads are scarce. The harness lets *any* squad deliver to good-squad standard, which means we can run more VIBE engagements without doubling Studio 42 headcount.
+2. **Consistency.** Today's VIBE delivery quality varies by who's on the team. The harness encodes our best practices into the tooling — so every customer gets the Siemens-standard engagement, not a coin flip.
+3. **Empowerment.** Non-engineers can drive 3 of 5 phases independently. We stop blocking on engineering capacity. AI-first consulting becomes a TPM-led practice, not an engineer-bottlenecked one.
 
 ---
 

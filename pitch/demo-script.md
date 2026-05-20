@@ -1,8 +1,10 @@
-# Live Demo Script — VIBE Prototyping Framework
+# Live Demo Script — VIBE Delivery Harness
 
 **Audience:** Studio 42 / ISE leadership (follow-up after the main pitch)
 **Format:** 15-min live demo on your laptop
-**Goal:** Make the framework tangible. Show that "agents do the paperwork" is real, not aspirational.
+**Goal:** Make the harness tangible. Show that "agents do the paperwork" is real, not aspirational.
+
+**Framing note:** This demo is *not* selling VIBE — VIBE is Studio 42's existing AI-first consulting offering. This demo shows what changes when a VIBE engagement is delivered through the harness.
 
 ---
 
@@ -29,11 +31,11 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Say:**
 > "Quick scenario. Contoso Field Services — HVAC company across EMEA, 280 technicians, 14 dispatchers in Warsaw matching ~180 work orders a day to the right tech using a 2008 ASP.NET system. SLA breaches cost them €4M in penalties last year, another €6M in lost renewals. Total addressable pain: roughly €12M annually.
 >
-> Their incumbent SI quoted 9 months for a roadmap PDF. The CIO wants something tangible in 4 weeks. That's the engagement.
+> Their incumbent SI quoted 9 months for a roadmap PDF. The CIO wants something tangible in 4 weeks. This is a fairly typical VIBE engagement scenario.
 >
-> What I'm going to do is walk this engagement from raw customer brief to engineering-ready prototype concept — in about 12 minutes. I'm not going to skip steps, but I will skip some of the in-between commentary."
+> What I'm going to do is run this VIBE engagement through the harness — from raw customer brief to engineering-ready prototype concept — in about 12 minutes. The harness does what we already do, just faster and more consistently."
 
-**Why this works:** Establishes stakes. €12M, 4-week deadline, beat the incumbent. Anyone in the room understands those numbers.
+**Why this works:** Establishes stakes. €12M, 4-week deadline, beat the incumbent — anyone in the room understands those numbers. Positions VIBE as the existing offering and the harness as the accelerator.
 
 ---
 
@@ -47,7 +49,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Wait** for the agent to confirm. When it asks "ok to proceed?" → "yes".
 
 **Say (while it runs):**
-> "One command. The agent's copying the Contoso fixture into `sources/` — that's the customer brief I just showed you, two questionnaires, two transcripts, three CSV files. It's also pre-filling `PROJECT-CONTEXT.md` with the customer details and creating the engagement folder structure. This is the equivalent of about 90 minutes of setup that a TPM would normally do by hand before they can even start."
+> "One command. The harness is copying the Contoso fixture into `sources/` — the customer brief, two questionnaires, two transcripts, three CSV files. It's also pre-filling `PROJECT-CONTEXT.md` with the customer details and creating the engagement folder structure. This is the equivalent of about 90 minutes of setup that a TPM would normally do by hand before they can even start the engagement."
 
 **Show when done:** The `sources/` folder populated, `templates/PROJECT-CONTEXT.md` with Sandra Holtz / Matthias Köhler filled in.
 
@@ -60,7 +62,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Say (while it runs):**
 > "Now the Discover agent is reading every source — the brief, the questionnaires, both Teams transcripts. It's extracting the problem statement, stakeholder map, success metrics, constraints. Watch the quality grading column on the right — every field gets an A/B/C grade based on how strongly the source material supports it. If something's a C, the agent flags it for the TPM to clarify with the customer.
 >
-> This is the part where TPMs today spend 4-6 hours synthesizing notes. The framework does it in about 90 seconds, and every claim is source-cited so you can verify."
+> This is the part where TPMs today spend 4-6 hours synthesizing notes. The harness does it in about 90 seconds, and every claim is source-cited so the TPM can verify. The TPM still owns the output — they just don't write it from scratch."
 
 **Show when done:** The generated [`engagement/contoso-dispatcher-ai/PROJECT-CONTEXT.md`](../engagement/) — point at the source citations and the A/B/C grading.
 
@@ -75,7 +77,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Say (while they run):**
 > "Disrupt frames the $50K-vs-$50M question — what's the smallest valuable thing we could build, what's the most ambitious. Generates `requirements-summary.md`.
 >
-> Then Ideate brainstorms 2-3 prototype concepts across form factors. This is the slide-4 thing from the pitch — we don't default to 'another web dashboard.' Watch what it generates: it'll evaluate web, agentic, conversational, Copilot extension, and low-code paths for the Contoso problem. For dispatch, the answer is probably web + an agent — but the framework forces the explicit consideration."
+> Then Ideate brainstorms 2-3 prototype concepts across form factors. This is the consistency thing from slide 4 of the deck — without the harness, our default ideation answer drifts toward 'another web dashboard.' With the harness, every engagement explicitly evaluates web, agentic, conversational, Copilot extension, and low-code paths. For dispatch, the answer is probably web + an agent — but the harness forces the explicit consideration every time, on every engagement."
 
 **Show when done:**
 - [`engagement/contoso-dispatcher-ai/requirements-summary.md`](../engagement/) — prioritized use cases
@@ -84,7 +86,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 - [`engagement/contoso-dispatcher-ai/engineering-brief.md`](../engagement/) — the handoff to the engineer
 
 **Highlight the engineering brief:**
-> "This is what changes the Build phase. Today, an engineer joins an engagement and has to interview the TPM to extract what's already in everyone else's heads. Now they get this: validated concept, screen specs, data mapping, success criteria. They start building on Day 1, not Day 3."
+> "This is what changes the Build phase. Today, an engineer joins a VIBE engagement and has to interview the TPM to extract what's already in everyone else's heads. With the harness, they get this on Day 1: validated concept, screen specs, data mapping, success criteria. They start building immediately. Engineer time becomes prototype time."
 
 ---
 
@@ -95,7 +97,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Say:**
 > "Final piece. The Deliver phase generates `handoff-data.json` — a single source of truth for the customer handoff. Vision, roadmap, backlog (Epics/Features/Stories), known limitations, demo notes. Every claim cross-references back to its source artifact. If the vision says 'reduce dispatcher decision time from 6 min to 60s,' that traces back to the Sandra Holtz quote in the kickoff transcript.
 >
-> Today, the handoff is a slide deck the TPM stays up late writing. Tomorrow, it's a validated package that the agent has already checked for consistency before the customer sees it."
+> Today, the VIBE handoff is a slide deck the TPM stays up late writing. With the harness, it's a validated package the agents have already checked for consistency before the customer sees it. Same VIBE artifact, lower delivery cost, higher quality floor."
 
 ---
 
@@ -104,9 +106,9 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Switch to:** A blank chat or a slide
 
 **Say:**
-> "What you just saw — Discover, Disrupt, Ideate, engineering brief, handoff package — would normally take a Studio 42 squad somewhere between 5 and 10 working days. We did it in 12 minutes against a fully-formed fixture. Real engagements are messier, obviously — customers don't hand you perfect questionnaires. But the framework does the synthesis work in real time. The squad's job becomes facilitation and judgment, not paperwork.
+> "What you just saw — Discover, Disrupt, Ideate, engineering brief, handoff package — is what a Studio 42 squad delivers on every VIBE engagement today. Normally it takes somewhere between 5 and 10 working days. The harness did it in 12 minutes against a fully-formed fixture. Real engagements are messier — customers don't hand you perfect questionnaires. But the harness does the synthesis work in real time. The squad's job becomes facilitation and judgment, not paperwork.
 >
-> The ask is the same as in the deck: 3 engagements, 8-12 weeks, three exit criteria. If 2 of 3 hit, I come back recommending default adoption. If they don't, we know cheaply.
+> The ask is the same as in the deck: adopt the harness as default tooling on the next 3 VIBE engagements. After the third, we either formalize it as standard Studio 42 tooling or iterate based on what we learn.
 >
 > Questions?"
 
@@ -115,28 +117,34 @@ If you're presenting remotely, share the VS Code window only — not the full de
 ## Likely questions + answers
 
 ### "How do you know the AI is right?"
-> "Every field is graded A/B/C based on source support. Every claim cites a source. The TPM reviews — the agent never finalizes anything without human approval. It's faster, not unsupervised."
+> "Every field is graded A/B/C based on source support. Every claim cites a source. The TPM reviews — the harness never finalizes anything without human approval. It's faster, not unsupervised."
 
 ### "What about hallucinations?"
-> "Same answer. Hallucinations happen when AI generates from no source. The framework forces source-grounding. If the source material doesn't support a claim, the field is graded C and flagged for clarification, not invented."
+> "Same answer. Hallucinations happen when AI generates from no source. The harness forces source-grounding. If the source material doesn't support a claim, the field is graded C and flagged for clarification, not invented."
 
 ### "Doesn't this slow people down with process?"
-> "It's the opposite. The agents *are* the process. You type one command instead of writing the document. The 'process' is one keystroke."
+> "It's the opposite. The harness *is* the process. You type one command instead of writing the document. The 'process' is one keystroke."
 
 ### "What if a TPM hates it?"
-> "That's literally one of the pilot exit criteria — 'squad lead would use again.' If TPMs hate it, that's a fail signal and we rebuild or retire."
+> "That's literally one of the adoption success metrics — 'squad lead would use again.' If TPMs hate it, that's a fail signal and we rebuild or retire."
 
-### "Can the framework handle [specific weird engagement type]?"
-> "Honest answer: I don't know yet. That's why the pilot is 3 engagements that *represent the range* of what we do, not 3 easy wins. Help me pick the right 3."
+### "Can the harness handle [specific weird engagement type]?"
+> "Honest answer: I don't know yet. That's why the 3 adoption engagements *represent the range* of what we do, not 3 easy wins. Help me pick the right 3."
 
 ### "What's the maintenance cost?"
 > "Roughly equivalent to maintaining any other internal tool — bug fixes, occasional new agent or prompt. Improvements compound: every engagement that uses it surfaces an improvement that helps the next one."
 
-### "Who owns the framework after the pilot?"
-> "If we adopt it, that's the next conversation — ideally a part-time owner from Studio 42 ops. Today it's me. I'm not asking for a headcount decision today; I'm asking for permission to gather the data that will inform that decision."
+### "Who owns the harness after adoption?"
+> "If we formalize it, that's the next conversation — ideally a part-time owner from Studio 42 ops. Today it's me. I'm not asking for a headcount decision today; I'm asking for permission to gather the data that will inform that decision."
 
 ### "Can a customer see we used AI to write their docs?"
-> "If they look at the artifacts, yes — they're machine-generated. But they're also reviewed and approved by humans before anything leaves Studio 42. We've been doing this with code for a year; this just extends the pattern to engagement artifacts."
+> "If they look at the artifacts, yes — they're machine-generated. But they're also reviewed and approved by humans before anything leaves Studio 42. We've been doing this with code for a year; the harness just extends the pattern to engagement artifacts."
+
+### "Isn't this just rebranding existing prompts?"
+> "It's more than prompts — it's prompts + specialized agents + templates + validation gates, wired together into an executable workflow. The point is the integration. The harness is the difference between 'we have some useful prompts' and 'a junior TPM can deliver a Siemens-standard engagement.'"
+
+### "Why not just give the prompts to squads and let them use them as they want?"
+> "Optional tooling becomes nobody's tooling. The harness only delivers value when it's the default — that's what makes quality process-dependent instead of person-dependent. That's the whole point of the ask."
 
 ---
 
@@ -146,9 +154,9 @@ Things that can go wrong and how to recover:
 
 | Problem | Recovery |
 |---------|----------|
-| Copilot is slow / hangs | "Let me skip ahead — here's what it would have produced" — switch to a pre-baked engagement folder from an earlier demo run |
+| Copilot is slow / hangs | "Let me skip ahead — here's what the harness would have produced" — switch to a pre-baked engagement folder from an earlier demo run |
 | Network drops | Same — pre-baked engagement folder. Always have one ready in a sibling directory. |
-| Agent gives an unexpected output | "Interesting — let me note that as feedback. The point of pilots is to find exactly this kind of thing." Then keep moving. |
+| Agent gives an unexpected output | "Interesting — let me note that as feedback. The point of the adoption period is to find exactly this kind of thing." Then keep moving. |
 | Someone asks a question you can't answer | "Honest answer: I don't know. Let me find out and follow up." Don't bluff. |
 | You realize you forgot to reset state | Apologize quickly, run the reset commands from [README.md](README.md), restart |
 
@@ -161,4 +169,4 @@ Things that can go wrong and how to recover:
 - Send the [executive-1-pager.md](executive-1-pager.md) again as a thank-you note within 4 hours
 - Capture any objections raised that aren't in this script and add them to "Likely questions" above
 - If someone asks for the deck, send the [pitch-deck-outline.md](pitch-deck-outline.md) — or, better, the rendered PowerPoint if you've built it
-- If they say yes to the pilot: schedule a 30-min follow-up within the week to pick the 3 candidate engagements
+- If they approve adoption: schedule a 30-min follow-up within the week to pick the 3 candidate VIBE engagements
