@@ -9,7 +9,7 @@ A step-by-step walkthrough of running a complete VIBE engagement.
 
 ## Step 1: Create the Workspace
 
-On the framework's GitHub page, click **"Use this template" → "Create a new repository"**. Name it `<customer>-<engagement>` (e.g., `contoso-field-scheduling`) and make it private.
+On the [framework's GitHub page](https://github.com/ablack34/vibe-prototyping-framework), click **["Use this template" → "Create a new repository"](https://github.com/ablack34/vibe-prototyping-framework/generate)**. Name it `<customer>-<engagement>` (e.g., `contoso-field-scheduling`) and make it private.
 
 Then clone it locally and open in VS Code:
 
