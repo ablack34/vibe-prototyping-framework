@@ -87,3 +87,9 @@ AI-supported tools that help RGM teams **explore what-if scenarios** across pric
 > *This prototype was built and iterated live during an onsite workshop in Athens and was successful in helping the customer articulate needs, priorities, and requirements in real time.*
 
 </div>
+
+---
+
+:::tip Raising the floor
+These engagements set the standard. The **[delivery harness](/why-vibe/scaling-vibe)** codifies the patterns that made them successful — and makes them reachable on every VIBE engagement, not just the ones with our most experienced squads.
+:::

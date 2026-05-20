@@ -123,3 +123,9 @@ By evolving proven design thinking methods, this service helps us identify and s
     <p>Actual code and real-working prototypes</p>
   </div>
 </div>
+
+---
+
+:::tip How we deliver VIBE at scale
+VIBE Prototyping is the Studio 42 offering. The **[delivery harness](/why-vibe/scaling-vibe)** is the tooling we wrap around it so any squad can deliver to good-squad standard. The next page explains what the harness is and why it matters.
+:::
