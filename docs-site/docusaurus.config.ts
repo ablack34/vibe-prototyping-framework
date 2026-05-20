@@ -11,7 +11,7 @@ const config: Config = {
     v4: true,
   },
 
-  url: 'https://vibe.studio42.dev',
+  url: 'https://wonderful-flower-0a2a87e03.7.azurestaticapps.net',
   baseUrl: '/',
 
   organizationName: 'ablack34',

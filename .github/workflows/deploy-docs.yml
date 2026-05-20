@@ -1,4 +1,4 @@
-name: Deploy Docs (GitHub Pages)
+name: Deploy Docs (Azure Static Web Apps)
 
 on:
   push:
@@ -8,22 +8,10 @@ on:
       - ".github/workflows/deploy-docs.yml"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
-  build:
-    name: Build Docusaurus
+  deploy:
+    name: Build & Deploy Docusaurus to SWA
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: docs-site
     steps:
       - uses: actions/checkout@v4
 
@@ -33,22 +21,18 @@ jobs:
           cache: npm
           cache-dependency-path: docs-site/package-lock.json
 
-      - run: npm ci
-      - run: npm run build
+      - name: Install & Build
+        working-directory: docs-site
+        run: |
+          npm ci
+          npm run build
 
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          path: docs-site/build
-
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          azure_static_web_apps_api_token: ${{ secrets.DOCS_SWA_DEPLOYMENT_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: docs-site/build
+          output_location: ""
+          skip_app_build: true
