@@ -106,7 +106,6 @@ Section 3: "Problem Space"
 - "What data does the customer have? (format, volume, sensitivity)" (long text)
 
 Section 4: "Engagement Scoping"
-- "Recommended engagement size" (choice, required: XS - 2 weeks / S - 3-4 weeks / M - 4 weeks / L - 4+ weeks)
 - "Requested start date" (date)
 - "Known risks or blockers" (long text)
 - "Is this a $50K problem or a $50M problem? Your honest assessment." (long text, required)

@@ -100,7 +100,7 @@ You don't have to take any of this on faith. The harness ships with a complete d
   <div className="value-card">
     <div className="value-icon">▶️</div>
     <h3>3 — Run the engagement</h3>
-    <p>Click the prompts the agent suggests: Discover → Disrupt → Ideate → Build → Deliver. Watch the artifacts populate.</p>
+    <p>Click the prompts the agent suggests: Discover → Define → Ideate → Build → Deliver. Watch the artifacts populate.</p>
   </div>
   <div className="value-card">
     <div className="value-icon">📖</div>

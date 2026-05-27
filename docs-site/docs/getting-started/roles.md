@@ -9,12 +9,12 @@ Different team members use different parts of the framework. Find your role belo
 
 ## TPM / Technical Product Manager
 
-**You drive** Discover, Disrupt, Ideate, and Deliver — the majority of the engagement.
+**You drive** Discover, Define, Ideate, and Deliver — the majority of the engagement.
 
 | Phase | What You Do | Key Commands |
 |-------|------------|-------------|
 | **Discover** | Send questionnaires, process transcripts, capture insights | `/vibe-kickoff`, `/vibe-questionnaire`, `/vibe-transcript`, `/vibe-capture` |
-| **Disrupt** | Frame business value, prioritize use cases, get customer sign-off | `@VIBE Disrupt` |
+| **Define** | Frame business value, prioritize use cases, get customer sign-off | `@VIBE Define` |
 | **Ideate** | Brainstorm concepts, visualize with Spark, share with customer | `/vibe-ideate` |
 | **Build** | Run check-ins, process feedback | `/vibe-check-in` |
 | **Deliver** | Generate backlog and handoff | `/vibe-backlog-gen`, `/vibe-handoff` |

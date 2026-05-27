@@ -29,7 +29,7 @@ Use this:
 | PROJECT-CONTEXT.md populated | Not the empty template; has customer name and problem statement | **critical** for Discover |
 | Sources present | `sources/` has at least one file (other than `meeting-templates.md`) | warn for Discover |
 | Discovery artifacts | `discovery-summary.md` exists in `engagement/<name>/` if state says Discover is complete | warn |
-| Requirements signed off | `templates/requirements-summary.md` is populated and not just placeholders | warn for Disrupt+ |
+| Requirements signed off | `templates/requirements-summary.md` is populated and not just placeholders | warn for Define+ |
 | Concept selected | `selected-concept.md` exists in `engagement/<name>/` if state says Ideate is complete | warn |
 | Engineering brief present | `engineering-brief.md` exists in `engagement/<name>/` if state says Build has started | **critical** for Build |
 | Form-factor declared | `selected-concept.md` includes a clear `formFactor` value | warn |

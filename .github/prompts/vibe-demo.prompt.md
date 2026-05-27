@@ -60,12 +60,11 @@ For the `contoso` demo, fill `templates/PROJECT-CONTEXT.md` with:
 - Customer: `Contoso Field Services`
 - Engagement: `Dispatcher AI`
 - Problem statement: `SLA breaches on premium HVAC service contracts (Platinum 2hr / Gold 4hr) cost ~€4M/year in penalties and another ~€6M/year in lost renewals. 14 dispatchers manually match ~180 work orders/day to 280 EMEA technicians using a 2008 ASP.NET system. Customer wants AI to suggest the best technician per work order, flag SLA risk early, and free dispatcher attention.`
-- Size: `S` (3-4 weeks)
 - Sponsor: `Sandra Holtz, COO`
 - Technical contact: `Matthias Köhler, Director of Operations Tech`
 - Account team contact: `Priya Raman`
 
-Leave other fields empty — they'll fill in as the discovery and disrupt agents process the sources.
+Leave other fields empty — they'll fill in as the discovery and define agents process the sources.
 
 ### Step 4 — Initialize engagement structure
 
@@ -76,7 +75,6 @@ Create:
   - `customer: "Contoso Field Services"`
   - `engagement: "Dispatcher AI"`
   - `engagementKebab: "contoso-dispatcher-ai"`
-  - `size: "S"`
   - `phase: "discover"`
   - `createdAt: <now>`
   - `demoFixture: "contoso"`
@@ -108,7 +106,7 @@ Show this summary:
                                         Shows how the agent extracts a populated picture
                                         from questionnaires + transcripts automatically.
 
-   2. @VIBE Disrupt                     Frames the $50M problem, prioritizes use cases.
+   2. @VIBE Define                       Frames the $50M problem, prioritizes use cases.
                                         Watch it surface "SLA early-warning" as the
                                         sequenced first deliverable (per workshop transcript).
 

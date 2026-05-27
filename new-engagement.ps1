@@ -155,7 +155,7 @@ Write-Host "  ✓ Engagement workspace ready!" -ForegroundColor Green
 Write-Host ""
 Write-Host "  Next steps:" -ForegroundColor Cyan
 Write-Host "  1. Open Copilot Chat (Ctrl+Shift+I) in Agent mode" -ForegroundColor White
-Write-Host "  2. Type: /vibe-kickoff customer=`"$Customer`" problem=`"describe the problem`" size=S" -ForegroundColor White
+Write-Host "  2. Type: /vibe-kickoff customer=`"$Customer`" problem=`"describe the problem`"" -ForegroundColor White
 Write-Host "  3. Full guide: https://aka.ms/vibe-prototyping (or docs/README.md)" -ForegroundColor White
 Write-Host ""
 Write-Host "  MCP servers are pre-configured. Click the tools icon in Copilot Chat to enable them." -ForegroundColor Gray

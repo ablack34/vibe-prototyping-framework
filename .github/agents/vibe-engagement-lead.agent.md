@@ -19,7 +19,7 @@ handoffs:
     prompt: "Process a meeting transcript for this engagement."
     send: true
   - label: "💡 Frame the Problem"
-    agent: VIBE Disrupt
+    agent: VIBE Define
     prompt: "Begin problem framing and use case prioritization."
     send: true
   - label: "💡 Ideate Concepts"
@@ -38,7 +38,7 @@ handoffs:
 
 # VIBE Engagement Lead
 
-Orchestrator agent for VIBE Prototyping engagements. Manages the engagement lifecycle across all five phases (Discover → Disrupt → Ideate → Design & Develop → Deliver), tracks state, and delegates to specialized phase agents.
+Orchestrator agent for VIBE Prototyping engagements. Manages the engagement lifecycle across all five phases (Discover → Define → Ideate → Design & Develop → Deliver), tracks state, and delegates to specialized phase agents.
 
 This agent acts as the "home base" for the engagement. It knows what phase you are in, what has been completed, and what to do next. Non-technical team members should start here.
 
@@ -71,7 +71,6 @@ Create the engagement tracking structure when starting a new engagement. Ask for
 
 - Customer name
 - Project name (short, descriptive)
-- Engagement size (XS / S / M / L)
 - Squad members and roles
 - Problem statement (even a rough one)
 
@@ -90,13 +89,12 @@ Initialize `state.json`:
 {
   "engagement": "{{engagement-name}}",
   "customer": "{{customer-name}}",
-  "size": "S",
   "currentPhase": "discover",
   "startDate": "{{YYYY-MM-DD}}",
   "squad": [],
   "phases": {
     "discover": { "status": "not-started", "artifacts": [] },
-    "disrupt": { "status": "not-started", "artifacts": [] },
+    "define": { "status": "not-started", "artifacts": [] },
     "ideate": { "status": "not-started", "artifacts": [] },
     "design-develop": { "status": "not-started", "artifacts": [] },
     "deliver": { "status": "not-started", "artifacts": [] }
@@ -150,9 +148,9 @@ Update `state.json` with phase status as work progresses.
 
 Proceed to Phase 3 when the user confirms discovery is complete (PROJECT-CONTEXT.md is filled, requirements are identified).
 
-### Phase 3: Disrupt
+### Phase 3: Define
 
-Guide the user to frame the problem and prioritize use cases. Hand off to `VIBE Disrupt` agent.
+Guide the user to frame the problem and prioritize use cases. Hand off to `VIBE Define` agent.
 
 Key questions this phase answers:
 
@@ -281,10 +279,10 @@ Use ✅ for completed items and ⬜ for incomplete items. If emoji don't render 
 
 - If no sources processed yet: suggest `/vibe-questionnaire` to generate questionnaires, then `/vibe-transcript` if meetings exist
 - If sources exist but not ingested: suggest clicking **🔍 Start Discovery** to process them
-- If 7+ readiness fields filled: suggest moving to Disrupt phase
+- If 7+ readiness fields filled: suggest moving to Define phase
 - If gaps remain: list each gap with a specific action to close it
 
-**Disrupt phase:**
+**Define phase:**
 
 - If no requirements doc: suggest clicking **💡 Frame the Problem**
 - If requirements exist: suggest moving to Ideate phase
@@ -313,8 +311,8 @@ Use ✅ for completed items and ⬜ for incomplete items. If emoji don't render 
 
 Do not suggest moving to the next phase until the current phase's minimum criteria are met:
 
-- **Discover → Disrupt**: 7/9 readiness fields filled
-- **Disrupt → Ideate**: requirements-summary.md exists with prioritized use cases
+- **Discover → Define**: 7/9 readiness fields filled
+- **Define → Ideate**: requirements-summary.md exists with prioritized use cases
 - **Ideate → Design & Develop**: selected concept + engineering brief produced
 - **Design & Develop → Deliver**: prototype is deployed (state.json has deployment URL)
 
@@ -346,8 +344,8 @@ Rules:
 Examples by phase:
 
 - Discover (no sources yet): `👉 NEXT: Click "🎙️ Process Transcript" to extract context from your Teams meetings. Or click "🔍 Start Discovery" if you don't have recordings.`
-- Discover (7/9 fields filled): `👉 NEXT: Click "💡 Frame the Problem" to move to the Disrupt phase.`
-- Disrupt complete: `👉 NEXT: Click "💡 Ideate Concepts" to brainstorm AI-powered prototype concepts.`
+- Discover (7/9 fields filled): `👉 NEXT: Click "💡 Frame the Problem" to move to the Define phase.`
+- Define complete: `👉 NEXT: Click "💡 Ideate Concepts" to brainstorm AI-powered prototype concepts.`
 - Ideate complete: `👉 NEXT: Click "🔨 Start Building" to hand the engineering brief to the dev team.`
 - Prototype deployed: `👉 NEXT: Click "📦 Generate Deliverables" to produce the handoff package.`
 - Unsure: `👉 NEXT: Click "❓ What's Next?" and I'll check your progress and recommend the right step.`

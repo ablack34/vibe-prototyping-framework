@@ -8,7 +8,7 @@ title: What to Expect (Walkthrough)
 This page shows you what each phase **actually looks like** when you run it against the Contoso Field Services demo fixture. No video required — just realistic excerpts of what each agent produces so you know what "good" looks like before your first real engagement.
 
 :::tip Run it yourself
-Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through Discover → Disrupt → Ideate → Build → Deliver. Try it.
+Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through Discover → Define → Ideate → Build → Deliver. Try it.
 :::
 
 ---
@@ -18,7 +18,7 @@ Everything below comes from running `/vibe-demo` in a fresh engagement repo, the
 You run:
 
 ```
-/vibe-kickoff customer="Contoso Field Services" problem="HVAC dispatcher AI to reduce SLA breaches" size=S
+/vibe-kickoff customer="Contoso Field Services" problem="HVAC dispatcher AI to reduce SLA breaches"
 ```
 
 What you see in Copilot Chat:
@@ -77,21 +77,21 @@ Grades:
   Stakeholder map        A   Success criteria       B (need quantified targets)
   Constraints            A
 
-👉 NEXT: Click "💡 Frame the Problem" to move to the Disrupt phase.
+👉 NEXT: Click "💡 Frame the Problem" to move to the Define phase.
 ```
 
 **Time spent:** ~3 minutes of agent runtime + ~2 minutes for you to read it.
 
 ---
 
-## Phase 2 · Disrupt
+## Phase 2 · Define
 
-You click **💡 Frame the Problem**. The Disrupt agent reads the discovery summary and writes `templates/requirements-summary.md`.
+You click **💡 Frame the Problem**. The Define agent reads the discovery summary and writes `templates/requirements-summary.md`.
 
 What you see (excerpt):
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: disrupt · Discovery readiness: 9/9
+📍 Contoso Field Services — dispatcher-ai · Phase: define · Discovery readiness: 9/9
 
 requirements-summary.md written. Top-line framing:
 
@@ -232,7 +232,7 @@ When ready to share with the customer:
 
 This is an engineer-facing deployment **plan**, not an auto-deploy. For C1 it walks through Azure SWA + App Service via the existing Bicep in `scaffold/infra/`. For C2 it routes the engineer to "Publish" inside Copilot Studio. For C3 it walks through Foundry Agents publishing.
 
-**Time spent:** 5-10 working days for a single engineer (per the engagement-size guide).
+**Time spent:** 5-10 working days for a single engineer.
 
 ---
 
@@ -280,7 +280,7 @@ Once approved, the final `handoff-data.json` contains everything the customer's 
 |-------|-----------|---------------------|
 | Kickoff | < 1 min | < 1 hour |
 | Discover | ~5 min | 1-3 days |
-| Disrupt | ~10 min | 1-2 days |
+| Define | ~10 min | 1-2 days |
 | Ideate | ~25 min | 1 day |
 | Build (web app) | ~30 min to scaffold | 5-10 days |
 | Deliver | ~45 min | 1-2 days |

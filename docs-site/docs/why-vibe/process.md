@@ -16,7 +16,7 @@ VIBE Prototyping follows five phases. The first three don't require an engineer 
   </div>
   <div className="phase-card">
     <div className="phase-number">02</div>
-    <h3>Disrupt</h3>
+    <h3>Define</h3>
     <p>Frame the business value, prioritize use cases, and define what success looks like.</p>
     <div className="phase-who">👥 Anyone · 1-2 days</div>
   </div>
@@ -42,7 +42,7 @@ VIBE Prototyping follows five phases. The first three don't require an engineer 
 
 ---
 
-## Week-by-Week Timeline (Small Engagement)
+## Week-by-Week Timeline
 
 <div className="timeline">
   <div className="timeline-item">
@@ -52,7 +52,7 @@ VIBE Prototyping follows five phases. The first three don't require an engineer 
     <p><strong>Outputs:</strong> Product Vision & Strategy · Personas & User Journey · Filled PROJECT-CONTEXT.md</p>
   </div>
   <div className="timeline-item">
-    <div className="timeline-week">Week 1-2 — Disrupt</div>
+    <div className="timeline-week">Week 1-2 — Define</div>
     <h3>Frame the problem, prioritize use cases, establish success metrics</h3>
     <p>That guide <strong>live</strong> prototyping efforts. Answer the key question: "Are we solving a $50K problem or a $50M problem?"</p>
     <p><strong>Outputs:</strong> Requirements Summary (customer sign-off) · Prioritized use cases</p>
@@ -104,7 +104,7 @@ VIBE Prototyping follows five phases. The first three don't require an engineer 
 
 | Role | Source | Responsibility |
 |------|--------|---------------|
-| Technical Product Manager | Studio 42 | Drives Discover, Disrupt, Ideate, Deliver |
+| Technical Product Manager | Studio 42 | Drives Discover, Define, Ideate, Deliver |
 | Dev Engineer | Studio 42 | Leads Build phase |
 | Designer | Studio 42 | UX research, concept development |
 | Data Scientist | EAG | Data analysis, AI model guidance |

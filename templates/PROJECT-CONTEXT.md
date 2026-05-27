@@ -16,7 +16,6 @@
 |-------|-------|
 | **Customer** | {{CUSTOMER_NAME}} |
 | **Project Name** | {{PROJECT_NAME}} |
-| **Engagement Size** | {{ENGAGEMENT_SIZE}} (XS / S / M / L) |
 | **Start Date** | {{START_DATE}} |
 | **End Date** | {{END_DATE}} |
 | **S42 Lead** | {{LEAD_NAME}} |

@@ -70,12 +70,12 @@ If you're presenting remotely, share the VS Code window only — not the full de
 
 ---
 
-### 6:00-9:00 — Run Disrupt + Ideate
+### 6:00-9:00 — Run Define + Ideate
 
-**Click** the **🎯 Frame Disruption** button → wait for completion → click **💡 Ideate Concepts**.
+**Click** the **🎯 Frame the Problem** button → wait for completion → click **💡 Ideate Concepts**.
 
 **Say (while they run):**
-> "Disrupt frames the $50K-vs-$50M question — what's the smallest valuable thing we could build, what's the most ambitious. Generates `requirements-summary.md`.
+> "Define frames the $50K-vs-$50M question — what's the smallest valuable thing we could build, what's the most ambitious. Generates `requirements-summary.md`.
 >
 > Then Ideate brainstorms 2-3 prototype concepts across form factors. This is the consistency thing from slide 4 of the deck — without the harness, our default ideation answer drifts toward 'another web dashboard.' With the harness, every engagement explicitly evaluates web, agentic, conversational, Copilot extension, and low-code paths. For dispatch, the answer is probably web + an agent — but the harness forces the explicit consideration every time, on every engagement."
 
@@ -106,7 +106,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Switch to:** A blank chat or a slide
 
 **Say:**
-> "What you just saw — Discover, Disrupt, Ideate, engineering brief, handoff package — is what a Studio 42 team delivers on every VIBE engagement today. Normally it takes somewhere between 5 and 10 working days. The harness did it in 12 minutes against a fully-formed fixture. Real engagements are messier — customers don't hand you perfect questionnaires. But the harness does the synthesis work in real time. The team's job becomes facilitation and judgment, not paperwork.
+> "What you just saw — Discover, Define, Ideate, engineering brief, handoff package — is what a Studio 42 team delivers on every VIBE engagement today. Normally it takes somewhere between 5 and 10 working days. The harness did it in 12 minutes against a fully-formed fixture. Real engagements are messier — customers don't hand you perfect questionnaires. But the harness does the synthesis work in real time. The team's job becomes facilitation and judgment, not paperwork.
 >
 > The ask is the same as in the deck: adopt the harness as default tooling on the next 3 VIBE engagements. After the third, we either formalize it as standard Studio 42 tooling or iterate based on what we learn.
 >

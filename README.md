@@ -2,7 +2,7 @@
 
 > Accelerating presales with AI prototyping to unlock business potential at speed.
 
-A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery team (typically one TPM/designer and one engineer) through five phases — Discover → Disrupt → Ideate → Build → Deliver — using AI agents in VS Code that tell you exactly what to do next.
+A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery team (typically one TPM/designer and one engineer) through five phases — Discover → Define → Ideate → Build → Deliver — using AI agents in VS Code that tell you exactly what to do next.
 
 **You don't need to be technical, you just need a +1.**
 
@@ -15,7 +15,7 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 3. Open in VS Code, open Copilot Chat (`Ctrl+Shift+I`), switch to **Agent mode**, and run:
 
    ```
-   /vibe-kickoff customer="<your-customer>" problem="<describe the problem>" size=S
+   /vibe-kickoff customer="<your-customer>" problem="<describe the problem>"
    ```
 
 4. After every step the agent ends with a `👉 NEXT:` directive. **Click the recommended button and keep going.** If you're ever lost, click **❓ What's Next?**.
@@ -59,7 +59,7 @@ You can run a full engagement end-to-end against a fixture customer before doing
 /vibe-demo
 ```
 
-This seeds [`sources/`](sources/) and [`templates/PROJECT-CONTEXT.md`](templates/PROJECT-CONTEXT.md) with the **Contoso Field Services — Dispatcher AI** fixture (customer brief, questionnaire responses, two Teams transcripts, three CSVs). From there `@VIBE Discover`, `@VIBE Disrupt`, `/vibe-ideate` and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/contoso/`](demo/contoso/).
+This seeds [`sources/`](sources/) and [`templates/PROJECT-CONTEXT.md`](templates/PROJECT-CONTEXT.md) with the **Contoso Field Services — Dispatcher AI** fixture (customer brief, questionnaire responses, two Teams transcripts, three CSVs). From there `@VIBE Discover`, `@VIBE Define`, `/vibe-ideate` and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/contoso/`](demo/contoso/).
 
 ---
 

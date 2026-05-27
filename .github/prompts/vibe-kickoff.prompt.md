@@ -1,7 +1,7 @@
 ---
 description: "Start a new VIBE Prototyping engagement"
 agent: "VIBE Engagement Lead"
-argument-hint: "customer=... problem=... [size={XS|S|M|L}]"
+argument-hint: "customer=... problem=..."
 ---
 
 # VIBE Kickoff
@@ -12,7 +12,6 @@ Start a new VIBE Prototyping engagement. Creates the engagement tracking structu
 
 - ${input:customer}: (Required) Customer name.
 - ${input:problem}: (Required) High-level problem statement (even a rough one is fine).
-- ${input:size:S}: (Optional, defaults to S) Engagement size: XS, S, M, or L.
 - ${input:squad}: (Optional) Squad members and roles.
 
 ## Requirements

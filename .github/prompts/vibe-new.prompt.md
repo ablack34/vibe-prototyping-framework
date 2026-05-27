@@ -1,6 +1,6 @@
 ---
 description: "Create a new VIBE engagement workspace from the template"
-argument-hint: "customer=... engagement=... [size={XS|S|M|L}]"
+argument-hint: "customer=... engagement=..."
 ---
 
 # VIBE New Engagement
@@ -17,7 +17,6 @@ Create a new VIBE Prototyping engagement workspace. This prompt handles everythi
 
 - ${input:customer}: (Required) Customer name (e.g., "Contoso").
 - ${input:engagement}: (Required) Short engagement name (e.g., "field-scheduling").
-- ${input:size:S}: (Optional, defaults to S) Engagement size: XS, S, M, or L.
 
 ---
 
@@ -32,7 +31,6 @@ New VIBE Engagement:
   Customer:    {{customer}}
   Engagement:  {{engagement}}
   Repo name:   {{customer-kebab}}-{{engagement-kebab}}
-  Size:        {{size}}
 ```
 
 ### Step 2: Create Repo from Template
@@ -68,7 +66,7 @@ Tell the user:
 > Your engagement workspace is ready. In the new VS Code window:
 >
 > 1. Open Copilot Chat (Ctrl+Shift+I) and switch to **Agent mode**
-> 2. Type: `/vibe-kickoff customer="{{customer}}" problem="describe the problem" size={{size}}`
+> 2. Type: `/vibe-kickoff customer="{{customer}}" problem="describe the problem"`
 > 3. If you have Teams meeting recordings, run `/vibe-transcript` next
 > 4. Full guide: see `docs/README.md` or the docs site (link in the root `README.md`)
 >

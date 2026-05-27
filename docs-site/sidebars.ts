@@ -31,7 +31,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'phases/discover',
-        'phases/disrupt',
+        'phases/define',
         'phases/ideate',
         'phases/build',
         'phases/deliver',

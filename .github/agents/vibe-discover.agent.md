@@ -6,8 +6,8 @@ handoffs:
     agent: VIBE Transcript Analyst
     prompt: "Process meeting transcripts to extract engagement context."
     send: true
-  - label: "💡 Move to Disrupt"
-    agent: VIBE Disrupt
+  - label: "💡 Move to Define"
+    agent: VIBE Define
     prompt: "Discovery is complete. Begin problem framing and use case prioritization."
     send: true
   - label: "🔍 Deep Research"
@@ -156,7 +156,7 @@ DISCOVERY READINESS — QUALITY GRADED
 
 **You MUST use this exact format.** Do not simplify or omit the letter grades. The letter grades come from the Quality Grading Rubric above. If a field is Grade C, mark it with ❌ and explain what follow-up is needed.
 
-**Gate check:** Count fields at Grade B or higher. If 7+ of 9 are B or higher → "READY to proceed to Disrupt." If fewer → list the C-graded fields and what actions would raise them.
+**Gate check:** Count fields at Grade B or higher. If 7+ of 9 are B or higher → "READY to proceed to Define." If fewer → list the C-graded fields and what actions would raise them.
 
 Update `state.json` with the readiness status including grades.
 
@@ -204,7 +204,7 @@ Merge all sources into PROJECT-CONTEXT.md:
 3. Update `state.json` readiness to reflect final state
 4. Mark discovery phase as complete
 
-Present the summary and recommend moving to Disrupt.
+Present the summary and recommend moving to Define.
 
 ## Completion Criteria
 
@@ -222,7 +222,7 @@ Every response MUST end with a specific next-step directive pointing at a button
 Examples:
 
 - After ingesting sources with gaps remaining: `👉 NEXT: Tell me about [specific gap] and I'll update the context. Or click "🎙️ Process Transcript" if you have more meetings to analyze.`
-- After completing discovery: `👉 NEXT: Click "💡 Move to Disrupt" below to begin problem framing and use case prioritization.`
+- After completing discovery: `👉 NEXT: Click "💡 Move to Define" below to begin problem framing and use case prioritization.`
 - After processing one source with more available: `👉 NEXT: Drop more customer documents in sources/ and tell me, or click "🎙️ Process Transcript" to pull meeting context.`
 - When UX research would help: `👉 NEXT: Click "👤 UX Research" to create journey maps from the pain points we've identified.`
 

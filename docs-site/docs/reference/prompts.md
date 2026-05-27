@@ -30,7 +30,7 @@ These six prompts cover the main engagement flow:
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
-| `/vibe-kickoff` | Start a new engagement | `customer` (required), `problem` (required), `size` (optional: XS/S/M/L) |
+| `/vibe-kickoff` | Start a new engagement | `customer` (required), `problem` (required) |
 | `/vibe-questionnaire` | Generate Microsoft Forms questionnaires | `type` (optional: customer/account/both) |
 | `/vibe-transcript` | Process Teams meeting transcripts | `engagement`, `dateRange`, `participants`, `type` (discovery/check-in) |
 | `/vibe-capture` | Quick insight capture during meetings | `note` (required), `speaker`, `category` |

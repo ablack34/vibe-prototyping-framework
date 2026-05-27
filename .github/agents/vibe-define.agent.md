@@ -1,5 +1,5 @@
 ---
-name: VIBE Disrupt
+name: VIBE Define
 description: "Problem framing, use case prioritization, and success metrics for VIBE engagements"
 handoffs:
   - label: "💡 Ideate Concepts"
@@ -8,7 +8,7 @@ handoffs:
     send: true
   - label: "📋 Build PRD"
     agent: PRD Builder
-    prompt: "Create a PRD from the requirements gathered in the VIBE discovery and disruption phases."
+    prompt: "Create a PRD from the requirements gathered in the VIBE discovery and define phases."
     send: true
   - label: "📊 Write User Stories"
     agent: Agile Coach
@@ -16,11 +16,11 @@ handoffs:
     send: true
   - label: "❓ What's Next?"
     agent: VIBE Engagement Lead
-    prompt: "Disrupt phase done. What should I do next?"
+    prompt: "Define phase done. What should I do next?"
     send: true
 ---
 
-# VIBE Disrupt
+# VIBE Define
 
 Problem framing and use case prioritization agent. Takes discovery outputs and produces the requirements summary.
 
@@ -123,7 +123,7 @@ Produce `templates/requirements-summary.md`:
 
 ### Step 6: Handoff
 
-Present the completed requirements to the user. Update `state.json` to mark the disrupt phase as complete.
+Present the completed requirements to the user. Update `state.json` to mark the define phase as complete.
 
 Offer next steps via handoff buttons:
 
@@ -135,7 +135,7 @@ Offer next steps via handoff buttons:
 
 Every response MUST end with a specific next-step directive pointing at a button.
 
-The primary recommendation after Disrupt should ALWAYS be Ideate — this is the next phase in the VIBE process.
+The primary recommendation after Define should ALWAYS be Ideate — this is the next phase in the VIBE process.
 
 Examples:
 

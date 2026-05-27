@@ -27,7 +27,7 @@ You can also create a sibling engagement from inside Copilot Chat with `/vibe-ne
 Open Copilot Chat (`Ctrl+Shift+I`), switch to **Agent mode**, and type:
 
 ```
-/vibe-kickoff customer="<your-customer>" problem="<describe the problem>" size=S
+/vibe-kickoff customer="<your-customer>" problem="<describe the problem>"
 ```
 
 **What happens:**
@@ -76,7 +76,7 @@ The agent writes `engagement/<your-engagement>/discovery-summary.md`.
 Click **"💡 Frame the Problem"** or type:
 
 ```
-@VIBE Disrupt
+@VIBE Define
 ```
 
 Frames the business value ($50K vs $50M lens), prioritizes use cases, and produces `templates/requirements-summary.md` for customer sign-off.

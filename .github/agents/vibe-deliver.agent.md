@@ -55,7 +55,7 @@ Before producing deliverables, verify these artifacts exist. Flag any that are m
 | Artifact | Required? | If Missing |
 |----------|----------|-----------|
 | `templates/PROJECT-CONTEXT.md` (filled) | Yes | Cannot proceed — run `@VIBE Discover` first |
-| `templates/requirements-summary.md` (approved) | Yes | Cannot proceed — run `@VIBE Disrupt` first |
+| `templates/requirements-summary.md` (approved) | Yes | Cannot proceed — run `@VIBE Define` first |
 | `templates/solution-design.md` | Recommended | Deliver will work but handoff will be less complete |
 | `templates/CHECK-IN-NOTES.md` | Recommended | Roadmap won't include customer feedback |
 | Prototype deployed (live URL) | Recommended | Mark as "not yet deployed" |

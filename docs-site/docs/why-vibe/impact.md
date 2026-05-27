@@ -30,7 +30,7 @@ ROI scenarios with $ figures and adoption cost analysis live in the [pitch packa
 
 - Engagement workflow is codified and repeatable
 - Context automatically extracted from Teams transcripts and customer documents
-- The TPM or designer drives Discover, Disrupt, and Ideate independently
+- The TPM or designer drives Discover, Define, and Ideate independently
 - AI-powered concepts explored across multiple form factors before engineering starts
 - Consistent documentation and handoff quality every time
 - Engineers get a clear brief instead of interpreting raw requirements

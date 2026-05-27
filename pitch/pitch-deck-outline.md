@@ -114,7 +114,7 @@ Three reasons, big and clear:
 >
 > *Two — consistency.* Today's quality is a coin flip depending on who's on the engagement. The harness encodes our best practices into the tooling, so every customer gets the Siemens-standard engagement. Not 'pretty good if you got the right TPM.'
 >
-> *Three — empowerment.* Three of the five phases — Discover, Disrupt, Ideate — now run without an engineer in the room. AI-first consulting becomes a TPM-led practice. Engineers stop being the bottleneck and start being the multiplier."
+> *Three — empowerment.* Three of the five phases — Discover, Define, Ideate — now run without an engineer in the room. AI-first consulting becomes a TPM-led practice. Engineers stop being the bottleneck and start being the multiplier."
 
 **Don't:** Make this sound like a demotion for engineers. Frame it as engineers spending time on the prototype, not the paperwork.
 
@@ -131,7 +131,7 @@ Three reasons, big and clear:
 - Inset: list of artifacts the demo produces (`PROJECT-CONTEXT.md`, `requirements-summary.md`, `selected-concept.md`, `engineering-brief.md`, scaffold code, `handoff-data.json`)
 
 **What to say:**
-> "There's a Contoso Field Services fixture in the harness — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief modeled on the kind of VIBE engagement we run today. Type `/vibe-demo`, hit enter, and the harness walks the full engagement — Discover, Disrupt, Ideate, engineering brief, handoff package — against a fully-formed scenario.
+> "There's a Contoso Field Services fixture in the harness — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief modeled on the kind of VIBE engagement we run today. Type `/vibe-demo`, hit enter, and the harness walks the full engagement — Discover, Define, Ideate, engineering brief, handoff package — against a fully-formed scenario.
 >
 > I'm not asking you to take this on faith. Anyone in this room can run it in 15 minutes. I'd love to walk you through it after this meeting."
 

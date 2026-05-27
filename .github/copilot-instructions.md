@@ -5,7 +5,7 @@ This repo is a VIBE Prototyping engagement workspace. It provides AI agents, pro
 ## The Process (5 Phases)
 
 ```
-Discover → Disrupt → Ideate → Design & Develop → Deliver
+Discover → Define → Ideate → Design & Develop → Deliver
 ```
 
 ## Essential Prompts
@@ -15,7 +15,7 @@ Discover → Disrupt → Ideate → Design & Develop → Deliver
 | Discover | `/vibe-kickoff` | Start the engagement |
 | Discover | `/vibe-transcript` | Extract context from Teams recordings |
 | Discover | `/vibe-capture` | Quick-capture insights during workshops |
-| Disrupt | `/vibe-consolidate` | Synthesize all findings |
+| Define | `/vibe-consolidate` | Synthesize all findings |
 | Ideate | `/vibe-ideate` | Brainstorm AI-powered prototype concepts |
 | Build | `/vibe-prototype-scaffold` | Scaffold the prototype from the concept |
 | Build | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
@@ -29,7 +29,7 @@ Discover → Disrupt → Ideate → Design & Develop → Deliver
 
 - **The delivery person facilitates, the AI does the paperwork** — documents are auto-generated from sources, never manually filled
 - **Every document is an output, not an input form** — agents read sources, produce documents, ask the user to review and approve
-- **Discover and Disrupt are non-technical** — no architecture or tech stack discussion
+- **Discover and Define are non-technical** — no architecture or tech stack discussion
 - **Ideate explores multiple form factors** — not just web apps. Conversational, agentic, Copilot extensions, low-code, etc.
 - **AI must be essential in every concept** — not bolted on
 - **All prototypes use mock data** — no live system connections
@@ -71,7 +71,7 @@ all documents                        ──▶   backlog, limitations, about)
 | Agent | Reads (Input) | Produces (Output) |
 |-------|--------------|-------------------|
 | VIBE Discover | sources/, transcripts, questionnaires, engagement brief | PROJECT-CONTEXT.md |
-| VIBE Disrupt | PROJECT-CONTEXT.md | requirements-summary.md |
+| VIBE Define | PROJECT-CONTEXT.md | requirements-summary.md |
 | VIBE Ideate | PROJECT-CONTEXT.md, requirements-summary.md | ideation-concepts.md, selected-concept.md, spark-prompts.md, engineering-brief.md |
 | VIBE Data Prep | customer CSV/Excel files | TypeScript types, C# models, DataService, data README |
 | VIBE Deliver | all documents + check-in notes | handoff-data.json (vision, roadmap, backlog, limitations, about) — step by step, one section at a time |

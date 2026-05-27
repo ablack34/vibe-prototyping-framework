@@ -14,7 +14,7 @@ All VIBE agents and their roles.
 | `@VIBE Engagement Lead` | All | Orchestrator — manages all 5 phases, shows readiness dashboard, tells you what to do next |
 | `@VIBE Discover` | Discover | Source-first context gathering — ingests docs, transcripts, questionnaires, then asks about gaps |
 | `@VIBE Transcript Analyst` | Discover | Extracts VIBE-specific signals from Teams meeting transcripts |
-| `@VIBE Disrupt` | Disrupt | Problem framing, value analysis, use case prioritization |
+| `@VIBE Define` | Define | Problem framing, value analysis, use case prioritization |
 | `@VIBE Ideate` | Ideate | Brainstorms AI-powered concepts across form factors |
 | `@VIBE Data Prep` | Build | Guides preparation of customer data files for the prototype |
 | `@VIBE Deliver` | Deliver | Generates roadmap, backlog, limitations doc, and handoff package |
@@ -24,8 +24,8 @@ All VIBE agents and their roles.
 | Agent | When Used | Description |
 |-------|-----------|-------------|
 | `@UX UI Designer` | Discover | Creates JTBD analyses and user journey maps |
-| `@PRD Builder` | Disrupt | Builds formal Product Requirements Documents |
-| `@Agile Coach` | Disrupt | Helps write clear user stories with acceptance criteria |
+| `@PRD Builder` | Define | Builds formal Product Requirements Documents |
+| `@Agile Coach` | Define | Helps write clear user stories with acceptance criteria |
 | `@Task Researcher` | Build | Deep research on technical approaches |
 | `@Task Planner` | Build | Creates implementation plans from research |
 | `@Task Implementor` | Build | Executes implementation plans |

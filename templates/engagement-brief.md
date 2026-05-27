@@ -26,7 +26,6 @@
 
 | Field | Value |
 |-------|-------|
-| **Requested Size** | ☐ XS (2 weeks) ☐ S (3-4 weeks) ☐ M (4 weeks) ☐ L (4+ weeks) |
 | **Requested Start** | {{START_DATE}} |
 | **Funding Source** | {{FUNDING}} |
 | **Deal Context** | {{DEAL_ID}} / {{DEAL_VALUE}} |
@@ -74,10 +73,6 @@
 | Risk | Severity | Notes |
 |------|----------|-------|
 | {{RISK}} | Low / Medium / High | {{NOTES}} |
-
-### Recommended Engagement Size
-
-{{RECOMMENDED_SIZE}} — {{RATIONALE}}
 
 ---
 

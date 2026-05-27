@@ -11,7 +11,7 @@ handoffs:
     prompt: "Generate additional prototype concepts from a different angle."
     send: true
   - label: "📋 Refine Requirements"
-    agent: VIBE Disrupt
+    agent: VIBE Define
     prompt: "Revisit requirements based on ideation insights."
     send: true
   - label: "❓ What's Next?"

@@ -1,9 +1,9 @@
 ---
 sidebar_position: 2
-title: "Phase 2: Disrupt"
+title: "Phase 2: Define"
 ---
 
-# Phase 2: Disrupt
+# Phase 2: Define
 
 **Who:** Anyone on the team · **Duration:** 1-2 days
 
@@ -25,12 +25,12 @@ Frame the business value, prioritize use cases, and define success criteria. Thi
 
 | Command | What It Does |
 |---------|-------------|
-| `@VIBE Disrupt` | Guides you through value framing and prioritization |
-| `/vibe-consolidate` | Synthesizes all findings before disruption |
+| `@VIBE Define` | Guides you through value framing and prioritization |
+| `/vibe-consolidate` | Synthesizes all findings before definition |
 
 ## Output: Requirements Summary
 
-The Disrupt phase produces `requirements-summary.md` — a customer-facing document with:
+The Define phase produces `requirements-summary.md` — a customer-facing document with:
 
 - Must-have, should-have, and could-have requirements
 - Acceptance criteria (what the user sees, not how it's built)

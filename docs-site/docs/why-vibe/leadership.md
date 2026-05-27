@@ -57,7 +57,7 @@ The harness moves VIBE methodology from people's heads into tooling. The deliver
   </div>
   <div className="phase-card">
     <div className="phase-number">02</div>
-    <h3>Disrupt</h3>
+    <h3>Define</h3>
     <p>Harness frames the $50K vs $50M value, prioritizes use cases with evidence-based scoring, generates requirements.</p>
     <div className="phase-who">👥 TPM / Designer</div>
   </div>
@@ -95,7 +95,7 @@ The harness moves VIBE methodology from people's heads into tooling. The deliver
 | **Concept exploration** | Drifts to "another web dashboard" | 2-3 validated concepts across form factors |
 | **Engineering handoff** | Verbal briefing, "figure it out" | Structured engineering brief with screen specs and data mapping |
 | **Handoff package** | Manual slide deck, incomplete backlog | Auto-generated `handoff-data.json` with cross-reference validation |
-| **Time to first prototype concept** | 1-2 weeks (await engineer) | 2-3 days (TPM drives Discover → Disrupt → Ideate) |
+| **Time to first prototype concept** | 1-2 weeks (await engineer) | 2-3 days (TPM drives Discover → Define → Ideate) |
 | **New team member onboarding** | Shadow someone for 2 engagements | Follow the prompts — onboarding *is* engagement #1 |
 
 See [What the Harness Changes](/why-vibe/impact) for the full qualitative breakdown and the HVE patterns the harness embeds.

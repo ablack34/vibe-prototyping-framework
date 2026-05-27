@@ -51,7 +51,6 @@ Two large Platinum contracts worth €18M ARR (Carrefour and Lidl) are up for re
 
 | Question | Answer |
 |----------|--------|
-| Recommended engagement size | S — 3-4 weeks |
 | Requested start date | 2025-02-10 |
 | Known risks or blockers | (1) Customer's internal IT might push back if the prototype implies replacing the 2008 system rather than augmenting it. (2) Dispatchers are unionised — "AI = job loss" narrative must be defused. (3) F-Gas certification data is in a separate spreadsheet maintained by the compliance team; getting clean access may take a week. |
 | Is this a $50K problem or a $50M problem? Your honest assessment. | Solid **$50M problem**. €12M/yr addressable today, expanding to €30M+/yr if extended to their adjacent business unit (refrigerated logistics) over 3 years. Strategic — wins them a foothold in field-services automation that maps to a much larger AI managed-services play. |

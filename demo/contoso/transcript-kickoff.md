@@ -113,4 +113,4 @@
 - [ ] Workshop 1 Friday 10am Warsaw, attendees: Sandra, Bartosz, Anya Petrov, compliance lead (Matthias to confirm)
 - [ ] Discovery write-up by Wednesday EOD (Adam)
 - [ ] Designer onboarded by Workshop 1 (Adam / Priya)
-- [ ] Decision: SLA risk early-warning may be sequenced before assignment recommender — to be confirmed in Disrupt phase
+- [ ] Decision: SLA risk early-warning may be sequenced before assignment recommender — to be confirmed in Define phase
