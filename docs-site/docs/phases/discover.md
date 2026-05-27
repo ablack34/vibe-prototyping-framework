@@ -5,7 +5,7 @@ title: "Phase 1: Discover"
 
 # Phase 1: Discover
 
-**Who:** Anyone on the squad · **Duration:** 1-3 days
+**Who:** Anyone on the team · **Duration:** 1-3 days
 
 Understand the customer's problem through multiple sources — transcripts, documents, questionnaires, and workshop observations. The framework ingests these sources automatically and only asks you about gaps.
 

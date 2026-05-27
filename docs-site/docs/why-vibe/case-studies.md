@@ -91,5 +91,5 @@ AI-supported tools that help RGM teams **explore what-if scenarios** across pric
 ---
 
 :::tip Raising the floor
-These engagements set the standard. The **[delivery harness](/why-vibe/scaling-vibe)** codifies the patterns that made them successful — and makes them reachable on every VIBE engagement, not just the ones with our most experienced squads.
+These engagements set the standard. The **[delivery harness](/why-vibe/scaling-vibe)** codifies the patterns that made them successful — and makes them reachable on every VIBE engagement, not just the ones with our most experienced delivery teams.
 :::

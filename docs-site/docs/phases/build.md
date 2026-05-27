@@ -5,7 +5,7 @@ title: "Phase 4: Build"
 
 # Phase 4: Build (Design & Develop)
 
-**Who:** Engineer (with squad support) · **Duration:** 5-10 days
+**Who:** Engineer (with TPM/designer support) · **Duration:** 5-10 days
 
 This is where technology enters the picture. The engineer picks up the engineering brief from Ideate and builds the prototype.
 

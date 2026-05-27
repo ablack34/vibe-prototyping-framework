@@ -119,7 +119,7 @@ requirements-summary.md written. Top-line framing:
 👉 NEXT: Click "💡 Ideate Concepts" to brainstorm AI-powered prototype concepts.
 ```
 
-**Time spent:** ~2 minutes of agent runtime + ~5 minutes for you and the squad to review and approve.
+**Time spent:** ~2 minutes of agent runtime + ~5 minutes for you and the team to review and approve.
 
 ---
 
@@ -149,7 +149,7 @@ What the concepts table looks like:
 |    |                                  |                          | + escalation  |     |            |
 ```
 
-The Spark prompts file gives the squad copy-paste-ready prompts for [GitHub Spark](https://spark.github.com) so a non-technical TPM can produce clickable mockups of all three in 20 minutes:
+The Spark prompts file gives the team copy-paste-ready prompts for [GitHub Spark](https://spark.github.com) so a non-technical TPM can produce clickable mockups of all three in 20 minutes:
 
 ```
 Build a single-page web app called "Dispatcher Radar" for HVAC field-service dispatchers.
@@ -197,7 +197,7 @@ Already prepared in scaffold/data/ by /vibe-data-prep:
 [detailed walkthrough of the 8-minute live demo the customer will see]
 ```
 
-**Time spent:** ~5 minutes of agent runtime + ~15-30 minutes for the squad to review, pick the concept, and have the designer iterate Spark mockups.
+**Time spent:** ~5 minutes of agent runtime + ~15-30 minutes for the team to review, pick the concept, and have the designer iterate Spark mockups.
 
 ---
 

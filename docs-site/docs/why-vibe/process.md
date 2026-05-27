@@ -5,7 +5,7 @@ title: The VIBE Process
 
 # The Five Phases
 
-VIBE Prototyping follows five phases. The first three don't require an engineer — anyone on the squad can drive them.
+VIBE Prototyping follows five phases. The first three don't require an engineer — the TPM or designer can drive them.
 
 <div className="phase-grid">
   <div className="phase-card">
@@ -100,7 +100,7 @@ VIBE Prototyping follows five phases. The first three don't require an engineer 
 
 ---
 
-## Squad Setup
+## Engagement Team
 
 | Role | Source | Responsibility |
 |------|--------|---------------|

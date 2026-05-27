@@ -75,7 +75,7 @@ Total: $400,000/yr
 
 ## Scenario 3 — Optimistic
 
-**Stance:** Harness saves significant internal time, shortens deal cycles by ~2 weeks, and enables 25% more VIBE engagements per year (because squads aren't bottlenecked on engineers).
+**Stance:** Harness saves significant internal time, shortens deal cycles by ~2 weeks, and enables 25% more VIBE engagements per year (because teams aren't bottlenecked on engineers).
 
 ```
 Time saved:
@@ -88,7 +88,7 @@ Deal-velocity impact:
 Total: $860,000/yr
 ```
 
-**What this assumes:** The harness becomes the default way Studio 42 delivers VIBE. Non-engineer squad members drive engagements end-to-end (engineering becomes the bottleneck-buster, not the bottleneck). Customers actively choose Studio 42 because the harness enables faster, more consistent VIBE delivery.
+**What this assumes:** The harness becomes the default way Studio 42 delivers VIBE. The TPM or designer drives engagements end-to-end (engineering becomes the bottleneck-buster, not the bottleneck). Customers actively choose Studio 42 because the harness enables faster, more consistent VIBE delivery.
 
 **Why this is "optimistic":** It assumes a behavioral shift across the practice, not just tooling adoption. Treat as a stretch goal, not a forecast.
 
@@ -149,7 +149,7 @@ The 3-engagement adoption period is the *measurement* exercise that turns this m
 | Engagements covered | 3 (next qualifying VIBE engagements) |
 | Adoption duration | 8-12 weeks (sequential with overlap) |
 | Incremental delivery cost | $0 (engagements are happening anyway, harness is built) |
-| Measurement overhead | ~10 hrs / engagement (tracking time, customer NPS, squad-lead survey) = ~$7.5K total |
+| Measurement overhead | ~10 hrs / engagement (tracking time, customer NPS, lead survey) = ~$7.5K total |
 | **Adoption period total cost** | **~$7.5K equivalent** (measurement only) |
 
 ### Adoption success thresholds
@@ -157,7 +157,7 @@ The 3-engagement adoption period is the *measurement* exercise that turns this m
 | Metric | Target | Why this threshold |
 |--------|--------|--------------------|
 | Time-to-first-prototype | < 5 days | Reference: today's manual baseline = 1-2 weeks (per [leadership.md](../docs-site/docs/why-vibe/leadership.md)) |
-| Squad-lead would use again | Yes (qualitative) | Tells us whether the harness helps or hinders the squad — the most important signal |
+| Lead would use again | Yes (qualitative) | Tells us whether the harness helps or hinders the team — the most important signal |
 | Customer NPS | ≥ 8 | Standard threshold for "would actively recommend" |
 | Harness gaps surfaced | Catalogued | Every adoption engagement should surface things to improve — that's expected, not a failure |
 

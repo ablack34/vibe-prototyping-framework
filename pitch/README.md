@@ -34,7 +34,7 @@ The pitch is therefore not "validate a new thing." It's **"adopt this harness to
 
 This is *graduated adoption*, not a "validation pilot":
 - Cost is zero — the harness is built and the engagements are happening anyway
-- The 3 engagements measure adoption mechanics (squad-lead receptiveness, harness gaps, time savings) — not whether VIBE works
+- The 3 engagements measure adoption mechanics (lead receptiveness, harness gaps, time savings) — not whether VIBE works
 - After the 3rd, formalize as standard tooling or iterate based on what we learn
 
 ## Buzzwords used (deliberately, not bolted on)
@@ -55,7 +55,7 @@ Same harness, different framing depending on the room.
 | **Studio 42 / ISE leadership** (current default) | Scale VIBE practice, throughput, non-engineer empowerment | External-customer ROI math |
 | **Microsoft field/sales leadership** | Deal velocity, "weeks not months" vs incumbent SIs | Internal Studio 42 operations |
 | **A specific customer's exec team** | Their problem, prototype-in-weeks-not-months, regulatory urgency | Studio 42 internal mechanics |
-| **Squad leads / TPMs** | "You can drive 3 of 5 phases without an engineer" | ROI, ask, pilot framing |
+| **TPMs / delivery leads** | "You can drive 3 of 5 phases without an engineer" | ROI, ask, pilot framing |
 
 If you need a different audience version, copy the relevant artifact, rename it (`executive-1-pager-customer.md`), and reframe — the source material is the same.
 

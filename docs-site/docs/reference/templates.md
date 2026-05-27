@@ -14,7 +14,7 @@ These live in `templates/` and are populated as you progress through phases.
 | Template | Created In | Purpose |
 |----------|-----------|---------|
 | `PROJECT-CONTEXT.md` | Discover | Single source of truth — problem, personas, stakeholders, data, decisions |
-| `engagement-brief.md` | Pre-engagement | Intake form with customer info, problem space, and squad |
+| `engagement-brief.md` | Pre-engagement | Intake form with customer info, problem space, and team |
 | `requirements-summary.md` | Disrupt | Customer-facing requirements with acceptance criteria — needs sign-off |
 | `engineering-brief.md` | Ideate (reference template) | Structural reference for the engineer-facing brief the Ideate agent generates into `engagement/<name>/engineering-brief.md` |
 | `solution-design.md` | Build | Internal technical document — architecture, tech stack, build phases |

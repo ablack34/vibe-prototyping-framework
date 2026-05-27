@@ -5,7 +5,7 @@ title: "Phase 2: Disrupt"
 
 # Phase 2: Disrupt
 
-**Who:** Anyone on the squad · **Duration:** 1-2 days
+**Who:** Anyone on the team · **Duration:** 1-2 days
 
 Frame the business value, prioritize use cases, and define success criteria. This phase is **deliberately non-technical** — no architecture or tech stack discussion.
 

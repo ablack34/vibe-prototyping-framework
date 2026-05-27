@@ -5,9 +5,9 @@ title: What the Harness Changes
 
 # What the Harness Changes
 
-The [VIBE delivery harness](/why-vibe/scaling-vibe) transforms a manual, person-dependent process into a **repeatable, AI-assisted engagement model** that any squad member can drive.
+The [VIBE delivery harness](/why-vibe/scaling-vibe) transforms a manual, person-dependent process into a **repeatable, AI-assisted engagement model** that any team member can drive.
 
-This page describes the qualitative changes — what gets automated, what changes for the squad, and how the harness embeds Hypervelocity Engineering (HVE) patterns at every stage.
+This page describes the qualitative changes — what gets automated, what changes for the team, and how the harness embeds Hypervelocity Engineering (HVE) patterns at every stage.
 
 :::info Internal economics
 ROI scenarios with $ figures and adoption cost analysis live in the [pitch package](https://github.com/ablack34/vibe-prototyping-framework/tree/main/pitch) (internal-only). This page covers the qualitative case.
@@ -24,20 +24,20 @@ ROI scenarios with $ figures and adoption cost analysis live in the [pitch packa
 - Only engineers can build prototypes
 - Documentation is inconsistent and often incomplete
 - Handoff quality varies by team
-- Non-technical squad members are dependent on the engineer for everything
+- The TPM or designer is dependent on the engineer for everything
 
 ### With the harness
 
 - Engagement workflow is codified and repeatable
 - Context automatically extracted from Teams transcripts and customer documents
-- Non-technical squad members drive Discover, Disrupt, and Ideate independently
+- The TPM or designer drives Discover, Disrupt, and Ideate independently
 - AI-powered concepts explored across multiple form factors before engineering starts
 - Consistent documentation and handoff quality every time
 - Engineers get a clear brief instead of interpreting raw requirements
 
 ---
 
-## Squad empowerment
+## What the TPM or designer can drive solo
 
 <div className="stat-grid">
   <div className="stat-card">
@@ -72,7 +72,7 @@ ROI scenarios with $ figures and adoption cost analysis live in the [pitch packa
 | Producing handoff documentation | `/vibe-handoff` generates the full package |
 | "What should I do next?" | `@VIBE Engagement Lead` always knows |
 
-The harness automates the non-creative work so squads can focus on the parts that require empathy, creativity, and domain expertise.
+The harness automates the non-creative work so the team can focus on the parts that require empathy, creativity, and domain expertise.
 
 ---
 
@@ -96,7 +96,7 @@ The harness is built on **Hypervelocity Engineering** — Microsoft's methodolog
   <div className="problem-card" style={{borderTopColor: '#10b981'}}>
     <h3>📋 Opinionated Prompts</h3>
     <p><strong>HVE pattern:</strong> Codified, reusable workflows that encode best practices</p>
-    <p><strong>In the harness:</strong> 14 purpose-built prompts encode the entire VIBE engagement methodology. Non-technical squad members execute complex workflows by typing a single command.</p>
+    <p><strong>In the harness:</strong> 14 purpose-built prompts encode the entire VIBE engagement methodology. The TPM or designer executes complex workflows by typing a single command.</p>
   </div>
   <div className="problem-card" style={{borderTopColor: '#f59e0b'}}>
     <h3>📐 Instructions as Guardrails</h3>
@@ -122,7 +122,7 @@ The harness is built on **Hypervelocity Engineering** — Microsoft's methodolog
 
 Traditional prototyping is **person-dependent** — quality varies by who's on the team. HVE-powered prototyping is **process-dependent** — quality is encoded in the agents, prompts, and validation gates.
 
-The result: **a junior TPM with the harness produces more consistent, higher-quality engagement artifacts than an experienced TPM working from scratch** — because the best practices are built into the tooling, not just tribal knowledge.
+The result: **any team member with the harness produces consistent, high-quality engagement artifacts — regardless of prior experience** — because the best practices are built into the tooling, not just tribal knowledge.
 
 ---
 

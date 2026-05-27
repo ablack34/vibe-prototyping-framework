@@ -5,7 +5,7 @@ title: "Phase 5: Deliver"
 
 # Phase 5: Deliver
 
-**Who:** Anyone on the squad · **Duration:** 1-2 days
+**Who:** Anyone on the team · **Duration:** 1-2 days
 
 Generate the final deliverables, roadmap, ADO backlog, and handoff package.
 

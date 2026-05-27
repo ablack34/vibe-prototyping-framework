@@ -2,7 +2,7 @@
 
 > Accelerating presales with AI prototyping to unlock business potential at speed.
 
-A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery squad through five phases — Discover → Disrupt → Ideate → Build → Deliver — using AI agents in VS Code that tell you exactly what to do next.
+A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery team (typically one TPM/designer and one engineer) through five phases — Discover → Disrupt → Ideate → Build → Deliver — using AI agents in VS Code that tell you exactly what to do next.
 
 **You don't need to be technical, you just need a +1.**
 
@@ -80,7 +80,7 @@ This seeds [`sources/`](sources/) and [`templates/PROJECT-CONTEXT.md`](templates
 
 This is a **GitHub Template Repository**. You don't work in it directly — each engagement gets its own repo from the **Use this template** button above. Only the framework maintainer modifies this repo; improvements benefit all future engagements.
 
-Shared artifacts a squad generates during an engagement live under `engagement/<engagement-name>/` (committed). Per-user phase state lives under `.copilot-tracking/vibe/<engagement-name>/state.json` (gitignored — each teammate regenerates their own).
+Shared artifacts a team generates during an engagement live under `engagement/<engagement-name>/` (committed). Per-user phase state lives under `.copilot-tracking/vibe/<engagement-name>/state.json` (gitignored — each teammate regenerates their own).
 
 ---
 

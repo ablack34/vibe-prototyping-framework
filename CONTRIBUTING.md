@@ -20,7 +20,7 @@ This repo is the **template** that every engagement repo is created from. Change
 
 Before opening a PR, your change should pass these:
 
-1. **A real engagement could use it.** No theoretical features. If a change doesn't help a delivery squad get from kickoff to handoff faster or with less confusion, it doesn't belong here.
+1. **A real engagement could use it.** No theoretical features. If a change doesn't help a delivery team get from kickoff to handoff faster or with less confusion, it doesn't belong here.
 2. **Form-factor neutral.** The framework supports web app, conversational, agentic, Copilot extension, and low-code prototypes. Anything that hard-codes a single form factor needs a clear reason and a fallback for other paths.
 3. **All technology stays Microsoft.** Azure, M365, Power Platform, GitHub. No third-party hosting, no non-Microsoft AI services.
 4. **Prompts produce documents, not input forms.** Agents read sources and generate documents. They don't ask the user to fill in templates by hand.

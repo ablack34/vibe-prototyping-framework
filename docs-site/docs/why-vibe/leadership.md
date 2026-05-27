@@ -44,7 +44,7 @@ To scale AI-first consulting, we don't need a new offering. We need a **delivery
 
 ---
 
-## What changes for the squad
+## What changes for the team
 
 The harness moves VIBE methodology from people's heads into tooling. The delivery person facilitates workshops and captures sources. The harness does the paperwork.
 
@@ -96,7 +96,7 @@ The harness moves VIBE methodology from people's heads into tooling. The deliver
 | **Engineering handoff** | Verbal briefing, "figure it out" | Structured engineering brief with screen specs and data mapping |
 | **Handoff package** | Manual slide deck, incomplete backlog | Auto-generated `handoff-data.json` with cross-reference validation |
 | **Time to first prototype concept** | 1-2 weeks (await engineer) | 2-3 days (TPM drives Discover → Disrupt → Ideate) |
-| **New squad member onboarding** | Shadow someone for 2 engagements | Follow the prompts — onboarding *is* engagement #1 |
+| **New team member onboarding** | Shadow someone for 2 engagements | Follow the prompts — onboarding *is* engagement #1 |
 
 See [What the Harness Changes](/why-vibe/impact) for the full qualitative breakdown and the HVE patterns the harness embeds.
 
@@ -110,7 +110,7 @@ The harness codifies the patterns from the VIBE engagements that already worked.
 
 ### Siemens Healthineers — $19M Deal · $140M 5yr Consumption
 
-Diagnostic imaging AI partnership. Studio 42 delivered pre-sales, field research, product design, and responsible AI assessment. The harness codifies the processes that made this engagement successful — and makes them reachable on every VIBE engagement, not just the ones with our most experienced squads.
+Diagnostic imaging AI partnership. Studio 42 delivered pre-sales, field research, product design, and responsible AI assessment. The harness codifies the processes that made this engagement successful — and makes them reachable on every VIBE engagement, not just the ones with our most experienced delivery teams.
 
 > "S42 was instrumental to deliver experiences that cater for the high stakes environment we operate in." — Martin K., Product Manager
 
@@ -141,7 +141,7 @@ See [Case studies](/why-vibe/case-studies) for the full set of VIBE engagements 
   </div>
   <div className="contrast-card not" style={{borderLeftColor: '#10b981'}}>
     <h3>What we measure</h3>
-    <p>Time-to-first-prototype · Squad-lead receptiveness ("would use again") · Customer NPS · Harness gaps surfaced during real engagements.</p>
+    <p>Time-to-first-prototype · Lead receptiveness ("would use again") · Customer NPS · Harness gaps surfaced during real engagements.</p>
   </div>
 </div>
 
@@ -153,12 +153,12 @@ Detailed economics, deck outline, demo script, and ROI scenarios are in the [pit
 
 ---
 
-## Why adopt a harness — why not let good squads keep doing what they do?
+## Why adopt a harness — why not let experienced delivery teams keep doing what they do?
 
 Three reasons:
 
-1. **Scale.** Good squads are scarce. The harness lets *any* squad deliver to good-squad standard, which means we can run more VIBE engagements without doubling Studio 42 headcount.
-2. **Consistency.** Today's VIBE delivery quality varies by squad composition. The harness encodes our best practices into the tooling — so every customer gets the Siemens-standard engagement, not a coin flip.
+1. **Scale.** Delivery expertise is scarce. The harness empowers every team member to deliver high-quality outcomes, which means we can run more VIBE engagements without doubling Studio 42 headcount.
+2. **Consistency.** Today's VIBE delivery quality varies by who's leading the engagement. The harness encodes our best practices into the tooling — so every customer gets the Siemens-standard engagement, not a coin flip.
 3. **Empowerment.** Non-engineers can drive 3 of 5 phases independently. We stop blocking on engineering capacity. AI-first consulting becomes a TPM-led practice, not an engineer-bottlenecked one.
 
 ---

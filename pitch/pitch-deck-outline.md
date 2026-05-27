@@ -49,7 +49,7 @@ A simple chart or four big numbers:
 - **1** — person (the engineer) who can build the prototype today
 
 **What to say:**
-> "VIBE works — Siemens, Novartis, Coca-Cola Hellenic. The output is good. The cost of producing it is the problem. Roughly 40% of every VIBE engagement disappears into meeting notes, discovery write-ups, ideation summaries, handoff decks. None of it compounds. Every engagement starts from scratch. If we want to scale AI-first consulting — more engagements, more squads, more impact — we have to fix the throughput. Not the offering."
+> "VIBE works — Siemens, Novartis, Coca-Cola Hellenic. The output is good. The cost of producing it is the problem. Roughly 40% of every VIBE engagement disappears into meeting notes, discovery write-ups, ideation summaries, handoff decks. None of it compounds. Every engagement starts from scratch. If we want to scale AI-first consulting — more engagements, more teams, more impact — we have to fix the throughput. Not the offering."
 
 **Don't:** Apologize for current quality. The work is good; the cost is wrong.
 
@@ -65,7 +65,7 @@ A simple two-column visual:
 ```
 TODAY: VIBE methodology lives in people's heads
    ↓ Skill transfer is shadowing
-   ↓ Quality varies by squad composition
+   ↓ Quality varies by who's leading the engagement
    ↓ Non-engineers block on engineers
 
 WITH THE HARNESS: VIBE methodology is codified tooling
@@ -78,9 +78,9 @@ WITH THE HARNESS: VIBE methodology is codified tooling
 Plus a short caption: *"Think test harness → delivery harness."*
 
 **What to say:**
-> "Quick definition before I go further. A *delivery harness* is the same idea as a test harness for code — codified tooling that turns a methodology into an executable workflow. Today, the VIBE methodology lives in our heads. New TPMs learn by shadowing. Quality varies by who's on the squad.
+> "Quick definition before I go further. A *delivery harness* is the same idea as a test harness for code — codified tooling that turns a methodology into an executable workflow. Today, the VIBE methodology lives in our heads. New TPMs learn by shadowing senior delivery leads. Quality varies by who's leading the engagement.
 >
-> The harness moves that methodology into tooling — prompts that encode the workflow steps, agents that do the synthesis, templates that standardize the artifacts, validation gates that check consistency. The result: any squad can deliver to the standard of our best squads."
+> The harness moves that methodology into tooling — prompts that encode the workflow steps, agents that do the synthesis, templates that standardize the artifacts, validation gates that check consistency. The result: any TPM–engineer pair can deliver to senior-team standard."
 
 **Don't:** Get lost in tooling details. Stay at the conceptual level. Engineers in the room will recognize the pattern instantly.
 
@@ -88,18 +88,18 @@ Plus a short caption: *"Think test harness → delivery harness."*
 
 ## Slide 4 — Why adopt the harness (2.5 min) ⭐ CRITICAL SLIDE
 
-**Title:** *"Why adopt a harness — why not let good squads keep doing what they do?"*
+**Title:** *"Why adopt a harness — why not let experienced delivery teams keep doing what they do?"*
 
 **What to show:**
 Three reasons, big and clear:
 
 ```
 1. SCALE
-   Good squads are scarce. The harness lets ANY squad deliver to good-squad standard
+   Senior delivery talent is scarce. The harness lets ANY TPM–engineer pair deliver to senior-team standard
    → More VIBE engagements without doubling headcount
 
 2. CONSISTENCY
-   Today's quality varies by squad composition
+   Today's quality varies by who's leading the engagement
    → Every customer gets the Siemens-standard engagement, not a coin flip
 
 3. EMPOWERMENT
@@ -108,9 +108,9 @@ Three reasons, big and clear:
 ```
 
 **What to say:**
-> "If I were you, I'd ask: 'good squads already deliver good VIBE engagements — why introduce tooling?' Three reasons.
+> "If I were you, I'd ask: 'experienced delivery teams already deliver good VIBE engagements — why introduce tooling?' Three reasons.
 >
-> *One — scale.* Good squads are scarce. We can't hire our way to 50 VIBE engagements a year. The harness lets *any* squad — junior TPM, designer, new joiner — deliver to good-squad standard. We unlock more engagements without doubling Studio 42 headcount.
+> *One — scale.* Senior delivery talent is scarce. We can't hire our way to 50 VIBE engagements a year. The harness lets *any* TPM–engineer pair — junior TPM, designer, new joiner paired with any engineer — deliver to senior-team standard. We unlock more engagements without doubling Studio 42 headcount.
 >
 > *Two — consistency.* Today's quality is a coin flip depending on who's on the engagement. The harness encodes our best practices into the tooling, so every customer gets the Siemens-standard engagement. Not 'pretty good if you got the right TPM.'
 >
@@ -118,7 +118,7 @@ Three reasons, big and clear:
 
 **Don't:** Make this sound like a demotion for engineers. Frame it as engineers spending time on the prototype, not the paperwork.
 
-**Anticipate:** "Won't this dilute quality if anyone can do it?" → "The opposite — quality goes up because best practices are enforced by the tooling, not dependent on whoever's on the squad."
+**Anticipate:** "Won't this dilute quality if anyone can do it?" → "The opposite — quality goes up because best practices are enforced by the tooling, not dependent on whoever's leading the engagement."
 
 ---
 
@@ -152,7 +152,7 @@ Three logos with one-line outcomes:
 Caption: *"These engagements set the standard. The harness makes that standard reachable every time."*
 
 **What to say:**
-> "Important framing: the harness isn't a bet on something unproven. It codifies the patterns from the VIBE engagements that already worked — Siemens' high-stakes design discipline, Coca-Cola's live-workshop iteration, Novartis' AI-native concept exploration. These engagements set the standard. The harness makes that standard reachable on every VIBE engagement, not just the ones with our most experienced squads."
+> "Important framing: the harness isn't a bet on something unproven. It codifies the patterns from the VIBE engagements that already worked — Siemens' high-stakes design discipline, Coca-Cola's live-workshop iteration, Novartis' AI-native concept exploration. These engagements set the standard. The harness makes that standard reachable on every VIBE engagement, not just the ones with our most experienced delivery teams."
 
 **Don't:** Overclaim. The deals weren't won *by* the harness — the harness raises the floor so more engagements can hit that bar.
 
@@ -179,9 +179,9 @@ A simplified version of the ROI table (full version in [roi-model.md](roi-model.
 
 ---
 
-## Slide 8 — What changes for the squad (1.5 min)
+## Slide 8 — What changes for the team (1.5 min)
 
-**Title:** *"Three squad scenarios after harness adoption"*
+**Title:** *"Three team scenarios after harness adoption"*
 
 **What to show:**
 Three short scenarios:
@@ -190,10 +190,10 @@ Three short scenarios:
 
 > **Engineer on a Build phase** — Receives a structured brief with screen specs and data mapping, not a verbal "figure it out." Spends Day 1 building, not interviewing.
 
-> **Squad lead at handoff** — `handoff-data.json` validates internally before the customer sees it. Roadmap, backlog, limitations, vision — every claim source-cited.
+> **Lead at handoff** — `handoff-data.json` validates internally before the customer sees it. Roadmap, backlog, limitations, vision — every claim source-cited.
 
 **What to say:**
-> "What does this actually look like in a squad's week? Three short scenarios. The throughline: more time on the parts that need human judgment, less time on the parts that don't. The squad still does VIBE. The squad just doesn't do the paperwork."
+> "What does this actually look like in a team's week? Three short scenarios. The throughline: more time on the parts that need human judgment, less time on the parts that don't. The team still does VIBE. The team just doesn't do the paperwork."
 
 **Don't:** Promise speed without quality. Lead with quality, let speed follow.
 
@@ -216,7 +216,7 @@ COST
 
 WHAT WE MEASURE
 ├── Time-to-first-prototype (target < 5 days)
-├── Squad-lead receptiveness ("would use again")
+├── Lead receptiveness ("would use again")
 ├── Customer NPS (target ≥ 8)
 └── Harness gaps surfaced during real engagements
 
@@ -241,11 +241,11 @@ DECISION POINT
 ```
 1. ✅  Approve the harness as default tooling for next 3 VIBE engagements
 2. 🎯  Help identify the first 3 candidate engagements (range, not easy wins)
-3. 📣  Endorse it openly — squad leads need air cover to adopt new tooling mid-quarter
+3. 📣  Endorse it openly — delivery leads need air cover to adopt new tooling mid-quarter
 ```
 
 **What to say:**
-> "Three things from you today. One: approve adoption of the harness on the next 3 VIBE engagements. Two: help me pick the right 3 — I want engagements that represent the range of what Studio 42 does, not just easy wins. Three: endorse it openly. Squad leads need to know it's safe to change how they deliver mid-quarter. That's it."
+> "Three things from you today. One: approve adoption of the harness on the next 3 VIBE engagements. Two: help me pick the right 3 — I want engagements that represent the range of what Studio 42 does, not just easy wins. Three: endorse it openly. Delivery leads need to know it's safe to change how they deliver mid-quarter. That's it."
 
 **Don't:** End on a feature recap. End on the explicit ask.
 
@@ -272,7 +272,7 @@ DECISION POINT
 | 5 — Contoso | 1:30 | 8:00 |
 | 6 — Floor we're raising | 1:00 | 9:00 |
 | 7 — Economics | 1:00 | 10:00 |
-| 8 — Squad scenarios | 1:30 | 11:30 |
+| 8 — Team scenarios | 1:30 | 11:30 |
 | 9 — The ask | 1:30 | 13:00 |
 | 10 — Decisions | 1:00 | 14:00 |
 | Q&A buffer | 1:00 | 15:00 |

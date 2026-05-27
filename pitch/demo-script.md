@@ -106,7 +106,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Switch to:** A blank chat or a slide
 
 **Say:**
-> "What you just saw — Discover, Disrupt, Ideate, engineering brief, handoff package — is what a Studio 42 squad delivers on every VIBE engagement today. Normally it takes somewhere between 5 and 10 working days. The harness did it in 12 minutes against a fully-formed fixture. Real engagements are messier — customers don't hand you perfect questionnaires. But the harness does the synthesis work in real time. The squad's job becomes facilitation and judgment, not paperwork.
+> "What you just saw — Discover, Disrupt, Ideate, engineering brief, handoff package — is what a Studio 42 team delivers on every VIBE engagement today. Normally it takes somewhere between 5 and 10 working days. The harness did it in 12 minutes against a fully-formed fixture. Real engagements are messier — customers don't hand you perfect questionnaires. But the harness does the synthesis work in real time. The team's job becomes facilitation and judgment, not paperwork.
 >
 > The ask is the same as in the deck: adopt the harness as default tooling on the next 3 VIBE engagements. After the third, we either formalize it as standard Studio 42 tooling or iterate based on what we learn.
 >
@@ -126,7 +126,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 > "It's the opposite. The harness *is* the process. You type one command instead of writing the document. The 'process' is one keystroke."
 
 ### "What if a TPM hates it?"
-> "That's literally one of the adoption success metrics — 'squad lead would use again.' If TPMs hate it, that's a fail signal and we rebuild or retire."
+> "That's literally one of the adoption success metrics — 'lead would use again.' If TPMs hate it, that's a fail signal and we rebuild or retire."
 
 ### "Can the harness handle [specific weird engagement type]?"
 > "Honest answer: I don't know yet. That's why the 3 adoption engagements *represent the range* of what we do, not 3 easy wins. Help me pick the right 3."
@@ -143,7 +143,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 ### "Isn't this just rebranding existing prompts?"
 > "It's more than prompts — it's prompts + specialized agents + templates + validation gates, wired together into an executable workflow. The point is the integration. The harness is the difference between 'we have some useful prompts' and 'a junior TPM can deliver a Siemens-standard engagement.'"
 
-### "Why not just give the prompts to squads and let them use them as they want?"
+### "Why not just give the prompts to teams and let them use them as they want?"
 > "Optional tooling becomes nobody's tooling. The harness only delivers value when it's the default — that's what makes quality process-dependent instead of person-dependent. That's the whole point of the ask."
 
 ---

@@ -21,12 +21,12 @@ title: Scaling VIBE — The Delivery Harness
 
 Same idea as a test harness for code — a **delivery harness** is the codified tooling that turns a methodology into an executable workflow.
 
-The VIBE methodology used to live in people's heads. New TPMs learned by shadowing. Quality varied by who was on the squad. The harness moves that methodology *into tooling* — so any squad can deliver to the standard of our best squads.
+The VIBE methodology used to live in people's heads. New team members learned by shadowing others. Quality varied by who was leading the engagement. The harness moves that methodology *into tooling* — so every team member is empowered to deliver high-quality outcomes.
 
 <div className="problem-grid">
   <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-start)'}}>
     <h3>📋 Opinionated prompts</h3>
-    <p>14 prompts that encode the full VIBE engagement workflow — kickoff to handoff. Squad members run them by typing one command.</p>
+    <p>14 prompts that encode the full VIBE engagement workflow — kickoff to handoff. The TPM or engineer runs them by typing one command.</p>
   </div>
   <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-end)'}}>
     <h3>🤖 Specialized agents</h3>
@@ -52,12 +52,12 @@ To scale AI-first consulting, we don't need a new offering. We need to remove th
   <div className="value-card">
     <div className="value-icon">📈</div>
     <h3>Scale</h3>
-    <p>Good squads are scarce. The harness lets <em>any</em> squad deliver to good-squad standard — so we can run more VIBE engagements without doubling Studio 42 headcount.</p>
+    <p>Delivery expertise is scarce. The harness empowers <em>every</em> team member to deliver high-quality outcomes — so we can run more VIBE engagements without doubling Studio 42 headcount.</p>
   </div>
   <div className="value-card">
     <div className="value-icon">🎯</div>
     <h3>Consistency</h3>
-    <p>Today's quality varies by squad composition. The harness encodes best practices into the tooling — every customer gets the Siemens-standard engagement, not a coin flip.</p>
+    <p>Today's quality varies by who's leading the engagement. The harness encodes best practices into the tooling — every customer gets the Siemens-standard engagement, not a coin flip.</p>
   </div>
   <div className="value-card">
     <div className="value-icon">👥</div>
@@ -72,9 +72,9 @@ To scale AI-first consulting, we don't need a new offering. We need to remove th
 
 | | Without the harness | With the harness |
 |---|---|---|
-| **Methodology lives** | In senior squad members' heads | In prompts, agents, templates, validation gates |
+| **Methodology lives** | In experienced team members' heads | In prompts, agents, templates, validation gates |
 | **Skill transfer** | Shadowing for 2+ engagements | Follow the prompts — onboarding is engagement #1 |
-| **Quality** | Varies by squad composition | Process-dependent — junior TPM ≈ senior TPM |
+| **Quality** | Varies by who's leading the engagement | Process-dependent — everyone delivers to a high standard |
 | **Documentation** | TPM writes from scratch (4-6 hours per artifact) | Agent generates from sources, TPM reviews (~15 min) |
 | **Form-factor exploration** | Drifts to "another web dashboard" | Explicit multi-form-factor evaluation, every engagement |
 | **Handoff** | Slide deck the TPM stays up writing | Validated `handoff-data.json` — every claim source-cited |
@@ -114,6 +114,6 @@ You don't have to take any of this on faith. The harness ships with a complete d
 ## See also
 
 - [The 5 phases](/why-vibe/process) — what each step of a VIBE engagement looks like
-- [What the harness changes](/why-vibe/impact) — concrete before/after for the squad
+- [What the harness changes](/why-vibe/impact) — concrete before/after for the team
 - [For leadership](/why-vibe/leadership) — the case for adopting the harness as default tooling
 - [Case studies](/why-vibe/case-studies) — the VIBE engagements that set the standard

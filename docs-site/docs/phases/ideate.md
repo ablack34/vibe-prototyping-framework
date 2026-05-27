@@ -5,7 +5,7 @@ title: "Phase 3: Ideate"
 
 # Phase 3: Ideate
 
-**Who:** Anyone on the squad · **Duration:** 1 day
+**Who:** Anyone on the team · **Duration:** 1 day
 
 Brainstorm AI-powered prototype concepts across different form factors. This is the creative bridge between requirements and engineering — and it's accessible to everyone.
 
@@ -53,7 +53,7 @@ Non-technical team members can paste the generated **Spark prompts** into GitHub
 
 | Artifact | Purpose | Who Uses It |
 |----------|---------|------------|
-| `ideation-concepts.md` | Full concept descriptions and comparison | Whole squad |
+| `ideation-concepts.md` | Full concept descriptions and comparison | Whole team |
 | `selected-concept.md` | Chosen concept with detailed narrative | Customer review |
 | `spark-prompts.md` | GitHub Spark and Copilot Studio prompts | Non-technical visualization |
 | `engineering-brief.md` | Structured handoff for the engineer | Dev engineer |
