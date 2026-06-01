@@ -1,9 +1,9 @@
 ---
-sidebar_position: 5
-title: "Phase 5: Deliver"
+sidebar_position: 6
+title: "Phase 6: Deliver"
 ---
 
-# Phase 5: Deliver
+# Phase 6: Deliver
 
 **Who:** Anyone on the team · **Duration:** 1-2 days
 

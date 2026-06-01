@@ -1,9 +1,9 @@
 ---
-sidebar_position: 2
-title: "Phase 2: Define"
+sidebar_position: 3
+title: "Phase 3: Define"
 ---
 
-# Phase 2: Define
+# Phase 3: Define
 
 **Who:** Anyone on the team · **Duration:** 1-2 days
 

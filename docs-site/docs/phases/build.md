@@ -1,9 +1,9 @@
 ---
-sidebar_position: 4
-title: "Phase 4: Build"
+sidebar_position: 5
+title: "Phase 5: Build"
 ---
 
-# Phase 4: Build (Design & Develop)
+# Phase 5: Build (Design & Develop)
 
 **Who:** Engineer (with TPM/designer support) · **Duration:** 5-10 days
 

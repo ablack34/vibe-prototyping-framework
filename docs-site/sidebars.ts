@@ -27,9 +27,10 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'The Five Phases',
+      label: 'The Six Phases',
       collapsed: false,
       items: [
+        'phases/preparation',
         'phases/discover',
         'phases/define',
         'phases/ideate',

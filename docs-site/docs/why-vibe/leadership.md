@@ -51,37 +51,43 @@ The harness moves VIBE methodology from people's heads into tooling. The deliver
 <div className="phase-grid">
   <div className="phase-card">
     <div className="phase-number">01</div>
+    <h3>Preparation</h3>
+    <p>Harness drafts both briefs from sources, kicks off dual-path research (public web + M365 tenant), generates the full 4-week meeting schedule.</p>
+    <div className="phase-who">👥 TPM / Designer</div>
+  </div>
+  <div className="phase-card">
+    <div className="phase-number">02</div>
     <h3>Discover</h3>
     <p>Harness extracts context from Teams transcripts, customer documents, and questionnaires. Auto-fills <code>PROJECT-CONTEXT.md</code>.</p>
     <div className="phase-who">👥 TPM / Designer</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">02</div>
+    <div className="phase-number">03</div>
     <h3>Define</h3>
     <p>Harness frames the $50K vs $50M value, prioritizes use cases with evidence-based scoring, generates requirements.</p>
     <div className="phase-who">👥 TPM / Designer</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">03</div>
+    <div className="phase-number">04</div>
     <h3>Ideate</h3>
     <p>Harness brainstorms 2-3 concepts across form factors. Validated against requirements. Spark prompts for instant visualization.</p>
     <div className="phase-who">👥 Anyone</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">04</div>
+    <div className="phase-number">05</div>
     <h3>Build</h3>
     <p>Engineer receives a structured brief. Builds from the concept, not from scratch. Check-in feedback captured automatically.</p>
     <div className="phase-who">🔧 Engineer</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">05</div>
+    <div className="phase-number">06</div>
     <h3>Deliver</h3>
     <p>Harness generates handoff package step by step: vision, roadmap, backlog, limitations — all validated for consistency.</p>
     <div className="phase-who">👥 Anyone</div>
   </div>
 </div>
 
-**3 of 5 phases run without an engineer.** A TPM or designer drives most of the engagement independently. Engineering capacity stops being the bottleneck.
+**4 of 6 phases run without an engineer.** A TPM or designer drives most of the engagement independently. Engineering capacity stops being the bottleneck.
 
 ---
 
@@ -95,7 +101,7 @@ The harness moves VIBE methodology from people's heads into tooling. The deliver
 | **Concept exploration** | Drifts to "another web dashboard" | 2-3 validated concepts across form factors |
 | **Engineering handoff** | Verbal briefing, "figure it out" | Structured engineering brief with screen specs and data mapping |
 | **Handoff package** | Manual slide deck, incomplete backlog | Auto-generated `handoff-data.json` with cross-reference validation |
-| **Time to first prototype concept** | 1-2 weeks (await engineer) | 2-3 days (TPM drives Discover → Define → Ideate) |
+| **Time to first prototype concept** | 1-2 weeks (await engineer) | 2-3 days (TPM drives Preparation → Discover → Define → Ideate) |
 | **New team member onboarding** | Shadow someone for 2 engagements | Follow the prompts — onboarding *is* engagement #1 |
 
 See [What the Harness Changes](/why-vibe/impact) for the full qualitative breakdown and the HVE patterns the harness embeds.
@@ -159,7 +165,7 @@ Three reasons:
 
 1. **Scale.** Delivery expertise is scarce. The harness empowers every team member to deliver high-quality outcomes, which means we can run more VIBE engagements without doubling Studio 42 headcount.
 2. **Consistency.** Today's VIBE delivery quality varies by who's leading the engagement. The harness encodes our best practices into the tooling — so every customer gets the Siemens-standard engagement, not a coin flip.
-3. **Empowerment.** Non-engineers can drive 3 of 5 phases independently. We stop blocking on engineering capacity. AI-first consulting becomes a TPM-led practice, not an engineer-bottlenecked one.
+3. **Empowerment.** Non-engineers can drive 4 of 6 phases independently. We stop blocking on engineering capacity. AI-first consulting becomes a TPM-led practice, not an engineer-bottlenecked one.
 
 ---
 

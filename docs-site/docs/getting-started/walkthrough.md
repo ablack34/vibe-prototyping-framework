@@ -8,7 +8,7 @@ title: What to Expect (Walkthrough)
 This page shows you what each phase **actually looks like** when you run it against the Contoso Field Services demo fixture. No video required — just realistic excerpts of what each agent produces so you know what "good" looks like before your first real engagement.
 
 :::tip Run it yourself
-Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through Discover → Define → Ideate → Build → Deliver. Try it.
+Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through Preparation → Discover → Define → Ideate → Build → Deliver. Try it.
 :::
 
 :::info Prefer M365 Notebook?
@@ -28,7 +28,7 @@ You run:
 What you see in Copilot Chat:
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: discover · Discovery readiness: 1/9 · Sources: 0 files
+📍 Contoso Field Services — dispatcher-ai · Phase: preparation · Preparation readiness: 1/7 · Sources: 0 files
 
 ✅ Engagement created: Contoso Field Services — dispatcher-ai
 
@@ -36,17 +36,52 @@ What you see in Copilot Chat:
   • .copilot-tracking/vibe/contoso-dispatcher-ai/state.json (per-user, gitignored)
   • engagement/contoso-dispatcher-ai/ (committed — agent outputs land here)
   • templates/PROJECT-CONTEXT.md (filled in)
-  • sources/meeting-templates.md (4 meeting invite templates)
+  • templates/engagement-brief.md (S42-internal — drafted from the inputs)
+  • templates/customer-brief.md (customer-voice — placeholder for the customer to fill or for /vibe-customer-brief to draft from sources)
+  • sources/meeting-templates.md (full 4-week schedule: kickoff + 2× discover + disrupt workshop + 2× check-in + handoff)
 
-👉 NEXT: Click "🎙️ Process Transcript" once you have meeting recordings.
-   Or click "🔍 Start Discovery" to fill PROJECT-CONTEXT.md from sources/.
+👉 NEXT: Click "🛠 Begin Preparation" — the Prep agent will draft both briefs from any sources/, kick off dual-path research, and walk you to a 7/7 readiness gate before Discover.
 ```
 
 **Time spent:** ~10 seconds.
 
 ---
 
-## Phase 1 · Discover
+## Phase 1 · Preparation (Week 0)
+
+You click **🛠 Begin Preparation** (or type `@VIBE Preparation`). The Preparation agent reads `sources/` and `templates/` and shows you what's filled vs missing on the 7-field Preparation readiness dashboard, then drafts the gaps and kicks off dual-path research.
+
+What you see (excerpt):
+
+```
+📍 Contoso Field Services — dispatcher-ai · Phase: preparation · Preparation readiness: 2/7 · Sources: 0 files
+
+Preparation readiness:
+  Engagement brief        B   Drafted from /vibe-kickoff inputs — needs commercial/squad context
+  Customer brief          C   Placeholder — no customer voice yet
+  Customer research       C   Neither path A (public) nor path B (M365) has run
+  Meeting schedule        A   All 7 meetings in sources/meeting-templates.md
+  Existing docs           C   sources/ is empty
+  Prior transcripts       C   No earlier touchpoints processed yet
+  Kickoff complete        C   Kickoff meeting not yet logged
+
+To close the gaps I'll:
+  1. Run /vibe-research to start path A (public web via @Task Researcher) and generate
+     the path B paste-back prompt for M365 Copilot's Researcher.
+  2. Wait for you to paste any customer-authored materials into sources/ — then re-draft
+     customer-brief.md from them.
+
+👉 NEXT: Click "🔬 Run /vibe-research" (Path A starts immediately; Path B gives you a
+   prompt to paste into M365 Copilot's Researcher agent).
+```
+
+After both research paths complete and the customer-brief gets a real voice (via `/vibe-customer-brief` or pasting the customer's own materials), the readiness flips to 7/7 at Grade B+ and the agent surfaces the **🚪 Begin Discover** button.
+
+**Time spent:** ~3-5 days of calendar time (most of it waiting for the customer's materials and the M365 Researcher result). Active agent time is ~10 minutes total.
+
+---
+
+## Phase 2 · Discover
 
 You drop the demo fixtures into `sources/` (or run `/vibe-demo` and they're already there), then type `@VIBE Discover`.
 
@@ -88,7 +123,7 @@ Grades:
 
 ---
 
-## Phase 2 · Define
+## Phase 3 · Define
 
 You click **💡 Frame the Problem**. The Define agent reads the discovery summary and writes `templates/requirements-summary.md`.
 
@@ -127,7 +162,7 @@ requirements-summary.md written. Top-line framing:
 
 ---
 
-## Phase 3 · Ideate
+## Phase 4 · Ideate
 
 You click **💡 Ideate Concepts**. The Ideate agent reads the requirements summary and produces three artifacts:
 
@@ -205,7 +240,7 @@ Already prepared in scaffold/data/ by /vibe-data-prep:
 
 ---
 
-## Phase 4 · Build (Engineer)
+## Phase 5 · Build (Engineer)
 
 The engineer `git pull`s, reads [`engagement/contoso-dispatcher-ai/engineering-brief.md`](/reference/templates), then:
 
@@ -240,7 +275,7 @@ This is an engineer-facing deployment **plan**, not an auto-deploy. For C1 it wa
 
 ---
 
-## Phase 5 · Deliver
+## Phase 6 · Deliver
 
 You click **📦 Generate Deliverables**. The Deliver agent walks you through the handoff package one section at a time — you approve each one:
 

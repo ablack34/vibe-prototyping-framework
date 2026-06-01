@@ -30,7 +30,7 @@ ROI scenarios with $ figures and adoption cost analysis live in the [pitch packa
 
 - Engagement workflow is codified and repeatable
 - Context automatically extracted from Teams transcripts and customer documents
-- The TPM or designer drives Discover, Define, and Ideate independently
+- The TPM or designer drives Preparation, Discover, Define, and Ideate independently
 - AI-powered concepts explored across multiple form factors before engineering starts
 - Consistent documentation and handoff quality every time
 - Engineers get a clear brief instead of interpreting raw requirements
@@ -41,15 +41,15 @@ ROI scenarios with $ figures and adoption cost analysis live in the [pitch packa
 
 <div className="stat-grid">
   <div className="stat-card">
-    <div className="stat-number">3</div>
+    <div className="stat-number">4</div>
     <div className="stat-label">Phases a TPM can drive without an engineer</div>
   </div>
   <div className="stat-card">
-    <div className="stat-number">14</div>
+    <div className="stat-number">21</div>
     <div className="stat-label">AI-powered prompts encoding the workflow</div>
   </div>
   <div className="stat-card">
-    <div className="stat-number">7</div>
+    <div className="stat-number">8</div>
     <div className="stat-label">Specialized agents with defined I/O and quality gates</div>
   </div>
   <div className="stat-card">
@@ -130,4 +130,4 @@ The result: **any team member with the harness produces consistent, high-quality
 
 - [Scaling VIBE — The Delivery Harness](/why-vibe/scaling-vibe) — what the harness is and why we need it
 - [For leadership](/why-vibe/leadership) — the case for adopting the harness as default tooling
-- [The 5 phases](/why-vibe/process) — how a VIBE engagement runs end-to-end
+- [The 6 phases](/why-vibe/process) — how a VIBE engagement runs end-to-end
