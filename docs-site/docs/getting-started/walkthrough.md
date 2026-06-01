@@ -92,16 +92,18 @@ What the agent does in the background:
 3. Cross-references the answers to detect contradictions
 4. Grades each of the 9 readiness fields A/B/C
 5. Writes `engagement/contoso-dispatcher-ai/discovery-summary.md`
+6. Checks whether the three required Discover deliverables already exist (the demo fixture pre-seeds them)
 
 What you see (excerpt):
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: discover · Discovery readiness: 9/9 · Sources: 7 files
+📍 Contoso Field Services — dispatcher-ai · Phase: discover · Discovery readiness: 8/9 · Discover deliverables: 3/3 at B+
 
 Discovery summary written to engagement/contoso-dispatcher-ai/discovery-summary.md.
 
 Highlights:
-  • Sandra (COO) framed the win as €4M penalties + €6M lost renewals — a $50M problem
+  • Sandra (COO) framed the win as €4M/yr penalties + ~€3M/yr lost renewals
+    (€6.3M over 2 years per customer-brief.md) — a $50M problem
   • Bartosz (front-line dispatcher) and Sandra both prioritised "tell me which tech" over everything else
   • Surprise insight from Workshop 1: Anya (customer service) says 80 of 120 weekly escalations
     are "you didn't tell me" — suggests SLA early-warning may be a stronger first deliverable
@@ -109,17 +111,36 @@ Highlights:
   • Hard constraint: refrigerant > 3kg requires non-expired CAT I or II certification (Klaus, F-Gas)
   • Unionised dispatchers — framing must be "augmentation not automation"
 
-Grades:
+Grades — 9 readiness fields:
   Problem statement      A   Target users           A
   Business impact        A   Current state          A
-  Desired outcome        A   Data inventory         A
-  Stakeholder map        A   Success criteria       B (need quantified targets)
+  Desired outcome        B   Data inventory         B
+  Stakeholder map        A   Success criteria       C (customer hasn't signed off on
+                                                       quantified targets yet — carry
+                                                       this into Define as the first
+                                                       thing to lock with the customer)
   Constraints            A
 
-👉 NEXT: Click "💡 Frame the Problem" to move to the Define phase.
+Grades — 3 required Discover deliverables:
+  personas.md                 B   3 personas (Bartosz A, Anya B, Marek B) — lowest wins
+                                  ("Anya and Marek lack direct quotes; ride-along scheduled")
+  problem-statement.md        A   Signed off by Sandra and Bartosz
+  current-state-journey.md    A   8 stages, Mermaid + table, signed off by Bartosz
+
+👉 NEXT: Both Discover gates are green (7+/9 readiness at B+, 3/3 deliverables at B+).
+   Click "💡 Frame the Problem" to move to Define — successCriteria stays a C for now
+   and Define will surface it as the first thing to lock with the customer.
 ```
 
-**Time spent:** ~3 minutes of agent runtime + ~2 minutes for you to read it.
+If you want to see the three deliverable prompts fire fresh instead of using the pre-seeded files, delete `personas.md`, `problem-statement.md`, and `current-state-journey.md` from `engagement/contoso-dispatcher-ai/` and run them in order:
+
+```
+/vibe-personas              # always first — Bartosz, Anya, Marek personas with sourced quotes
+/vibe-problem-statement     # anchors to the primary persona; fails fast if personas.md missing
+/vibe-current-journey       # Mermaid + stages + Top 3 ranked pains (feeds the Disrupt workshop)
+```
+
+**Time spent:** ~3 minutes of agent runtime + ~2 minutes for you to read it. Running the three deliverable prompts fresh adds ~5 minutes total.
 
 ---
 

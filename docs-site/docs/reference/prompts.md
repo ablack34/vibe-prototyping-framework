@@ -44,6 +44,9 @@ These cover the main engagement flow:
 | `/vibe-questionnaire` | Generate Microsoft Forms questionnaires | `type` (optional: customer/account/both) |
 | `/vibe-transcript` | Process Teams meeting transcripts | `engagement`, `dateRange`, `participants`, `type` (discovery/check-in) |
 | `/vibe-capture` | Quick insight capture during meetings | `note` (required), `speaker`, `category` |
+| `/vibe-personas` | Generate `engagement/<name>/personas.md` from sources — one persona per H2, sourced quotes, A/B/C grading per persona. **Required Discover deliverable #1.** Run before `/vibe-problem-statement` and `/vibe-current-journey` (both anchor to the primary persona) | `engagement` (optional) |
+| `/vibe-problem-statement` | Generate `engagement/<name>/problem-statement.md` in the formal "I am / I'm trying to / But / Because / which results in" shape, with cited evidence per blank. **Required Discover deliverable #2.** Fails fast if `personas.md` doesn't exist yet | `engagement` (optional) |
+| `/vibe-current-journey` | Generate `engagement/<name>/current-state-journey.md` — Mermaid flowchart + stages table + Top 3 ranked pain points (the ranked pains feed the Disrupt workshop). **Required Discover deliverable #3.** Fails fast if `personas.md` doesn't exist yet | `engagement` (optional) |
 | `/vibe-check-in` | Process customer check-in feedback | `source` (notes/transcript) |
 | `/vibe-consolidate` | Consolidate all findings | `engagement` |
 
