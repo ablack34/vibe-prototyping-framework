@@ -85,6 +85,8 @@ This is a **GitHub Template Repository**. You don't work in it directly — each
 
 Shared artifacts a team generates during an engagement live under `engagement/<engagement-name>/` (committed). Per-user phase state lives under `.copilot-tracking/vibe/<engagement-name>/state.json` (gitignored — each teammate regenerates their own).
 
+> **Maintainers:** read [`.github/PHASE_CHANGE_PLAYBOOK.md`](.github/PHASE_CHANGE_PLAYBOOK.md) before adding, renaming, or restructuring a phase. CI runs `scripts/check-phase-consistency.mjs` on every PR to catch broken prompt/agent references, drifted sidebar positions, and `state.json` paths that don't match the canonical schema.
+
 ---
 
 *Studio 42 — Microsoft Internal*

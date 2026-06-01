@@ -1,0 +1,54 @@
+name: Phase Consistency Check
+
+# Catches drift introduced when a phase is added, renamed, merged, or its
+# deliverables change. See .github/PHASE_CHANGE_PLAYBOOK.md for what runs
+# locally and how to fix failures.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/agents/**"
+      - ".github/prompts/**"
+      - ".github/instructions/**"
+      - ".github/copilot-instructions.md"
+      - "docs-site/docs/**"
+      - "docs-site/sidebars.ts"
+      - "templates/**"
+      - "demo/**"
+      - "pitch/**"
+      - "docs/**"
+      - "README.md"
+      - "CONTRIBUTING.md"
+      - "scripts/check-phase-consistency.mjs"
+      - ".github/workflows/phase-consistency.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/agents/**"
+      - ".github/prompts/**"
+      - ".github/instructions/**"
+      - ".github/copilot-instructions.md"
+      - "docs-site/docs/**"
+      - "docs-site/sidebars.ts"
+      - "templates/**"
+      - "demo/**"
+      - "pitch/**"
+      - "docs/**"
+      - "README.md"
+      - "CONTRIBUTING.md"
+      - "scripts/check-phase-consistency.mjs"
+      - ".github/workflows/phase-consistency.yml"
+  workflow_dispatch:
+
+jobs:
+  phase-consistency:
+    name: Verify phase-update consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run consistency checker
+        run: node scripts/check-phase-consistency.mjs
