@@ -69,6 +69,29 @@ What MCP tools do you have available?
 
 You should see tool names prefixed `mcp_github_*`, `mcp_workiq_*`, `mcp_ado_*`, and `mcp_foundry_*`. If a category is missing, that server didn't start — check [Troubleshooting](/reference/troubleshooting).
 
+## External Agents (Prompt-and-Paste Pattern)
+
+Not every helpful agent runs as an MCP server. Some live inside other Microsoft products (M365 Copilot, Copilot Studio, Microsoft Spark) and can't be called directly from VS Code. For these, the framework uses a **prompt-and-paste pattern**: it generates the perfect prompt as a file in your repo, you run it externally, and you save the output back into `sources/` so the agents here can use it.
+
+### M365 Copilot — Researcher agent
+
+The **Researcher agent inside M365 Copilot** is one of the most valuable external agents because it can read **tenant-only signal** that the public web cannot see: account-team emails to/from the customer over the last 18 months, OneNote notes from the account team, Teams chats and prior meetings, prior engagement docs in SharePoint, and CRM-style content in Outlook.
+
+Used by `/vibe-research` during the Preparation phase (Path B). The flow:
+
+1. `/vibe-research` runs in this CLI and generates `sources/research/m365-researcher-prompt.md` — a single fenced block of ready-to-paste text designed for Researcher.
+2. You open [https://m365.cloud.microsoft](https://m365.cloud.microsoft), switch to the **Researcher** agent, and paste the prompt.
+3. When Researcher returns its response, you save the full output to `sources/research/m365-researcher-results.md`.
+4. You re-run `/vibe-research` (or talk to `@VIBE Preparation`) and it synthesises Path A (public) + Path B (tenant) into `sources/research/research-summary.md`.
+
+**Why not an MCP integration?** Researcher executes inside the M365 Copilot UI with your tenant identity; there's no public API surface for an MCP server to call. The paste-back loop is the correct integration pattern today — same model as Microsoft Spark and Copilot Studio Maker prompts.
+
+**Reference**: Microsoft Learn — [Researcher agent in M365 Copilot](https://learn.microsoft.com/copilot/researcher/overview)
+
+### Microsoft Spark and Copilot Studio Maker
+
+These follow the same pattern. The `/vibe-ideate` flow produces `spark-prompts.md` and Copilot Studio Maker prompts that you paste into the relevant Microsoft tool, and the returned artifacts (UI mockups, agent definitions) come back as sources or are surfaced directly in the prototype.
+
 ## Adding More MCP Servers (Optional)
 
 If you need a server that isn't pre-configured (e.g., Playwright for screenshots, Microsoft Graph), add it to `.vscode/mcp.json` and reload VS Code. See [the MCP servers gallery](https://github.com/modelcontextprotocol/servers) for options.
