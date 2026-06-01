@@ -62,7 +62,7 @@ To scale AI-first consulting, we don't need a new offering. We need to remove th
   <div className="value-card">
     <div className="value-icon">👥</div>
     <h3>Empowerment</h3>
-    <p>3 of 5 phases run without an engineer. AI-first consulting becomes a TPM-led practice — engineers stop being the bottleneck and start being the multiplier.</p>
+    <p>4 of 6 phases run without an engineer. AI-first consulting becomes a TPM-led practice — engineers stop being the bottleneck and start being the multiplier.</p>
   </div>
 </div>
 
@@ -100,7 +100,7 @@ You don't have to take any of this on faith. The harness ships with a complete d
   <div className="value-card">
     <div className="value-icon">▶️</div>
     <h3>3 — Run the engagement</h3>
-    <p>Click the prompts the agent suggests: Discover → Define → Ideate → Build → Deliver. Watch the artifacts populate.</p>
+    <p>Click the prompts the agent suggests: Preparation → Discover → Define → Ideate → Build → Deliver. Watch the artifacts populate.</p>
   </div>
   <div className="value-card">
     <div className="value-icon">📖</div>
@@ -113,7 +113,7 @@ You don't have to take any of this on faith. The harness ships with a complete d
 
 ## See also
 
-- [The 5 phases](/why-vibe/process) — what each step of a VIBE engagement looks like
+- [The 6 phases](/why-vibe/process) — what each step of a VIBE engagement looks like
 - [What the harness changes](/why-vibe/impact) — concrete before/after for the team
 - [For leadership](/why-vibe/leadership) — the case for adopting the harness as default tooling
 - [Case studies](/why-vibe/case-studies) — the VIBE engagements that set the standard

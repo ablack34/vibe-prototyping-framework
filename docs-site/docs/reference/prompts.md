@@ -9,11 +9,12 @@ All available `/vibe-*` prompts organized by phase.
 
 ## Essential Prompts (Core Flow)
 
-These six prompts cover the main engagement flow:
+These cover the main engagement flow:
 
 | Prompt | Phase | What It Does |
 |--------|-------|-------------|
-| `/vibe-kickoff` | Discover | Creates the engagement, generates meeting templates and questionnaires |
+| `/vibe-kickoff` | Preparation | Creates the engagement, drafts both briefs (S42-internal + customer voice), generates the full 4-week meeting schedule |
+| `/vibe-research` | Preparation | Dual-path deep research — public web (auto, in-CLI) plus a ready-to-paste prompt for M365 Copilot's Researcher agent |
 | `/vibe-questionnaire` | Discover | Generates M365 Copilot prompts for the account team and customer questionnaires |
 | `/vibe-transcript` | Discover | Extracts context from Teams recordings automatically |
 | `/vibe-ideate` | Ideate | Brainstorms 2-3 AI-powered prototype concepts |
@@ -26,11 +27,20 @@ These six prompts cover the main engagement flow:
 
 ## All Prompts
 
+### Preparation Phase (Week 0)
+
+| Prompt | Description | Inputs |
+|--------|-------------|--------|
+| `/vibe-kickoff` | Start a new engagement — creates folders, drafts both briefs, generates the 4-week meeting schedule | `customer` (required), `problem` (required) |
+| `/vibe-customer-brief` | Generate or refresh `templates/customer-brief.md` (the customer's own voice) from sources | `engagement` (optional) |
+| `/vibe-research` | Dual-path deep customer research — runs `@Task Researcher` for public web (Path A) and generates a paste-back prompt for **M365 Copilot's Researcher** agent (Path B). Synthesises both into `sources/research/research-summary.md` when both inputs exist | `engagement` (optional) |
+| `/vibe-schedule` | Generate the full 4-week meeting schedule (kickoff, 2× discover, disrupt workshop, 2× check-in, handoff) into `sources/meeting-templates.md` | `engagement` (optional) |
+| `/vibe-prep-check` | Focused 7-field readiness check before moving to Discover (strict subset of `/vibe-doctor`) | `engagement` (optional) |
+
 ### Discovery Phase
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
-| `/vibe-kickoff` | Start a new engagement | `customer` (required), `problem` (required) |
 | `/vibe-questionnaire` | Generate Microsoft Forms questionnaires | `type` (optional: customer/account/both) |
 | `/vibe-transcript` | Process Teams meeting transcripts | `engagement`, `dateRange`, `participants`, `type` (discovery/check-in) |
 | `/vibe-capture` | Quick insight capture during meetings | `note` (required), `speaker`, `category` |

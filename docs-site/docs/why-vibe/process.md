@@ -3,37 +3,43 @@ sidebar_position: 2
 title: The VIBE Process
 ---
 
-# The Five Phases
+# The Six Phases
 
-VIBE Prototyping follows five phases. The first three don't require an engineer — the TPM or designer can drive them.
+VIBE Prototyping follows six phases. The first four don't require an engineer — the TPM or designer can drive them.
 
 <div className="phase-grid">
   <div className="phase-card">
     <div className="phase-number">01</div>
+    <h3>Preparation</h3>
+    <p>Land the engagement well. Draft both briefs, run dual-path customer research, schedule all 4 weeks of meetings — before kickoff.</p>
+    <div className="phase-who">👥 Anyone · Week 0 (3-5 days)</div>
+  </div>
+  <div className="phase-card">
+    <div className="phase-number">02</div>
     <h3>Discover</h3>
     <p>Understand the problem through customer research, meeting transcripts, and stakeholder alignment.</p>
     <div className="phase-who">👥 Anyone · 1-3 days</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">02</div>
+    <div className="phase-number">03</div>
     <h3>Define</h3>
     <p>Frame the business value, prioritize use cases, and define what success looks like.</p>
     <div className="phase-who">👥 Anyone · 1-2 days</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">03</div>
+    <div className="phase-number">04</div>
     <h3>Ideate</h3>
     <p>Brainstorm AI-powered concepts across form factors. Visualize with GitHub Spark prompts.</p>
     <div className="phase-who">👥 Anyone · 1 day</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">04</div>
+    <div className="phase-number">05</div>
     <h3>Build</h3>
     <p>Engineer the prototype with real data, deploy to Azure, iterate on customer feedback.</p>
     <div className="phase-who">🔧 Engineer · 5-10 days</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">05</div>
+    <div className="phase-number">06</div>
     <h3>Deliver</h3>
     <p>Generate the roadmap, ADO backlog, and handoff package for the customer.</p>
     <div className="phase-who">👥 Anyone · 1-2 days</div>
@@ -45,6 +51,12 @@ VIBE Prototyping follows five phases. The first three don't require an engineer 
 ## Week-by-Week Timeline
 
 <div className="timeline">
+  <div className="timeline-item">
+    <div className="timeline-week">Week 0 — Preparation</div>
+    <h3>Land the engagement well before kickoff</h3>
+    <p>Draft both briefs (S42-internal commercial context + customer-voice problem statement), run dual-path customer research (public web via Task Researcher + tenant signal via M365 Researcher), and schedule all 7 meetings of the engagement. Preparation is deliberately non-technical — its job is to ensure Discover starts from a strong base.</p>
+    <p><strong>Outputs:</strong> engagement-brief.md · customer-brief.md · sources/meeting-templates.md · sources/research/research-summary.md</p>
+  </div>
   <div className="timeline-item">
     <div className="timeline-week">Week 1 — Discover</div>
     <h3>Uncover user needs, business goals, and AI opportunities</h3>
@@ -104,7 +116,7 @@ VIBE Prototyping follows five phases. The first three don't require an engineer 
 
 | Role | Source | Responsibility |
 |------|--------|---------------|
-| Technical Product Manager | Studio 42 | Drives Discover, Define, Ideate, Deliver |
+| Technical Product Manager | Studio 42 | Drives Preparation, Discover, Define, Ideate, Deliver |
 | Dev Engineer | Studio 42 | Leads Build phase |
 | Designer | Studio 42 | UX research, concept development |
 | Data Scientist | EAG | Data analysis, AI model guidance |

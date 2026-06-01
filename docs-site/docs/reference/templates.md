@@ -13,8 +13,9 @@ These live in `templates/` and are populated as you progress through phases.
 
 | Template | Created In | Purpose |
 |----------|-----------|---------|
+| `engagement-brief.md` | Preparation | **S42-internal brief** — commercial context, squad, success metrics, risks, sponsor map |
+| `customer-brief.md` | Preparation | **Customer-voice brief** — the problem in the customer's own words, who feels it, what "great" looks like, existing investments, constraints |
 | `PROJECT-CONTEXT.md` | Discover | Single source of truth — problem, personas, stakeholders, data, decisions |
-| `engagement-brief.md` | Pre-engagement | Intake form with customer info, problem space, and team |
 | `requirements-summary.md` | Define | **Business half of the PRD** — customer-facing requirements with acceptance criteria, needs sign-off |
 | `engineering-brief.md` | Ideate (reference template) | **Technical half of the PRD** — structural reference for the engineer-facing brief the Ideate agent generates into `engagement/<name>/engineering-brief.md` |
 | `solution-design.md` | Build | Internal technical document — architecture, tech stack, build phases |
@@ -85,4 +86,5 @@ Drop these in `sources/`:
 | Customer documents | Slide decks, RFPs, process diagrams |
 | Questionnaire responses | Exported from Microsoft Forms |
 | Workshop notes | Auto-created by `/vibe-capture` |
-| Meeting agendas | Auto-created by `/vibe-kickoff` |
+| Meeting schedule | `sources/meeting-templates.md` — full 4-week schedule (kickoff, 2× discover, disrupt workshop, 2× check-in, handoff), auto-created by `/vibe-kickoff` or `/vibe-schedule` |
+| Customer research | `sources/research/customer-public.md` (Task Researcher, public web) and `sources/research/m365-researcher-results.md` (paste-back from M365 Copilot's Researcher), synthesised by `/vibe-research` into `sources/research/research-summary.md` |

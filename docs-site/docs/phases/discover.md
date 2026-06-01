@@ -1,9 +1,9 @@
 ---
-sidebar_position: 1
-title: "Phase 1: Discover"
+sidebar_position: 2
+title: "Phase 2: Discover"
 ---
 
-# Phase 1: Discover
+# Phase 2: Discover
 
 **Who:** Anyone on the team · **Duration:** 1-3 days
 
@@ -23,7 +23,7 @@ The Discover agent uses a **source-first, gap-fill** approach:
 
 | Command | When | What It Does |
 |---------|------|-------------|
-| `/vibe-kickoff` | Day 1 | Creates the engagement and generates meeting invite templates |
+| `/vibe-kickoff` | Week 0 (Preparation) | Creates the engagement and drafts both briefs — see [Phase 1: Preparation](preparation.md) |
 | `/vibe-questionnaire` | Day 1 | Generates Microsoft Forms questionnaires for customer and account team |
 | `/vibe-transcript` | After each meeting | Extracts context from Teams recordings |
 | `/vibe-capture` | During meetings | Quick-capture insights in real time |

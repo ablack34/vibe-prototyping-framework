@@ -22,7 +22,7 @@ code contoso-field-scheduling
 You can also create a sibling engagement from inside Copilot Chat with `/vibe-new customer="..." engagement="..."` — it runs `gh repo create` for you.
 :::
 
-## Step 2: Kick Off
+## Step 2: Kick Off (Preparation)
 
 Open Copilot Chat (`Ctrl+Shift+I`), switch to **Agent mode**, and type:
 
@@ -33,9 +33,18 @@ Open Copilot Chat (`Ctrl+Shift+I`), switch to **Agent mode**, and type:
 **What happens:**
 - Fills `templates/PROJECT-CONTEXT.md` with the inputs
 - Creates `engagement/<your-engagement>/` (shared with the team, committed)
-- Creates `.copilot-tracking/vibe/<your-engagement>/state.json` (per-user, gitignored)
-- Generates 4 meeting invite templates in `sources/meeting-templates.md`
+- Creates `.copilot-tracking/vibe/<your-engagement>/state.json` (per-user, gitignored) with `currentPhase: preparation`
+- Drafts `templates/engagement-brief.md` (S42-internal) and `templates/customer-brief.md` (customer-voice placeholder) from the inputs
+- Generates the full **4-week meeting schedule** (kickoff, 2× discover, disrupt workshop, 2× check-in, handoff) into `sources/meeting-templates.md`
 - Tells you what to do next
+
+Then close the Preparation gate before moving to Discover:
+
+```
+@VIBE Preparation
+```
+
+The Preparation agent ingests anything you've dropped into `sources/`, drafts the gaps, and kicks off `/vibe-research` (dual-path: public web via `@Task Researcher`, plus a paste-back prompt for **M365 Copilot's Researcher** so you can pull in tenant signal). Run `/vibe-prep-check` at the end of Week 0 to verify all 7 readiness fields are at Grade B+ before you switch into Discover mode.
 
 ## Step 3: Send Questionnaires
 

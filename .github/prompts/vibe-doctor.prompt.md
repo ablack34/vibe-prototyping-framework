@@ -26,8 +26,14 @@ Use this:
 | Engagement folder exists | `engagement/<name>/` is present and committed | **critical** — nothing else works |
 | state.json present | `.copilot-tracking/vibe/<name>/state.json` exists | warn (will be auto-rebuilt) |
 | state.json matches reality | Phases recorded in state.json match the files actually present in `engagement/<name>/` | warn (auto-reconcilable) |
+| **Preparation: engagement-brief.md filled** | Not just placeholders | **critical** for Preparation+ |
+| **Preparation: customer-brief.md filled** | Not just placeholders; ideally in customer voice | **critical** for Preparation+ |
+| **Preparation: customer-public.md exists** | `sources/research/customer-public.md` exists with cited sources | warn for Preparation+ |
+| **Preparation: M365 Researcher prompt generated** | `sources/research/m365-researcher-prompt.md` exists | warn for Preparation+ |
+| **Preparation: research-summary.md exists** | `sources/research/research-summary.md` exists (synthesis of both paths) | info for Preparation+ |
+| **Preparation: meeting schedule covers 7 meetings** | `sources/meeting-templates.md` is not the older 4-template version | warn for Preparation+ |
 | PROJECT-CONTEXT.md populated | Not the empty template; has customer name and problem statement | **critical** for Discover |
-| Sources present | `sources/` has at least one file (other than `meeting-templates.md`) | warn for Discover |
+| Sources present | `sources/` has at least one file (other than `meeting-templates.md` and `research/`) | warn for Discover |
 | Discovery artifacts | `discovery-summary.md` exists in `engagement/<name>/` if state says Discover is complete | warn |
 | Requirements signed off | `templates/requirements-summary.md` is populated and not just placeholders | warn for Define+ |
 | Concept selected | `selected-concept.md` exists in `engagement/<name>/` if state says Ideate is complete | warn |
@@ -41,6 +47,8 @@ Use this:
 | Handoff data complete | `engagement/<name>/handoff-data.json` has all five sections (vision, roadmap, backlog, limitations, about) if state says Deliver is complete | **critical** for Deliver |
 | MCP servers enabled | At least one `mcp_workiq_*`, `mcp_github_*`, `mcp_ado_*`, or `mcp_foundry_*` tool is available | info — point user at `/reference/mcp` |
 | Demo fixture markers | If state.json has `demoFixture: contoso`, sources/ contains the expected demo files | info |
+
+> **Preparation tip:** for a focused Week-0-only health check, use `/vibe-prep-check`. It's a strict subset of this prompt scoped to the Preparation rows above, and faster to run when you just want to know "is Prep done?".
 
 ## Output format
 

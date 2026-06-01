@@ -2,7 +2,7 @@
 
 > Accelerating presales with AI prototyping to unlock business potential at speed.
 
-A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery team (typically one TPM/designer and one engineer) through five phases — Discover → Define → Ideate → Build → Deliver — using AI agents in VS Code that tell you exactly what to do next.
+A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery team (typically one TPM/designer and one engineer) through six phases — Preparation → Discover → Define → Ideate → Build → Deliver — using AI agents in VS Code that tell you exactly what to do next.
 
 **You don't need to be technical, you just need a +1.**
 
@@ -38,11 +38,12 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 
 ---
 
-## The Six Prompts You Actually Need
+## The Prompts You Actually Need
 
 | When | Type This | What Happens |
 |------|-----------|-------------|
-| **Start** | `/vibe-kickoff` | Creates the engagement, generates meeting templates and questionnaires |
+| **Start** | `/vibe-kickoff` | Creates the engagement, both briefs (S42-internal + customer voice), and the full 4-week meeting schedule |
+| **During Prep** | `/vibe-research` | Dual-path deep customer research — public web (auto, in-CLI) plus a ready-to-paste prompt for M365 Copilot's Researcher agent |
 | **Send forms** | `/vibe-questionnaire` | M365 Copilot prompts for the account-team and customer questionnaires |
 | **After meetings** | `/vibe-transcript` | Extracts context from Teams recordings automatically |
 | **After discovery** | `/vibe-ideate` | 2-3 AI-powered prototype concepts across form factors |

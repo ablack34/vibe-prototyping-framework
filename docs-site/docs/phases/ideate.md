@@ -1,9 +1,9 @@
 ---
-sidebar_position: 3
-title: "Phase 3: Ideate"
+sidebar_position: 4
+title: "Phase 4: Ideate"
 ---
 
-# Phase 3: Ideate
+# Phase 4: Ideate
 
 **Who:** Anyone on the team · **Duration:** 1 day
 

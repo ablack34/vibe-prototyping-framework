@@ -1,13 +1,15 @@
 # Engagement Brief
 
-> **Pre-engagement scoping document.** **Auto-generated** from the account team questionnaire responses.
+> **Studio 42 internal pre-engagement scoping document.** This is *our* view of the engagement — the commercial context, the squad we'll field, the risks we see. **Distinct from `customer-brief.md`**, which is the customer's own voice on the problem. Both exist; they're complementary, not duplicates.
+>
+> **Auto-generated** from the account team questionnaire responses.
 > If no questionnaire was sent, the account team can fill this directly.
 >
 > **How this document gets populated:**
 > 1. `/vibe-questionnaire` generates the account team intake form
 > 2. Account team fills it out (Microsoft Forms)
 > 3. Responses are dropped in `sources/`
-> 4. `@VIBE Discover` reads them and fills this document
+> 4. `@VIBE Preparation` (or `@VIBE Discover` for older engagements) reads them and fills this document
 
 ---
 
