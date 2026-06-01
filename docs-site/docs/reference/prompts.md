@@ -50,6 +50,12 @@ These cover the main engagement flow:
 | `/vibe-check-in` | Process customer check-in feedback | `source` (notes/transcript) |
 | `/vibe-consolidate` | Consolidate all findings | `engagement` |
 
+### Define Phase
+
+| Prompt | Description | Inputs |
+|--------|-------------|--------|
+| `/vibe-define` | Frame the "$50K vs $50M" business value, prioritise use cases, and produce `engagement/<name>/requirements-summary.md` for customer sign-off. Reads the three required Discover deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`) and stops with a "go back to Discover" message if any are missing or below Grade B | `engagement` (optional) |
+
 ### Ideation Phase
 
 | Prompt | Description | Inputs |

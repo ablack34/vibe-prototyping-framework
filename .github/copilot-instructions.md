@@ -159,3 +159,9 @@ Rules:
 - Mark the call-out as **Optional**. The user can always skip it.
 - One call-out per response, maximum.
 - The "What to do with the result" field must name the exact file and section. The VIBE agent owns the integration once the user pastes the response back.
+
+## Modifying the Framework Itself
+
+When you're asked to add a phase, rename a phase, add a deliverable, or otherwise restructure the engagement flow — read `.github/PHASE_CHANGE_PLAYBOOK.md` **first**. It enumerates every file that needs to change (agents, prompts, templates, state.json schema, docs site, sidebar, doctor, demo, README) plus the rubber-duck-proven drift hazards.
+
+Run `node scripts/check-phase-consistency.mjs` after edits — it catches broken `/vibe-*` references, broken `@VIBE *` references, drifted `sidebar_position` values, mismatched "The N Phases" labels, and `state.json` paths that don't match the canonical schema. CI runs the same check on every PR.

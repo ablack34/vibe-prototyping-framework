@@ -57,7 +57,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 
 ### 3:30-6:00 — Run Discover
 
-**Click** the **🔍 Start Discovery** button the agent presents (or type `/vibe-discover`).
+**Click** the **🔍 Start Discovery** button the agent presents (or type `@VIBE Discover`).
 
 **Say (while it runs):**
 > "Now the Discover agent is reading every source — the brief, the questionnaires, both Teams transcripts. It's extracting the problem statement, stakeholder map, success metrics, constraints. Watch the quality grading column on the right — every field gets an A/B/C grade based on how strongly the source material supports it. If something's a C, the agent flags it for the TPM to clarify with the customer.
