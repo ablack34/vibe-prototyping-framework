@@ -7,6 +7,15 @@ title: Role Guides
 
 Different team members use different parts of the framework. Find your role below.
 
+## Which surface should I use?
+
+| Role | Primary surface | Secondary surface |
+|------|----------------|-------------------|
+| TPM / Technical Product Manager | M365 Notebook (workshops) **or** VS Code | VS Code (for `/vibe-handoff`) |
+| Designer | M365 Notebook | VS Code (for `@UX UI Designer`) |
+| Engineer | VS Code | — |
+| Account team | M365 Notebook (questionnaire intake) | — |
+
 ## TPM / Technical Product Manager
 
 **You drive** Discover, Define, Ideate, and Deliver — the majority of the engagement.

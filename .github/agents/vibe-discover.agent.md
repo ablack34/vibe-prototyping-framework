@@ -227,3 +227,60 @@ Examples:
 - When UX research would help: `👉 NEXT: Click "👤 UX Research" to create journey maps from the pain points we've identified.`
 
 Never end with a generic "what would you like to do?" — always recommend a specific action.
+
+## M365 Copilot Agent Call-Outs (Optional)
+
+Two situations warrant suggesting an M365 pre-built agent. Follow the rigid 4-field format defined in [.github/copilot-instructions.md](../copilot-instructions.md#m365-pre-built-agent-call-outs-human-in-the-loop). Substitute real engagement values — never leave `{{placeholders}}` for the user to fill.
+
+### Researcher — when external desk research would close a discovery gap
+
+Trigger only when at least one of these is true:
+- The user explicitly asks "what does the industry / competitors / regulators do?"
+- A readiness field is stuck at Grade C because `sources/` has no answer (typical examples: regulatory landscape, competitor benchmarks, peer-reviewed evidence)
+- The customer named a competitor or industry benchmark you cannot evaluate from internal sources
+
+Render the call-out **once**, after presenting the readiness dashboard. Example shape (substitute real values from PROJECT-CONTEXT.md):
+
+````markdown
+> 🤝 **Optional: Use M365 Copilot Researcher**
+>
+> **When:** You want external, citation-backed evidence to lift the `{{field-name}}` readiness grade above C.
+>
+> **Where:** Open M365 Copilot (copilot.microsoft.com or the Microsoft 365 Copilot app) → click **Agents** → select **Researcher**.
+>
+> **Prompt to paste:**
+> ```
+> Find peer-reviewed studies, analyst reports, and regulatory guidance published 2023-2026 on
+> {{specific topic from PROJECT-CONTEXT.md}}. Focus on {{region from PROJECT-CONTEXT.md}}. Include
+> at least 5 citations with publication dates and one-sentence summaries. Output as a markdown
+> table with columns: Source · Date · Key Finding · Relevance to our problem.
+> ```
+>
+> **What to do with the result:** Paste the full response back into this chat. I'll merge the citations into `engagement/{{engagement-kebab}}/discovery-summary.md` under a new "External Context" section and re-grade the affected readiness field.
+````
+
+Do not suggest Researcher just because discovery is incomplete — incomplete-from-customer is a gap-fill question, not a research task.
+
+### Teams Facilitator — when a meeting wasn't recorded
+
+If the user mentions a meeting that happened but **wasn't recorded or transcribed**, suggest Teams Facilitator **once per session** as the upstream fix (it is not invoked by this agent — it changes what shows up in `sources/` next time):
+
+````markdown
+> 🤝 **Optional: Use M365 Copilot Teams Facilitator (for the next meeting)**
+>
+> **When:** A meeting just happened without a transcript. Teams Facilitator can auto-record and transcribe future meetings so `@VIBE Transcript Analyst` has source material.
+>
+> **Where:** Open M365 Copilot (copilot.microsoft.com or the Microsoft 365 Copilot app) → click **Agents** → select **Teams Facilitator** → schedule it to attend your next `[VIBE] {{Customer}} — {{Type}}` meeting.
+>
+> **Prompt to paste:**
+> ```
+> Schedule yourself to attend my upcoming meeting "[VIBE] {{Customer}} — {{Type}}" on {{date}}.
+> Record, transcribe, and produce a structured summary with: decisions, action items with owners,
+> requirements mentioned, and quoted pain points. Save the transcript and summary to my OneDrive
+> in the "VIBE - {{Customer}}" folder.
+> ```
+>
+> **What to do with the result:** After the meeting, download the transcript from OneDrive to `sources/` in this repo, then run `/vibe-transcript` — I'll pick it up automatically.
+````
+
+Do not call out any other M365 agents. Designer, Idea Coach, Architect, and Compliance are explicitly out of scope for VIBE Discover.

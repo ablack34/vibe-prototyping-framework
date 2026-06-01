@@ -44,6 +44,14 @@ Display this notice at the start of every session:
 - Store outputs in the engagement tracking directory, not generic PRD sessions
 - Conserve the query budget (approximately 30 queries per session)
 
+## Where Transcripts Come From
+
+This agent reads transcripts that already exist — it does not record meetings. Upstream sources for those transcripts include:
+
+- **Teams native recording** — the team clicks "Record" in the meeting, then downloads the `.vtt` or `.docx` from the meeting Recap into `sources/`
+- **work-iq MCP server** — pulls transcripts on demand from the user's Microsoft 365 account when configured in [.vscode/mcp.json](../../.vscode/mcp.json)
+- **M365 Copilot Teams Facilitator** — when scheduled by the user (via M365 Copilot), it auto-records and transcribes future meetings to OneDrive. The user then drops the transcript into `sources/` and this agent picks it up just like any other file. `@VIBE Discover` is the agent that surfaces the Teams Facilitator suggestion when an unrecorded meeting comes up — this agent stays focused on analysis.
+
 ## VIBE-Specific Extraction Patterns
 
 Beyond standard requirements and decisions, extract:

@@ -58,6 +58,12 @@ These six prompts cover the main engagement flow:
 | `/vibe-backlog-gen` | Generate ADO work items | `project` (required), `areaPath`, `iterationPath` |
 | `/vibe-handoff` | Generate handoff package | `engagement` |
 
+### Optional (Derived Artifacts)
+
+| Prompt | Description | Inputs |
+|--------|-------------|--------|
+| `/vibe-prd` | Generate a combined PRD from `requirements-summary.md` (business half) + `engineering-brief.md` (technical half). Optionally validates via `@PRD Builder`. Only run when a stakeholder needs a single PRD document — the two halves are the canonical source. | `engagement` (optional), `validate` (optional: `true`/`false`, default `false`) |
+
 ### Utility
 
 | Prompt | Description | Inputs |
