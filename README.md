@@ -6,6 +6,8 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 
 **You don't need to be technical, you just need a +1.**
 
+> **Two surfaces:** the full framework lives in **VS Code** (primary). Non-technical teammates can run Discover, Define, Ideate, and Deliver review from the **M365 Copilot Notebook** (companion) using three approved agents (Researcher, Analyst, Teams Facilitator). Both surfaces share the same `engagement/{kebab}/` folder via git.
+
 ---
 
 ## Start a New Engagement

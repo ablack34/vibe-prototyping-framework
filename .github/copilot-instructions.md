@@ -66,6 +66,8 @@ prototype + check-in feedback        ──▶  handoff-data.json (vision, roadm
 all documents                        ──▶   backlog, limitations, about)
 ```
 
+> **PRD note:** `requirements-summary.md` is the **business half** of the VIBE PRD (signed off by the customer); `engineering-brief.md` is the **technical half** (signed off by the squad). Together they form the full Product Requirements Document. When an engagement needs a single combined document, run `/vibe-prd` to generate `engagement/{kebab}/prd.md` as a **derived artifact** — optionally validated by `@PRD Builder` (`/vibe-prd validate=true`). Improvements get folded back into the halves; the combined PRD is regenerated rather than edited directly. The two halves remain the canonical source of truth.
+
 ### Agent Input/Output Summary
 
 | Agent | Reads (Input) | Produces (Output) |
@@ -75,3 +77,59 @@ all documents                        ──▶   backlog, limitations, about)
 | VIBE Ideate | PROJECT-CONTEXT.md, requirements-summary.md | ideation-concepts.md, selected-concept.md, spark-prompts.md, engineering-brief.md |
 | VIBE Data Prep | customer CSV/Excel files | TypeScript types, C# models, DataService, data README |
 | VIBE Deliver | all documents + check-in notes | handoff-data.json (vision, roadmap, backlog, limitations, about) — step by step, one section at a time |
+
+## Proactive vs Reactive Behavior
+
+Every VIBE agent operates in two distinct modes. Choose the right one for the moment.
+
+| Mode | When to use | What the agent does |
+|------|-------------|---------------------|
+| **Reactive** | The user just asked a specific question or clicked a handoff button | Answer the question. Do the requested thing. End with the standard `👉 NEXT` directive. Do not volunteer new work. |
+| **Proactive** | A natural transition point: phase complete, gate criteria met, a new source dropped in `sources/`, or check-in feedback arrives | Surface the change, summarize what's now possible, and recommend the single highest-value next action. |
+
+Rules:
+
+- **Default to reactive.** Proactive nudges are powerful but become noise if used every turn.
+- **Never proactively run a multi-step workflow without confirmation.** Suggest it; let the user click.
+- **Proactive nudges always cite their trigger** ("I noticed `sources/workshop-2-transcript.vtt` was added — want me to process it?").
+- **One proactive nudge per response, maximum.** Never stack suggestions.
+- **Phase transitions are always proactive.** When the readiness gate flips green, name it and recommend the next phase button explicitly.
+
+## M365 Pre-Built Agent Call-Outs (Human-in-the-Loop)
+
+VS Code Copilot Chat agents cannot invoke M365 Copilot agents programmatically. When an M365 agent would genuinely add value, render a copy/paste call-out using the rigid 4-field format below.
+
+**Only three M365 agents are approved for call-outs:**
+
+| M365 Agent | When to suggest | Suggested by |
+|------------|----------------|--------------|
+| **Researcher** | User needs external desk research, competitor analysis, or fact-checking beyond `sources/` | `@VIBE Discover` |
+| **Analyst** | User has uploaded survey results, quantitative CSVs, or other data that benefits from statistical synthesis | `@VIBE Define` |
+| **Teams Facilitator** | User mentions an unrecorded meeting and could benefit from automatic recording / transcription | `@VIBE Discover` (one mention only, as upstream tool) |
+
+**Do NOT call out** Designer, Idea Coach, Architect, Compliance, or Office Agent. Those duplicate capabilities already covered better by the VIBE framework, Spark, or the prototype scaffold.
+
+**Required format — emit exactly this structure with all four fields filled:**
+
+````markdown
+> 🤝 **Optional: Use M365 Copilot {{Agent Name}}**
+>
+> **When:** {{Trigger condition in one sentence — what the user is trying to do.}}
+>
+> **Where:** Open M365 Copilot (copilot.microsoft.com or the Microsoft 365 Copilot app) → click **Agents** → select **{{Agent Name}}**.
+>
+> **Prompt to paste:**
+> ```
+> {{A complete, ready-to-run prompt. Substitute real values from PROJECT-CONTEXT.md / requirements-summary.md — never leave {{placeholders}} for the user to fill.}}
+> ```
+>
+> **What to do with the result:** {{Exactly what file the user should paste the response into, e.g. "Paste the response back into this chat and I'll integrate it into engagement/{kebab}/discovery-summary.md under the 'External Context' section."}}
+````
+
+Rules:
+
+- All four fields are mandatory. Never omit one.
+- Substitute placeholders with real engagement values before showing the prompt — the user copy/pastes verbatim.
+- Mark the call-out as **Optional**. The user can always skip it.
+- One call-out per response, maximum.
+- The "What to do with the result" field must name the exact file and section. The VIBE agent owns the integration once the user pastes the response back.

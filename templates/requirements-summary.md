@@ -1,6 +1,8 @@
 # Requirements Summary
 
-> **Customer approval document.** **Auto-generated** by `@VIBE Define` from PROJECT-CONTEXT.md.
+> **Business half of the VIBE PRD.** Customer-facing requirements with sign-off. Pair with [engineering-brief.md](engineering-brief.md) (the technical half) for a complete Product Requirements Document.
+>
+> **Auto-generated** by `@VIBE Define` from PROJECT-CONTEXT.md.
 > Review with the customer, get sign-off, then move to Ideate.
 >
 > **How this document gets populated:**

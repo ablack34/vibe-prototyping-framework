@@ -11,6 +11,10 @@ This page shows you what each phase **actually looks like** when you run it agai
 Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through Discover → Define → Ideate → Build → Deliver. Try it.
 :::
 
+:::info Prefer M365 Notebook?
+This walkthrough is for the **VS Code** surface — the primary way to run VIBE.
+:::
+
 ---
 
 ## Phase 0 · Kickoff

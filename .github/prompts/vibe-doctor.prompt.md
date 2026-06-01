@@ -32,6 +32,7 @@ Use this:
 | Requirements signed off | `templates/requirements-summary.md` is populated and not just placeholders | warn for Define+ |
 | Concept selected | `selected-concept.md` exists in `engagement/<name>/` if state says Ideate is complete | warn |
 | Engineering brief present | `engineering-brief.md` exists in `engagement/<name>/` if state says Build has started | **critical** for Build |
+| Combined PRD fresh (optional) | If `engagement/<name>/prd.md` exists, the embedded source SHAs match the current SHAs of `requirements-summary.md` and `engineering-brief.md` | warn — PRD is stale, re-run `/vibe-prd` |
 | Form-factor declared | `selected-concept.md` includes a clear `formFactor` value | warn |
 | Data prepped (web-app only) | If form factor is `webapp`, `scaffold/data/` has typed models | warn for web-app Build |
 | Scaffold builds (web-app only) | `npm run build` in `scaffold/web/` and `dotnet build` in `scaffold/api/` succeed | warn for web-app Build |

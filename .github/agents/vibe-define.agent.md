@@ -6,9 +6,8 @@ handoffs:
     agent: VIBE Ideate
     prompt: "Requirements are locked. Brainstorm AI-powered prototype concepts across different form factors."
     send: true
-  - label: "📋 Build PRD"
-    agent: PRD Builder
-    prompt: "Create a PRD from the requirements gathered in the VIBE discovery and define phases."
+  - label: "� Generate combined PRD"
+    prompt: "/vibe-prd"
     send: true
   - label: "📊 Write User Stories"
     agent: Agile Coach
@@ -128,7 +127,7 @@ Present the completed requirements to the user. Update `state.json` to mark the 
 Offer next steps via handoff buttons:
 
 - **"💡 Ideate Concepts"** — the recommended next step: brainstorm AI-powered prototype concepts across different form factors
-- **"📋 Build PRD"** — if the customer needs a formal PRD document
+- **"📝 Generate combined PRD"** — only if a stakeholder explicitly needs a single PRD document (governance, PMO, vendor onboarding). Runs `/vibe-prd`, which merges `requirements-summary.md` + `engineering-brief.md` into a derived PRD. Skip otherwise — the two halves are the canonical PRD.
 - **"📊 Write User Stories"** — to create detailed stories with acceptance criteria via Agile Coach
 
 ## Response Format — Next Step Directive
@@ -142,6 +141,40 @@ Examples:
 - After value framing, before use case prioritization: `👉 NEXT: Let's prioritize the use cases. Tell me which ones matter most, or I'll score them based on what we know.`
 - After producing requirements-summary.md: `👉 NEXT: Share requirements-summary.md with the customer for approval. Then click "💡 Ideate Concepts" to brainstorm prototype ideas.`
 - After customer approves requirements: `👉 NEXT: Click "💡 Ideate Concepts" below to brainstorm AI-powered prototype concepts across different form factors.`
-- If requirements need more work: `👉 NEXT: Tell me what to adjust in the requirements, or click "📋 Build PRD" if you need a formal PRD document.`
+- If requirements need more work: `👉 NEXT: Tell me what to adjust in the requirements, or click "� Generate combined PRD" if a stakeholder needs a single PRD document.`
 
 Never end with a generic "what would you like to do?" — always recommend a specific action.
+
+## M365 Copilot Agent Call-Outs (Optional)
+
+One situation warrants suggesting an M365 pre-built agent during the Define phase. Follow the rigid 4-field format defined in [.github/copilot-instructions.md](../copilot-instructions.md#m365-pre-built-agent-call-outs-human-in-the-loop). Substitute real engagement values — never leave `{{placeholders}}` for the user to fill.
+
+### Analyst — when quantitative source data needs statistical synthesis
+
+Trigger only when at least one of these is true:
+- A spreadsheet or survey export exists in `sources/` that contains 50+ rows of structured responses, ratings, or measurements
+- The user explicitly asks "what does the data say?" about a `sources/` file
+- Use case prioritization would benefit from a summary across many respondents (e.g., persona × pain-point heatmap, NPS distribution, time-on-task statistics)
+
+Render the call-out **once**, after Step 2 (Value Framing) and before Step 3 (Use Case Prioritization). Example shape:
+
+````markdown
+> 🤝 **Optional: Use M365 Copilot Analyst**
+>
+> **When:** You want a statistical summary of `{{filename from sources/}}` before scoring use cases — distributions, top themes, persona × pain-point cross-tab, etc.
+>
+> **Where:** Open M365 Copilot (copilot.microsoft.com or the Microsoft 365 Copilot app) → click **Agents** → select **Analyst** → upload `{{filename from sources/}}` from the engagement repo.
+>
+> **Prompt to paste:**
+> ```
+> Analyse the attached file. Produce: (1) a one-paragraph summary of what the data contains,
+> (2) the top 5 themes by frequency with example quotes, (3) a cross-tabulation of persona
+> against severity / priority, (4) any statistically meaningful patterns (correlations,
+> distributions, outliers). Focus the analysis on use cases relevant to: {{problem statement
+> from PROJECT-CONTEXT.md}}. Output as markdown with tables.
+> ```
+>
+> **What to do with the result:** Paste the full response back into this chat. I'll fold the themes into the use-case priority scoring as evidence and cite them in `templates/requirements-summary.md`.
+````
+
+Do not call out Analyst for small files (under 50 rows — read them directly) or for free-text-heavy documents (use VIBE Discover's source-first ingestion instead).

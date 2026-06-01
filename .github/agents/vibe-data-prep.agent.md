@@ -27,6 +27,53 @@ Designed for users who may not be technical — asks plain-English questions abo
 - Flag anonymization needs early — never commit real PII
 - Follow conventions in `vibe-data.instructions.md`
 
+## PII Guardrail (Step 0 — runs before any other step)
+
+Before reading file *contents*, scan every header row in every file the user provides and pattern-match against the PII trigger list below.
+
+**PII trigger headers (case-insensitive, substring match):**
+
+- `name`, `firstname`, `lastname`, `fullname`, `surname`, `givenname`
+- `email`, `mail`
+- `phone`, `mobile`, `telephone`, `msisdn`
+- `address`, `street`, `postcode`, `zip`, `city` *(combined with a name/email column)*
+- `ssn`, `nin`, `nationalid`, `taxid`
+- `dob`, `dateofbirth`, `birthdate`
+- `account_number`, `accountid`, `customerid`, `creditcard`, `iban`, `bankaccount`
+- `passport`, `licence`, `license`, `licenseplate`
+
+If any trigger header matches **and** the user has not declared the data anonymised, **block ingestion** and present this exact response:
+
+```
+🛑 PII guardrail tripped
+
+I detected potentially sensitive columns in {{filename}}:
+  • {{matched-header-1}}
+  • {{matched-header-2}}
+  ...
+
+VIBE prototypes must use mock or anonymised data only. Three ways forward:
+
+  1. Anonymise now — I'll generate scaffold/data/scripts/anonymize.ps1 that
+     hashes these columns consistently so relationships survive. Reply
+     "anonymise" to proceed.
+
+  2. The data is already anonymised — I just need you to confirm. Reply
+     "already anonymised" and I'll add a note to scaffold/data/README.md
+     and continue.
+
+  3. Use synthetic data instead — I'll generate plausible synthetic rows
+     with the same schema. Reply "synthetic" to proceed.
+
+  4. Override (not recommended) — reply "override: I confirm this is
+     non-production data approved for prototyping" to proceed without
+     anonymisation. The override reason is logged in scaffold/data/README.md.
+
+Until you reply, I will not read row contents from {{filename}}.
+```
+
+Only proceed after the user picks one of the four options. Record the chosen path in `scaffold/data/README.md` under a "Data Provenance & PII" section.
+
 ## Required Steps
 
 ### Step 1: Data Intake
