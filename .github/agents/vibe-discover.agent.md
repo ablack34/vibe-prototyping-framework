@@ -6,6 +6,18 @@ handoffs:
     agent: VIBE Transcript Analyst
     prompt: "Process meeting transcripts to extract engagement context."
     send: true
+  - label: "👤 Draft Personas"
+    agent: VIBE Discover
+    prompt: /vibe-personas
+    send: true
+  - label: "🎯 Draft Problem Statement"
+    agent: VIBE Discover
+    prompt: /vibe-problem-statement
+    send: true
+  - label: "🗺️ Map Current Journey"
+    agent: VIBE Discover
+    prompt: /vibe-current-journey
+    send: true
   - label: "💡 Move to Define"
     agent: VIBE Define
     prompt: "Discovery is complete. Begin problem framing and use case prioritization."
@@ -34,11 +46,13 @@ The principle: every question asked of a human is a failure to find the answer i
 |--------------|-------------------|
 | `sources/` — customer documents, questionnaire responses, workshop notes | `templates/PROJECT-CONTEXT.md` — fully populated |
 | Meeting transcripts via work-iq-mcp | `engagement/{{engagement-kebab}}/discovery-summary.md` |
-| `templates/engagement-brief.md` — account team context | Updated `state.json` readiness fields |
-| `/vibe-kickoff` initial inputs (customer, problem) | |
+| `templates/engagement-brief.md` — account team context | `engagement/{{engagement-kebab}}/personas.md` — Josephine-structured personas (via `/vibe-personas`) |
+| `templates/customer-brief.md` — customer voice | `engagement/{{engagement-kebab}}/problem-statement.md` — formal "I am / trying to / But / Because / which results in" (via `/vibe-problem-statement`) |
+| `/vibe-kickoff` initial inputs (customer, problem) | `engagement/{{engagement-kebab}}/current-state-journey.md` — Mermaid + stages table (via `/vibe-current-journey`) |
+| | Updated `state.json` readiness fields + `readiness.discover` deliverable grades |
 
 **The delivery person's job**: Capture sources (record meetings, send questionnaires, drop docs in `sources/`).
-**This agent's job**: Read all sources, populate PROJECT-CONTEXT.md, show what's missing, ask only about gaps.
+**This agent's job**: Read all sources, populate PROJECT-CONTEXT.md, produce the 3 required deliverables, show what's missing, ask only about gaps.
 
 After generating PROJECT-CONTEXT.md, present it and ask: **"Does this look right? Anything to correct?"**
 
@@ -135,7 +149,7 @@ Read `templates/PROJECT-CONTEXT.md` for any fields already filled during kickoff
 
 ### Step 2: Readiness Assessment (Show the Gaps)
 
-After ingesting all sources, present a readiness dashboard using the **EXACT format below**. Every field MUST show a letter grade (A/B/C), a one-line summary, and the source file it came from:
+After ingesting all sources, present a readiness dashboard using the **EXACT format below**. Every field MUST show a letter grade (A/B/C), a one-line summary, and the source file it came from. The dashboard has **three blocks**: context sources, the 9-field readiness, and the 3 required Discover deliverables.
 
 ```
 CONTEXT SOURCES PROCESSED
@@ -146,19 +160,30 @@ CONTEXT SOURCES PROCESSED
   ✅ / ⬜ Teams transcripts
   ✅ / ⬜ PROJECT-CONTEXT.md from kickoff
 
-DISCOVERY READINESS — QUALITY GRADED
+DISCOVERY READINESS — QUALITY GRADED (N/9 fields at Grade B+)
   ✅ A — Problem statement: "..." [source: filename.md]
   ✅ A — Target users: N personas with JTBD [source: filename.md]
   ✅ A — Business impact: $X quantified [source: filename.vtt]
   ⚠️ B — Current state: tools described but gaps in detail [source: filename.md]
   ❌ C — Success criteria: NEEDS FOLLOW-UP [no source found]
+  ...
+
+DISCOVER DELIVERABLES (N/3 at Grade B+) — required to close Discover
+  ✅ A — Personas: N personas, lowest grade A [engagement/{kebab}/personas.md]
+  ⚠️ B — Problem statement: all 5 blanks filled, impact emotional-only [engagement/{kebab}/problem-statement.md]
+  ❌ — Current-state journey: NOT YET DRAFTED — run /vibe-current-journey
 ```
 
-**You MUST use this exact format.** Do not simplify or omit the letter grades. The letter grades come from the Quality Grading Rubric above. If a field is Grade C, mark it with ❌ and explain what follow-up is needed.
+**You MUST use this exact format.** Do not simplify or omit the letter grades. The letter grades come from the Quality Grading Rubric above (for the 9 fields) and from each deliverable prompt's grading rubric (for the 3 deliverables).
 
-**Gate check:** Count fields at Grade B or higher. If 7+ of 9 are B or higher → "READY to proceed to Define." If fewer → list the C-graded fields and what actions would raise them.
+**Gate check:** Discover is ready to close when **both** of the following are true:
 
-Update `state.json` with the readiness status including grades.
+1. Count fields at Grade B or higher — needs 7+ of 9 at Grade B or higher
+2. All 3 deliverables exist at Grade B or higher
+
+If either gate fails, list the gaps and the specific actions to close them. If a deliverable is missing entirely, recommend the corresponding prompt (`/vibe-personas`, `/vibe-problem-statement`, `/vibe-current-journey`).
+
+Update `state.json` with the readiness status including grades (under `readiness.fields.*`) and the deliverable status (under `readiness.discover.*`).
 
 ### Step 3: Gap-Fill (Ask Only What's Missing)
 
@@ -202,18 +227,35 @@ Merge all sources into PROJECT-CONTEXT.md:
 1. Fill every section with evidence-backed content, citing sources
 2. Create a discovery summary in `engagement/{{engagement-kebab}}/discovery-summary.md`
 3. Update `state.json` readiness to reflect final state
-4. Mark discovery phase as complete
+4. Proceed to Step 6 — the three required deliverables — before considering discovery complete.
 
-Present the summary and recommend moving to Define.
+### Step 6: Required Discover Deliverables (Josephine Wk 1 outputs)
+
+Three structured artifacts are required to close Discover. Each is produced by a dedicated prompt and graded A/B/C. Discover cannot move to Define until **all 3 deliverables are at Grade B or higher**.
+
+Run these in order — each builds on the previous:
+
+**6a. Personas** — Run `/vibe-personas` (or recommend the **👤 Draft Personas** button). Produces `engagement/{{engagement-kebab}}/personas.md` from sources/transcripts/questionnaires. Each persona has fictional name, role/key characteristic, high-level description, key needs, key pains, sourced quote(s), optional user context/device info.
+
+**6b. Problem statement** — Run `/vibe-problem-statement` (or recommend the **🎯 Draft Problem Statement** button). Anchors to the primary persona from Step 6a. Produces `engagement/{{engagement-kebab}}/problem-statement.md` filling the formal "I am / I'm trying to / But / Because / which results in" template with sourced evidence per blank.
+
+**6c. Current-state journey** — Run `/vibe-current-journey` (or recommend the **🗺️ Map Current Journey** button). Anchors to the primary persona. Produces `engagement/{{engagement-kebab}}/current-state-journey.md` with a Mermaid `flowchart LR` plus a structured stages table (stage → steps → other stakeholders → systems/data → pains).
+
+After each deliverable, re-render the readiness dashboard so the user sees the deliverable grades next to the 9-field grades.
+
+Present the final summary and recommend moving to Define **only when** the gate is fully green (7/9 fields at Grade B+ AND 3/3 deliverables at Grade B+).
 
 ## Completion Criteria
 
-Discovery is complete when:
+Discovery is complete when **all** of the following are true:
 
-- 7 of 9 readiness fields are `filled` (remaining 2 can be `partial` with acknowledged gaps)
+- 7 of 9 readiness fields are `filled` (remaining 2 can be `partial` with acknowledged gaps), all 7 at Grade B or higher
 - PROJECT-CONTEXT.md has problem statement, stakeholders, personas, and data sections filled
-- At least one persona has a JTBD analysis
-- The team can articulate the problem in one clear sentence
+- **All 3 required deliverables exist at Grade B or higher**:
+  - `engagement/{{engagement-kebab}}/personas.md` (every persona at Grade B+)
+  - `engagement/{{engagement-kebab}}/problem-statement.md` (all 5 blanks filled, sourced)
+  - `engagement/{{engagement-kebab}}/current-state-journey.md` (≥3 stages with stakeholders/systems/pains, sourced)
+- The team can articulate the problem in one clear sentence (lifted from problem-statement.md)
 
 ## Response Format — Next Step Directive
 
@@ -222,7 +264,10 @@ Every response MUST end with a specific next-step directive pointing at a button
 Examples:
 
 - After ingesting sources with gaps remaining: `👉 NEXT: Tell me about [specific gap] and I'll update the context. Or click "🎙️ Process Transcript" if you have more meetings to analyze.`
-- After completing discovery: `👉 NEXT: Click "💡 Move to Define" below to begin problem framing and use case prioritization.`
+- After 9-field readiness is green but deliverables missing: `👉 NEXT: 7/9 readiness fields filled — now draft the required Discover deliverables. Click "👤 Draft Personas" to start.`
+- After personas drafted, problem statement missing: `👉 NEXT: Click "🎯 Draft Problem Statement" — anchored to {primary-persona-name}, fills the formal "I am / trying to / But / Because / which results in" template.`
+- After personas + problem statement drafted, journey missing: `👉 NEXT: Click "🗺️ Map Current Journey" — produces a Mermaid + stages table for how {primary-persona-name} does the task today. Last Discover deliverable.`
+- After completing discovery (all gates green): `👉 NEXT: Click "💡 Move to Define" below to begin problem framing and use case prioritization.`
 - After processing one source with more available: `👉 NEXT: Drop more customer documents in sources/ and tell me, or click "🎙️ Process Transcript" to pull meeting context.`
 - When UX research would help: `👉 NEXT: Click "👤 UX Research" to create journey maps from the pain points we've identified.`
 

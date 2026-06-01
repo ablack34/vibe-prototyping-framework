@@ -80,6 +80,16 @@ The agent automatically reads everything in `sources/`, processes transcripts, a
 
 The agent writes `engagement/<your-engagement>/discovery-summary.md`.
 
+Once the 9-field readiness sits at 7+ at Grade B+, run the three required Discover deliverable prompts in order — Discover cannot close until all three exist at Grade B or higher:
+
+```
+/vibe-personas              # one persona per H2, sourced quotes, A/B/C grade per persona
+/vibe-problem-statement     # formal "I am / trying to / But / Because / which results in" with cited evidence
+/vibe-current-journey       # Mermaid + stages table + Top 3 ranked pain points (feeds the Disrupt workshop)
+```
+
+The latter two anchor to the primary persona and will fail fast if `personas.md` doesn't exist yet, so always run them in this order. Each template includes a customer sign-off block — get the sign-off before moving to Define (unsigned problem statements are the #1 cause of Define rework). Run `/vibe-doctor` at any point to see whether the deliverables (or the 9 readiness fields) are blocking the gate.
+
 ## Step 6: Frame the Problem
 
 Click **"💡 Frame the Problem"** or type:

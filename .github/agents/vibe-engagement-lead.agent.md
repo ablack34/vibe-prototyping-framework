@@ -119,6 +119,11 @@ Initialize `state.json`:
       "priorTranscripts": { "status": "empty", "grade": null, "count": 0 },
       "kickoffComplete":  { "status": "filled", "grade": "A" }
     },
+    "discover": {
+      "personas":            { "status": "empty", "grade": null, "path": null, "count": 0, "lastUpdated": null },
+      "problemStatementDoc": { "status": "empty", "grade": null, "path": null, "signedOffBy": null, "lastUpdated": null },
+      "currentStateJourney": { "status": "empty", "grade": null, "path": null, "stageCount": 0, "signedOffBy": null, "lastUpdated": null }
+    },
     "sources": {
       "customerDocs": { "status": "empty", "count": 0 },
       "questionnaire": { "status": "empty" },
@@ -151,9 +156,10 @@ Initialize `state.json`:
    - If `currentPhase` is past `preparation`: assume the team is past Week 0 — default each missing field to `{ "status": "filled", "grade": "B" }`. Don't push them back to preparation.
    - If `currentPhase` IS `preparation`: default each missing field to `{ "status": "empty", "grade": null }` so the Preparation agent can fill them naturally.
    - Composite subfields (`customerResearch.public`, `customerResearch.m365`) default to `"empty"` if missing.
-4. **Leave `currentPhase` alone** — never demote a user back to an earlier phase during migration.
-5. After migration completes, print one line at the bottom of the next response: *"Migrated state.json — normalised the Preparation schema (no engagement progress lost)."* Skip this notice if no fields were actually changed.
-6. Do NOT prompt the user to re-do Preparation. `/vibe-prep-check` will flag genuinely-missing artifacts if needed.
+4. **Ensure `readiness.discover` exists with all 3 deliverable fields (`personas`, `problemStatementDoc`, `currentStateJourney`).** If missing, add the block with each field defaulted to `{ "status": "empty", "grade": null, "path": null, "lastUpdated": null }`. If `currentPhase` is past `discover` AND the corresponding file (`engagement/{{engagement-kebab}}/personas.md` etc.) exists, default that field to `{ "status": "filled", "grade": "B", "path": "<file path>", "lastUpdated": "<file mtime>" }` instead. Never push the user back to discover for missing deliverable metadata alone — the file system wins.
+5. **Leave `currentPhase` alone** — never demote a user back to an earlier phase during migration.
+6. After migration completes, print one line at the bottom of the next response: *"Migrated state.json — normalised the Preparation and Discover schemas (no engagement progress lost)."* Skip this notice if no fields were actually changed.
+7. Do NOT prompt the user to re-do Preparation or Discover. `/vibe-prep-check` and `/vibe-doctor` will flag genuinely-missing artifacts if needed.
 
 Generate meeting invite templates and save to `sources/meeting-templates.md`. The kickoff prompt produces the full 7-meeting schedule covering all four weeks (see `/vibe-schedule` for the canonical structure). Don't fall back to the older "4 generic templates" approach.
 
@@ -185,7 +191,7 @@ Always refer to handoffs by their **exact button label**, never by phrases like 
 
 Update `state.json` with phase status as work progresses.
 
-Proceed to Phase 4 when the user confirms discovery is complete (PROJECT-CONTEXT.md is filled, requirements are identified).
+Proceed to Phase 4 when **both** Discover gates are green: at least **7 of 9 readiness fields at Grade B+** AND **all 3 required deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`) at Grade B+**. If either gate is short, route the user back to `VIBE Discover` instead of advancing.
 
 ### Phase 4: Define
 
@@ -271,7 +277,7 @@ When the user asks what to do next (or at the start of any conversation), follow
 
 1. **Read `state.json`** to get the recorded phase and readiness state.
 2. **Scan the actual file system** to detect drift:
-   - List `engagement/{{engagement-kebab}}/` — each artifact present (`discovery-summary.md`, `transcript-analysis.md`, `ideation-concepts.md`, `selected-concept.md`, `spark-prompts.md`, `engineering-brief.md`, `handoff-data.json`) bumps the corresponding phase from `not-started`/`in-progress`/`complete` even if state.json says otherwise.
+   - List `engagement/{{engagement-kebab}}/` — each artifact present (`discovery-summary.md`, `transcript-analysis.md`, `personas.md`, `problem-statement.md`, `current-state-journey.md`, `ideation-concepts.md`, `selected-concept.md`, `spark-prompts.md`, `engineering-brief.md`, `handoff-data.json`) bumps the corresponding phase from `not-started`/`in-progress`/`complete` even if state.json says otherwise.
    - List `sources/` — count customer documents, transcript files, questionnaire responses.
    - Check `templates/PROJECT-CONTEXT.md` and `templates/requirements-summary.md` — if they have real content (not just placeholders), mark the corresponding readiness fields.
    - Check `scaffold/data/` and `scaffold/web/src/api.ts` — if customer data has been wired in, Build is underway.
@@ -330,10 +336,17 @@ For every other phase, show the Discovery readiness dashboard:
 │  ✅ / ⬜ Success criteria                   │
 │  ✅ / ⬜ Constraints                        │
 ├─────────────────────────────────────────────┤
+│  DISCOVER DELIVERABLES (N/3 at Grade B+)    │
+│  ✅ / ⬜ Personas (grade X, N personas)     │
+│  ✅ / ⬜ Problem statement (grade X)        │
+│  ✅ / ⬜ Current-state journey (grade X)    │
+├─────────────────────────────────────────────┤
 │  NEXT ACTIONS                               │
 │  → specific action to close each gap        │
 └─────────────────────────────────────────────┘
 ```
+
+The DISCOVER DELIVERABLES block is only shown when `currentPhase == "discover"` (or later phases that need to display backwards-compat status). Source the grade and count from `state.json.readiness.discover.*`. A deliverable counts toward `N/3` only when its grade is `A` or `B` (Grade C does not qualify).
 
 ### Phase-specific guidance
 
@@ -349,7 +362,8 @@ For every other phase, show the Discovery readiness dashboard:
 
 - If no sources processed yet: suggest `/vibe-questionnaire` to generate questionnaires, then `/vibe-transcript` if meetings exist
 - If sources exist but not ingested: suggest clicking **🔍 Start Discovery** to process them
-- If 7+ readiness fields filled: suggest moving to Define phase
+- If 7+ readiness fields filled but any of the 3 Discover deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`) is missing or below Grade B: suggest running the corresponding prompt (`/vibe-personas`, `/vibe-problem-statement`, `/vibe-current-journey`) — these are required to close Discover
+- If 7+ readiness fields filled AND all 3 deliverables at Grade B+: suggest moving to Define phase
 - If gaps remain: list each gap with a specific action to close it
 
 **Define phase:**
@@ -382,7 +396,7 @@ For every other phase, show the Discovery readiness dashboard:
 Do not suggest moving to the next phase until the current phase's minimum criteria are met:
 
 - **Preparation → Discover**: 7/7 preparation readiness fields at Grade B or higher
-- **Discover → Define**: 7/9 readiness fields filled
+- **Discover → Define**: 7/9 readiness fields filled AND all 3 Discover deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`) at Grade B or higher
 - **Define → Ideate**: requirements-summary.md exists with prioritized use cases
 - **Ideate → Design & Develop**: selected concept + engineering brief produced
 - **Design & Develop → Deliver**: prototype is deployed (state.json has deployment URL)
@@ -418,7 +432,8 @@ Examples by phase:
 - Preparation in progress (Path A research done, M365 not pasted back): `👉 NEXT: Open M365 Copilot's Researcher, paste the prompt from sources/research/m365-researcher-prompt.md, save the result to sources/research/m365-researcher-results.md, then click "🛠 Begin Preparation" to synthesise.`
 - Preparation complete (7/7): `👉 NEXT: Click "🔍 Start Discovery" — Prep is done.`
 - Discover (no sources yet): `👉 NEXT: Click "🎙️ Process Transcript" to extract context from your Teams meetings. Or click "🔍 Start Discovery" if you don't have recordings.`
-- Discover (7/9 fields filled): `👉 NEXT: Click "💡 Frame the Problem" to move to the Define phase.`
+- Discover (7/9 fields filled, deliverables missing): `👉 NEXT: 7/9 readiness fields filled — now draft the Discover deliverables. Click "👤 Draft Personas" to start, then "🎯 Draft Problem Statement" and "🗺️ Map Current Journey".`
+- Discover (all gates green): `👉 NEXT: Click "💡 Frame the Problem" to move to the Define phase.`
 - Define complete: `👉 NEXT: Click "💡 Ideate Concepts" to brainstorm AI-powered prototype concepts.`
 - Ideate complete: `👉 NEXT: Click "🔨 Start Building" to hand the engineering brief to the dev team.`
 - Prototype deployed: `👉 NEXT: Click "📦 Generate Deliverables" to produce the handoff package.`

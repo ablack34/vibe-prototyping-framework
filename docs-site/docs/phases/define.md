@@ -15,11 +15,11 @@ Frame the business value, prioritize use cases, and define success criteria. Thi
 
 ## How It Works
 
-1. **Review discovery outputs** — the agent reads PROJECT-CONTEXT.md and all source materials
-2. **Value framing** — quantify the cost of the current state and the potential upside
-3. **Use case prioritization** — score and rank use cases by user value, business value, and feasibility
+1. **Review discovery outputs** — the agent reads PROJECT-CONTEXT.md and the three required Discover deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`). If any deliverable is missing or below Grade B, Define stops and sends you back to Discover.
+2. **Value framing** — anchors to the "which results in" line of `problem-statement.md` for quantified impact
+3. **Use case prioritization** — score and rank use cases by user value, business value, and feasibility (the Top 3 ranked pain points from `current-state-journey.md` set the opening prioritisation)
 4. **Success metrics** — define what the customer needs to see to say "yes"
-5. **Requirements documentation** — produce requirements-summary.md for customer sign-off
+5. **Requirements documentation** — produce `requirements-summary.md` for customer sign-off
 
 ## Key Commands
 

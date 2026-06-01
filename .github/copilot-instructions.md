@@ -60,11 +60,16 @@ M365 Copilot Researcher (paste-back) ──▶  sources/research/m365-researcher
 
 Account team questionnaire           ──▶  engagement-brief.md (refined)
 Customer questionnaire               ──▶
-Customer documents (in sources/)     ──▶  PROJECT-CONTEXT.md
-Meeting transcripts (via work-iq)    ──▶
-Workshop notes (via /vibe-capture)   ──▶
+Customer documents (in sources/)     ──▶  PROJECT-CONTEXT.md   (single source of truth,
+Meeting transcripts (via work-iq)    ──▶                        sections 3/8/8.5 link out
+Workshop notes (via /vibe-capture)   ──▶                        to the 3 deliverables below)
+                                     ──▶  personas.md                (Discover deliverable)
+                                     ──▶  problem-statement.md       (Discover deliverable)
+                                     ──▶  current-state-journey.md   (Discover deliverable)
 
-PROJECT-CONTEXT.md                   ──▶  requirements-summary.md
+PROJECT-CONTEXT.md + personas.md +   ──▶  requirements-summary.md
+problem-statement.md +
+current-state-journey.md             ──▶
 
 requirements-summary.md              ──▶  ideation-concepts.md
                                      ──▶  selected-concept.md
@@ -93,8 +98,8 @@ The framework can run public web research itself, but it can't see inside the Mi
 | Agent | Reads (Input) | Produces (Output) |
 |-------|--------------|-------------------|
 | VIBE Preparation | account-team handover, customer's brief (if any), prior transcripts, existing docs, calendar | engagement-brief.md, customer-brief.md, sources/meeting-templates.md (4-week schedule), sources/research/* |
-| VIBE Discover | sources/, transcripts, questionnaires, both briefs, research summary | PROJECT-CONTEXT.md |
-| VIBE Define | PROJECT-CONTEXT.md | requirements-summary.md |
+| VIBE Discover | sources/, transcripts, questionnaires, both briefs, research summary | PROJECT-CONTEXT.md + 3 required deliverables: personas.md, problem-statement.md, current-state-journey.md (Discover gate requires all 3 at Grade B+) |
+| VIBE Define | PROJECT-CONTEXT.md, personas.md, problem-statement.md, current-state-journey.md | requirements-summary.md |
 | VIBE Ideate | PROJECT-CONTEXT.md, requirements-summary.md | ideation-concepts.md, selected-concept.md, spark-prompts.md, engineering-brief.md |
 | VIBE Data Prep | customer CSV/Excel files | TypeScript types, C# models, DataService, data README |
 | VIBE Deliver | all documents + check-in notes | handoff-data.json (vision, roadmap, backlog, limitations, about) — step by step, one section at a time |

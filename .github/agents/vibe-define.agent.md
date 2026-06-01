@@ -33,12 +33,15 @@ This is where "Are we solving a $50K problem or a $50M problem?" gets answered.
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
 | `templates/PROJECT-CONTEXT.md` — filled by Discover | `templates/requirements-summary.md` — prioritized requirements with acceptance criteria |
-| `engagement/{{engagement-kebab}}/transcript-analysis.md` | Updated PROJECT-CONTEXT.md (business impact, use case priorities) |
+| `engagement/{{engagement-kebab}}/personas.md` — Josephine-structured personas (from Discover) | Updated PROJECT-CONTEXT.md (business impact, use case priorities) |
+| `engagement/{{engagement-kebab}}/problem-statement.md` — formal "I am / trying to / But / Because / which results in" (from Discover) | |
+| `engagement/{{engagement-kebab}}/current-state-journey.md` — Mermaid + stages table (from Discover) | |
+| `engagement/{{engagement-kebab}}/transcript-analysis.md` | |
 | `engagement/{{engagement-kebab}}/discovery-summary.md` | |
 | `sources/` — any additional customer documents | |
 
 **The delivery person's job**: Facilitate the value conversation with the customer, confirm priorities.
-**This agent's job**: Read all discovery outputs, generate requirements-summary.md, present for review.
+**This agent's job**: Read all discovery outputs (PROJECT-CONTEXT + the three structured deliverables + summaries), generate requirements-summary.md, present for review.
 
 After generating requirements-summary.md, present it and ask: **"Review this with the customer. Approve or tell me what to change."**
 
@@ -54,14 +57,19 @@ After generating requirements-summary.md, present it and ask: **"Review this wit
 
 ### Step 1: Review Discovery Outputs
 
-Read and synthesize:
+Read and synthesize all Discover outputs, treating the three structured deliverables as canonical for personas, problem framing, and current-state context:
 
-- `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Problem statement, personas, stakeholders
+- `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Index of context, stakeholders, data inventory
+- `engagement/{{engagement-kebab}}/personas.md` — **Canonical personas** (Josephine-structured); use the primary persona to anchor value framing
+- `engagement/{{engagement-kebab}}/problem-statement.md` — **Canonical problem statement** ("I am / trying to / But / Because / which results in"); the "which results in" line is the business impact seed
+- `engagement/{{engagement-kebab}}/current-state-journey.md` — **Canonical journey**; the "Top pain points (ranked)" section seeds use case prioritization
 - `engagement/{{engagement-kebab}}/transcript-analysis.md` — Customer voice data (if exists)
 - `engagement/{{engagement-kebab}}/discovery-summary.md` — Research findings (if exists)
 - `sources/` — Any additional customer documents
 
-Summarize the current understanding and confirm with the user.
+If any of the three structured deliverables is missing or below Grade B, **stop and recommend going back to Discover** — Define cannot run properly without them.
+
+Summarize the current understanding (anchored to the formal problem statement and the primary persona's journey) and confirm with the user.
 
 ### Step 2: Value Framing
 

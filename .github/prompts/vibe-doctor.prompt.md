@@ -35,6 +35,9 @@ Use this:
 | PROJECT-CONTEXT.md populated | Not the empty template; has customer name and problem statement | **critical** for Discover |
 | Sources present | `sources/` has at least one file (other than `meeting-templates.md` and `research/`) | warn for Discover |
 | Discovery artifacts | `discovery-summary.md` exists in `engagement/<name>/` if state says Discover is complete | warn |
+| **Discover deliverable: personas.md** | `engagement/<name>/personas.md` exists, at least one persona, every persona at Grade B+ | **critical** for Discover close |
+| **Discover deliverable: problem-statement.md** | `engagement/<name>/problem-statement.md` exists with all 5 blanks filled, Grade B+ | **critical** for Discover close |
+| **Discover deliverable: current-state-journey.md** | `engagement/<name>/current-state-journey.md` exists with ≥3 stages, Grade B+ | **critical** for Discover close |
 | Requirements signed off | `templates/requirements-summary.md` is populated and not just placeholders | warn for Define+ |
 | Concept selected | `selected-concept.md` exists in `engagement/<name>/` if state says Ideate is complete | warn |
 | Engineering brief present | `engineering-brief.md` exists in `engagement/<name>/` if state says Build has started | **critical** for Build |
@@ -66,27 +69,24 @@ End with **two distinct recommendations**:
 Example output:
 
 ```
-📍 Contoso Field Services — Dispatcher AI · Phase: build · Discovery readiness: 9/9 · Sources: 7 files
+📍 Contoso Field Services — Dispatcher AI · Phase: discover · Discovery readiness: 8/9 · Deliverables: 2/3 · Sources: 7 files
 
 🩺 Doctor results
 
-| Check                           | Status | Action                                                |
-|---------------------------------|--------|-------------------------------------------------------|
-| Engagement folder exists        | ✅     |                                                       |
-| state.json matches reality      | ⚠️     | discovery-summary.md exists but state says not-started; I'll reconcile |
-| PROJECT-CONTEXT.md populated    | ✅     |                                                       |
-| Engineering brief present       | ✅     |                                                       |
-| Form-factor declared            | ✅     | webapp                                                |
-| Data prepped (web-app)          | ❌     | Run /vibe-data-prep — no typed models in scaffold/data/ |
-| Scaffold builds                 | ⚠️     | `npm run build` in scaffold/web/ fails: missing dep `recharts` |
-| MCP servers enabled             | ✅     | github, workiq, ado all responding                    |
+| Check                             | Status | Action                                                                  |
+|-----------------------------------|--------|-------------------------------------------------------------------------|
+| Engagement folder exists          | ✅     |                                                                         |
+| state.json matches reality        | ✅     |                                                                         |
+| PROJECT-CONTEXT.md populated      | ✅     |                                                                         |
+| Discover: personas.md             | ✅     | 3 personas, lowest grade A                                              |
+| Discover: problem-statement.md    | ✅     | Grade A, signed off by sponsor                                          |
+| Discover: current-state-journey.md| ❌     | Missing — run /vibe-current-journey to draft from sources               |
+| MCP servers enabled               | ✅     | github, workiq, ado all responding                                      |
 
-Top fix → run /vibe-data-prep (the build phase can't proceed without typed data models).
-Next-phase action → after /vibe-data-prep, run /vibe-prototype-scaffold to generate the dispatcher UI.
+Top fix → run /vibe-current-journey (last Discover deliverable; gate to Define).
+Next-phase action → once current-state-journey.md is Grade B+, click "💡 Frame the Problem" to move to Define.
 
-I've already reconciled state.json. No other changes made.
-
-👉 NEXT: Run /vibe-data-prep
+👉 NEXT: Run /vibe-current-journey
 ```
 
 ## Requirements

@@ -11,11 +11,11 @@ All VIBE agents and their roles.
 
 | Agent | Phase | Description |
 |-------|-------|-------------|
-| `@VIBE Engagement Lead` | All | Orchestrator — manages all 6 phases, shows the Preparation **and** Discovery readiness dashboards, tells you what to do next |
+| `@VIBE Engagement Lead` | All | Orchestrator — manages all 6 phases, shows the Preparation **and** Discovery (9 readiness fields + 3 required deliverables) dashboards, tells you what to do next |
 | `@VIBE Preparation` | Preparation | Week 0 source-first orchestrator — drafts both briefs, kicks off dual-path research, generates the 4-week meeting schedule |
-| `@VIBE Discover` | Discover | Source-first context gathering — ingests docs, transcripts, questionnaires, then asks about gaps |
+| `@VIBE Discover` | Discover | Source-first context gathering — ingests docs, transcripts, questionnaires, then asks about gaps. Drives the three required deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`) via `/vibe-personas`, `/vibe-problem-statement`, `/vibe-current-journey` |
 | `@VIBE Transcript Analyst` | Discover | Extracts VIBE-specific signals from Teams meeting transcripts |
-| `@VIBE Define` | Define | Problem framing, value analysis, use case prioritization |
+| `@VIBE Define` | Define | Problem framing, value analysis, use case prioritization — reads `personas.md`, `problem-statement.md`, and `current-state-journey.md` as canonical inputs (stops with a "go back to Discover" message if any are missing or below Grade B) |
 | `@VIBE Ideate` | Ideate | Brainstorms AI-powered concepts across form factors |
 | `@VIBE Data Prep` | Build | Guides preparation of customer data files for the prototype |
 | `@VIBE Deliver` | Deliver | Generates roadmap, backlog, limitations doc, and handoff package |
