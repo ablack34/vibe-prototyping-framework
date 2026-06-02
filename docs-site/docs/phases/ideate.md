@@ -1,9 +1,11 @@
 ---
-sidebar_position: 4
-title: "Phase 4: Ideate"
+sidebar_position: 7
+title: "Ideate (legacy)"
 ---
 
-# Phase 4: Ideate
+# Ideate <span style={{opacity: 0.6}}>(legacy)</span>
+
+> ⚠️ **Legacy path.** New engagements should use **[Phase 3: Disrupt](disrupt.md)** instead — `/vibe-concepts` (pre-workshop) + `/vibe-selected-concept` (post-workshop) replace this single-shot prompt with a customer-co-created flow. Ideate is kept available only for engagements that started before Disrupt existed.
 
 **Who:** Anyone on the team · **Duration:** 1 day
 
