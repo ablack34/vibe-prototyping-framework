@@ -208,6 +208,6 @@ End with one of these directives:
 ## Notes
 
 - Re-running `/vibe-concepts` is safe — old concept versions are NOT auto-deleted but a new file replaces the previous draft. If the customer pre-vetted some concepts, mark those concepts with `> _Pre-vetted by {customer name} on {date} — preserve_` and the prompt will preserve them across re-runs.
-- This prompt does NOT modify `PROJECT-CONTEXT.md` or `requirements-summary.md`. It generates fresh concepts grounded in Discover.
+- This prompt does NOT modify `PROJECT-CONTEXT.md`. It generates fresh concepts grounded in Discover.
 - **Mock-data constraint applies to every concept.** No live API connections. If a concept needs live data to be convincing, downgrade it or replace it.
 - If the engagement has unique Microsoft tech constraints (e.g. "no Power Platform", "Foundry only"), the squad should drop a note in `sources/constraints.md` and this prompt will respect it.

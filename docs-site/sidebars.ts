@@ -27,7 +27,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'The Seven Phases',
+      label: 'The Five Phases',
       collapsed: false,
       items: [
         'phases/preparation',
@@ -35,8 +35,6 @@ const sidebars: SidebarsConfig = {
         'phases/disrupt',
         'phases/build',
         'phases/deliver',
-        'phases/define',
-        'phases/ideate',
       ],
     },
     {

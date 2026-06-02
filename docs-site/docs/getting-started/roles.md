@@ -18,14 +18,13 @@ Different team members use different parts of the framework. Find your role belo
 
 ## TPM / Technical Product Manager
 
-**You drive** Preparation, Discover, Define, Ideate, and Deliver — the majority of the engagement.
+**You drive** Preparation, Discover, Disrupt (with the customer in the room), and Deliver — the majority of the engagement.
 
 | Phase | What You Do | Key Commands |
 |-------|------------|-------------|
 | **Preparation** (Week 0) | Draft both briefs, run dual-path research, schedule all 4 weeks of meetings | `/vibe-kickoff`, `/vibe-customer-brief`, `/vibe-research`, `/vibe-schedule`, `/vibe-prep-check`, `@VIBE Preparation` |
-| **Discover** | Send questionnaires, process transcripts, capture insights | `/vibe-questionnaire`, `/vibe-transcript`, `/vibe-capture` |
-| **Define** | Frame business value, prioritize use cases, get customer sign-off | `@VIBE Define` |
-| **Ideate** | Brainstorm concepts, visualize with Spark, share with customer | `/vibe-ideate` |
+| **Discover** | Send questionnaires, process transcripts, capture insights, drive the three required deliverables | `/vibe-questionnaire`, `/vibe-transcript`, `/vibe-capture`, `/vibe-personas`, `/vibe-problem-statement`, `/vibe-current-journey` |
+| **Disrupt** | Facilitate the Week 2 customer co-creation workshop — agenda, candidate concepts, post-workshop record, storyboard | `/vibe-workshop-agenda`, `/vibe-concepts`, `/vibe-workshop-record`, `/vibe-selected-concept`, `/vibe-future-journey`, `/vibe-storyboard`, `@VIBE Disrupt` |
 | **Build** | Run check-ins, process feedback | `/vibe-check-in` |
 | **Deliver** | Generate backlog and handoff | `/vibe-backlog-gen`, `/vibe-handoff` |
 
@@ -33,25 +32,25 @@ Different team members use different parts of the framework. Find your role belo
 
 ## Designer
 
-**You contribute to** Discover (user research), Ideate (concept development), and Build (feedback).
+**You contribute to** Discover (user research), Disrupt (concept development with the customer), and Build (feedback).
 
 | Phase | What You Do | Key Commands |
 |-------|------------|-------------|
 | **Discover** | Capture pain points, contribute to personas | `/vibe-capture`, `@UX UI Designer` |
-| **Ideate** | Shape concepts, create Spark visualizations | `/vibe-ideate` |
+| **Disrupt** | Shape candidate concepts, create Spark visualizations live in the workshop | `/vibe-concepts` |
 | **Build** | Review prototype UX, attend check-ins | `/vibe-check-in` |
 
 **Tip:** The `@UX UI Designer` agent creates JTBD analyses and journey maps you can translate into design work.
 
 ## Engineer
 
-**You lead** the Build phase with a clear engineering brief from Ideate.
+**You lead** the Build phase. Your first Build task is to read the Disrupt storyboard + selected concept + future-state journey and write your own engineering brief (`engagement/<name>/engineering-brief.md`) for squad-lead sign-off.
 
 | Phase | What You Do | Key Commands |
 |-------|------------|-------------|
-| **Build** | Read engineering brief, prepare data, scaffold, build features, deploy | `/vibe-data-prep`, `/vibe-prototype-scaffold`, `/task-plan`, `/task-implement`, `/vibe-deploy` |
+| **Build** | Write the engineering brief from Disrupt deliverables, prepare data, scaffold, build features, deploy | `/vibe-data-prep`, `/vibe-prototype-scaffold`, `/task-plan`, `/task-implement`, `/vibe-deploy` |
 
-**You receive:** An engineering brief with the selected concept, screen spec, data requirements, AI integration points, and suggested technology.
+**You receive (from Disrupt):** A customer-signed storyboard, selected concept, and future-state journey. Your job is to turn those into a must/should/could engineering brief and then build.
 
 **Tip:** Use the HVE-Core task pipeline (`/task-research` → `/task-plan` → `/task-implement` → `/task-review`) for structured feature development.
 

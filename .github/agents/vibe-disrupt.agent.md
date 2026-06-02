@@ -177,7 +177,7 @@ Use the file-system reconciliation pattern from `VIBE Engagement Lead`. For Disr
 
 ## Response Format — Next Step Directive
 
-Every response MUST end with a specific next-step directive pointing at a button. Follow the convention used by `VIBE Discover` and `VIBE Define`.
+Every response MUST end with a specific next-step directive pointing at a button. Follow the convention used by `VIBE Discover` and `VIBE Deliver`.
 
 The primary recommendation should be the next prompt in the Disrupt sequence. Offer at most ONE alternative.
 

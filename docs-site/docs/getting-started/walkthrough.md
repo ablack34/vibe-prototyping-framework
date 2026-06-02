@@ -8,7 +8,7 @@ title: What to Expect (Walkthrough)
 This page shows you what each phase **actually looks like** when you run it against the Contoso Field Services demo fixture. No video required — just realistic excerpts of what each agent produces so you know what "good" looks like before your first real engagement.
 
 :::tip Run it yourself
-Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through Preparation → Discover → **Disrupt** → Build → Deliver (the recommended path). The legacy Define + Ideate phases are documented further down as **alternative legacy phases** for engagements that started before Disrupt existed. Try it.
+Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through **Preparation → Discover → Disrupt → Build → Deliver**. Try it.
 :::
 
 :::info Prefer M365 Notebook?
@@ -130,8 +130,7 @@ Grades — 3 required Discover deliverables:
 👉 NEXT: Both Discover gates are green (7+/9 readiness at B+, 3/3 deliverables at B+).
    Click "🎬 Begin Disrupt Workshop" to start the Week 2 customer co-creation
    workshop — successCriteria stays a C for now and Disrupt will surface it
-   as the first thing to lock with the customer. (Legacy alternative: click
-   "💡 Frame the Problem (legacy)" to take the older Define → Ideate path.)
+   as the first thing to lock with the customer.
 ```
 
 If you want to see the three deliverable prompts fire fresh instead of using the pre-seeded files, delete `personas.md`, `problem-statement.md`, and `current-state-journey.md` from `engagement/contoso-dispatcher-ai/` and run them in order:
@@ -146,130 +145,73 @@ If you want to see the three deliverable prompts fire fresh instead of using the
 
 ---
 
-## Phase 3 (Legacy) · Define
+## Phase 3 · Disrupt (Week 2 — Customer Co-Creation Workshop)
 
-> ⚠️ **Legacy path.** New engagements should use the **Disrupt** workshop after Discover (see [Phases → Disrupt](/phases/disrupt)). The Define + Ideate sequence below is preserved for engagements that started before Disrupt existed. A new `Phase 3 · Disrupt` walkthrough section will land alongside the Define/Ideate retirement.
+You click **🎬 Begin Disrupt Workshop** (or type `@VIBE Disrupt`). Disrupt is the **one phase where the customer is in the room co-creating with us**. The `@VIBE Disrupt` agent walks you through six prompts split across pre-workshop / in-workshop / post-workshop. See [Phases → Disrupt](/phases/disrupt) for the full step-by-step; the excerpts below show what each step actually produces.
 
-You click **💡 Frame the Problem (legacy)**. The Define agent reads the discovery summary and writes `templates/requirements-summary.md`.
+### Pre-workshop — `/vibe-workshop-agenda` then `/vibe-concepts`
 
-What you see (excerpt):
+The agenda is anchored to the actual Discover deliverables (no generic activities), and the concepts file holds 2-3 candidate prototype concepts across different form factors that the customer reacts to in the room.
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: define · Discovery readiness: 9/9
-
-requirements-summary.md written. Top-line framing:
-
-  💰 The opportunity: $50M problem
-  ─────────────────────────────────
-  €4.1M  annual SLA-breach penalties (on books)
-  €6.3M  annual lost renewals attributed to repeat breaches
-  €1.7M  overtime from last-minute re-routes
-  €1-2M  customer-service escalation cost (Anya's data)
-  ─────────────────
-  ~€13M / year addressable, expanding to €30M+/yr into adjacent BU over 3 years.
-
-  🎯 Prioritised use cases (1 = highest):
-    1. SLA early-warning  ────  derisks renewals, low workflow disruption
-    2. Assignment recommender  ──  bigger prize, needs more change management
-    3. Audit trail for F-Gas  ──  regulatory future-proofing, table stakes by Q3
-
-  ✋ Out-of-scope for prototype: full agentic dispatcher (customer parked this)
-
-  ✅ Success metrics:
-    - >30% reduction in Platinum+Gold SLA breaches within 6 months of go-live
-    - Dispatcher decision time from ~6 min to <60 sec per work order
-    - Customer-facing audit trail for every assignment
-
-👉 NEXT: Click "💡 Ideate Concepts (legacy)" to brainstorm AI-powered prototype concepts.
+| #  | Concept                          | Form factor              | AI essential? | Wow |
+|----|----------------------------------|--------------------------|---------------|-----|
+| C1 | Dispatcher Radar (web app)       | React + .NET on Azure    | Yes — risk    | ⭐⭐⭐ |
+|    |                                  |                          | scoring +     |     |
+|    |                                  |                          | recommender   |     |
+| C2 | Dispatcher Co-pilot (Teams)      | Copilot Studio bot       | Yes — chat    | ⭐⭐⭐ |
+| C3 | Auto-router (agentic)            | Foundry Agents           | Yes — full    | ⭐⭐⭐⭐|
+|    |                                  |                          | autonomous    |     |
 ```
 
-**Time spent:** ~2 minutes of agent runtime + ~5 minutes for you and the team to review and approve.
+The `/vibe-concepts` prompt also writes `spark-prompts.md` — copy-paste-ready prompts the facilitator drops into [GitHub Spark](https://spark.github.com) live in the workshop so the customer sees clickable mockups of all 2-3 candidates within 20 minutes.
+
+### In-workshop
+
+No agent runs. Humans co-create. The facilitator captures notes, sticky-note photos, Miro exports, and (ideally) a recording into `sources/workshop/`.
+
+### Post-workshop — `/vibe-workshop-record`, `/vibe-selected-concept`, `/vibe-future-journey`, `/vibe-storyboard`
+
+The post-workshop sequence is strict: workshop-record first, then selected-concept (storyboard and future-journey both anchor to it).
+
+The **storyboard** is the flagship Disrupt deliverable — scene-by-scene narrative (Setup → Challenge → Encounter → Solution → Impact) that the engineer reads to write the engineering brief as their first Build task.
+
+```
+# Storyboard — Dispatcher Radar (selected concept)
+
+Scene 1 · Setup — 07:42 Monday
+  Bartosz arrives. 142 work orders in the queue, 18 with weekend escalations.
+  The "what do I look at first?" problem is the daily pain.
+
+Scene 2 · Challenge — 07:45
+  Three Platinum sites breaching SLA within 4 hours. Bartosz has to triage
+  manually across Salesforce + WhatsApp + the route-optimization tool —
+  ~6 minutes per order × 18 escalations = an hour gone before coffee.
+
+Scene 3 · Encounter — 07:46 (with Dispatcher Radar)
+  Dispatcher Radar shows the queue colour-coded by SLA risk. The three
+  Platinum breaches are red, sorted to the top, with a 1-line explanation:
+  "Site 4421, F-Gas tech needed, only Marek/Tomasz qualified in zone."
+
+Scene 4 · Solution — 07:47-07:52
+  Bartosz clicks the top red card. Top-3 technician recommendation shows
+  with confidence scores and travel time. Marek is #1 — Bartosz assigns
+  in one click. Audit-trail entry is written automatically.
+
+Scene 5 · Impact
+  18 escalations triaged in ~9 minutes (vs ~110 today). Sandra's metric
+  ">30% reduction in Platinum+Gold breaches" becomes plausible.
+```
+
+**Time spent (post-workshop):** ~10-15 minutes of agent runtime for all four post-workshop prompts, plus ~30-45 minutes for the team to review, edit, and customer-sign the workshop-record and selected-concept.
 
 ---
 
-## Phase 4 (Legacy) · Ideate
+## Phase 4 · Build (Engineer)
 
-> ⚠️ **Legacy path.** Replaced by Disrupt's `/vibe-concepts` + `/vibe-selected-concept` flow. Preserved for in-flight legacy engagements.
+The engineer `git pull`s and reads `engagement/contoso-dispatcher-ai/storyboard.md` (the Disrupt contract), `selected-concept.md` (the chosen form factor), and `future-state-journey.md` (the redesigned user flow). Their **first Build task** is to write `engagement/contoso-dispatcher-ai/engineering-brief.md` from those three files using `templates/engineering-brief.md` as the scaffold. Every must-have feature in the brief has to trace to a scene in the storyboard. Squad lead signs it off.
 
-You click **💡 Ideate Concepts (legacy)**. The Ideate agent reads the requirements summary and produces three artifacts:
-
-- [`engagement/contoso-dispatcher-ai/ideation-concepts.md`](/reference/templates) — all concepts compared
-- `engagement/contoso-dispatcher-ai/selected-concept.md` — the chosen one
-- `engagement/contoso-dispatcher-ai/spark-prompts.md` — paste into GitHub Spark for instant mockups
-- `engagement/contoso-dispatcher-ai/engineering-brief.md` — the engineer's primary input
-
-What the concepts table looks like:
-
-```
-| #  | Concept                          | Form factor              | AI essential? | Wow | Complexity |
-|----|----------------------------------|--------------------------|---------------|-----|------------|
-| C1 | Dispatcher Radar (web app)       | React + .NET on Azure    | Yes — risk    | ⭐⭐⭐ | Medium     |
-|    |                                  |                          | scoring +     |     |            |
-|    |                                  |                          | recommender   |     |            |
-| C2 | Dispatcher Co-pilot (Teams)      | Copilot Studio bot       | Yes — same    | ⭐⭐⭐ | Low        |
-|    |                                  |                          | logic, chat   |     |            |
-|    |                                  |                          | surface       |     |            |
-| C3 | Auto-router (agentic)            | Foundry Agents           | Yes — full    | ⭐⭐⭐⭐| High       |
-|    |                                  |                          | autonomous    |     |            |
-|    |                                  |                          | routing       |     |            |
-|    |                                  |                          | + escalation  |     |            |
-```
-
-The Spark prompts file gives the team copy-paste-ready prompts for [GitHub Spark](https://spark.github.com) so a non-technical TPM can produce clickable mockups of all three in 20 minutes:
-
-```
-Build a single-page web app called "Dispatcher Radar" for HVAC field-service dispatchers.
-Layout: a queue panel on the left with 12 work orders, each card colour-coded by SLA risk
-(green/amber/red). Click a card to see a right-hand panel showing the order detail and a
-top-3 ranked list of suggested technicians, each with a confidence score, a one-line
-explanation, and a single "Assign" button. Use Microsoft Fluent design colours, dense
-information layout, no marketing chrome. Mock data only.
-```
-
-The engineering brief is the structured handoff to the dev. Excerpt:
-
-```
-# Engineering Brief — Dispatcher Radar (C1, selected concept)
-
-## Concept summary
-A dispatcher-facing web app that scores live work orders for SLA-breach risk and
-recommends the top-3 technicians per order with a one-line explanation.
-
-## Form factor & stack
-- React 19 + TypeScript + Vite + Tailwind + Zustand (frontend)
-- .NET 9 Minimal API + CsvHelper (backend) — serves typed records from CSV
-- Azure Static Web Apps + Azure App Service (deploy)
-- Optional: Azure OpenAI for the per-order explanation text
-
-## Mock data
-Already prepared in scaffold/data/ by /vibe-data-prep:
-- 25 technicians (with F-Gas cert + expiry)
-- 20 sites (Platinum/Gold/Silver tiers)
-- 40 historical work orders with breach outcomes (training/validation signal)
-
-## Must-have features (in priority order)
-1. Live queue view with risk colour-coding
-2. Per-order technician recommender with explanation
-3. Hard constraint: refrigerant > 3kg requires non-expired CAT I/II tech
-4. Single-click assign with audit trail entry
-5. Drive-time annotation inline (no alt-tab to Google Maps)
-
-## Explicit non-goals for the prototype
-- Real-time data feed (mock only)
-- Mobile app for technicians
-- Auto-routing without dispatcher approval
-
-## Demo script
-[detailed walkthrough of the 8-minute live demo the customer will see]
-```
-
-**Time spent:** ~5 minutes of agent runtime + ~15-30 minutes for the team to review, pick the concept, and have the designer iterate Spark mockups.
-
----
-
-## Phase 5 · Build (Engineer)
-
-The engineer `git pull`s, reads [`engagement/contoso-dispatcher-ai/engineering-brief.md`](/reference/templates), then:
+Then:
 
 ```
 /vibe-data-prep
@@ -288,7 +230,7 @@ Then:
 /vibe-prototype-scaffold
 ```
 
-…wires the brief's features into the existing React + .NET scaffold. (For concepts C2 or C3, the engineer would skip scaffold and go straight to Copilot Studio or Foundry Agents — `/vibe-deploy` covers that branch.)
+…wires the brief's must-have features into the existing React + .NET scaffold. (For non-web-app concepts like C2 Copilot Studio bot or C3 Foundry Agents, the engineer skips scaffold and goes straight to the chosen platform — `/vibe-deploy` covers that branch.)
 
 When ready to share with the customer:
 
@@ -302,7 +244,7 @@ This is an engineer-facing deployment **plan**, not an auto-deploy. For C1 it wa
 
 ---
 
-## Phase 6 · Deliver
+## Phase 5 · Deliver
 
 You click **📦 Generate Deliverables**. The Deliver agent walks you through the handoff package one section at a time — you approve each one:
 
@@ -314,8 +256,8 @@ one section at a time. We'll do:
 
   1. Vision  →  2. Roadmap  →  3. Backlog  →  4. Limitations  →  5. About
 
-Starting with #1 (Vision). Here's a draft based on requirements-summary.md,
-selected-concept.md, and check-in feedback:
+Starting with #1 (Vision). Here's a draft based on selected-concept.md,
+storyboard.md, engineering-brief.md, and check-in feedback:
 
   "Eliminate SLA-breach surprises and put dispatchers back in control of
    complex assignment decisions. Within 6 months, reduce Platinum+Gold
@@ -347,8 +289,7 @@ Once approved, the final `handoff-data.json` contains everything the customer's 
 | Kickoff | < 1 min | < 1 hour |
 | Preparation | ~5 min | Week 0 (~3-5 days) |
 | Discover | ~5 min | Week 1 (1-3 days) |
-| Disrupt (recommended) | ~15 min | Week 2 (1 day workshop + ~1 day synthesis) |
-| Define + Ideate (legacy) | ~35 min | 2-3 days (instead of Disrupt) |
+| Disrupt | ~15 min | Week 2 (1 day workshop + ~1 day synthesis) |
 | Build (web app) | ~30 min to scaffold | 5-10 days |
 | Deliver | ~45 min | Week 4 (1-2 days) |
 

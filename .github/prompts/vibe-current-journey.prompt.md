@@ -28,7 +28,7 @@ This is the document the **Disrupt workshop transforms** into a future-state jou
 
 ### Step 2 — Identify the persona and the task
 
-This journey maps **one persona** doing **one task** — always the primary persona from `personas.md`. If a secondary persona has a meaningfully different journey, capture it as a separate stages table inside the same file under a `## Secondary persona journey` heading. The canonical filename is always `current-state-journey.md` — the state.json schema, doctor checks, Define inputs, and Discover gate all expect that single file.
+This journey maps **one persona** doing **one task** — always the primary persona from `personas.md`. If a secondary persona has a meaningfully different journey, capture it as a separate stages table inside the same file under a `## Secondary persona journey` heading. The canonical filename is always `current-state-journey.md` — the state.json schema, doctor checks, Disrupt inputs, and Discover gate all expect that single file.
 
 The task is the JTBD from the persona file. For a Contoso dispatcher persona, it's "respond to an emergency call and dispatch the right technician". For a clinician persona, it's "review a patient's chart and decide next action". One task per file.
 
@@ -109,7 +109,7 @@ Update `state.json.readiness.discover.currentStateJourney`:
 
 End with one of:
 
-- If Grade A and all 3 deliverables (personas + problem-statement + current-state-journey) are Grade B+: `👉 NEXT: All 3 Discover deliverables are ready. Click "🎬 Begin Disrupt Workshop" to start the Week 2 workshop sequence. (Send all 3 deliverables to {{sponsor}} for sign-off first — they're the inputs the customer reacts to in the room. Legacy alternative: click "💡 Move to Define (legacy)" to take the old Define → Ideate path.)`
+- If Grade A and all 3 deliverables (personas + problem-statement + current-state-journey) are Grade B+: `👉 NEXT: All 3 Discover deliverables are ready. Click "🎬 Begin Disrupt Workshop" to start the Week 2 workshop sequence. (Send all 3 deliverables to {{sponsor}} for sign-off first — they're the inputs the customer reacts to in the room.)`
 - If Grade A but other deliverables are below B: `👉 NEXT: Current journey is solid. Click "{button for the gap}" to address the next gap before moving to Disrupt.`
 - If Grade B: `👉 NEXT: To lift to Grade A, add 2 more stages OR enrich every stage with all 4 columns (steps, stakeholders, systems, pains). A process walkthrough at the next discover working session is the fastest way.`
 - If Grade C: `👉 NEXT: Only {N} stages identified with source backing. Schedule a 30-min process walkthrough with {{primary-persona-role}} and re-run /vibe-current-journey. Discover cannot close until this is Grade B+.`

@@ -88,7 +88,7 @@ Once the 9-field readiness sits at 7+ at Grade B+, run the three required Discov
 /vibe-current-journey       # Mermaid + stages table + Top 3 ranked pain points (feeds the Disrupt workshop)
 ```
 
-The latter two anchor to the primary persona and will fail fast if `personas.md` doesn't exist yet, so always run them in this order. Each template includes a customer sign-off block — get the sign-off before moving to Define (unsigned problem statements are the #1 cause of Define rework). Run `/vibe-doctor` at any point to see whether the deliverables (or the 9 readiness fields) are blocking the gate.
+The latter two anchor to the primary persona and will fail fast if `personas.md` doesn't exist yet, so always run them in this order. Each template includes a customer sign-off block — get the sign-off before moving to Disrupt (unsigned problem statements are the #1 cause of workshop rework). Run `/vibe-doctor` at any point to see whether the deliverables (or the 9 readiness fields) are blocking the gate.
 
 ## Step 6: Co-create the Concept (Disrupt Workshop — Week 2)
 
@@ -109,36 +109,9 @@ Outputs land in `engagement/<your-engagement>/`:
 - `future-state-journey.md` — Mermaid diagram of the post-prototype journey
 - `storyboard.md` — **the engineer's primary input for Build**
 
-> ⚠️ **Legacy alternative — Steps 6a + 6b below (Define + Ideate).** Use only for engagements that started before Disrupt existed.
-
-## Step 6a (Legacy): Frame the Problem
-
-Click **"💡 Frame the Problem (legacy)"** or type:
-
-```
-@VIBE Define
-```
-
-Frames the business value ($50K vs $50M lens), prioritizes use cases, and produces `templates/requirements-summary.md` for customer sign-off.
-
-## Step 6b (Legacy): Brainstorm Concepts
-
-Click **"💡 Ideate Concepts (legacy)"** or type:
-
-```
-/vibe-ideate
-```
-
-Generates 2-3 AI-powered prototype concepts across different form factors (web app, conversational, agentic, Copilot extension, low-code). Outputs land in `engagement/<your-engagement>/`:
-
-- `ideation-concepts.md` — all concepts compared
-- `selected-concept.md` — chosen concept with narrative
-- `spark-prompts.md` — paste into [GitHub Spark](https://spark.github.com) or [Copilot Studio](https://copilotstudio.microsoft.com) for instant visualization
-- `engineering-brief.md` — **the engineer's primary input**
-
 ## Step 7: Build (Engineer)
 
-The engineer `git pull`s and reads either `engagement/<your-engagement>/storyboard.md` (Disrupt path) or `engagement/<your-engagement>/engineering-brief.md` (legacy Ideate path). `selected-concept.md` names the chosen form factor on both paths.
+The engineer `git pull`s and reads `engagement/<your-engagement>/storyboard.md` (the contract from Disrupt) plus `selected-concept.md` (the chosen form factor) and `future-state-journey.md` (the redesigned user flow). Their first Build task is to write `engagement/<your-engagement>/engineering-brief.md` from those three files (template at `templates/engineering-brief.md`) and get squad-lead sign-off.
 
 Build steps vary by form factor — but typically:
 

@@ -17,7 +17,7 @@ Generate Azure DevOps work items from the engagement requirements and solution d
 
 ## Requirements
 
-1. Read `templates/requirements-summary.md` and `templates/solution-design.md` for requirements and build phases.
+1. Read `engagement/{{engagement-kebab}}/selected-concept.md`, `engagement/{{engagement-kebab}}/storyboard.md`, `engagement/{{engagement-kebab}}/future-state-journey.md`, `engagement/{{engagement-kebab}}/engineering-brief.md`, and `templates/solution-design.md` for requirements and build phases.
 2. Generate a work item hierarchy:
    - **Epics** — One per major capability area
    - **Features** — Specific feature areas within each epic

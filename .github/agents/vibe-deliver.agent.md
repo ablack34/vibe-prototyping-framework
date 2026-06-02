@@ -32,10 +32,12 @@ The handoff data is form-factor agnostic — how it's displayed depends on the p
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
 | `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` | `handoff-data.json` — structured handoff data with all sections |
-| `templates/requirements-summary.md` | `templates/PROTOTYPE-LIMITATIONS.md` — honest limitations |
-| `templates/solution-design.md` | Updated `state.json` — deliver phase complete |
+| `engagement/{{engagement-kebab}}/selected-concept.md` | `templates/PROTOTYPE-LIMITATIONS.md` — honest limitations |
+| `engagement/{{engagement-kebab}}/storyboard.md` | Updated `state.json` — deliver phase complete |
+| `engagement/{{engagement-kebab}}/future-state-journey.md` | |
+| `engagement/{{engagement-kebab}}/engineering-brief.md` | |
+| `templates/solution-design.md` | |
 | `templates/CHECK-IN-NOTES.md` | |
-| `engagement/{{engagement-kebab}}/selected-concept.md` | |
 
 **The delivery person's job**: Review each section as it's generated, approve or correct.
 **This agent's job**: Produce handoff-data.json step by step, one section at a time.
@@ -55,7 +57,9 @@ Before producing deliverables, verify these artifacts exist. Flag any that are m
 | Artifact | Required? | If Missing |
 |----------|----------|-----------|
 | `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` (filled) | Yes | Cannot proceed — run `@VIBE Discover` first |
-| `templates/requirements-summary.md` (approved) | Yes | Cannot proceed — run `@VIBE Define` first |
+| `engagement/{{engagement-kebab}}/selected-concept.md` (signed off) | Yes | Cannot proceed — run `@VIBE Disrupt` first |
+| `engagement/{{engagement-kebab}}/storyboard.md` | Recommended | Backlog will be less grounded in scene-by-scene narrative |
+| `engagement/{{engagement-kebab}}/engineering-brief.md` | Recommended | Backlog will be less grounded in technical requirements |
 | `templates/solution-design.md` | Recommended | Deliver will work but handoff will be less complete |
 | `templates/CHECK-IN-NOTES.md` | Recommended | Roadmap won't include customer feedback |
 | Prototype deployed (live URL) | Recommended | Mark as "not yet deployed" |
@@ -118,7 +122,7 @@ Present the roadmap and ask for approval.
 
 ### Step 4: Generate Backlog
 
-Read: `requirements-summary.md`
+Read: `selected-concept.md`, `engineering-brief.md`, `storyboard.md`, `future-state-journey.md`
 
 Produce `handoff-data.json → backlog` section with Epics → Features → Stories hierarchy:
 
@@ -148,7 +152,7 @@ Produce `handoff-data.json → backlog` section with Epics → Features → Stor
 ```
 
 Use proper user story format: "As a [persona], I want [action], so that [outcome]"
-Each story has acceptance criteria from requirements-summary.md.
+Each story has acceptance criteria derived from the scenes in `storyboard.md`, the must-have features in `engineering-brief.md`, and the future-state journey stages in `future-state-journey.md`.
 
 Present the backlog hierarchy and ask for approval. Note: "This backlog is viewable alongside the prototype. If you also want it in ADO, run `/vibe-backlog-gen` separately."
 

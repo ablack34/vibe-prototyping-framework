@@ -18,7 +18,7 @@ The scaffold in `scaffold/` is a **React 19 + .NET 9** stack for **web-app** for
 
 ## Requirements
 
-0. **Form-factor pre-check.** Read `engagement/{{engagement-kebab}}/selected-concept.md` (or `engineering-brief.md` if selected-concept.md doesn't exist). If `formFactor` is anything other than `webapp` / `web-app` / unspecified, stop and tell the user:
+0. **Form-factor pre-check.** Read `engagement/{{engagement-kebab}}/selected-concept.md`. If `formFactor` is anything other than `webapp` / `web-app` / unspecified, stop and tell the user:
 
    ```
    The selected concept is a {{formFactor}} prototype, not a web app.
@@ -34,7 +34,10 @@ The scaffold in `scaffold/` is a **React 19 + .NET 9** stack for **web-app** for
 
 1. Read these files to understand what needs to be built:
    - `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` — Problem, personas, desired outcome
-   - `templates/requirements-summary.md` — Prioritized requirements with acceptance criteria
+   - `engagement/{{engagement-kebab}}/selected-concept.md` — Canonical chosen concept, form factor, success criteria
+   - `engagement/{{engagement-kebab}}/storyboard.md` — Scene-by-scene narrative (the contract handed by Disrupt)
+   - `engagement/{{engagement-kebab}}/future-state-journey.md` — Redesigned journey with the prototype in place
+   - `engagement/{{engagement-kebab}}/engineering-brief.md` — Must-have features, data model, constraints, demo script
    - `templates/solution-design.md` — Architecture and build phases (if exists)
    - `scaffold/data/README.md` — Available data models (if data prep has been done)
 

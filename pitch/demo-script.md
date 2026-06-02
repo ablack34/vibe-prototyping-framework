@@ -70,23 +70,25 @@ If you're presenting remotely, share the VS Code window only — not the full de
 
 ---
 
-### 6:00-9:00 — Run Define + Ideate
+### 6:00-9:00 — Run the Disrupt workshop sequence
 
-**Click** the **🎯 Frame the Problem** button → wait for completion → click **💡 Ideate Concepts**.
+**Click** the **🎬 Begin Disrupt Workshop** button → wait → the agent walks the 7-step Disrupt sequence (agenda → spark prompts → workshop record → selected concept → future-state journey → storyboard).
 
-**Say (while they run):**
-> "Define frames the $50K-vs-$50M question — what's the smallest valuable thing we could build, what's the most ambitious. Generates `requirements-summary.md`.
+**Say (while it runs):**
+> "Disrupt is the Week 2 customer co-creation workshop — it replaces what we used to split into Define and Ideate. The agent generates the workshop agenda anchored to Discover findings, drafts 2-3 candidate concepts plus Spark prompts the facilitator pastes into GitHub Spark live in the room, then captures the workshop outcome. The customer picks the concept; the agent generates the future-state journey and the storyboard.
 >
-> Then Ideate brainstorms 2-3 prototype concepts across form factors. This is the consistency thing from slide 4 of the deck — without the harness, our default ideation answer drifts toward 'another web dashboard.' With the harness, every engagement explicitly evaluates web, agentic, conversational, Copilot extension, and low-code paths. For dispatch, the answer is probably web + an agent — but the harness forces the explicit consideration every time, on every engagement."
+> This is the consistency thing from slide 4 of the deck — without the harness, our default ideation answer drifts toward 'another web dashboard.' With the harness, every engagement explicitly evaluates web, agentic, conversational, Copilot extension, and low-code paths. For dispatch, the answer is probably web + an agent — but the harness forces the explicit consideration every time, on every engagement."
 
 **Show when done:**
-- [`engagement/contoso-dispatcher-ai/requirements-summary.md`](../engagement/) — prioritized use cases
-- [`engagement/contoso-dispatcher-ai/ideation-concepts.md`](../engagement/) — the multi-form-factor evaluation
-- [`engagement/contoso-dispatcher-ai/selected-concept.md`](../engagement/) — the recommended concept with rationale
-- [`engagement/contoso-dispatcher-ai/engineering-brief.md`](../engagement/) — the handoff to the engineer
+- [`engagement/contoso-dispatcher-ai/workshop-agenda.md`](../engagement/) — facilitator agenda
+- [`engagement/contoso-dispatcher-ai/spark-prompts.md`](../engagement/) — what the facilitator pastes into Spark live in the room
+- [`engagement/contoso-dispatcher-ai/workshop-record.md`](../engagement/) — what happened, who said what
+- [`engagement/contoso-dispatcher-ai/selected-concept.md`](../engagement/) — the customer-signed concept
+- [`engagement/contoso-dispatcher-ai/future-state-journey.md`](../engagement/) — how the persona uses the solution end-to-end
+- [`engagement/contoso-dispatcher-ai/storyboard.md`](../engagement/) — **the engineer's contract for Build**
 
-**Highlight the engineering brief:**
-> "This is what changes the Build phase. Today, an engineer joins a VIBE engagement and has to interview the TPM to extract what's already in everyone else's heads. With the harness, they get this on Day 1: validated concept, screen specs, data mapping, success criteria. They start building immediately. Engineer time becomes prototype time."
+**Highlight the storyboard:**
+> "This is what changes the Build phase. Today, an engineer joins a VIBE engagement and has to interview the TPM to extract what's already in everyone else's heads. With the harness, they get this on Day 1: signed-off concept, scene-by-scene storyboard, customer voice baked in. They start building immediately. Engineer time becomes prototype time."
 
 ---
 
@@ -106,7 +108,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Switch to:** A blank chat or a slide
 
 **Say:**
-> "What you just saw — Discover, Define, Ideate, engineering brief, handoff package — is what a Studio 42 team delivers on every VIBE engagement today. Normally it takes somewhere between 5 and 10 working days. The harness did it in 12 minutes against a fully-formed fixture. Real engagements are messier — customers don't hand you perfect questionnaires. But the harness does the synthesis work in real time. The team's job becomes facilitation and judgment, not paperwork.
+> "What you just saw — Discover, Disrupt, storyboard, handoff package — is what a Studio 42 team delivers on every VIBE engagement today. Normally it takes somewhere between 5 and 10 working days. The harness did it in 12 minutes against a fully-formed fixture. Real engagements are messier — customers don't hand you perfect questionnaires. But the harness does the synthesis work in real time. The team's job becomes facilitation and judgment, not paperwork.
 >
 > The ask is the same as in the deck: adopt the harness as default tooling on the next 3 VIBE engagements. After the third, we either formalize it as standard Studio 42 tooling or iterate based on what we learn.
 >

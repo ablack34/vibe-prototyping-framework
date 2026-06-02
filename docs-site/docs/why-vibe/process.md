@@ -40,8 +40,6 @@ VIBE Prototyping follows a structured workflow across multiple phases. The recom
   </div>
 </div>
 
-> ⚠️ **Legacy alternative to Disrupt: Define + Ideate.** The original framework split Disrupt's work into two separate phases — `@VIBE Define` (frame business value, prioritize use cases, produce requirements-summary.md) followed by `/vibe-ideate` (brainstorm 2-3 AI-powered concepts and produce an engineering brief in one pass). Both are kept available for engagements that started before Disrupt existed; new engagements should use Disrupt.
-
 ---
 
 ## Week-by-Week Timeline
@@ -64,7 +62,6 @@ VIBE Prototyping follows a structured workflow across multiple phases. The recom
     <h3>Customer co-creation workshop</h3>
     <p>The one phase where the customer is in the room with us. Pre-workshop: draft the agenda and generate 2-3 candidate concepts + Spark prompts. In-workshop: humans co-create. Post-workshop: record the workshop, capture the selected concept, produce the storyboard and future-state journey.</p>
     <p><strong>Outputs:</strong> workshop-agenda.md · ideation-concepts.md · spark-prompts.md · workshop-record.md · selected-concept.md · storyboard.md · future-state-journey.md</p>
-    <p><em>Legacy alternative (kept for in-flight engagements):</em> Week 1-2 Define produces requirements-summary.md for customer sign-off, then Week 2 Ideate generates concepts + engineering brief in one pass.</p>
   </div>
   <div className="timeline-item">
     <div className="timeline-week">Week 2-3 — Design & Develop</div>
@@ -107,7 +104,7 @@ VIBE Prototyping follows a structured workflow across multiple phases. The recom
 
 | Role | Source | Responsibility |
 |------|--------|---------------|
-| Technical Product Manager | Studio 42 | Drives Preparation, Discover, Define, Ideate, Deliver |
+| Technical Product Manager | Studio 42 | Drives Preparation, Discover, Disrupt (with the customer), Deliver |
 | Dev Engineer | Studio 42 | Leads Build phase |
 | Designer | Studio 42 | UX research, concept development |
 | Data Scientist | EAG | Data analysis, AI model guidance |

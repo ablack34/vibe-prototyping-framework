@@ -17,7 +17,8 @@ Standards for engagement documents created during VIBE Prototyping engagements.
 
 - PROJECT-CONTEXT.md is the single source of truth — update it whenever decisions are made
 - CHECK-IN-NOTES.md is append-only — never modify previous check-in entries
-- requirements-summary.md requires customer sign-off before prototyping begins
+- selected-concept.md requires customer sign-off before prototyping begins (the Disrupt contract)
+- engineering-brief.md requires squad-lead sign-off before Build feature work starts
 - solution-design.md tracks architecture decisions with rationale and alternatives
 
 ## Writing Style
@@ -30,6 +31,6 @@ Standards for engagement documents created during VIBE Prototyping engagements.
 
 ## Cross-References
 
-- Link between documents using relative paths: `[requirements](requirements-summary.md)`
+- Link between documents using relative paths: `[selected concept](selected-concept.md)`
 - Reference ADO work items by ID when they exist
 - Tag decisions with source (meeting name, transcript, workshop)

@@ -1,9 +1,9 @@
 # Solution Design
 
-> **Internal technical document.** **Auto-generated** by the engineer during Design & Develop from the engineering brief produced in Ideate.
+> **Internal technical document.** Written by the engineer during Design & Develop from the engineering brief and the Disrupt deliverables.
 >
 > **How this document gets populated:**
-> 1. `/vibe-ideate` produces an engineering brief with concept, data needs, and suggested technology
+> 1. The engineer writes `engagement/{{engagement-kebab}}/engineering-brief.md` from the Disrupt contract (selected-concept.md + storyboard.md + future-state-journey.md)
 > 2. The engineer reviews the brief and produces this solution design
 > 3. Architecture, tech stack, data model, and build phases are filled from the brief
 

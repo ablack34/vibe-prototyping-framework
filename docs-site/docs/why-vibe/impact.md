@@ -67,7 +67,7 @@ ROI scenarios with $ figures and adoption cost analysis live in the [pitch packa
 | Taking meeting notes | `/vibe-transcript` extracts from Teams recordings |
 | Writing discovery questions | `/vibe-questionnaire` generates Microsoft Forms |
 | Synthesizing scattered findings | `/vibe-consolidate` reads all sources |
-| Brainstorming prototype approaches | `/vibe-ideate` generates multi-form-factor concepts |
+| Brainstorming prototype approaches | `/vibe-concepts` generates multi-form-factor candidates for the Disrupt workshop |
 | Writing ADO work items | `/vibe-backlog-gen` creates Epics → Features → Stories |
 | Producing handoff documentation | `/vibe-handoff` generates the full package |
 | "What should I do next?" | `@VIBE Engagement Lead` always knows |
