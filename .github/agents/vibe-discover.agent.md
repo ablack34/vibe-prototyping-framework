@@ -22,10 +22,6 @@ handoffs:
     agent: VIBE Disrupt
     prompt: "Discovery is complete. Begin the Disrupt phase — generate the workshop agenda and pre-vet candidate concepts before the workshop, then capture the workshop output. Disrupt is the one phase where the customer is in the room co-creating with us."
     send: true
-  - label: "💡 Move to Define (legacy)"
-    agent: VIBE Define
-    prompt: "Discovery is complete. Begin problem framing and use case prioritization. Note: Define + Ideate are the legacy path — new engagements should use Disrupt instead."
-    send: true
   - label: "🔍 Deep Research"
     agent: Task Researcher
     prompt: /task-research
@@ -235,7 +231,7 @@ Merge all sources into PROJECT-CONTEXT.md:
 
 ### Step 6: Required Discover Deliverables (Josephine Wk 1 outputs)
 
-Three structured artifacts are required to close Discover. Each is produced by a dedicated prompt and graded A/B/C. Discover cannot move to Define until **all 3 deliverables are at Grade B or higher**.
+Three structured artifacts are required to close Discover. Each is produced by a dedicated prompt and graded A/B/C. Discover cannot move to Disrupt until **all 3 deliverables are at Grade B or higher**.
 
 Run these in order — each builds on the previous:
 
@@ -247,7 +243,7 @@ Run these in order — each builds on the previous:
 
 After each deliverable, re-render the readiness dashboard so the user sees the deliverable grades next to the 9-field grades.
 
-Present the final summary and recommend moving to Define **only when** the gate is fully green (7/9 fields at Grade B+ AND 3/3 deliverables at Grade B+).
+Present the final summary and recommend moving to Disrupt **only when** the gate is fully green (7/9 fields at Grade B+ AND 3/3 deliverables at Grade B+).
 
 ## Completion Criteria
 
@@ -271,7 +267,7 @@ Examples:
 - After 9-field readiness is green but deliverables missing: `👉 NEXT: 7/9 readiness fields filled — now draft the required Discover deliverables. Click "👤 Draft Personas" to start.`
 - After personas drafted, problem statement missing: `👉 NEXT: Click "🎯 Draft Problem Statement" — anchored to {primary-persona-name}, fills the formal "I am / trying to / But / Because / which results in" template.`
 - After personas + problem statement drafted, journey missing: `👉 NEXT: Click "🗺️ Map Current Journey" — produces a Mermaid + stages table for how {primary-persona-name} does the task today. Last Discover deliverable.`
-- After completing discovery (all gates green): `👉 NEXT: Click "🎬 Begin Disrupt Workshop" below — the customer co-creates the prototype concept in a Week 2 workshop. Send the 3 Discover deliverables to {{sponsor}} for sign-off first. (Legacy alternative: click "💡 Move to Define (legacy)" to take the old Define → Ideate path — only for in-flight engagements that started before Disrupt existed.)`
+- After completing discovery (all gates green): `👉 NEXT: Click "🎬 Begin Disrupt Workshop" below — the customer co-creates the prototype concept in a Week 2 workshop. Send the 3 Discover deliverables to {{sponsor}} for sign-off first.`
 - After processing one source with more available: `👉 NEXT: Drop more customer documents in sources/ and tell me, or click "🎙️ Process Transcript" to pull meeting context.`
 - When UX research would help: `👉 NEXT: Click "👤 UX Research" to create journey maps from the pain points we've identified.`
 

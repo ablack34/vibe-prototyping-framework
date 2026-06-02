@@ -7,7 +7,7 @@ title: "Phase 3: Disrupt"
 
 **Who:** Delivery team + customer (in the room together) · **Duration:** Week 2 (one workshop day + ~2 days of pre/post-workshop work)
 
-> 🎬 **The one phase where the customer is in the room co-creating with us.** Disrupt replaces the legacy Define → Ideate sequence with a single customer-facing workshop. New engagements should run Disrupt; legacy Define + Ideate is kept available only for in-flight engagements that started before Disrupt existed.
+> 🎬 **The one phase where the customer is in the room co-creating with us.** Disrupt produces — in a single workshop day — the signed-off concept, future-state journey, and storyboard the engineer needs to start Build.
 
 ## The Key Question
 
@@ -60,7 +60,7 @@ No agent runs during the workshop — humans co-create. Capture notes, sticky-no
 
 ## Disrupt Gate (closes the phase)
 
-The `@VIBE Engagement Lead` opens **Phase 5: Build** when:
+The `@VIBE Engagement Lead` opens **Phase 4: Build** when:
 
 - `selectedConcept`, `storyboard`, and `futureStateJourney` are all at **Grade B or higher**
 - `workshopRecord` is **signed off by the customer lead**
@@ -72,10 +72,6 @@ The DISRUPT DELIVERABLES dashboard block surfaces `N/6 at Grade B+` whenever the
 - **Not a research phase** — Discover already happened; Disrupt acts on its findings
 - **Not a long phase** — one workshop day plus ~2 days of pre/post-workshop work. If it stretches, something's off (usually Discover wasn't actually closed)
 - **Not an engineering deep-dive** — the engineer writes the engineering brief as their first Build task. Disrupt produces the inputs (storyboard + selected-concept + future-state-journey), not the implementation plan
-
-## Legacy Alternative: Define + Ideate
-
-The original framework split this work into two separate phases. The legacy `@VIBE Define` produces `requirements-summary.md` and the legacy `/vibe-ideate` produces concepts + an engineering brief in one pass — without the customer being in the room. Use the legacy path only for engagements that started before Disrupt existed.
 
 ## Tips
 

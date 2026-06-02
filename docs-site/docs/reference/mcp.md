@@ -55,7 +55,7 @@ That's it. You don't need to edit any JSON.
 
 | What it does | Discover/deploy AI models when concepts call for them |
 | ----- | ----- |
-| Used by | `@VIBE Ideate` when proposing AI model choices |
+| Used by | `@VIBE Disrupt` when proposing AI model choices |
 | First-use prompt | Sign in to Azure when first invoked |
 | Prerequisites | An Azure subscription with access to AI Foundry / Azure OpenAI |
 
@@ -90,7 +90,7 @@ Used by `/vibe-research` during the Preparation phase (Path B). The flow:
 
 ### Microsoft Spark and Copilot Studio Maker
 
-These follow the same pattern. The `/vibe-ideate` flow produces `spark-prompts.md` and Copilot Studio Maker prompts that you paste into the relevant Microsoft tool, and the returned artifacts (UI mockups, agent definitions) come back as sources or are surfaced directly in the prototype.
+These follow the same pattern. The `/vibe-concepts` flow (run before the Disrupt workshop) produces `spark-prompts.md` and Copilot Studio Maker prompts that you paste into the relevant Microsoft tool, and the returned artifacts (UI mockups, agent definitions) come back as sources or are surfaced directly in the prototype.
 
 ## Adding More MCP Servers (Optional)
 

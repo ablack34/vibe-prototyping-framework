@@ -7,15 +7,19 @@ title: "Phase 4: Build"
 
 **Who:** Engineer (with TPM/designer support) · **Duration:** 5-10 days
 
-This is where technology enters the picture. The engineer picks up the engineering brief from Ideate and builds the prototype.
+This is where technology enters the picture. The engineer picks up the storyboard, selected concept, and future-state journey from Disrupt and writes their own `engagement/<name>/engineering-brief.md` as their first Build task.
 
 ## How It Works
+
+### 0. Write the Engineering Brief
+
+Copy [`templates/engineering-brief.md`](/reference/templates) into `engagement/<name>/engineering-brief.md` and fill it in from `storyboard.md` + `selected-concept.md` + `future-state-journey.md`. This is the engineer's contract: must-have features (each must trace to a storyboard scene), should-have, could-have, and integration points. Get squad-lead sign-off before moving on.
 
 ### 1. Solution Design
 
 The engineer produces `solution-design.md` covering:
 
-- Architecture decisions (informed by the selected concept)
+- Architecture decisions (informed by the selected concept and engineering brief)
 - Technology choices (confirmed or adjusted from concept suggestions)
 - Data model based on available customer data
 - Build phases ordered by customer value

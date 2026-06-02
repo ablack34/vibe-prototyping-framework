@@ -58,7 +58,8 @@
 | Artifact | Location | Description |
 |----------|----------|-------------|
 | Source code | This repository | Full React + .NET codebase |
-| Requirements | `templates/requirements-summary.md` | Approved requirements |
+| Requirements (Disrupt outputs) | `engagement/{{engagement-kebab}}/selected-concept.md`, `storyboard.md`, `future-state-journey.md` | Customer-signed concept + storyboard + future-state journey |
+| Engineering brief | `engagement/{{engagement-kebab}}/engineering-brief.md` | Squad-signed must/should/could feature breakdown |
 | Solution design | `templates/solution-design.md` | Architecture and decisions |
 | Product roadmap | `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` | Full engagement context |
 | ADO backlog | {{ADO_PROJECT_URL}} | Epics, features, and user stories |

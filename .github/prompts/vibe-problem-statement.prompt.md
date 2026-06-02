@@ -30,7 +30,7 @@ This is the framing the entire Disrupt workshop pivots around. It must sound lik
 
 The "I am" line names the persona whose pain drives the prototype. This should be the **primary persona** from `personas.md`. If there is no clear primary persona, fall back to the persona with the most source backing.
 
-If multiple personas have meaningfully different problem statements, capture the alternates in the `## Variations considered` section of the same file rather than splitting into per-persona files. The canonical filename is always `problem-statement.md` — the state.json schema, doctor checks, Define inputs, and Discover gate all expect that single file.
+If multiple personas have meaningfully different problem statements, capture the alternates in the `## Variations considered` section of the same file rather than splitting into per-persona files. The canonical filename is always `problem-statement.md` — the state.json schema, doctor checks, Disrupt inputs, and Discover gate all expect that single file.
 
 ### Step 3 — Fill all 5 blanks from sources
 

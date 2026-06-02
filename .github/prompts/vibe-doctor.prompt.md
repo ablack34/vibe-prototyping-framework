@@ -38,10 +38,11 @@ Use this:
 | **Discover deliverable: personas.md** | `engagement/<name>/personas.md` exists, at least one persona, every persona at Grade B+ | **critical** for Discover close |
 | **Discover deliverable: problem-statement.md** | `engagement/<name>/problem-statement.md` exists with all 5 blanks filled, Grade B+ | **critical** for Discover close |
 | **Discover deliverable: current-state-journey.md** | `engagement/<name>/current-state-journey.md` exists with ≥3 stages, Grade B+ | **critical** for Discover close |
-| Requirements signed off | `templates/requirements-summary.md` is populated and not just placeholders | warn for Define+ |
-| Concept selected | `selected-concept.md` exists in `engagement/<name>/` if state says Ideate is complete | warn |
-| Engineering brief present | `engineering-brief.md` exists in `engagement/<name>/` if state says Build has started | **critical** for Build |
-| Combined PRD fresh (optional) | If `engagement/<name>/prd.md` exists, the embedded source SHAs match the current SHAs of `requirements-summary.md` and `engineering-brief.md` | warn — PRD is stale, re-run `/vibe-prd` |
+| **Disrupt deliverable: selected-concept.md** | `engagement/<name>/selected-concept.md` exists, signed off by sponsor, Grade B+ | **critical** for Disrupt close |
+| **Disrupt deliverable: storyboard.md** | `engagement/<name>/storyboard.md` exists with ≥3 scenes, Grade B+ | **critical** for Disrupt close |
+| **Disrupt deliverable: future-state-journey.md** | `engagement/<name>/future-state-journey.md` exists with ≥3 stages, Top 3 improvements map 1:1 to current-state Top 3 pains, Grade B+ | **critical** for Disrupt close |
+| Engineering brief present | `engineering-brief.md` exists in `engagement/<name>/` if state says Build has started — written by the engineer from storyboard.md + selected-concept.md + future-state-journey.md | **critical** for Build |
+| Combined PRD fresh (optional) | If `engagement/<name>/prd.md` exists, the embedded source SHAs match the current SHAs of `selected-concept.md` and `engineering-brief.md` | warn — PRD is stale, re-run `/vibe-prd` |
 | Form-factor declared | `selected-concept.md` includes a clear `formFactor` value | warn |
 | Data prepped (web-app only) | If form factor is `webapp`, `scaffold/data/` has typed models | warn for web-app Build |
 | Scaffold builds (web-app only) | `npm run build` in `scaffold/web/` and `dotnet build` in `scaffold/api/` succeed | warn for web-app Build |
@@ -84,7 +85,7 @@ Example output:
 | MCP servers enabled               | ✅     | github, workiq, ado all responding                                      |
 
 Top fix → run /vibe-current-journey (last Discover deliverable; gate to Disrupt).
-Next-phase action → once current-state-journey.md is Grade B+, click "🎬 Begin Disrupt Workshop" to start the Week 2 customer co-creation workshop. (Legacy alternative: click "💡 Frame the Problem (legacy)" to take the older Define → Ideate path.)
+Next-phase action → once current-state-journey.md is Grade B+, click "🎬 Begin Disrupt Workshop" to start the Week 2 customer co-creation workshop.
 
 👉 NEXT: Run /vibe-current-journey
 ```

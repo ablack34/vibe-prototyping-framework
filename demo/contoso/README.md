@@ -35,15 +35,14 @@ That single command will:
 3. Create the `engagement/contoso-dispatcher-ai/` folder
 4. Tell you exactly what to run next (`@VIBE Discover`)
 
-From there you follow the normal flow — every phase has real source material to chew on, so you can see Discover → Define → Ideate → Build all the way through.
+From there you follow the normal flow — every phase has real source material to chew on, so you can see Discover → Disrupt → Build all the way through.
 
 ## What you can demonstrate at each phase
 
 | Phase | What this fixture shows |
 |-------|-------------------------|
-| **Discover** | `@VIBE Discover` reads the questionnaires + transcripts and produces a populated discovery summary; questionnaire fields auto-fill PROJECT-CONTEXT.md |
-| **Define** | `@VIBE Define` frames a clear $50M problem (penalties + lost renewals) and prioritizes use cases like "auto-assign", "SLA risk detection", "EoD comms" |
-| **Ideate** | `/vibe-ideate` produces 2-3 form-factor variants — a dispatcher web app, a conversational Copilot Studio bot for technicians, an agentic Foundry agent that auto-routes |
+| **Discover** | `@VIBE Discover` reads the questionnaires + transcripts and produces a populated discovery summary; questionnaire fields auto-fill PROJECT-CONTEXT.md, plus three required deliverables (personas, problem-statement, current-state-journey) |
+| **Disrupt** | `@VIBE Disrupt` walks the 7-step workshop sequence — agenda, 2-3 candidate concepts + Spark prompts, workshop record, selected concept, future-state journey, storyboard. The customer picks a concept (e.g. the dispatcher web app, the Copilot Studio bot for technicians, or the agentic Foundry router) and the agent produces the storyboard the engineer builds against. |
 | **Build (web app)** | `/vibe-data-prep` types the three CSVs into typed models the .NET API can serve; `/vibe-prototype-scaffold` wires a dispatcher UI |
 | **Build (other form factors)** | `/vibe-deploy` shows the engineer the right Copilot Studio / Foundry Agents / Power Platform path for whichever concept the customer picks |
 | **Deliver** | `/vibe-handoff` generates a vision + roadmap + backlog grounded in the fixture content |

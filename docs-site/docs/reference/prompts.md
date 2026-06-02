@@ -17,7 +17,8 @@ These cover the main engagement flow:
 | `/vibe-research` | Preparation | Dual-path deep research — public web (auto, in-CLI) plus a ready-to-paste prompt for M365 Copilot's Researcher agent |
 | `/vibe-questionnaire` | Discover | Generates M365 Copilot prompts for the account team and customer questionnaires |
 | `/vibe-transcript` | Discover | Extracts context from Teams recordings automatically |
-| `/vibe-ideate` | Ideate | Brainstorms 2-3 AI-powered prototype concepts |
+| `/vibe-workshop-agenda` + `/vibe-concepts` | Disrupt | Pre-workshop: facilitator agenda + 2-3 candidate concepts and Spark prompts |
+| `/vibe-storyboard` | Disrupt | Post-workshop: the storyboard the engineer reads to start Build |
 | `/vibe-deploy` | Build | Form-factor-aware deployment guidance for the engineer |
 | `/vibe-handoff` | Deliver | Generates roadmap, backlog, and handoff package |
 
@@ -63,28 +64,12 @@ The Disrupt phase is the one phase where the customer is in the room co-creating
 | `/vibe-future-journey` | Generate `engagement/<name>/future-state-journey.md` — counterpart to `current-state-journey.md`. Same persona, redesigned journey with the prototype in place. Top 3 improvements map 1:1 to the Top 3 current-state pains | `engagement` (optional) |
 | `/vibe-storyboard` | Generate `engagement/<name>/storyboard.md` — scene-by-scene visual narrative (Setup → Challenge → Encounter → Solution → Impact). **The contract between Disrupt and Design & Develop** — the engineer reads this to write the engineering brief | `engagement` (optional) |
 
-### Define Phase (legacy)
-
-> ⚠️ Legacy path. New engagements should use the Disrupt phase above (single customer co-creation workshop) instead of the Define → Ideate sequence.
-
-| Prompt | Description | Inputs |
-|--------|-------------|--------|
-| `/vibe-define` | Frame the "$50K vs $50M" business value, prioritise use cases, and produce `engagement/<name>/requirements-summary.md` for customer sign-off. Reads the three required Discover deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`) and stops with a "go back to Discover" message if any are missing or below Grade B | `engagement` (optional) |
-
-### Ideation Phase (legacy)
-
-> ⚠️ Legacy path. Disrupt's `/vibe-concepts` + `/vibe-selected-concept` replace this in new engagements.
-
-| Prompt | Description | Inputs |
-|--------|-------------|--------|
-| `/vibe-ideate` | Brainstorm AI-powered concepts (legacy single-shot — generates concepts, picks one, writes engineering-brief.md in one pass) | `engagement` |
-
 ### Build Phase
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
 | `/vibe-data-prep` | Prepare customer data files | `dataPath` |
-| `/vibe-prototype-scaffold` | Scaffold the prototype from requirements | `engagement` |
+| `/vibe-prototype-scaffold` | Scaffold the prototype from the storyboard + selected concept | `engagement` |
 | `/vibe-deploy` | Deployment guidance per form factor (web app, Copilot Studio, Foundry Agents, M365 plugin, Power Platform) | `formFactor` |
 
 ### Deliver Phase
@@ -98,7 +83,7 @@ The Disrupt phase is the one phase where the customer is in the room co-creating
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
-| `/vibe-prd` | Generate a combined PRD from `requirements-summary.md` (business half) + `engineering-brief.md` (technical half). Optionally validates via `@PRD Builder`. Only run when a stakeholder needs a single PRD document — the two halves are the canonical source. | `engagement` (optional), `validate` (optional: `true`/`false`, default `false`) |
+| `/vibe-prd` | Generate a combined PRD by merging the six canonical source files (`problem-statement.md`, `personas.md` from Discover; `selected-concept.md`, `storyboard.md`, `future-state-journey.md` from Disrupt; `engineering-brief.md` from Build) into `engagement/<name>/prd.md`. Optionally validates via `@PRD Builder`. Only run when a stakeholder needs a single combined PRD document — the six source files remain the canonical source of truth. | `engagement` (optional), `validate` (optional: `true`/`false`, default `false`) |
 
 ### Utility
 

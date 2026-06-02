@@ -52,6 +52,18 @@ const IGNORE_AGENT_REFS = new Set([
   // (Currently empty — vibe-disrupt agent now exists.)
 ]);
 
+const IGNORE_STATE_REFS = new Set([
+  // Legacy state.json keys that the backward-compat migration step in
+  // vibe-engagement-lead.agent.md references BY NAME so it can drop them.
+  // They are no longer in the canonical schema (PR 3 retired Define + Ideate),
+  // but the migration step must name them to safely strip them from older
+  // state.json files. The mentions are intentional and load-bearing.
+  'phases.define',
+  'phases.ideate',
+  'readiness.define',
+  'readiness.ideate',
+]);
+
 /* --------------------------------------------------------------------- *
  * File discovery                                                         *
  * --------------------------------------------------------------------- */
@@ -571,6 +583,7 @@ async function checkStateJsonRefs(files, schema) {
       let m;
       while ((m = regex.exec(lines[i])) !== null) {
         const path = m[1];
+        if (IGNORE_STATE_REFS.has(path)) continue;
         if (!prefixes.has(path)) {
           addFinding('warn', 'state-path', file, i + 1,
             `references state.json path "${path}" which is not in the canonical schema (declared in .github/agents/vibe-engagement-lead.agent.md)`);

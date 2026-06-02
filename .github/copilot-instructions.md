@@ -2,16 +2,13 @@
 
 This repo is a VIBE Prototyping engagement workspace. It provides AI agents, prompts, templates, and a prototype scaffold for running AI-first envisioning and prototyping engagements.
 
-## The Process
-
-Two paths after Discover, both converging at Build:
+## The Process (5 Phases)
 
 ```
-Preparation → Discover ─┬─▶ Disrupt          ─▶ Build → Deliver   (recommended — Week 2 customer co-creation workshop)
-                        └─▶ Define → Ideate  ─▶ Build → Deliver   (legacy — kept for in-flight engagements)
+Preparation → Discover → Disrupt → Build → Deliver
 ```
 
-New engagements should use the **Disrupt** path. The legacy Define + Ideate sequence is kept available only for engagements that started before Disrupt existed.
+The post-Discover path is the **Disrupt** Week-2 customer co-creation workshop, which produces the contract (selected-concept + storyboard + future-state-journey) the engineer takes into Build.
 
 ## Essential Prompts
 
@@ -30,9 +27,8 @@ New engagements should use the **Disrupt** path. The legacy Define + Ideate sequ
 | Disrupt | `/vibe-selected-concept` | Record the customer's chosen concept (single/hybrid/new). Must run before storyboard and future-journey |
 | Disrupt | `/vibe-storyboard` | Scene-by-scene visual narrative — the contract handed to engineering |
 | Disrupt | `/vibe-future-journey` | Counterpart to current-state-journey with the prototype in place |
-| Define (legacy) | `/vibe-consolidate` | Synthesize all findings (legacy path) |
-| Ideate (legacy) | `/vibe-ideate` | Brainstorm AI-powered prototype concepts in one pass (legacy path) |
-| Build | `/vibe-prototype-scaffold` | Scaffold the prototype from the concept |
+| Anytime | `/vibe-consolidate` | Reconciliation pass — refresh decision log + open questions, flag conflicts (never rewrites signed-off artifacts) |
+| Build | `/vibe-prototype-scaffold` | Scaffold the prototype from the engineering brief |
 | Build | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
 | Deliver | `/vibe-backlog-gen` | Generate ADO backlog |
 | Deliver | `/vibe-handoff` | Final deliverables package |
@@ -44,12 +40,12 @@ New engagements should use the **Disrupt** path. The legacy Define + Ideate sequ
 
 - **The delivery person facilitates, the AI does the paperwork** — documents are auto-generated from sources, never manually filled
 - **Every document is an output, not an input form** — agents read sources, produce documents, ask the user to review and approve
-- **Discover, Disrupt, and Define are non-technical** — no architecture or tech stack discussion
-- **Concept generation explores multiple form factors** — not just web apps. Conversational, agentic, Copilot extensions, low-code, etc. Applies to both `/vibe-concepts` (Disrupt) and `/vibe-ideate` (legacy)
+- **Discover and Disrupt are non-technical** — no architecture or tech stack discussion (tech-stack thinking starts when the engineer writes `engineering-brief.md` at the start of Build)
+- **Concept generation explores multiple form factors** — not just web apps. Conversational, agentic, Copilot extensions, low-code, etc.
 - **AI must be essential in every concept** — not bolted on
 - **All prototypes use mock data** — no live system connections
 - **All technology must be Microsoft** — Azure, M365, Power Platform, etc.
-- **Engagement artifacts** (shared with the team) live in `engagement/{{engagement-kebab}}/` (committed). Includes `storyboard.md`, `selected-concept.md`, `handoff-data.json`, etc.
+- **Engagement artifacts** (shared with the team) live in `engagement/{{engagement-kebab}}/` (committed). Includes `storyboard.md`, `selected-concept.md`, `engineering-brief.md`, `handoff-data.json`, etc.
 - **Per-user state** (`state.json`) lives in `.copilot-tracking/vibe/{{engagement-kebab}}/` (gitignored). Each teammate regenerates their own view of phase progress from the committed artifacts.
 - **Customer sources** go in `sources/`; workshop artifacts (notes, photos, exports) go in `sources/workshop/` — agents read them automatically
 - **Every agent response ends with a specific next-step directive** pointing at a button
@@ -78,7 +74,7 @@ Workshop notes (via /vibe-capture)   ──▶                        to the 3 d
                                      ──▶  problem-statement.md       (Discover deliverable)
                                      ──▶  current-state-journey.md   (Discover deliverable)
 
-DISRUPT PATH (recommended):
+DISRUPT (Week 2 customer co-creation workshop):
 PROJECT-CONTEXT + 3 Discover docs    ──▶  workshop-agenda.md         (pre-workshop)
                                      ──▶  ideation-concepts.md       (pre-workshop, 2-3 candidates)
                                      ──▶  spark-prompts.md           (pre-workshop)
@@ -88,13 +84,6 @@ selected-concept.md                  ──▶  future-state-journey.md    (post
                                      ──▶  storyboard.md              (post-workshop — contract for engineering)
 
 storyboard + selected + future       ──▶  engineering-brief.md       (engineer writes as first Build task)
-
-LEGACY PATH (Define + Ideate):
-PROJECT-CONTEXT.md + 3 Discover docs ──▶  requirements-summary.md
-requirements-summary.md              ──▶  ideation-concepts.md
-                                     ──▶  selected-concept.md
-                                     ──▶  spark-prompts.md
-                                     ──▶  engineering-brief.md       (auto-generated by /vibe-ideate)
 
 engineering-brief.md                 ──▶  solution-design.md
 customer data files                  ──▶  prototype code
@@ -111,7 +100,7 @@ The framework can run public web research itself, but it can't see inside the Mi
 - **Path B — M365 Researcher (external paste-back)**: `/vibe-research` generates `sources/research/m365-researcher-prompt.md` — a ready-to-paste prompt the user runs inside **M365 Copilot's Researcher agent** (see the M365 Pre-Built Agent Call-Outs section below for the rigid format). The user saves the response to `sources/research/m365-researcher-results.md`. Same pattern as `spark-prompts.md` and Copilot Studio prompts: we generate the perfect prompt, the user runs it externally, the output comes back as a source.
 - **Synthesis**: When both inputs exist, the Preparation agent writes `sources/research/research-summary.md` with per-fact source attribution and an "Implications for the engagement" section.
 
-> **PRD note:** `requirements-summary.md` is the **business half** of the VIBE PRD (signed off by the customer); `engineering-brief.md` is the **technical half** (signed off by the squad). Together they form the full Product Requirements Document. When an engagement needs a single combined document, run `/vibe-prd` to generate `engagement/{kebab}/prd.md` as a **derived artifact** — optionally validated by `@PRD Builder` (`/vibe-prd validate=true`). Improvements get folded back into the halves; the combined PRD is regenerated rather than edited directly. The two halves remain the canonical source of truth.
+> **PRD note:** The combined VIBE PRD is a **derived artifact** that merges the Discover deliverables (`problem-statement.md` + `personas.md`), the Disrupt deliverables (`selected-concept.md` + `storyboard.md` + `future-state-journey.md`), and the engineer's `engineering-brief.md`. When an engagement needs a single combined document, run `/vibe-prd` to generate `engagement/{kebab}/prd.md` — optionally validated by `@PRD Builder` (`/vibe-prd validate=true`). Improvements get folded back into the source documents (with customer re-sign-off for Discover/Disrupt files); the combined PRD is regenerated rather than edited directly. The source documents remain the canonical source of truth.
 
 ### Agent Input/Output Summary
 
@@ -120,8 +109,6 @@ The framework can run public web research itself, but it can't see inside the Mi
 | VIBE Preparation | account-team handover, customer's brief (if any), prior transcripts, existing docs, calendar | engagement-brief.md, customer-brief.md, sources/meeting-templates.md (4-week schedule), sources/research/* |
 | VIBE Discover | sources/, transcripts, questionnaires, both briefs, research summary | PROJECT-CONTEXT.md + 3 required deliverables: personas.md, problem-statement.md, current-state-journey.md (Discover gate requires all 3 at Grade B+) |
 | VIBE Disrupt | PROJECT-CONTEXT + 3 Discover deliverables + `sources/workshop/` | Pre-workshop: workshop-agenda.md, ideation-concepts.md, spark-prompts.md. Post-workshop: workshop-record.md, selected-concept.md, storyboard.md, future-state-journey.md. Gate: selectedConcept + storyboard + futureStateJourney all at Grade B+ AND workshopRecord signed off |
-| VIBE Define (legacy) | PROJECT-CONTEXT.md, personas.md, problem-statement.md, current-state-journey.md | requirements-summary.md |
-| VIBE Ideate (legacy) | PROJECT-CONTEXT.md, requirements-summary.md | ideation-concepts.md, selected-concept.md, spark-prompts.md, engineering-brief.md |
 | VIBE Data Prep | customer CSV/Excel files | TypeScript types, C# models, DataService, data README |
 | VIBE Deliver | all documents + check-in notes | handoff-data.json (vision, roadmap, backlog, limitations, about) — step by step, one section at a time |
 
@@ -151,7 +138,7 @@ VS Code Copilot Chat agents cannot invoke M365 Copilot agents programmatically. 
 | M365 Agent | When to suggest | Suggested by |
 |------------|----------------|--------------|
 | **Researcher** | User needs external desk research, competitor analysis, or fact-checking beyond `sources/` | `@VIBE Preparation` (primary, via `/vibe-research` Path B), `@VIBE Discover` (for follow-up gaps) |
-| **Analyst** | User has uploaded survey results, quantitative CSVs, or other data that benefits from statistical synthesis | `@VIBE Define` (legacy path), or `@VIBE Disrupt` when sizing concepts against quantitative inputs |
+| **Analyst** | User has uploaded survey results, quantitative CSVs, or other data that benefits from statistical synthesis | `@VIBE Disrupt` when sizing concepts against quantitative inputs |
 | **Teams Facilitator** | User mentions an unrecorded meeting and could benefit from automatic recording / transcription | `@VIBE Discover` (one mention only, as upstream tool) |
 
 **Do NOT call out** Designer, Idea Coach, Architect, Compliance, or Office Agent. Those duplicate capabilities already covered better by the VIBE framework, Spark, or the prototype scaffold.
@@ -167,7 +154,7 @@ VS Code Copilot Chat agents cannot invoke M365 Copilot agents programmatically. 
 >
 > **Prompt to paste:**
 > ```
-> {{A complete, ready-to-run prompt. Substitute real values from PROJECT-CONTEXT.md / requirements-summary.md — never leave {{placeholders}} for the user to fill.}}
+> {{A complete, ready-to-run prompt. Substitute real values from PROJECT-CONTEXT.md / engagement deliverables — never leave {{placeholders}} for the user to fill.}}
 > ```
 >
 > **What to do with the result:** {{Exactly what file the user should paste the response into, e.g. "Paste the response back into this chat and I'll integrate it into engagement/{kebab}/discovery-summary.md under the 'External Context' section."}}

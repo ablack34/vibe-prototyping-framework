@@ -186,9 +186,6 @@ Show this summary:
    6. /vibe-handoff                      Generates roadmap, backlog, limitations, vision.
                                          Step by step — approve each section before moving on.
 
-   (Legacy alternative for Step 3: @VIBE Define → /vibe-ideate instead of @VIBE Disrupt.
-   The legacy path still works for in-flight engagements that started before Disrupt existed.)
-
 💡 The fixture is realistic enough that every agent should produce believable output.
    Reset the demo at any time by deleting engagement/, sources/, and scaffold/data/,
    then re-running /vibe-demo.

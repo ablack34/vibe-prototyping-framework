@@ -8,8 +8,6 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 
 > **Two surfaces:** the full framework lives in **VS Code** (primary). Non-technical teammates can run Discover, Disrupt, and Deliver review from the **M365 Copilot Notebook** (companion) using three approved agents (Researcher, Analyst, Teams Facilitator). Both surfaces share the same `engagement/{kebab}/` folder via git.
 
-> ⚠️ **Disrupt vs Define + Ideate:** the **Disrupt** phase (Week 2 customer co-creation workshop) is the recommended path for new engagements. The legacy **Define → Ideate** flow remains available for in-flight engagements that started before Disrupt existed; new engagements should use Disrupt.
-
 ---
 
 ## Start a New Engagement
@@ -53,8 +51,6 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 | **Share it** | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
 | **Wrap up** | `/vibe-handoff` | Step-by-step handoff: vision → roadmap → backlog → limitations |
 
-> Legacy alternative to Disrupt: `/vibe-ideate` generates concepts + an engineering brief in one pass without a workshop. Kept available for in-flight engagements; new engagements should run the Disrupt sequence above.
-
 Full list with inputs and outputs: [`docs-site/docs/reference/prompts.md`](docs-site/docs/reference/prompts.md).
 
 ---
@@ -67,7 +63,7 @@ You can run a full engagement end-to-end against a fixture customer before doing
 /vibe-demo
 ```
 
-This seeds [`sources/`](sources/) with the **Contoso Field Services — Dispatcher AI** fixture (customer brief, questionnaire responses, two Teams transcripts, three CSVs) and creates `engagement/contoso-dispatcher-ai/` with a filled `PROJECT-CONTEXT.md` plus a populated `customer-brief.md` and a blank-scaffold `engagement-brief.md` (so `@VIBE Preparation` has real work to do). The three Discover deliverables (personas, problem statement, current-state journey) are **not** pre-seeded — they're generated fresh when you run `@VIBE Discover` so you can see the agent actually work. From there `@VIBE Discover`, `@VIBE Disrupt` (or legacy `@VIBE Define` + `/vibe-ideate`) and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/contoso/`](demo/contoso/).
+This seeds [`sources/`](sources/) with the **Contoso Field Services — Dispatcher AI** fixture (customer brief, questionnaire responses, two Teams transcripts, three CSVs) and creates `engagement/contoso-dispatcher-ai/` with a filled `PROJECT-CONTEXT.md` plus a populated `customer-brief.md` and a blank-scaffold `engagement-brief.md` (so `@VIBE Preparation` has real work to do). The three Discover deliverables (personas, problem statement, current-state journey) are **not** pre-seeded — they're generated fresh when you run `@VIBE Discover` so you can see the agent actually work. From there `@VIBE Discover`, `@VIBE Disrupt`, and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/contoso/`](demo/contoso/).
 
 ---
 
