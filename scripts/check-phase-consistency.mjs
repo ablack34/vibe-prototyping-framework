@@ -40,11 +40,19 @@ const IGNORE_PROMPT_REFS = new Set([
   // bullet-list-style "* /vibe-prototyping-framework" mentions would otherwise resolve
   // to a non-existent .github/prompts/vibe-prototyping-framework.prompt.md.
   'vibe-prototyping-framework',
+  // Forward-reference: the engineer's first task in Design & Develop. The prompt lands
+  // in PR 3 of the Disrupt slice (when the new D&D agent is wired up); the storyboard
+  // template + prompt already point at it because it's part of the slice's narrative.
+  'vibe-engineering-brief',
   // Add other examples or future-state placeholders here, e.g. 'vibe-fictional'.
 ]);
 
 const IGNORE_AGENT_REFS = new Set([
-  // Add examples or future-state placeholders here, e.g. 'vibe-fictional'.
+  // Forward-reference: the new Disrupt phase agent. The Disrupt prompts and reference
+  // doc already mention it because PR 1 ships the templates/prompts and PR 2 ships the
+  // agent itself. Remove this entry once .github/agents/vibe-disrupt.agent.md exists.
+  'vibe-disrupt',
+  // Add other examples or future-state placeholders here, e.g. 'vibe-fictional'.
   //
   // Note: the agent-ref regex matches `VIBE` followed by space-separated capitalised
   // words. Names containing `&` or hyphens (e.g. "VIBE Design & Develop") will only

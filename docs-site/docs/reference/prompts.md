@@ -50,6 +50,17 @@ These cover the main engagement flow:
 | `/vibe-check-in` | Process customer check-in feedback | `source` (notes/transcript) |
 | `/vibe-consolidate` | Consolidate all findings | `engagement` |
 
+### Disrupt Phase (Week 2 workshop)
+
+> 🆕 The Disrupt phase replaces the current separate Define + Ideate phases with a single customer-facing workshop. The prompts below land first (this PR); the orchestrating `@VIBE Disrupt` agent follows in a subsequent PR. Until then, run these prompts directly or have `@VIBE Engagement Lead` invoke them.
+
+| Prompt | Description | Inputs |
+|--------|-------------|--------|
+| `/vibe-workshop-agenda` | Generate `engagement/<name>/workshop-agenda.md` — the facilitator's run-of-show, anchored to the actual personas, problem statement, OKRs, and Top 3 pains. Blocks if any Discover deliverable is below Grade B or unsigned | `engagement` (optional) |
+| `/vibe-workshop-record` | Generate `engagement/<name>/workshop-record.md` after the workshop from `sources/workshop/` (notes, sticky-note photos, Miro exports, transcript). Captures decisions, key quotes, parked items, action items, and Discover edits that need re-running | `engagement` (optional) |
+| `/vibe-future-journey` | Generate `engagement/<name>/future-state-journey.md` — counterpart to `current-state-journey.md`. Same persona, redesigned journey with the prototype in place. Top 3 improvements map 1:1 to the Top 3 current-state pains | `engagement` (optional) |
+| `/vibe-storyboard` | Generate `engagement/<name>/storyboard.md` — scene-by-scene visual narrative (Setup → Challenge → Encounter → Solution → Impact). **The contract between Disrupt and Design & Develop** — the engineer reads this to write the engineering brief | `engagement` (optional) |
+
 ### Define Phase
 
 | Prompt | Description | Inputs |
