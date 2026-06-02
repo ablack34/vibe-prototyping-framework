@@ -1,6 +1,6 @@
 ---
 description: "Capture the Disrupt workshop record from notes + recording — Disrupt deliverable (Wk 2, post-workshop)"
-agent: "VIBE Engagement Lead"
+agent: "VIBE Disrupt"
 argument-hint: "[engagement=...]"
 ---
 
@@ -58,13 +58,13 @@ Copy `templates/workshop-record.md` to `engagement/{{engagement-kebab}}/workshop
 
 ### Step 5 — Identify Disrupt-deliverable inputs
 
-This record feeds the next two Disrupt prompts. Surface explicitly what's now ready:
+This record feeds the next three Disrupt prompts. Surface explicitly what's now ready:
 
-- For `/vibe-future-journey`: the future-state stages decided in agenda section 6
-- For `/vibe-storyboard`: the live-prototyping captures from agenda section 7 (Spark prompts, screenshots, customer reactions)
-- For `selected-concept.md`: the concept the customer voted for in agenda section 5 (this MUST be captured here — write it in the decisions table)
+- For `/vibe-selected-concept` (**run this first** — future-journey and storyboard both depend on selected-concept.md existing): the concept the customer voted for in agenda section 5. This MUST be captured in the decisions table — be explicit about whether it's one of the pre-workshop concepts, a hybrid, or a new concept that emerged.
+- For `/vibe-future-journey` (run after selected-concept): the future-state stages decided in agenda section 6
+- For `/vibe-storyboard` (run after selected-concept; can run in parallel with future-journey): the live-prototyping captures from agenda section 7 (Spark prompts, screenshots, customer reactions)
 
-If `selected-concept.md` doesn't already exist for the engagement, the workshop record IS the source of truth for which concept won. Note the decision explicitly.
+The workshop record IS the source of truth for which concept won. Without a clear concept-selection decision row, `/vibe-selected-concept` will block. Be explicit.
 
 ### Step 6 — Update state.json
 
@@ -89,7 +89,7 @@ Present:
 
 - Decisions count, parked items count, action items count
 - Discover deliverables the workshop edited (and the recommended `/vibe-*` prompt to re-run for each)
-- Which Disrupt prompts are now unblocked (`/vibe-future-journey`, `/vibe-storyboard`)
+- Which Disrupt prompts are now unblocked (`/vibe-selected-concept` always first, then `/vibe-future-journey` + `/vibe-storyboard` in parallel)
 - Sections of the agenda where captures were thin (and the cost of that gap)
 
 End with this directive:
@@ -97,9 +97,11 @@ End with this directive:
 ```
 👉 NEXT: Workshop record drafted. Recommended order:
   1. Re-run any Discover prompts named above with sources/workshop/ as additional input
-  2. /vibe-future-journey — turns the workshop's whiteboarded future-state into the document
-  3. /vibe-storyboard — turns the selected concept + future-state into the engineer's brief
-  4. Customer sign-off on this record within 48 hours
+  2. /vibe-selected-concept — locks the chosen concept into selected-concept.md
+     (REQUIRED before future-journey and storyboard — both anchor to it)
+  3. /vibe-future-journey — turns the workshop's whiteboarded future-state into the document
+  4. /vibe-storyboard — turns the selected concept + future-state into the engineer's brief
+  5. Customer sign-off on this record within 48 hours
 ```
 
 ## Notes

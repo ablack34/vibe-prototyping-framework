@@ -52,26 +52,32 @@ These cover the main engagement flow:
 
 ### Disrupt Phase (Week 2 workshop)
 
-> 🆕 The Disrupt phase replaces the current separate Define + Ideate phases with a single customer-facing workshop. The prompts below land first (this PR); the orchestrating `@VIBE Disrupt` agent follows in a subsequent PR. Until then, run these prompts directly or have `@VIBE Engagement Lead` invoke them.
+The Disrupt phase is the one phase where the customer is in the room co-creating with us. Pre-workshop prompts produce the agenda + candidate concepts; post-workshop prompts capture the record and produce the deliverables the engineer needs.
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
 | `/vibe-workshop-agenda` | Generate `engagement/<name>/workshop-agenda.md` — the facilitator's run-of-show, anchored to the actual personas, problem statement, OKRs, and Top 3 pains. Blocks if any Discover deliverable is below Grade B or unsigned | `engagement` (optional) |
+| `/vibe-concepts` | Generate 2-3 candidate concepts (`ideation-concepts.md`) + `spark-prompts.md` **before** the workshop. The customer reacts to these in the room. Paste the Spark prompts into spark.github.com to create the visual mockups. Re-runnable with new direction if the customer rejects all candidates. | `engagement` (optional) |
 | `/vibe-workshop-record` | Generate `engagement/<name>/workshop-record.md` after the workshop from `sources/workshop/` (notes, sticky-note photos, Miro exports, transcript). Captures decisions, key quotes, parked items, action items, and Discover edits that need re-running | `engagement` (optional) |
+| `/vibe-selected-concept` | Generate `engagement/<name>/selected-concept.md` — the canonical chosen concept (one of the candidates, a hybrid, or something new that emerged in the workshop). Reads `workshop-record.md` decisions. **Must run before `/vibe-future-journey` and `/vibe-storyboard`** — both anchor to it. | `engagement` (optional) |
 | `/vibe-future-journey` | Generate `engagement/<name>/future-state-journey.md` — counterpart to `current-state-journey.md`. Same persona, redesigned journey with the prototype in place. Top 3 improvements map 1:1 to the Top 3 current-state pains | `engagement` (optional) |
 | `/vibe-storyboard` | Generate `engagement/<name>/storyboard.md` — scene-by-scene visual narrative (Setup → Challenge → Encounter → Solution → Impact). **The contract between Disrupt and Design & Develop** — the engineer reads this to write the engineering brief | `engagement` (optional) |
 
-### Define Phase
+### Define Phase (legacy)
+
+> ⚠️ Legacy path. New engagements should use the Disrupt phase above (single customer co-creation workshop) instead of the Define → Ideate sequence.
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
 | `/vibe-define` | Frame the "$50K vs $50M" business value, prioritise use cases, and produce `engagement/<name>/requirements-summary.md` for customer sign-off. Reads the three required Discover deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`) and stops with a "go back to Discover" message if any are missing or below Grade B | `engagement` (optional) |
 
-### Ideation Phase
+### Ideation Phase (legacy)
+
+> ⚠️ Legacy path. Disrupt's `/vibe-concepts` + `/vibe-selected-concept` replace this in new engagements.
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
-| `/vibe-ideate` | Brainstorm AI-powered concepts | `engagement` |
+| `/vibe-ideate` | Brainstorm AI-powered concepts (legacy single-shot — generates concepts, picks one, writes engineering-brief.md in one pass) | `engagement` |
 
 ### Build Phase
 
