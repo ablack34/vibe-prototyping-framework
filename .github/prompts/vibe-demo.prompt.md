@@ -51,9 +51,11 @@ demo/contoso/
 ├── research/m365-researcher-prompt.md   → sources/research/m365-researcher-prompt.md
 ├── research/m365-researcher-results.md  → sources/research/m365-researcher-results.md
 ├── research/research-summary.md         → sources/research/research-summary.md
-├── discover-outputs/personas.md         → engagement/contoso-dispatcher-ai/personas.md
-├── discover-outputs/problem-statement.md → engagement/contoso-dispatcher-ai/problem-statement.md
-├── discover-outputs/current-state-journey.md → engagement/contoso-dispatcher-ai/current-state-journey.md
+├── discover-outputs/                    (do NOT copy — these are reference examples
+│   ├── personas.md                       only. The whole point of the demo is to
+│   ├── problem-statement.md              watch @VIBE Discover generate these from
+│   └── current-state-journey.md          sources/. If you want to compare, open
+│                                         them side-by-side after Discover runs.)
 └── sample-data/*.csv                    → sources/sample-data/*.csv
 ```
 
@@ -63,7 +65,7 @@ Copy every file listed above into `sources/` (preserve filenames). Create `sourc
 
 `customer-brief.md` is special: copy it into BOTH `sources/customer-brief.md` (so Discover and Define agents see it) AND `templates/customer-brief.md` (so the Preparation agent sees a populated brief without re-running `/vibe-customer-brief`).
 
-**The three `discover-outputs/*` files are also special**: copy them into `engagement/contoso-dispatcher-ai/` (NOT `sources/`). They are pre-generated Discover deliverables (personas, problem statement, current-state journey) so the demo can show Define reading from a fully-populated Discover handoff without you needing to run `/vibe-personas`, `/vibe-problem-statement`, and `/vibe-current-journey` first. If the user wants to demonstrate those prompts firing, they can delete the three files from `engagement/contoso-dispatcher-ai/` and re-run them — the sources/ transcripts and questionnaires will regenerate equivalent output.
+**Do NOT copy `discover-outputs/*` anywhere.** Those files in `demo/contoso/discover-outputs/` are reference examples only — they show what `@VIBE Discover` is expected to produce when it runs against the demo's `sources/`. The whole point of the demo is that the user invokes `@VIBE Discover` and watches it generate `personas.md`, `problem-statement.md`, and `current-state-journey.md` fresh in `engagement/contoso-dispatcher-ai/`. Pre-seeding them would short-circuit Discover and route the user straight to Disrupt with nothing to look at — defeating the purpose of the demo.
 
 ### Step 3 — Pre-fill PROJECT-CONTEXT.md
 
@@ -87,11 +89,11 @@ Create:
   - `customer: "Contoso Field Services"`
   - `engagement: "Dispatcher AI"`
   - `engagementKebab: "contoso-dispatcher-ai"`
-  - `currentPhase: "preparation"` — Preparation runs first now. The readiness block below is pre-filled at Grade A so demos can immediately progress to Discover after talking to `@VIBE Preparation` once.
+  - `currentPhase: "preparation"` — Preparation runs first. The readiness block below is pre-filled at Grade A because the brief/research/schedule files are seeded, so running `@VIBE Preparation` will print a 7/7 dashboard and hand off to Discover. **Discover deliverables are NOT pre-seeded** — `@VIBE Discover` is expected to generate them fresh, which is where the user sees real agent work for the first time.
   - `createdAt: <now>`
   - `demoFixture: "contoso"`
   - `phases.preparation.status: "complete"`, `artifacts: ["engagement-brief.md", "customer-brief.md", "meeting-templates.md", "research/customer-public.md", "research/m365-researcher-prompt.md", "research/m365-researcher-results.md", "research/research-summary.md"]`
-  - `phases.discover.status: "ready"` (the other phases default to `not-started`). Even though `engagement/contoso-dispatcher-ai/` will contain pre-seeded `personas.md`, `problem-statement.md`, and `current-state-journey.md`, leave `phases.discover.status` at `"ready"` so the engagement-lead reconciliation logic (file system wins) is what flips it — that demonstrates the reconciliation working in front of the user.
+  - `phases.discover.status: "ready"` (the other phases default to `not-started`). The engagement folder is empty — Discover will create `personas.md`, `problem-statement.md`, and `current-state-journey.md` when invoked. The engagement-lead reconciliation logic (file system wins) will then flip the readiness fields as each file appears.
   - `readiness.preparation` with all 7 fields graded:
     - `engagementBrief: { "status": "filled", "grade": "A" }`
     - `customerBrief: { "status": "filled", "grade": "A" }`
@@ -100,20 +102,8 @@ Create:
     - `existingDocs: { "status": "filled", "grade": "A", "count": 4 }`
     - `priorTranscripts: { "status": "filled", "grade": "A", "count": 2 }`
     - `kickoffComplete: { "status": "filled", "grade": "A" }`
-  - `readiness.discover` with all 3 deliverables pre-graded (since the files are seeded):
-    - `personas: { "status": "filled", "grade": "B", "path": "engagement/contoso-dispatcher-ai/personas.md", "count": 3, "lastUpdated": "<seed timestamp>" }` — Grade B because the fixture's secondary personas (Anya, Marek) currently lack direct sourced quotes (the demo intentionally shows the "lowest persona grade wins" rule)
-    - `problemStatementDoc: { "status": "filled", "grade": "A", "path": "engagement/contoso-dispatcher-ai/problem-statement.md", "signedOffBy": "Sandra Holtz", "lastUpdated": "<seed timestamp>" }`
-    - `currentStateJourney: { "status": "filled", "grade": "A", "path": "engagement/contoso-dispatcher-ai/current-state-journey.md", "stageCount": 8, "signedOffBy": "Bartosz Nowak", "lastUpdated": "<seed timestamp>" }`
-  - 9 Discovery readiness fields set as follows (a realistic post-Discover demo state — 8/9 at Grade A or B, one C to show the dashboard with a real gap):
-    - `problemStatement: { "status": "filled", "grade": "A", "source": "discover-outputs/problem-statement.md" }`
-    - `targetUsers: { "status": "filled", "grade": "A", "source": "discover-outputs/personas.md" }`
-    - `businessImpact: { "status": "filled", "grade": "A", "source": "customer-brief.md + transcript-kickoff.md" }`
-    - `currentState: { "status": "filled", "grade": "A", "source": "discover-outputs/current-state-journey.md" }`
-    - `desiredOutcome: { "status": "filled", "grade": "B", "source": "transcript-workshop-1.md" }`
-    - `dataInventory: { "status": "filled", "grade": "B", "source": "sample-data/" }`
-    - `stakeholderMap: { "status": "filled", "grade": "A", "source": "transcript-kickoff.md participant list" }`
-    - `successCriteria: { "status": "partial", "grade": "C", "source": null }` — left at C deliberately so the dashboard shows a real follow-up (the customer hasn't signed off on what "yes, build this" looks like yet)
-    - `constraints: { "status": "filled", "grade": "A", "source": "transcript-kickoff.md (single-click override, augmentation-not-automation, mock F-Gas)" }`
+  - `readiness.discover` — leave this block OUT entirely (or set all sub-fields to `{ "status": "empty", "grade": null }`). The deliverables don't exist yet; the file-system reconciliation logic will populate them as Discover writes each file.
+  - 9 Discovery readiness fields — leave OUT entirely (or set all to `{ "status": "empty", "grade": null }`). They'll be populated as Discover processes sources/ and writes deliverables.
 
 ### Step 5 — Tell the user what to do next
 
@@ -135,48 +125,40 @@ Show this summary:
    • research/research-summary.md         Synthesis of public + M365 with per-fact attribution
    • sample-data/technicians.csv, sites.csv, work-orders.csv
 
-📁 Pre-seeded Discover deliverables in engagement/contoso-dispatcher-ai/:
-   • personas.md                3 personas (Bartosz Nowak, Anya Petrov, Marek Sokoł)
-                                 with sourced quotes — signed off by Sandra Holtz.
-                                 Bartosz is Grade A; Anya and Marek are Grade B
-                                 (no direct quotes yet — Discover's "lowest persona
-                                 grade wins" rule means the file is Grade B overall,
-                                 which still clears the 3/3 B+ gate).
-   • problem-statement.md       Formal "I am / trying to / But / Because / which
-                                 results in" with €4M/yr penalties + ~€3M/yr lost
-                                 renewals (€6.3M over 2 years), Grade A, signed off
-   • current-state-journey.md   8-stage Mermaid + table for Bartosz's emergency
-                                 Platinum dispatch journey — signed off by Bartosz
+📁 Reference (NOT copied — these are example outputs Discover should produce):
+   • demo/contoso/discover-outputs/personas.md
+   • demo/contoso/discover-outputs/problem-statement.md
+   • demo/contoso/discover-outputs/current-state-journey.md
+   (Open these side-by-side when @VIBE Discover runs, to compare its output to the
+   reference. They're the answer key, not pre-populated state.)
 
 📁 Initialized:
    • templates/PROJECT-CONTEXT.md     pre-filled with Contoso details
    • templates/customer-brief.md      seeded with Sandra's customer-voice brief
-   • engagement/contoso-dispatcher-ai/  ready for agent outputs (Discover deliverables pre-seeded)
+   • engagement/contoso-dispatcher-ai/  empty — agents will populate it
    • .copilot-tracking/vibe/contoso-dispatcher-ai/state.json  per-user state
-     (phase=preparation, prep readiness 7/7, Discover deliverables 3/3 at B+
-      [personas B, problem-statement A, current-state-journey A], 9-field
-      readiness 8/9 at Grade B+ — one C left on successCriteria so the
-      dashboard shows a realistic follow-up)
+     (phase=preparation, prep readiness 7/7 at Grade A since the briefs and research
+      are pre-seeded. Discover readiness is empty — that's where you'll see real
+      agent work happen first.)
 
 🎬 Recommended demo flow (each step takes 1-5 minutes to run):
 
-   1. @VIBE Preparation                  Reads everything, synthesises the two
-                                         research paths into research-summary.md,
-                                         and shows the 7-field Preparation readiness
-                                         dashboard (all green for the demo).
+   1. @VIBE Preparation                  Reads everything, confirms the 7-field
+                                         Preparation readiness dashboard (all green
+                                         because the briefs/research/schedule are
+                                         pre-seeded), and recommends moving to Discover.
+                                         This step is mostly a dashboard view — the
+                                         real agent work begins at Step 2.
 
-   2. @VIBE Discover                     Reads sources/ AND the pre-seeded Discover
-                                         deliverables in engagement/contoso-dispatcher-ai/.
-                                         Shows the 9-field + 3-deliverable dashboard
-                                         (8/9 readiness at Grade B+, 3/3 deliverables at
-                                         B+ — personas.md sits at B because Anya and
-                                         Marek lack direct quotes, the other two at A —
-                                         with one C on successCriteria for a realistic
-                                         follow-up Disrupt can carry forward).
-                                         To demo the deliverable prompts firing fresh,
-                                         delete `personas.md`, `problem-statement.md`, and
-                                         `current-state-journey.md` from
-                                         engagement/contoso-dispatcher-ai/ first.
+   2. @VIBE Discover                     Reads sources/ + briefs + transcripts and
+                                         generates the 3 deliverables fresh:
+                                           /vibe-personas         → personas.md
+                                           /vibe-problem-statement → problem-statement.md
+                                           /vibe-current-journey  → current-state-journey.md
+                                         You'll see each deliverable graded A/B/C
+                                         against the rubric. Compare to the reference
+                                         files in demo/contoso/discover-outputs/ — they
+                                         should land close.
 
    3. @VIBE Disrupt                      The one phase the customer co-creates with us
                                          (Week 2 workshop). Run this sequence:
