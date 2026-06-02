@@ -109,8 +109,8 @@ Update `state.json.readiness.discover.currentStateJourney`:
 
 End with one of:
 
-- If Grade A and all 3 deliverables (personas + problem-statement + current-state-journey) are Grade B+: `👉 NEXT: All 3 Discover deliverables are ready. Click "💡 Move to Define" to begin Define phase. (Reminder: send all 3 to {{sponsor}} for sign-off before the Disrupt workshop.)`
-- If Grade A but other deliverables are below B: `👉 NEXT: Current journey is solid. Click "{button for the gap}" to address the next gap before moving to Define.`
+- If Grade A and all 3 deliverables (personas + problem-statement + current-state-journey) are Grade B+: `👉 NEXT: All 3 Discover deliverables are ready. Click "🎬 Begin Disrupt Workshop" to start the Week 2 workshop sequence. (Send all 3 deliverables to {{sponsor}} for sign-off first — they're the inputs the customer reacts to in the room. Legacy alternative: click "💡 Move to Define (legacy)" to take the old Define → Ideate path.)`
+- If Grade A but other deliverables are below B: `👉 NEXT: Current journey is solid. Click "{button for the gap}" to address the next gap before moving to Disrupt.`
 - If Grade B: `👉 NEXT: To lift to Grade A, add 2 more stages OR enrich every stage with all 4 columns (steps, stakeholders, systems, pains). A process walkthrough at the next discover working session is the fastest way.`
 - If Grade C: `👉 NEXT: Only {N} stages identified with source backing. Schedule a 30-min process walkthrough with {{primary-persona-role}} and re-run /vibe-current-journey. Discover cannot close until this is Grade B+.`
 

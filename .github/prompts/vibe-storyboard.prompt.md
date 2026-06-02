@@ -101,7 +101,7 @@ Present:
 
 End with one of these directives:
 
-- If Grade A: `👉 NEXT: Storyboard is the contract — get customer sign-off, then the engineer can start Design & Develop. The engineer's first task: /vibe-engineering-brief (in D&D).`
+- If Grade A: `👉 NEXT: Storyboard is the contract — get customer sign-off, then the engineer can start Design & Develop. The engineer's first Build task: write engineering-brief.md from storyboard.md + selected-concept.md + future-state-journey.md.`
 - If Grade B: `👉 NEXT: Storyboard is workable. To lift to A: attach visuals (sketches, Figma frames, or Spark screenshots) for scenes {list}. Customer sign-off can happen in parallel.`
 - If Grade C: `👉 NEXT: Storyboard needs more scenes / better sourcing — {specific gaps}. Run the gap-fix prompt(s) and re-run /vibe-storyboard.`
 

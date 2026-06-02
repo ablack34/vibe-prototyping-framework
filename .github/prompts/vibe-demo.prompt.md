@@ -172,36 +172,42 @@ Show this summary:
                                          B+ — personas.md sits at B because Anya and
                                          Marek lack direct quotes, the other two at A —
                                          with one C on successCriteria for a realistic
-                                         follow-up Define can carry forward).
+                                         follow-up Disrupt can carry forward).
                                          To demo the deliverable prompts firing fresh,
                                          delete `personas.md`, `problem-statement.md`, and
                                          `current-state-journey.md` from
                                          engagement/contoso-dispatcher-ai/ first.
 
-   3. @VIBE Define                       Reads PROJECT-CONTEXT + personas.md +
-                                         problem-statement.md + current-state-journey.md.
-                                         Watch it anchor value framing to the "which
-                                         results in" line and prioritisation to the
-                                         journey's top pain points (early warning first).
+   3. @VIBE Disrupt                      The one phase the customer co-creates with us
+                                         (Week 2 workshop). Run this sequence:
+                                           Pre-workshop:  /vibe-workshop-agenda → /vibe-concepts
+                                                          (paste Spark prompts into spark.github.com
+                                                          to pre-build visuals)
+                                           Workshop:      facilitate; capture notes to sources/workshop/
+                                                          (the fixture transcript-workshop-1.md is
+                                                          already in sources/ — copy it into
+                                                          sources/workshop/ to simulate)
+                                           Post-workshop: /vibe-workshop-record → /vibe-selected-concept
+                                                          → /vibe-future-journey → /vibe-storyboard
+                                         The storyboard is the contract handed to engineering.
 
-   4. /vibe-ideate                       Generates 2-3 form-factor concepts (web app for
-                                         dispatchers, conversational for customer service,
-                                         agentic option — which Bartosz parks in the transcript).
-
-   5. /vibe-data-prep                    Typifies the three CSVs into models for the .NET API.
+   4. /vibe-data-prep                    Typifies the three CSVs into models for the .NET API.
                                          (Only meaningful for the web-app concept path.)
 
-   6. /vibe-deploy                       Form-factor-aware engineer guidance for whichever
+   5. /vibe-deploy                       Form-factor-aware engineer guidance for whichever
                                          concept the squad picks.
 
-   7. /vibe-handoff                      Generates roadmap, backlog, limitations, vision.
+   6. /vibe-handoff                      Generates roadmap, backlog, limitations, vision.
                                          Step by step — approve each section before moving on.
+
+   (Legacy alternative for Step 3: @VIBE Define → /vibe-ideate instead of @VIBE Disrupt.
+   The legacy path still works for in-flight engagements that started before Disrupt existed.)
 
 💡 The fixture is realistic enough that every agent should produce believable output.
    Reset the demo at any time by deleting engagement/, sources/, and scaffold/data/,
    then re-running /vibe-demo.
 
-👉 NEXT: Run @VIBE Preparation
+👉 NEXT: Click "🛠 Begin Preparation" to start the Week 0 setup.
 ```
 
 ## Notes for the agent
