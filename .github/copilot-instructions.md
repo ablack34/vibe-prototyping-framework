@@ -24,9 +24,9 @@ The post-Discover path is the **Disrupt** Week-2 customer co-creation workshop, 
 | Disrupt | `/vibe-workshop-agenda` | Generate the facilitator agenda anchored to Discover findings (pre-workshop) |
 | Disrupt | `/vibe-concepts` | Generate 2-3 candidate concepts + Spark prompts to bring into the workshop (pre-workshop) |
 | Disrupt | `/vibe-workshop-record` | Capture the workshop into a structured record from `sources/workshop/` (post-workshop) |
-| Disrupt | `/vibe-selected-concept` | Record the customer's chosen concept (single/hybrid/new). Must run before storyboard and future-journey |
-| Disrupt | `/vibe-storyboard` | Scene-by-scene visual narrative — the contract handed to engineering |
-| Disrupt | `/vibe-future-journey` | Counterpart to current-state-journey with the prototype in place |
+| Disrupt | `/vibe-selected-concept` | Record the customer's chosen concept (single/hybrid/new). Must run before future-journey and storyboard |
+| Disrupt | `/vibe-future-journey` | Counterpart to current-state-journey with the prototype in place. Must run before storyboard (storyboard cross-references the redesigned journey stages) |
+| Disrupt | `/vibe-storyboard` | Scene-by-scene visual narrative — the contract handed to engineering. Last Disrupt deliverable; reads selected-concept.md + future-state-journey.md |
 | Anytime | `/vibe-consolidate` | Reconciliation pass — refresh decision log + open questions, flag conflicts (never rewrites signed-off artifacts) |
 | Build | `/vibe-prototype-scaffold` | Scaffold the prototype from the engineering brief |
 | Build | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
@@ -80,8 +80,14 @@ PROJECT-CONTEXT + 3 Discover docs    ──▶  workshop-agenda.md         (pre-
                                      ──▶  spark-prompts.md           (pre-workshop)
 sources/workshop/ (notes, photos)    ──▶  workshop-record.md         (post-workshop)
 workshop-record.md                   ──▶  selected-concept.md        (post-workshop)
-selected-concept.md                  ──▶  future-state-journey.md    (post-workshop)
-                                     ──▶  storyboard.md              (post-workshop — contract for engineering)
+selected-concept.md +                ──▶  future-state-journey.md    (post-workshop)
+current-state-journey.md
+selected-concept.md +                ──▶  storyboard.md              (post-workshop — contract for engineering;
+future-state-journey.md                                                MUST run AFTER future-state-journey.md;
+                                                                       storyboard cross-references the redesigned
+                                                                       journey stages, so running it earlier
+                                                                       caps it at Grade B "concept-only" and
+                                                                       forces a re-run)
 
 storyboard + selected + future       ──▶  engineering-brief.md       (engineer writes as first Build task)
 
@@ -108,7 +114,7 @@ The framework can run public web research itself, but it can't see inside the Mi
 |-------|--------------|-------------------|
 | VIBE Preparation | account-team handover, customer's brief (if any), prior transcripts, existing docs, calendar | engagement-brief.md, customer-brief.md, sources/meeting-templates.md (4-week schedule), sources/research/* |
 | VIBE Discover | sources/, transcripts, questionnaires, both briefs, research summary | PROJECT-CONTEXT.md + 3 required deliverables: personas.md, problem-statement.md, current-state-journey.md (Discover gate requires all 3 at Grade B+) |
-| VIBE Disrupt | PROJECT-CONTEXT + 3 Discover deliverables + `sources/workshop/` | Pre-workshop: workshop-agenda.md, ideation-concepts.md, spark-prompts.md. Post-workshop: workshop-record.md, selected-concept.md, storyboard.md, future-state-journey.md. Gate: selectedConcept + storyboard + futureStateJourney all at Grade B+ AND workshopRecord signed off |
+| VIBE Disrupt | PROJECT-CONTEXT + 3 Discover deliverables + `sources/workshop/` | Pre-workshop: workshop-agenda.md, ideation-concepts.md, spark-prompts.md. Post-workshop (strict order): workshop-record.md → selected-concept.md → future-state-journey.md → storyboard.md. Gate: selectedConcept + futureStateJourney + storyboard all at Grade B+ AND workshopRecord signed off AND storyboard not stale (not generated before the current future-state-journey) |
 | VIBE Data Prep | customer CSV/Excel files | TypeScript types, C# models, DataService, data README |
 | VIBE Deliver | all documents + check-in notes | handoff-data.json (vision, roadmap, backlog, limitations, about) — step by step, one section at a time |
 

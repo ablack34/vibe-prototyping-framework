@@ -98,7 +98,7 @@ Present:
 End with one of these directives:
 
 - If Grade A: `👉 NEXT: Future-state journey is solid. Run /vibe-storyboard to produce the scene-by-scene narrative for the engineer.`
-- If Grade B: `👉 NEXT: Journey is workable. To lift to A: {missing element}. Or run /vibe-storyboard now and revisit.`
+- If Grade B: `👉 NEXT: Journey is workable for storyboard. Click "🎬 Draft Storyboard" now — storyboard cross-references the new stages. Capture {missing element} later if you want to lift this journey to A; the storyboard does not need it to ship.`
 - If Grade C: `👉 NEXT: Journey has {gaps}. Capture more workshop detail in workshop-record.md and re-run /vibe-future-journey.`
 
 ## Notes

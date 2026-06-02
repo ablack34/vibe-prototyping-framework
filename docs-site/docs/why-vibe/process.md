@@ -60,8 +60,8 @@ VIBE Prototyping follows a structured workflow across multiple phases. The recom
   <div className="timeline-item">
     <div className="timeline-week">Week 2 — Disrupt</div>
     <h3>Customer co-creation workshop</h3>
-    <p>The one phase where the customer is in the room with us. Pre-workshop: draft the agenda and generate 2-3 candidate concepts + Spark prompts. In-workshop: humans co-create. Post-workshop: record the workshop, capture the selected concept, produce the storyboard and future-state journey.</p>
-    <p><strong>Outputs:</strong> workshop-agenda.md · ideation-concepts.md · spark-prompts.md · workshop-record.md · selected-concept.md · storyboard.md · future-state-journey.md</p>
+    <p>The one phase where the customer is in the room with us. Pre-workshop: draft the agenda and generate 2-3 candidate concepts + Spark prompts. In-workshop: humans co-create. Post-workshop (strict order): record the workshop → capture the selected concept → redesign the future-state journey → produce the storyboard (last; it cross-references the redesigned stages).</p>
+    <p><strong>Outputs:</strong> workshop-agenda.md · ideation-concepts.md · spark-prompts.md · workshop-record.md · selected-concept.md · future-state-journey.md · storyboard.md</p>
   </div>
   <div className="timeline-item">
     <div className="timeline-week">Week 2-3 — Design & Develop</div>

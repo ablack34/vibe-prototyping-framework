@@ -31,7 +31,7 @@ No agent runs during the workshop — humans co-create. Capture notes, sticky-no
 ### Post-workshop (the same day, or next morning)
 
 3. **`/vibe-workshop-record`** — synthesize `sources/workshop/` into a structured `workshop-record.md` (decisions, key quotes, parked items, action items, Discover edits surfaced).
-4. **`/vibe-selected-concept`** — record the canonical chosen concept. Four selection modes: single candidate, hybrid of candidates, new concept that emerged in the room, or no decision (the prompt blocks rather than writing a bad file). **Must run before steps 5 and 6** — they both anchor to it.
+4. **`/vibe-selected-concept`** — record the canonical chosen concept. Four selection modes: single candidate, hybrid of candidates, new concept that emerged in the room, or no decision (the prompt blocks rather than writing a bad file). **Must run before steps 5 and 6** — both anchor to it. Steps 5 and 6 are also strictly ordered: step 5 (future-journey) before step 6 (storyboard), because storyboard cross-references the redesigned journey stages.
 5. **`/vibe-future-journey`** — counterpart to `current-state-journey.md`. Same persona, redesigned journey with the prototype in place. Top 3 improvements map 1:1 to the Top 3 current-state pains.
 6. **`/vibe-storyboard`** — scene-by-scene narrative (Setup → Challenge → Encounter → Solution → Impact). **This is the contract handed to engineering** — the engineer reads it to write the engineering brief as their first Build task.
 
@@ -43,9 +43,9 @@ No agent runs during the workshop — humans co-create. Capture notes, sticky-no
 | `/vibe-workshop-agenda` | Pre-workshop | Generate the facilitator agenda |
 | `/vibe-concepts` | Pre-workshop | Generate 2-3 candidate concepts + Spark prompts |
 | `/vibe-workshop-record` | Post-workshop | Synthesize `sources/workshop/` into the record |
-| `/vibe-selected-concept` | Post-workshop (after record) | Record the chosen concept — runs before storyboard and future-journey |
+| `/vibe-selected-concept` | Post-workshop (after record) | Record the chosen concept — runs before future-journey and storyboard (both anchor to it) |
 | `/vibe-future-journey` | Post-workshop (after selected-concept) | Generate the future-state journey |
-| `/vibe-storyboard` | Post-workshop (after selected-concept) | Generate the storyboard handed to engineering |
+| `/vibe-storyboard` | Post-workshop (after future-journey) | Generate the storyboard handed to engineering. Storyboard cross-references the redesigned journey stages, so future-journey MUST exist first; running storyboard earlier caps it at Grade B "concept-only" and forces a re-run |
 
 ## Deliverables
 
@@ -78,5 +78,6 @@ The DISRUPT DELIVERABLES dashboard block surfaces `N/6 at Grade B+` whenever the
 - **Run `/vibe-concepts` BEFORE the workshop** — the candidates and Spark visuals are the customer's anchor. Walking into the room without them turns the workshop into a brainstorm without scaffolding
 - **Capture EVERYTHING into `sources/workshop/`** — notes, sticky-note photos, Miro exports, the recording. `/vibe-workshop-record` will synthesise it
 - **Run `/vibe-selected-concept` FIRST after the workshop** — `/vibe-future-journey` and `/vibe-storyboard` both anchor to it and will fail if it's missing
+- **Then `/vibe-future-journey`, then `/vibe-storyboard` — strict order** — storyboard cross-references the redesigned journey stages. Running it before future-journey caps it at Grade B "concept-only" with a re-run flag; you'll have to draft it twice
 - **The storyboard is the contract** — review it with the engineer before declaring Disrupt done. If they can't write the engineering brief from it, the storyboard needs more detail
 - **No decision is OK** — if the customer can't pick a concept in the room, `/vibe-selected-concept` will block rather than write a confused file. Schedule a follow-up and re-run

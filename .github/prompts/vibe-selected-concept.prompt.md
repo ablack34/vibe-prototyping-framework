@@ -187,8 +187,9 @@ Present:
 
 End with one of these directives:
 
-- If Grade A or B and storyboard not yet drafted: `👉 NEXT: Selected concept captured. Click "🎬 Draft Storyboard" — this is the contract handed to engineering. Then "🗺️ Map Future Journey" to complete the Disrupt deliverable set.`
-- If Grade A or B and storyboard already drafted: `👉 NEXT: Selected concept captured. Storyboard already exists — re-run /vibe-storyboard if any details changed, otherwise click "❓ What's Next?" to check Disrupt phase gates.`
+- If Grade A or B and future-journey not yet drafted: `👉 NEXT: Selected concept captured. Click "🗺️ Map Future Journey" — this MUST run before /vibe-storyboard (storyboard cross-references the redesigned journey stages). Running storyboard first produces a Grade B concept-only artifact that has to be re-done.`
+- If Grade A or B, future-journey exists, storyboard not yet drafted: `👉 NEXT: Selected concept captured. Click "🎬 Draft Storyboard" — last Disrupt deliverable. Reads selected-concept.md + future-state-journey.md to produce the engineering contract.`
+- If Grade A or B and storyboard already drafted: `👉 NEXT: Selected concept captured. If storyboard predates the current future-state-journey, re-run /vibe-storyboard to cross-reference the updated stages. Otherwise click "❓ What's Next?" to check Disrupt phase gates.`
 - If Grade C: `👉 NEXT: Selected concept is at Grade C — {specific missing piece}. Re-read workshop-record.md and decide whether to (a) edit the workshop record to add the missing decision/quote, or (b) schedule a 30-min customer call to clarify, then re-run /vibe-selected-concept.`
 - If selection mode is "no decision": `👉 BLOCKED:` (see Step 1 — don't write the file)
 

@@ -111,7 +111,12 @@ Disrupt → Design & Develop gate
   - Workshop record signed off by customer lead
 ```
 
-Steps 5, 6, 7 can run in any order after step 5 (selected-concept), but selected-concept MUST be first — future-journey and storyboard both anchor to it.
+Steps 5, 6, 7 are **strictly sequential**:
+
+- Step 5 (`/vibe-selected-concept`) MUST run first — future-journey and storyboard both anchor to it.
+- Step 6 (`/vibe-future-journey`) MUST run before step 7 — storyboard cross-references the redesigned journey stages. Running storyboard without the journey yields a Grade B "concept-only" artifact that has to be re-run after future-journey lands.
+
+If `storyboard.md` was generated before the current `future-state-journey.md` (filesystem mtime, state.json `lastUpdated`, or the concept-only marker block at the top of storyboard.md), recommend re-running `/vibe-storyboard` before Move to Build.
 
 ## Required Steps
 
@@ -171,8 +176,9 @@ Use the file-system reconciliation pattern from `VIBE Engagement Lead`. For Disr
 | `sources/workshop/` has files, no workshop-record | `🎬 Record Workshop` |
 | workshop-record exists, no selected-concept | `🎯 Capture Selected Concept` |
 | selected-concept exists, no future-journey | `🗺️ Map Future Journey` |
-| selected-concept exists, no storyboard | `🎬 Draft Storyboard` |
-| All 4 post-workshop deliverables at Grade B+ | `🔨 Move to Build` |
+| selected-concept + future-journey exist, no storyboard | `🎬 Draft Storyboard` |
+| storyboard exists but predates current future-journey (stale: state.json `disrupt.storyboard.lastUpdated < disrupt.futureStateJourney.lastUpdated`, or storyboard.md contains the concept-only marker) | `🎬 Draft Storyboard` (re-run to cross-reference the new journey stages) |
+| All 4 post-workshop deliverables at Grade B+ AND storyboard is not stale | `🔨 Move to Build` |
 | Workshop record surfaces Discover edits | `🔙 Back to Discover` for the named deliverables, then resume Disrupt |
 
 ## Response Format — Next Step Directive
@@ -187,8 +193,10 @@ Examples:
 - After workshop-agenda drafted: `👉 NEXT: Click "💡 Generate Concepts" — produces 2-3 candidate concepts and paste-ready Spark prompts. Run this BEFORE the workshop so visuals exist when the customer arrives.`
 - After concepts but before workshop: `👉 NEXT: Workshop materials ready. Before workshop day: (1) paste Spark prompts from spark-prompts.md into spark.github.com, (2) confirm room + recording + attendees. After the workshop, click "🎬 Record Workshop".`
 - After workshop-record: `👉 NEXT: Click "🎯 Capture Selected Concept" — the record names which concept (or combination) won. selected-concept.md must be written BEFORE future-journey and storyboard.`
-- After selected-concept: `👉 NEXT: Click "🗺️ Map Future Journey" OR "🎬 Draft Storyboard" — these can run in either order, both anchor to selected-concept.md.`
-- After all 4 post-workshop deliverables green: `👉 NEXT: Disrupt complete — selected-concept + storyboard + future-state-journey at Grade B+. Click "🔨 Move to Build" to hand off. The engineer writes engineering-brief.md as their first Build task from storyboard.md.`
+- After selected-concept: `👉 NEXT: Click "🗺️ Map Future Journey" — this MUST run before /vibe-storyboard. Storyboard cross-references the new journey stages; running it first produces a Grade B concept-only artifact that has to be re-done.`
+- After future-journey: `👉 NEXT: Click "🎬 Draft Storyboard" — last Disrupt deliverable. Reads selected-concept.md + future-state-journey.md to produce the engineering contract.`
+- After storyboard, if stale (predates current future-journey): `👉 NEXT: Click "🎬 Draft Storyboard" — re-run to cross-reference the updated journey stages before Move to Build.`
+- After all 4 post-workshop deliverables green AND storyboard not stale: `👉 NEXT: Disrupt complete — selected-concept + future-state-journey + storyboard at Grade B+. Click "🔨 Move to Build" to hand off. The engineer writes engineering-brief.md as their first Build task from storyboard.md.`
 - If workshop-record surfaces Discover gaps: `👉 NEXT: Workshop surfaced gaps in {deliverable(s)}. Click "🔙 Back to Discover" — refresh those deliverables with sources/workshop/ as additional input, then resume Disrupt processing.`
 
 Never end with a generic "what would you like to do?" — always recommend a specific action.

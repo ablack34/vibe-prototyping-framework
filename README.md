@@ -47,7 +47,7 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 | **Send forms** | `/vibe-questionnaire` | M365 Copilot prompts for the account-team and customer questionnaires |
 | **After meetings** | `/vibe-transcript` | Extracts context from Teams recordings automatically |
 | **Before Disrupt workshop** | `/vibe-workshop-agenda` + `/vibe-concepts` | The facilitator agenda anchored to Discover findings, plus 2-3 candidate concepts + Spark prompts for the workshop |
-| **After Disrupt workshop** | `/vibe-workshop-record`, `/vibe-selected-concept`, `/vibe-storyboard`, `/vibe-future-journey` | Capture the workshop, record the chosen concept, produce the storyboard the engineer reads |
+| **After Disrupt workshop** | `/vibe-workshop-record`, `/vibe-selected-concept`, `/vibe-future-journey`, `/vibe-storyboard` | Capture the workshop, record the chosen concept, redesign the journey, then produce the storyboard the engineer reads (storyboard MUST come last — it cross-references the redesigned journey stages) |
 | **Share it** | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
 | **Wrap up** | `/vibe-handoff` | Step-by-step handoff: vision → roadmap → backlog → limitations |
 
