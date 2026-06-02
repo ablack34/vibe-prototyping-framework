@@ -2,11 +2,16 @@
 
 This repo is a VIBE Prototyping engagement workspace. It provides AI agents, prompts, templates, and a prototype scaffold for running AI-first envisioning and prototyping engagements.
 
-## The Process (6 Phases)
+## The Process
+
+Two paths after Discover, both converging at Build:
 
 ```
-Preparation → Discover → Define → Ideate → Design & Develop → Deliver
+Preparation → Discover ─┬─▶ Disrupt          ─▶ Build → Deliver   (recommended — Week 2 customer co-creation workshop)
+                        └─▶ Define → Ideate  ─▶ Build → Deliver   (legacy — kept for in-flight engagements)
 ```
+
+New engagements should use the **Disrupt** path. The legacy Define + Ideate sequence is kept available only for engagements that started before Disrupt existed.
 
 ## Essential Prompts
 
@@ -19,8 +24,14 @@ Preparation → Discover → Define → Ideate → Design & Develop → Deliver
 | Preparation | `/vibe-prep-check` | Verify the Week 0 readiness gate before moving to Discover |
 | Discover | `/vibe-transcript` | Extract context from Teams recordings |
 | Discover | `/vibe-capture` | Quick-capture insights during workshops |
-| Define | `/vibe-consolidate` | Synthesize all findings |
-| Ideate | `/vibe-ideate` | Brainstorm AI-powered prototype concepts |
+| Disrupt | `/vibe-workshop-agenda` | Generate the facilitator agenda anchored to Discover findings (pre-workshop) |
+| Disrupt | `/vibe-concepts` | Generate 2-3 candidate concepts + Spark prompts to bring into the workshop (pre-workshop) |
+| Disrupt | `/vibe-workshop-record` | Capture the workshop into a structured record from `sources/workshop/` (post-workshop) |
+| Disrupt | `/vibe-selected-concept` | Record the customer's chosen concept (single/hybrid/new). Must run before storyboard and future-journey |
+| Disrupt | `/vibe-storyboard` | Scene-by-scene visual narrative — the contract handed to engineering |
+| Disrupt | `/vibe-future-journey` | Counterpart to current-state-journey with the prototype in place |
+| Define (legacy) | `/vibe-consolidate` | Synthesize all findings (legacy path) |
+| Ideate (legacy) | `/vibe-ideate` | Brainstorm AI-powered prototype concepts in one pass (legacy path) |
 | Build | `/vibe-prototype-scaffold` | Scaffold the prototype from the concept |
 | Build | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
 | Deliver | `/vibe-backlog-gen` | Generate ADO backlog |
@@ -33,14 +44,14 @@ Preparation → Discover → Define → Ideate → Design & Develop → Deliver
 
 - **The delivery person facilitates, the AI does the paperwork** — documents are auto-generated from sources, never manually filled
 - **Every document is an output, not an input form** — agents read sources, produce documents, ask the user to review and approve
-- **Discover and Define are non-technical** — no architecture or tech stack discussion
-- **Ideate explores multiple form factors** — not just web apps. Conversational, agentic, Copilot extensions, low-code, etc.
+- **Discover, Disrupt, and Define are non-technical** — no architecture or tech stack discussion
+- **Concept generation explores multiple form factors** — not just web apps. Conversational, agentic, Copilot extensions, low-code, etc. Applies to both `/vibe-concepts` (Disrupt) and `/vibe-ideate` (legacy)
 - **AI must be essential in every concept** — not bolted on
 - **All prototypes use mock data** — no live system connections
 - **All technology must be Microsoft** — Azure, M365, Power Platform, etc.
-- **Engagement artifacts** (shared with the team) live in `engagement/{{engagement-kebab}}/` (committed). Includes `engineering-brief.md`, `selected-concept.md`, `handoff-data.json`, etc.
+- **Engagement artifacts** (shared with the team) live in `engagement/{{engagement-kebab}}/` (committed). Includes `storyboard.md`, `selected-concept.md`, `handoff-data.json`, etc.
 - **Per-user state** (`state.json`) lives in `.copilot-tracking/vibe/{{engagement-kebab}}/` (gitignored). Each teammate regenerates their own view of phase progress from the committed artifacts.
-- **Customer sources** go in `sources/` — agents read them automatically
+- **Customer sources** go in `sources/`; workshop artifacts (notes, photos, exports) go in `sources/workshop/` — agents read them automatically
 - **Every agent response ends with a specific next-step directive** pointing at a button
 
 ## Source → Document Flow
@@ -67,14 +78,23 @@ Workshop notes (via /vibe-capture)   ──▶                        to the 3 d
                                      ──▶  problem-statement.md       (Discover deliverable)
                                      ──▶  current-state-journey.md   (Discover deliverable)
 
-PROJECT-CONTEXT.md + personas.md +   ──▶  requirements-summary.md
-problem-statement.md +
-current-state-journey.md             ──▶
+DISRUPT PATH (recommended):
+PROJECT-CONTEXT + 3 Discover docs    ──▶  workshop-agenda.md         (pre-workshop)
+                                     ──▶  ideation-concepts.md       (pre-workshop, 2-3 candidates)
+                                     ──▶  spark-prompts.md           (pre-workshop)
+sources/workshop/ (notes, photos)    ──▶  workshop-record.md         (post-workshop)
+workshop-record.md                   ──▶  selected-concept.md        (post-workshop)
+selected-concept.md                  ──▶  future-state-journey.md    (post-workshop)
+                                     ──▶  storyboard.md              (post-workshop — contract for engineering)
 
+storyboard + selected + future       ──▶  engineering-brief.md       (engineer writes as first Build task)
+
+LEGACY PATH (Define + Ideate):
+PROJECT-CONTEXT.md + 3 Discover docs ──▶  requirements-summary.md
 requirements-summary.md              ──▶  ideation-concepts.md
                                      ──▶  selected-concept.md
                                      ──▶  spark-prompts.md
-                                     ──▶  engineering-brief.md
+                                     ──▶  engineering-brief.md       (auto-generated by /vibe-ideate)
 
 engineering-brief.md                 ──▶  solution-design.md
 customer data files                  ──▶  prototype code
@@ -99,8 +119,9 @@ The framework can run public web research itself, but it can't see inside the Mi
 |-------|--------------|-------------------|
 | VIBE Preparation | account-team handover, customer's brief (if any), prior transcripts, existing docs, calendar | engagement-brief.md, customer-brief.md, sources/meeting-templates.md (4-week schedule), sources/research/* |
 | VIBE Discover | sources/, transcripts, questionnaires, both briefs, research summary | PROJECT-CONTEXT.md + 3 required deliverables: personas.md, problem-statement.md, current-state-journey.md (Discover gate requires all 3 at Grade B+) |
-| VIBE Define | PROJECT-CONTEXT.md, personas.md, problem-statement.md, current-state-journey.md | requirements-summary.md |
-| VIBE Ideate | PROJECT-CONTEXT.md, requirements-summary.md | ideation-concepts.md, selected-concept.md, spark-prompts.md, engineering-brief.md |
+| VIBE Disrupt | PROJECT-CONTEXT + 3 Discover deliverables + `sources/workshop/` | Pre-workshop: workshop-agenda.md, ideation-concepts.md, spark-prompts.md. Post-workshop: workshop-record.md, selected-concept.md, storyboard.md, future-state-journey.md. Gate: selectedConcept + storyboard + futureStateJourney all at Grade B+ AND workshopRecord signed off |
+| VIBE Define (legacy) | PROJECT-CONTEXT.md, personas.md, problem-statement.md, current-state-journey.md | requirements-summary.md |
+| VIBE Ideate (legacy) | PROJECT-CONTEXT.md, requirements-summary.md | ideation-concepts.md, selected-concept.md, spark-prompts.md, engineering-brief.md |
 | VIBE Data Prep | customer CSV/Excel files | TypeScript types, C# models, DataService, data README |
 | VIBE Deliver | all documents + check-in notes | handoff-data.json (vision, roadmap, backlog, limitations, about) — step by step, one section at a time |
 
@@ -130,7 +151,7 @@ VS Code Copilot Chat agents cannot invoke M365 Copilot agents programmatically. 
 | M365 Agent | When to suggest | Suggested by |
 |------------|----------------|--------------|
 | **Researcher** | User needs external desk research, competitor analysis, or fact-checking beyond `sources/` | `@VIBE Preparation` (primary, via `/vibe-research` Path B), `@VIBE Discover` (for follow-up gaps) |
-| **Analyst** | User has uploaded survey results, quantitative CSVs, or other data that benefits from statistical synthesis | `@VIBE Define` |
+| **Analyst** | User has uploaded survey results, quantitative CSVs, or other data that benefits from statistical synthesis | `@VIBE Define` (legacy path), or `@VIBE Disrupt` when sizing concepts against quantitative inputs |
 | **Teams Facilitator** | User mentions an unrecorded meeting and could benefit from automatic recording / transcription | `@VIBE Discover` (one mention only, as upstream tool) |
 
 **Do NOT call out** Designer, Idea Coach, Architect, Compliance, or Office Agent. Those duplicate capabilities already covered better by the VIBE framework, Spark, or the prototype scaffold.

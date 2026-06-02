@@ -1,6 +1,6 @@
 ---
 name: VIBE Engagement Lead
-description: "Orchestrator agent for VIBE Prototyping engagements — manages all 6 phases"
+description: "Orchestrator agent for VIBE Prototyping engagements — manages all phases (Preparation → Discover → Disrupt → Design & Develop → Deliver, with legacy Define + Ideate available as an alternative path after Discover)"
 handoffs:
   - label: "❓ What's Next?"
     agent: VIBE Engagement Lead

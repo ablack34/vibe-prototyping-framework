@@ -1,9 +1,11 @@
 ---
-sidebar_position: 3
-title: "Phase 3: Define"
+sidebar_position: 6
+title: "Define (legacy)"
 ---
 
-# Phase 3: Define
+# Define <span style={{opacity: 0.6}}>(legacy)</span>
+
+> ⚠️ **Legacy path.** New engagements should use **[Phase 3: Disrupt](disrupt.md)** instead, which replaces Define + Ideate with a single customer co-creation workshop. Define is kept available only for engagements that started before Disrupt existed.
 
 **Who:** Anyone on the team · **Duration:** 1-2 days
 

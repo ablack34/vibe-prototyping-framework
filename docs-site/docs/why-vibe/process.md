@@ -3,9 +3,9 @@ sidebar_position: 2
 title: The VIBE Process
 ---
 
-# The Six Phases
+# The VIBE Phases
 
-VIBE Prototyping follows six phases. The first four don't require an engineer — the TPM or designer can drive them.
+VIBE Prototyping follows a structured workflow across multiple phases. The recommended path is **Preparation → Discover → Disrupt → Build → Deliver**. The first three phases don't require an engineer — the TPM or designer can drive them.
 
 <div className="phase-grid">
   <div className="phase-card">
@@ -22,29 +22,25 @@ VIBE Prototyping follows six phases. The first four don't require an engineer �
   </div>
   <div className="phase-card">
     <div className="phase-number">03</div>
-    <h3>Define</h3>
-    <p>Frame the business value, prioritize use cases, and define what success looks like.</p>
-    <div className="phase-who">👥 Anyone · 1-2 days</div>
+    <h3>Disrupt</h3>
+    <p>The one phase where the customer co-creates with us. Week 2 workshop produces the selected concept, storyboard, and future-state journey — the contract handed to engineering.</p>
+    <div className="phase-who">👥 Delivery team + customer · Week 2</div>
   </div>
   <div className="phase-card">
     <div className="phase-number">04</div>
-    <h3>Ideate</h3>
-    <p>Brainstorm AI-powered concepts across form factors. Visualize with GitHub Spark prompts.</p>
-    <div className="phase-who">👥 Anyone · 1 day</div>
-  </div>
-  <div className="phase-card">
-    <div className="phase-number">05</div>
     <h3>Build</h3>
     <p>Engineer the prototype with real data, deploy to Azure, iterate on customer feedback.</p>
     <div className="phase-who">🔧 Engineer · 5-10 days</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">06</div>
+    <div className="phase-number">05</div>
     <h3>Deliver</h3>
     <p>Generate the roadmap, ADO backlog, and handoff package for the customer.</p>
     <div className="phase-who">👥 Anyone · 1-2 days</div>
   </div>
 </div>
+
+> ⚠️ **Legacy alternative to Disrupt: Define + Ideate.** The original framework split Disrupt's work into two separate phases — `@VIBE Define` (frame business value, prioritize use cases, produce requirements-summary.md) followed by `/vibe-ideate` (brainstorm 2-3 AI-powered concepts and produce an engineering brief in one pass). Both are kept available for engagements that started before Disrupt existed; new engagements should use Disrupt.
 
 ---
 
@@ -64,16 +60,11 @@ VIBE Prototyping follows six phases. The first four don't require an engineer �
     <p><strong>Outputs:</strong> Product Vision & Strategy · Personas & User Journey · Filled PROJECT-CONTEXT.md</p>
   </div>
   <div className="timeline-item">
-    <div className="timeline-week">Week 1-2 — Define</div>
-    <h3>Frame the problem, prioritize use cases, establish success metrics</h3>
-    <p>That guide <strong>live</strong> prototyping efforts. Answer the key question: "Are we solving a $50K problem or a $50M problem?"</p>
-    <p><strong>Outputs:</strong> Requirements Summary (customer sign-off) · Prioritized use cases</p>
-  </div>
-  <div className="timeline-item">
-    <div className="timeline-week">Week 2 — Ideate</div>
-    <h3>Brainstorm AI-powered concepts across form factors</h3>
-    <p>Generate 2-3 concepts — web apps, conversational agents, Copilot extensions, agentic solutions. Visualize with GitHub Spark prompts. Select the best approach.</p>
-    <p><strong>Outputs:</strong> Concept comparison · Screen narratives · Engineering brief · Spark prompts</p>
+    <div className="timeline-week">Week 2 — Disrupt</div>
+    <h3>Customer co-creation workshop</h3>
+    <p>The one phase where the customer is in the room with us. Pre-workshop: draft the agenda and generate 2-3 candidate concepts + Spark prompts. In-workshop: humans co-create. Post-workshop: record the workshop, capture the selected concept, produce the storyboard and future-state journey.</p>
+    <p><strong>Outputs:</strong> workshop-agenda.md · ideation-concepts.md · spark-prompts.md · workshop-record.md · selected-concept.md · storyboard.md · future-state-journey.md</p>
+    <p><em>Legacy alternative (kept for in-flight engagements):</em> Week 1-2 Define produces requirements-summary.md for customer sign-off, then Week 2 Ideate generates concepts + engineering brief in one pass.</p>
   </div>
   <div className="timeline-item">
     <div className="timeline-week">Week 2-3 — Design & Develop</div>
