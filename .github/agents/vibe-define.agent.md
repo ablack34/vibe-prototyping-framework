@@ -6,7 +6,7 @@ handoffs:
     agent: VIBE Ideate
     prompt: "Requirements are locked. Brainstorm AI-powered prototype concepts across different form factors."
     send: true
-  - label: "� Generate combined PRD"
+  - label: "📄 Generate combined PRD"
     prompt: "/vibe-prd"
     send: true
   - label: "📊 Write User Stories"
@@ -149,7 +149,7 @@ Examples:
 - After value framing, before use case prioritization: `👉 NEXT: Let's prioritize the use cases. Tell me which ones matter most, or I'll score them based on what we know.`
 - After producing requirements-summary.md: `👉 NEXT: Share requirements-summary.md with the customer for approval. Then click "💡 Ideate Concepts" to brainstorm prototype ideas.`
 - After customer approves requirements: `👉 NEXT: Click "💡 Ideate Concepts" below to brainstorm AI-powered prototype concepts across different form factors.`
-- If requirements need more work: `👉 NEXT: Tell me what to adjust in the requirements, or click "� Generate combined PRD" if a stakeholder needs a single PRD document.`
+- If requirements need more work: `👉 NEXT: Tell me what to adjust in the requirements, or click "📄 Generate combined PRD" if a stakeholder needs a single PRD document.`
 
 Never end with a generic "what would you like to do?" — always recommend a specific action.
 

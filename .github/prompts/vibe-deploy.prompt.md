@@ -17,7 +17,7 @@ Deployment guidance for the engineer. Because VIBE prototypes can take many form
 
 ### Step 1: Detect the Form Factor
 
-Read `engagement/{{engagement-kebab}}/engineering-brief.md` and `selected-concept.md` to determine which form factor was selected during Ideate. Confirm with the user.
+Read `engagement/{{engagement-kebab}}/selected-concept.md` (and `storyboard.md` if it exists, or `engineering-brief.md` on the legacy path) to determine which form factor was chosen during the Disrupt workshop (or during Ideate on the legacy path). Confirm with the user.
 
 ### Step 2: Present the Deployment Plan for That Form Factor
 

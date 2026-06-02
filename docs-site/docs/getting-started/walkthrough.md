@@ -8,7 +8,7 @@ title: What to Expect (Walkthrough)
 This page shows you what each phase **actually looks like** when you run it against the Contoso Field Services demo fixture. No video required — just realistic excerpts of what each agent produces so you know what "good" looks like before your first real engagement.
 
 :::tip Run it yourself
-Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through Preparation → Discover → Define → Ideate → Build → Deliver. Try it.
+Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through Preparation → Discover → **Disrupt** → Build → Deliver (the recommended path). The legacy Define + Ideate phases are documented further down as **alternative legacy phases** for engagements that started before Disrupt existed. Try it.
 :::
 
 :::info Prefer M365 Notebook?
@@ -128,8 +128,10 @@ Grades — 3 required Discover deliverables:
   current-state-journey.md    A   8 stages, Mermaid + table, signed off by Bartosz
 
 👉 NEXT: Both Discover gates are green (7+/9 readiness at B+, 3/3 deliverables at B+).
-   Click "💡 Frame the Problem" to move to Define — successCriteria stays a C for now
-   and Define will surface it as the first thing to lock with the customer.
+   Click "🎬 Begin Disrupt Workshop" to start the Week 2 customer co-creation
+   workshop — successCriteria stays a C for now and Disrupt will surface it
+   as the first thing to lock with the customer. (Legacy alternative: click
+   "💡 Frame the Problem (legacy)" to take the older Define → Ideate path.)
 ```
 
 If you want to see the three deliverable prompts fire fresh instead of using the pre-seeded files, delete `personas.md`, `problem-statement.md`, and `current-state-journey.md` from `engagement/contoso-dispatcher-ai/` and run them in order:
@@ -144,9 +146,11 @@ If you want to see the three deliverable prompts fire fresh instead of using the
 
 ---
 
-## Phase 3 · Define
+## Phase 3 (Legacy) · Define
 
-You click **💡 Frame the Problem**. The Define agent reads the discovery summary and writes `templates/requirements-summary.md`.
+> ⚠️ **Legacy path.** New engagements should use the **Disrupt** workshop after Discover (see [Phases → Disrupt](/phases/disrupt)). The Define + Ideate sequence below is preserved for engagements that started before Disrupt existed. A new `Phase 3 · Disrupt` walkthrough section will land alongside the Define/Ideate retirement.
+
+You click **💡 Frame the Problem (legacy)**. The Define agent reads the discovery summary and writes `templates/requirements-summary.md`.
 
 What you see (excerpt):
 
@@ -176,16 +180,18 @@ requirements-summary.md written. Top-line framing:
     - Dispatcher decision time from ~6 min to <60 sec per work order
     - Customer-facing audit trail for every assignment
 
-👉 NEXT: Click "💡 Ideate Concepts" to brainstorm AI-powered prototype concepts.
+👉 NEXT: Click "💡 Ideate Concepts (legacy)" to brainstorm AI-powered prototype concepts.
 ```
 
 **Time spent:** ~2 minutes of agent runtime + ~5 minutes for you and the team to review and approve.
 
 ---
 
-## Phase 4 · Ideate
+## Phase 4 (Legacy) · Ideate
 
-You click **💡 Ideate Concepts**. The Ideate agent reads the requirements summary and produces three artifacts:
+> ⚠️ **Legacy path.** Replaced by Disrupt's `/vibe-concepts` + `/vibe-selected-concept` flow. Preserved for in-flight legacy engagements.
+
+You click **💡 Ideate Concepts (legacy)**. The Ideate agent reads the requirements summary and produces three artifacts:
 
 - [`engagement/contoso-dispatcher-ai/ideation-concepts.md`](/reference/templates) — all concepts compared
 - `engagement/contoso-dispatcher-ai/selected-concept.md` — the chosen one
@@ -339,10 +345,11 @@ Once approved, the final `handoff-data.json` contains everything the customer's 
 | Phase | Demo time | Real engagement time |
 |-------|-----------|---------------------|
 | Kickoff | < 1 min | < 1 hour |
-| Discover | ~5 min | 1-3 days |
-| Define | ~10 min | 1-2 days |
-| Ideate | ~25 min | 1 day |
+| Preparation | ~5 min | Week 0 (~3-5 days) |
+| Discover | ~5 min | Week 1 (1-3 days) |
+| Disrupt (recommended) | ~15 min | Week 2 (1 day workshop + ~1 day synthesis) |
+| Define + Ideate (legacy) | ~35 min | 2-3 days (instead of Disrupt) |
 | Build (web app) | ~30 min to scaffold | 5-10 days |
-| Deliver | ~45 min | 1-2 days |
+| Deliver | ~45 min | Week 4 (1-2 days) |
 
 The framework's value isn't speed in the demo — it's that the framework keeps the **real** engagement on rails so no one has to remember what comes next.

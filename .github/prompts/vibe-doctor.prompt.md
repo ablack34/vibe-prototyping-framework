@@ -83,8 +83,8 @@ Example output:
 | Discover: current-state-journey.md| ❌     | Missing — run /vibe-current-journey to draft from sources               |
 | MCP servers enabled               | ✅     | github, workiq, ado all responding                                      |
 
-Top fix → run /vibe-current-journey (last Discover deliverable; gate to Define).
-Next-phase action → once current-state-journey.md is Grade B+, click "💡 Frame the Problem" to move to Define.
+Top fix → run /vibe-current-journey (last Discover deliverable; gate to Disrupt).
+Next-phase action → once current-state-journey.md is Grade B+, click "🎬 Begin Disrupt Workshop" to start the Week 2 customer co-creation workshop. (Legacy alternative: click "💡 Frame the Problem (legacy)" to take the older Define → Ideate path.)
 
 👉 NEXT: Run /vibe-current-journey
 ```
