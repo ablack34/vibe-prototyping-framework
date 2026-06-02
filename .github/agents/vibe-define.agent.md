@@ -32,7 +32,7 @@ This is where "Are we solving a $50K problem or a $50M problem?" gets answered.
 
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
-| `templates/PROJECT-CONTEXT.md` — filled by Discover | `templates/requirements-summary.md` — prioritized requirements with acceptance criteria |
+| `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` — filled by Discover | `templates/requirements-summary.md` — prioritized requirements with acceptance criteria |
 | `engagement/{{engagement-kebab}}/personas.md` — Josephine-structured personas (from Discover) | Updated PROJECT-CONTEXT.md (business impact, use case priorities) |
 | `engagement/{{engagement-kebab}}/problem-statement.md` — formal "I am / trying to / But / Because / which results in" (from Discover) | |
 | `engagement/{{engagement-kebab}}/current-state-journey.md` — Mermaid + stages table (from Discover) | |
@@ -59,7 +59,7 @@ After generating requirements-summary.md, present it and ask: **"Review this wit
 
 Read and synthesize all Discover outputs, treating the three structured deliverables as canonical for personas, problem framing, and current-state context:
 
-- `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Index of context, stakeholders, data inventory
+- `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` — Index of context, stakeholders, data inventory
 - `engagement/{{engagement-kebab}}/personas.md` — **Canonical personas** (Josephine-structured); use the primary persona to anchor value framing
 - `engagement/{{engagement-kebab}}/problem-statement.md` — **Canonical problem statement** ("I am / trying to / But / Because / which results in"); the "which results in" line is the business impact seed
 - `engagement/{{engagement-kebab}}/current-state-journey.md` — **Canonical journey**; the "Top pain points (ranked)" section seeds use case prioritization

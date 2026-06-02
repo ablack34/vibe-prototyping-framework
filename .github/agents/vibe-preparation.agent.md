@@ -36,8 +36,8 @@ Preparation isn't glamorous, but skipping it is the single biggest predictor of 
 
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
-| `/vibe-kickoff` initial inputs (customer, problem, sponsor) | `templates/engagement-brief.md` — S42 internal, fully populated |
-| Account-team handover notes + customer-authored brief / RFP / decks in `sources/` | `templates/customer-brief.md` — customer's voice, fully populated |
+| `/vibe-kickoff` initial inputs (customer, problem, sponsor) | `engagement/{{engagement-kebab}}/engagement-brief.md` — S42 internal, fully populated |
+| Account-team handover notes + customer-authored brief / RFP / decks in `sources/` | `engagement/{{engagement-kebab}}/customer-brief.md` — customer's voice, fully populated |
 | Calendar availability + customer date preferences | `sources/meeting-templates.md` — full 4-week schedule (7 meetings) |
 | Task Researcher (public web) | `sources/research/customer-public.md` |
 | Path B prompt for M365 Copilot's Researcher | `sources/research/m365-researcher-prompt.md` (generated for the user to paste-and-run) |
@@ -109,7 +109,7 @@ Before asking any questions, systematically check every available source.
 
 **1a. Check `sources/`** — read every file. Tag each by type: customer-authored, customer-quoted, s42-narrated, internal handover, transcript.
 
-**1b. Check the kickoff output** — read `templates/PROJECT-CONTEXT.md` and `engagement/{{engagement-kebab}}/` for what `/vibe-kickoff` already wrote.
+**1b. Check the kickoff output** — read `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` and list `engagement/{{engagement-kebab}}/` for whatever else `/vibe-kickoff` already wrote (engagement-brief and customer-brief drafts, meeting schedule).
 
 **1c. Check prior transcripts** — if work-iq-mcp is available, hand off to `VIBE Transcript Analyst` to pull prior sales/discovery meetings. Their output fills both briefs.
 
@@ -135,7 +135,7 @@ After research kicks off, **surface a clear paste-and-run block** in your respon
 
 ### Step 3: Populate Both Briefs
 
-Generate `templates/engagement-brief.md` and `templates/customer-brief.md` from what's known.
+Generate `engagement/{{engagement-kebab}}/engagement-brief.md` and `engagement/{{engagement-kebab}}/customer-brief.md` from what's known.
 
 - For the engagement brief: pull from account-team handover notes, the kickoff inputs, prior transcripts, and Path A research.
 - For the customer brief: prefer the customer's own voice — direct quotes from transcripts and customer-authored docs first; generated content marked `[generated from <source>]` second. If only s42-narrated material exists, mark the doc `[DRAFT — needs customer validation]` at the top.

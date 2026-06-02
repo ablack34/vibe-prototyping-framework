@@ -1,6 +1,6 @@
 # Personas
 
-> **Discover deliverable.** **Auto-generated** by `/vibe-personas` from your sources (transcripts, questionnaires, customer documents, workshop notes) and `templates/PROJECT-CONTEXT.md`. Review and approve — don't fill manually.
+> **Discover deliverable.** **Auto-generated** by `/vibe-personas` from your sources (transcripts, questionnaires, customer documents, workshop notes) and `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md`. Review and approve — don't fill manually.
 >
 > **How this document gets populated:**
 > 1. `@VIBE Discover` ingests `sources/` and produces `PROJECT-CONTEXT.md` (Section 8 has the inline persona summary)

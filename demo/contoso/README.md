@@ -31,7 +31,7 @@ In a fresh engagement repo (created from the template), run this in Copilot Chat
 That single command will:
 
 1. Confirm with you, then copy everything from `demo/contoso/` into `sources/` and `scaffold/data/`
-2. Pre-fill `templates/PROJECT-CONTEXT.md` with Contoso details
+2. Pre-fill `engagement/contoso-dispatcher-ai/PROJECT-CONTEXT.md` with Contoso details
 3. Create the `engagement/contoso-dispatcher-ai/` folder
 4. Tell you exactly what to run next (`@VIBE Discover`)
 

@@ -48,10 +48,10 @@ The principle: every question asked of a human is a failure to find the answer i
 
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
-| `sources/` — customer documents, questionnaire responses, workshop notes | `templates/PROJECT-CONTEXT.md` — fully populated |
+| `sources/` — customer documents, questionnaire responses, workshop notes | `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` — fully populated |
 | Meeting transcripts via work-iq-mcp | `engagement/{{engagement-kebab}}/discovery-summary.md` |
-| `templates/engagement-brief.md` — account team context | `engagement/{{engagement-kebab}}/personas.md` — Josephine-structured personas (via `/vibe-personas`) |
-| `templates/customer-brief.md` — customer voice | `engagement/{{engagement-kebab}}/problem-statement.md` — formal "I am / trying to / But / Because / which results in" (via `/vibe-problem-statement`) |
+| `engagement/{{engagement-kebab}}/engagement-brief.md` — account team context | `engagement/{{engagement-kebab}}/personas.md` — Josephine-structured personas (via `/vibe-personas`) |
+| `engagement/{{engagement-kebab}}/customer-brief.md` — customer voice | `engagement/{{engagement-kebab}}/problem-statement.md` — formal "I am / trying to / But / Because / which results in" (via `/vibe-problem-statement`) |
 | `/vibe-kickoff` initial inputs (customer, problem) | `engagement/{{engagement-kebab}}/current-state-journey.md` — Mermaid + stages table (via `/vibe-current-journey`) |
 | | Updated `state.json` readiness fields + `readiness.discover` deliverable grades |
 
@@ -135,7 +135,7 @@ Look for `sources/questionnaire-responses.md` or any Excel/CSV export from Micro
 
 **1c. Check engagement brief**
 
-Read `templates/engagement-brief.md`. Extract any pre-filled fields from the account team.
+Read `engagement/{{engagement-kebab}}/engagement-brief.md`. Extract any pre-filled fields from the account team.
 
 **1d. Check workshop notes**
 
@@ -149,7 +149,7 @@ If work-iq-mcp is not configured, note this and continue.
 
 **1f. Check existing PROJECT-CONTEXT.md**
 
-Read `templates/PROJECT-CONTEXT.md` for any fields already filled during kickoff.
+Read `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` for any fields already filled during kickoff.
 
 ### Step 2: Readiness Assessment (Show the Gaps)
 
@@ -271,7 +271,7 @@ Examples:
 - After 9-field readiness is green but deliverables missing: `👉 NEXT: 7/9 readiness fields filled — now draft the required Discover deliverables. Click "👤 Draft Personas" to start.`
 - After personas drafted, problem statement missing: `👉 NEXT: Click "🎯 Draft Problem Statement" — anchored to {primary-persona-name}, fills the formal "I am / trying to / But / Because / which results in" template.`
 - After personas + problem statement drafted, journey missing: `👉 NEXT: Click "🗺️ Map Current Journey" — produces a Mermaid + stages table for how {primary-persona-name} does the task today. Last Discover deliverable.`
-- After completing discovery (all gates green): `👉 NEXT: Click "💡 Move to Define" below to begin problem framing and use case prioritization.`
+- After completing discovery (all gates green): `👉 NEXT: Click "🎬 Begin Disrupt Workshop" below — the customer co-creates the prototype concept in a Week 2 workshop. Send the 3 Discover deliverables to {{sponsor}} for sign-off first. (Legacy alternative: click "💡 Move to Define (legacy)" to take the old Define → Ideate path — only for in-flight engagements that started before Disrupt existed.)`
 - After processing one source with more available: `👉 NEXT: Drop more customer documents in sources/ and tell me, or click "🎙️ Process Transcript" to pull meeting context.`
 - When UX research would help: `👉 NEXT: Click "👤 UX Research" to create journey maps from the pain points we've identified.`
 

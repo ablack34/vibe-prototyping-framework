@@ -31,10 +31,10 @@ Open Copilot Chat (`Ctrl+Shift+I`), switch to **Agent mode**, and type:
 ```
 
 **What happens:**
-- Fills `templates/PROJECT-CONTEXT.md` with the inputs
+- Fills `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` with the inputs
 - Creates `engagement/<your-engagement>/` (shared with the team, committed)
 - Creates `.copilot-tracking/vibe/<your-engagement>/state.json` (per-user, gitignored) with `currentPhase: preparation`
-- Drafts `templates/engagement-brief.md` (S42-internal) and `templates/customer-brief.md` (customer-voice placeholder) from the inputs
+- Drafts `engagement/{{engagement-kebab}}/engagement-brief.md` (S42-internal) and `engagement/{{engagement-kebab}}/customer-brief.md` (customer-voice placeholder) from the inputs
 - Generates the full **4-week meeting schedule** (kickoff, 2× discover, disrupt workshop, 2× check-in, handoff) into `sources/meeting-templates.md`
 - Tells you what to do next
 

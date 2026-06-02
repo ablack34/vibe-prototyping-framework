@@ -14,11 +14,11 @@ Seed the engagement with a complete fixture so you can demonstrate every phase o
 
 ## What this does
 
-1. Confirms with the user that loading the demo will populate `sources/`, `templates/PROJECT-CONTEXT.md`, and `engagement/contoso-dispatcher-ai/`.
+1. Confirms with the user that loading the demo will populate `sources/` and `engagement/contoso-dispatcher-ai/` (pre-filled Preparation outputs only — Discover deliverables get generated fresh by the agents).
 2. Copies `demo/<demo>/*.md` (excluding the demo's own README) into `sources/` so the agents pick them up just like real customer-supplied sources.
 3. Copies `demo/<demo>/sample-data/*.csv` into `sources/sample-data/` (so `/vibe-data-prep` can later typify them into `scaffold/data/`).
-4. Fills `templates/PROJECT-CONTEXT.md` with the demo customer's details (customer name, problem statement, sponsor).
-5. Creates `engagement/contoso-dispatcher-ai/` and `.copilot-tracking/vibe/contoso-dispatcher-ai/state.json` exactly as `/vibe-kickoff` would.
+4. Creates `engagement/contoso-dispatcher-ai/` with three pre-filled Preparation artifacts (`PROJECT-CONTEXT.md`, `customer-brief.md`, and an empty `engagement-brief.md` scaffold that `@VIBE Preparation` will fill).
+5. Creates `.copilot-tracking/vibe/contoso-dispatcher-ai/state.json` exactly as `/vibe-kickoff` would.
 6. Tells the user the recommended sequence to demonstrate every phase.
 
 ## Requirements
@@ -41,7 +41,7 @@ For the `contoso` demo specifically, the layout is:
 ```
 demo/contoso/
 ├── README.md                            (do NOT copy — it's the demo's own docs)
-├── customer-brief.md                    → sources/customer-brief.md   AND  → templates/customer-brief.md
+├── customer-brief.md                    → sources/customer-brief.md   AND  → engagement/contoso-dispatcher-ai/customer-brief.md
 ├── meeting-templates.md                 → sources/meeting-templates.md (full 7-meeting schedule)
 ├── questionnaire-account-team.md        → sources/questionnaire-account-team.md
 ├── questionnaire-customer-pre.md        → sources/questionnaire-customer-pre.md
@@ -63,13 +63,13 @@ demo/contoso/
 
 Copy every file listed above into `sources/` (preserve filenames). Create `sources/sample-data/` and `sources/research/` if they don't exist.
 
-`customer-brief.md` is special: copy it into BOTH `sources/customer-brief.md` (so Discover and Define agents see it) AND `templates/customer-brief.md` (so the Preparation agent sees a populated brief without re-running `/vibe-customer-brief`).
+`customer-brief.md` is special: copy it into BOTH `sources/customer-brief.md` (so `@VIBE Discover` and `@VIBE Disrupt` see it as a source) AND `engagement/contoso-dispatcher-ai/customer-brief.md` (so `@VIBE Preparation` sees a populated brief without re-running `/vibe-customer-brief`). **Never write into `templates/`** — `templates/customer-brief.md` is a blank scaffold and must stay untouched.
 
 **Do NOT copy `discover-outputs/*` anywhere.** Those files in `demo/contoso/discover-outputs/` are reference examples only — they show what `@VIBE Discover` is expected to produce when it runs against the demo's `sources/`. The whole point of the demo is that the user invokes `@VIBE Discover` and watches it generate `personas.md`, `problem-statement.md`, and `current-state-journey.md` fresh in `engagement/contoso-dispatcher-ai/`. Pre-seeding them would short-circuit Discover and route the user straight to Disrupt with nothing to look at — defeating the purpose of the demo.
 
-### Step 3 — Pre-fill PROJECT-CONTEXT.md
+### Step 3 — Pre-fill engagement artifacts
 
-For the `contoso` demo, fill `templates/PROJECT-CONTEXT.md` with:
+For the `contoso` demo, create `engagement/contoso-dispatcher-ai/PROJECT-CONTEXT.md` by copying `templates/PROJECT-CONTEXT.md` and filling it with:
 
 - Customer: `Contoso Field Services`
 - Engagement: `Dispatcher AI`
@@ -78,7 +78,11 @@ For the `contoso` demo, fill `templates/PROJECT-CONTEXT.md` with:
 - Technical contact: `Matthias Köhler, Director of Operations Tech`
 - Account team contact: `Priya Raman`
 
-Leave other fields empty — they'll fill in as the discovery and define agents process the sources.
+Also copy `templates/engagement-brief.md` to `engagement/contoso-dispatcher-ai/engagement-brief.md` as a blank scaffold (placeholders intact) so `@VIBE Preparation` has something to populate when it runs. Don't pre-fill it — Preparation generating the brief from sources is the demo's first real piece of agent work.
+
+Leave the remaining PROJECT-CONTEXT fields empty — they'll fill in as the discovery and disrupt agents process the sources.
+
+**Never modify any file in `templates/`** — those are blank scaffolds. Every filled artifact lives in `engagement/contoso-dispatcher-ai/`.
 
 ### Step 4 — Initialize engagement structure
 
@@ -133,9 +137,9 @@ Show this summary:
    reference. They're the answer key, not pre-populated state.)
 
 📁 Initialized:
-   • templates/PROJECT-CONTEXT.md     pre-filled with Contoso details
-   • templates/customer-brief.md      seeded with Sandra's customer-voice brief
-   • engagement/contoso-dispatcher-ai/  empty — agents will populate it
+   • engagement/contoso-dispatcher-ai/PROJECT-CONTEXT.md  pre-filled with Contoso details
+   • engagement/contoso-dispatcher-ai/customer-brief.md   seeded with Sandra's customer-voice brief
+   • engagement/contoso-dispatcher-ai/engagement-brief.md blank scaffold — @VIBE Preparation fills this
    • .copilot-tracking/vibe/contoso-dispatcher-ai/state.json  per-user state
      (phase=preparation, prep readiness 7/7 at Grade A since the briefs and research
       are pre-seeded. Discover readiness is empty — that's where you'll see real

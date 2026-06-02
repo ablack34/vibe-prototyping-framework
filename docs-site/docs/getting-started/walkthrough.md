@@ -35,9 +35,9 @@ What you see in Copilot Chat:
 📁 Files created:
   • .copilot-tracking/vibe/contoso-dispatcher-ai/state.json (per-user, gitignored)
   • engagement/contoso-dispatcher-ai/ (committed — agent outputs land here)
-  • templates/PROJECT-CONTEXT.md (filled in)
-  • templates/engagement-brief.md (S42-internal — drafted from the inputs)
-  • templates/customer-brief.md (customer-voice — placeholder for the customer to fill or for /vibe-customer-brief to draft from sources)
+  • engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md (filled in)
+  • engagement/{{engagement-kebab}}/engagement-brief.md (S42-internal — drafted from the inputs)
+  • engagement/{{engagement-kebab}}/customer-brief.md (customer-voice — placeholder for the customer to fill or for /vibe-customer-brief to draft from sources)
   • sources/meeting-templates.md (full 4-week schedule: kickoff + 2× discover + disrupt workshop + 2× check-in + handoff)
 
 👉 NEXT: Click "🛠 Begin Preparation" — the Prep agent will draft both briefs from any sources/, kick off dual-path research, and walk you to a 7/7 readiness gate before Discover.

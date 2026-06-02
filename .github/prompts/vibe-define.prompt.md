@@ -16,7 +16,7 @@ Frame the "$50K vs $50M" business value, prioritize use cases, and produce the r
 
 1. Follow the VIBE Define agent protocol.
 2. Read all discovery outputs:
-   - `templates/PROJECT-CONTEXT.md`
+   - `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md`
    - `engagement/{{engagement-kebab}}/personas.md` (canonical personas)
    - `engagement/{{engagement-kebab}}/problem-statement.md` (canonical formal statement)
    - `engagement/{{engagement-kebab}}/current-state-journey.md` (canonical journey + ranked pain points)

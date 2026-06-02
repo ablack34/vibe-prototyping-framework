@@ -14,7 +14,7 @@ Get the engagement ready to land. Both briefs filled, deep customer research don
 The Preparation agent uses the same **source-first, gap-fill** pattern as Discover:
 
 1. **Reads `sources/` and `templates/`** — account-team handover, any customer-authored materials, prior transcripts from earlier touchpoints
-2. **Drafts both briefs from those sources** — `templates/engagement-brief.md` (Studio 42 internal, commercial context, squad, risks) and `templates/customer-brief.md` (the customer's own voice — their problem, their words)
+2. **Drafts both briefs from those sources** — `engagement/{{engagement-kebab}}/engagement-brief.md` (Studio 42 internal, commercial context, squad, risks) and `engagement/{{engagement-kebab}}/customer-brief.md` (the customer's own voice — their problem, their words)
 3. **Kicks off dual-path research** via `/vibe-research`
 4. **Generates the full 4-week meeting schedule** via `/vibe-schedule` — including the named Disrupt Workshop
 5. **Shows the 7-field Preparation readiness dashboard** — grades each field A/B/C
@@ -35,7 +35,7 @@ The pattern is the same as Spark and Copilot Studio prompts elsewhere in the fra
 | Command | When | What It Does |
 |---------|------|-------------|
 | `/vibe-kickoff` | Day 0 | Creates the engagement, drafts both briefs, generates the full 4-week schedule |
-| `/vibe-customer-brief` | Whenever the customer voice needs updating | Drafts or refreshes `templates/customer-brief.md` from sources |
+| `/vibe-customer-brief` | Whenever the customer voice needs updating | Drafts or refreshes `engagement/{{engagement-kebab}}/customer-brief.md` from sources |
 | `/vibe-research` | After both briefs exist | Dual-path research — public web (auto) plus the M365 paste-back prompt |
 | `/vibe-schedule` | After both briefs exist | Regenerates the 4-week schedule (including the named Disrupt Workshop) |
 | `@VIBE Preparation` | Anytime during Week 0 | Source-first orchestrator — ingests everything, shows the dashboard, drafts what's missing |

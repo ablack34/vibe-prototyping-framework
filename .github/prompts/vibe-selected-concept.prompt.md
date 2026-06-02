@@ -146,7 +146,7 @@ If a section can't be sourced, leave it `{{TODO — needs source}}` and flag in 
 
 ### Step 4 — Update PROJECT-CONTEXT.md briefly
 
-Update Section 8.5 (or equivalent) in `templates/PROJECT-CONTEXT.md` (engagement copy) with a one-line summary:
+Update Section 8.5 (or equivalent) in `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` with a one-line summary:
 
 > **Selected concept:** {{Concept Name}} — {{one-line pitch}} (full doc at `engagement/{{engagement-kebab}}/selected-concept.md`)
 

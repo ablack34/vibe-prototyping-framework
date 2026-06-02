@@ -1,10 +1,10 @@
 # Disrupt Workshop Agenda
 
-> **Disrupt deliverable (pre-workshop).** **Auto-generated** by `/vibe-workshop-agenda` from the Discover deliverables, `templates/PROJECT-CONTEXT.md`, and the engagement brief. Review with the facilitator before the workshop — don't fill manually.
+> **Disrupt deliverable (pre-workshop).** **Auto-generated** by `/vibe-workshop-agenda` from the Discover deliverables, `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md`, and the engagement brief. Review with the facilitator before the workshop — don't fill manually.
 >
 > **How this document gets populated:**
 > 1. Discover closes with `personas.md`, `problem-statement.md`, and `current-state-journey.md` all Grade B+ and signed off
-> 2. `/vibe-workshop-agenda` reads those three plus `templates/PROJECT-CONTEXT.md` and produces this run-of-show, anchoring every section to a real input
+> 2. `/vibe-workshop-agenda` reads those three plus `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` and produces this run-of-show, anchoring every section to a real input
 > 3. The facilitator reviews — adjusts timings, swaps activities for the customer's preferred style, adds any pre-reads
 > 4. The customer receives the agenda 48 hours before the workshop (the engagement brief specifies the attendees)
 

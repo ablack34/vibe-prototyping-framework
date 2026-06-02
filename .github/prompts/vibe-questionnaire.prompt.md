@@ -28,7 +28,7 @@ Generate ready-to-paste prompts that create Microsoft Forms questionnaires.
 
 ## Requirements
 
-1. Read `templates/PROJECT-CONTEXT.md` for the customer name and problem statement.
+1. Read `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` for the customer name and problem statement.
 2. Generate the questionnaire prompts following the templates below.
 3. Present each prompt in a fenced code block so the user can copy-paste it directly into M365 Copilot to create the form.
 4. After generating, remind the user to send the customer questionnaire 3-5 days before the first workshop.

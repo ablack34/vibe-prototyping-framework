@@ -20,7 +20,7 @@ Reads all engagement artifacts and consolidates them into a structured decision 
 ## Requirements
 
 1. Read all engagement artifacts:
-   - `templates/PROJECT-CONTEXT.md`
+   - `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md`
    - `templates/CHECK-IN-NOTES.md`
    - `templates/requirements-summary.md` (if exists)
    - `engagement/{{engagement-name}}/transcript-analysis.md` (if exists)

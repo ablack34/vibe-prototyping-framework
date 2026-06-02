@@ -66,7 +66,7 @@ The workshop happens in **Week 2** of the engagement. This agent:
 | `engagement/{{engagement-kebab}}/personas.md` — Discover deliverable | `engagement/{{engagement-kebab}}/workshop-agenda.md` (via `/vibe-workshop-agenda`) — facilitator run-of-show |
 | `engagement/{{engagement-kebab}}/problem-statement.md` — Discover deliverable | `engagement/{{engagement-kebab}}/ideation-concepts.md` (via `/vibe-concepts`) — 2-3 pre-workshop candidates |
 | `engagement/{{engagement-kebab}}/current-state-journey.md` — Discover deliverable (Top 3 pains drive everything) | `engagement/{{engagement-kebab}}/spark-prompts.md` (via `/vibe-concepts`) — paste-ready Spark / Copilot Studio prompts |
-| `templates/PROJECT-CONTEXT.md`, `templates/engagement-brief.md`, `templates/customer-brief.md` | `engagement/{{engagement-kebab}}/workshop-record.md` (via `/vibe-workshop-record`) — decisions, quotes, parked items, action items |
+| `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md`, `engagement/{{engagement-kebab}}/engagement-brief.md`, `engagement/{{engagement-kebab}}/customer-brief.md` | `engagement/{{engagement-kebab}}/workshop-record.md` (via `/vibe-workshop-record`) — decisions, quotes, parked items, action items |
 | `sources/workshop/` — raw workshop notes, sticky-note photos, Miro exports, transcript | `engagement/{{engagement-kebab}}/selected-concept.md` (via `/vibe-selected-concept`) — the canonical chosen concept |
 | `sources/research/research-summary.md` — Preparation deliverable | `engagement/{{engagement-kebab}}/future-state-journey.md` (via `/vibe-future-journey`) — journey redesigned with prototype in place |
 | | `engagement/{{engagement-kebab}}/storyboard.md` (via `/vibe-storyboard`) — scene-by-scene narrative, **the contract handed to engineering** |

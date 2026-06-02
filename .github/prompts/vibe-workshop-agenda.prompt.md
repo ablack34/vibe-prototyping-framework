@@ -18,9 +18,9 @@ The agenda lands 48 hours before the workshop and is shared with the customer.
 
 ### Step 1 — Read all sources
 
-- `templates/PROJECT-CONTEXT.md` (engagement metadata, stakeholders)
-- `templates/engagement-brief.md` (S42 view — success metrics, scope, duration, attendees)
-- `templates/customer-brief.md` (customer's voice — what they expect to leave with)
+- `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` (engagement metadata, stakeholders)
+- `engagement/{{engagement-kebab}}/engagement-brief.md` (S42 view — success metrics, scope, duration, attendees)
+- `engagement/{{engagement-kebab}}/customer-brief.md` (customer's voice — what they expect to leave with)
 - `engagement/{{engagement-kebab}}/personas.md` — the personas to review in section 4
 - `engagement/{{engagement-kebab}}/problem-statement.md` — the statement to refine in section 2
 - `engagement/{{engagement-kebab}}/current-state-journey.md` — the Top 3 pains feed the ideation opener; the journey itself feeds section 6
