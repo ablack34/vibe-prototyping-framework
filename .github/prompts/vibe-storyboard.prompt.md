@@ -36,7 +36,15 @@ The storyboard NEEDS the selected concept and (ideally) the future-state journey
 The Disrupt workshop produces the selected concept — run the workshop first, then capture the chosen direction in selected-concept.md.
 ```
 
-If `future-state-journey.md` doesn't exist but `selected-concept.md` does, proceed but flag at the end: "Storyboard generated from concept alone — to lift to Grade A, run /vibe-future-journey first."
+If `future-state-journey.md` doesn't exist but `selected-concept.md` does, proceed but:
+
+1. **Cap the grade at B** — concept-only storyboards cannot reach Grade A because they can't cross-reference the redesigned journey stages.
+2. **Add a durable marker block at the top of `engagement/{{engagement-kebab}}/storyboard.md`** (immediately after the title):
+   ```markdown
+   > **⚠️ Concept-only generation** — `future-state-journey.md` did not exist when this storyboard was drafted. Run `/vibe-future-journey` then re-run `/vibe-storyboard` to cross-reference the new journey stages and lift this artifact to Grade A. `@VIBE Disrupt` and `@VIBE Engagement Lead` treat the presence of this block as a "stale storyboard" signal and will block Move to Build until it's re-run.
+   ```
+3. **Set `state.json.readiness.disrupt.storyboard.generatedFrom = "concept-only"`** so the orchestrator can detect staleness without parsing the markdown. (A successful re-run with future-state-journey.md present sets this to `"concept+journey"` and removes the marker block.)
+4. End with: `👉 NEXT: Storyboard at Grade B (concept-only). Run /vibe-future-journey, then re-run /vibe-storyboard to lift to A and unblock Move to Build.`
 
 ### Step 3 — Identify the arc
 
@@ -109,5 +117,5 @@ End with one of these directives:
 
 - Re-running `/vibe-storyboard` is safe — signed-off scenes (with a non-empty Sign-off row) are preserved.
 - This prompt is **mock-data-aware**: scenes that depict the persona using the prototype MUST be consistent with the mock data available in `sources/sample-data/` (don't show a feature that needs data the engineer can't fake).
-- The storyboard is the LAST Disrupt deliverable that runs before Design & Develop. Order: `/vibe-workshop-agenda` → workshop happens → `/vibe-workshop-record` → `/vibe-future-journey` → `/vibe-storyboard` → (sign-off) → enter D&D.
+- The storyboard is the LAST Disrupt deliverable that runs before Design & Develop. Order: `/vibe-workshop-agenda` → `/vibe-concepts` → workshop happens → `/vibe-workshop-record` → `/vibe-selected-concept` → `/vibe-future-journey` → `/vibe-storyboard` → (sign-off) → enter D&D. Future-journey before storyboard is **strict** — storyboard cross-references the redesigned journey stages.
 - If the customer wants a single PDF/slide deck of the storyboard, export from this markdown — the structure maps cleanly to one scene per slide.

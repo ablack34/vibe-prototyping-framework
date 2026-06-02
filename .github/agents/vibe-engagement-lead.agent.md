@@ -125,7 +125,7 @@ Initialize `state.json`:
       "workshopAgenda":     { "status": "empty", "grade": null, "path": null, "lastUpdated": null },
       "conceptsBoard":      { "status": "empty", "grade": null, "path": null, "conceptCount": 0, "lastUpdated": null },
       "selectedConcept":    { "status": "empty", "grade": null, "path": null, "signedOffBy": null, "lastUpdated": null },
-      "storyboard":         { "status": "empty", "grade": null, "path": null, "sceneCount": 0, "lastUpdated": null },
+      "storyboard":         { "status": "empty", "grade": null, "path": null, "sceneCount": 0, "generatedFrom": null, "lastUpdated": null },
       "futureStateJourney": { "status": "empty", "grade": null, "path": null, "stageCount": 0, "lastUpdated": null },
       "workshopRecord":     { "status": "empty", "path": null, "decisionsCount": 0, "lastUpdated": null }
     },
@@ -399,9 +399,10 @@ A disrupt deliverable counts toward `N/6` only when its grade is `A` or `B` (wor
 - If concepts exist but `sources/workshop/` is empty: the workshop hasn't happened. Suggest "Paste Spark prompts from spark-prompts.md into spark.github.com, hold the workshop, drop notes/photos into sources/workshop/, then click 🎬 Record Workshop."
 - If `sources/workshop/` populated but no `workshop-record.md`: suggest **🎬 Record Workshop**
 - If `workshop-record.md` exists but no `selected-concept.md`: suggest **🎯 Capture Selected Concept** (REQUIRED before future-journey and storyboard)
-- If `selected-concept.md` exists but no `future-state-journey.md`: suggest **🗺️ Map Future Journey**
-- If `selected-concept.md` exists but no `storyboard.md`: suggest **🎬 Draft Storyboard**
-- If all 4 post-workshop deliverables at Grade B+ and `workshopRecord` signed off: suggest **🔨 Move to Build**
+- If `selected-concept.md` exists but no `future-state-journey.md`: suggest **🗺️ Map Future Journey** (REQUIRED before storyboard — storyboard cross-references the redesigned journey stages)
+- If `selected-concept.md` + `future-state-journey.md` exist but no `storyboard.md`: suggest **🎬 Draft Storyboard**
+- If `storyboard.md` exists but predates the current `future-state-journey.md` (state.json `disrupt.storyboard.lastUpdated < disrupt.futureStateJourney.lastUpdated`, or storyboard.md contains the concept-only marker block): suggest **🎬 Draft Storyboard** (re-run to cross-reference the updated journey stages — Move to Build is blocked until storyboard is not stale)
+- If all 4 post-workshop deliverables at Grade B+, `workshopRecord` signed off, AND storyboard is not stale: suggest **🔨 Move to Build**
 - If workshop-record surfaces Discover gaps: suggest **🔙 Back to Discover** for the named deliverables, then resume Disrupt
 
 **Design & Develop phase:**
@@ -465,7 +466,9 @@ Examples by phase:
 - Disrupt (agenda + concepts done, awaiting workshop): `👉 NEXT: Paste the Spark prompts from spark-prompts.md into spark.github.com BEFORE the workshop. After the workshop, drop notes/photos into sources/workshop/ and click "🎬 Record Workshop".`
 - Disrupt (workshop happened, no record): `👉 NEXT: Click "🎬 Record Workshop" to synthesise sources/workshop/ into the structured record.`
 - Disrupt (record done, no selected-concept): `👉 NEXT: Click "🎯 Capture Selected Concept" — this MUST run before future-journey and storyboard. Both anchor to selected-concept.md.`
-- Disrupt (selected-concept done, no storyboard/future-journey): `👉 NEXT: Click "🎬 Draft Storyboard" — this is the contract handed to engineering. Then "🗺️ Map Future Journey" to complete the Disrupt deliverable set.`
+- Disrupt (selected-concept done, no future-journey/storyboard): `👉 NEXT: Click "🗺️ Map Future Journey" — this MUST run before /vibe-storyboard. Storyboard cross-references the new journey stages; running it first produces a Grade B concept-only artifact that has to be re-done.`
+- Disrupt (selected-concept + future-journey done, no storyboard): `👉 NEXT: Click "🎬 Draft Storyboard" — last Disrupt deliverable. Reads selected-concept.md + future-state-journey.md to produce the engineering contract.`
+- Disrupt (storyboard stale — predates current future-journey): `👉 NEXT: Click "🎬 Draft Storyboard" — re-run to cross-reference the updated journey stages before Move to Build.`
 - Disrupt (all post-workshop deliverables Grade B+): `👉 NEXT: Click "🔨 Move to Build" — the engineer writes engineering-brief.md from storyboard.md + selected-concept.md + future-state-journey.md as their first Build task.`
 - Prototype deployed: `👉 NEXT: Click "📦 Generate Deliverables" to produce the handoff package.`
 - Unsure: `👉 NEXT: Click "❓ What's Next?" and I'll check your progress and recommend the right step.`

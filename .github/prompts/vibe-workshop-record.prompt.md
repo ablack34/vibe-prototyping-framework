@@ -62,7 +62,7 @@ This record feeds the next three Disrupt prompts. Surface explicitly what's now 
 
 - For `/vibe-selected-concept` (**run this first** — future-journey and storyboard both depend on selected-concept.md existing): the concept the customer voted for in agenda section 5. This MUST be captured in the decisions table — be explicit about whether it's one of the pre-workshop concepts, a hybrid, or a new concept that emerged.
 - For `/vibe-future-journey` (run after selected-concept): the future-state stages decided in agenda section 6
-- For `/vibe-storyboard` (run after selected-concept; can run in parallel with future-journey): the live-prototyping captures from agenda section 7 (Spark prompts, screenshots, customer reactions)
+- For `/vibe-storyboard` (run **after** future-journey — storyboard cross-references the redesigned journey stages; running it before future-journey produces a Grade B concept-only artifact that has to be re-done): the live-prototyping captures from agenda section 7 (Spark prompts, screenshots, customer reactions)
 
 The workshop record IS the source of truth for which concept won. Without a clear concept-selection decision row, `/vibe-selected-concept` will block. Be explicit.
 
@@ -89,7 +89,7 @@ Present:
 
 - Decisions count, parked items count, action items count
 - Discover deliverables the workshop edited (and the recommended `/vibe-*` prompt to re-run for each)
-- Which Disrupt prompts are now unblocked (`/vibe-selected-concept` always first, then `/vibe-future-journey` + `/vibe-storyboard` in parallel)
+- Which Disrupt prompts are now unblocked — in this strict order: `/vibe-selected-concept` first, then `/vibe-future-journey`, then `/vibe-storyboard` (storyboard cross-references the redesigned journey stages so it MUST come last)
 - Sections of the agenda where captures were thin (and the cost of that gap)
 
 End with this directive:

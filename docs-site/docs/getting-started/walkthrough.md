@@ -172,7 +172,7 @@ No agent runs. Humans co-create. The facilitator captures notes, sticky-note pho
 
 ### Post-workshop — `/vibe-workshop-record`, `/vibe-selected-concept`, `/vibe-future-journey`, `/vibe-storyboard`
 
-The post-workshop sequence is strict: workshop-record first, then selected-concept (storyboard and future-journey both anchor to it).
+The post-workshop sequence is strict: workshop-record first → selected-concept (future-journey + storyboard both anchor to it) → future-journey (storyboard cross-references the redesigned stages, so it has to run first) → storyboard (last; the engineering contract).
 
 The **storyboard** is the flagship Disrupt deliverable — scene-by-scene narrative (Setup → Challenge → Encounter → Solution → Impact) that the engineer reads to write the engineering brief as their first Build task.
 
