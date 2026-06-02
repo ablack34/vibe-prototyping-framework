@@ -78,10 +78,10 @@ These are auto-generated in `engagement/{{engagement-name}}/` (committed) and `.
 | `state.json` | `/vibe-kickoff` | Engagement state, readiness tracking, phase progress |
 | `transcript-analysis.md` | `/vibe-transcript` | Extracted requirements, decisions, pain points from meetings |
 | `discovery-summary.md` | `@VIBE Discover` | Consolidated discovery findings |
-| `ideation-concepts.md` | `/vibe-ideate` | 2-3 prototype concepts with comparison |
-| `selected-concept.md` | `/vibe-ideate` | Chosen concept with detailed narrative |
-| `spark-prompts.md` | `/vibe-ideate` | GitHub Spark and Copilot Studio prompts |
-| `engineering-brief.md` | `/vibe-ideate` | Structured handoff for the dev engineer |
+| `ideation-concepts.md` | `/vibe-ideate` (legacy) or `/vibe-concepts` (Disrupt) | 2-3 prototype concepts with comparison |
+| `selected-concept.md` | `/vibe-ideate` (legacy) or `/vibe-selected-concept` (Disrupt) | Chosen concept with detailed narrative |
+| `spark-prompts.md` | `/vibe-ideate` (legacy) or `/vibe-concepts` (Disrupt) | GitHub Spark and Copilot Studio prompts |
+| `engineering-brief.md` | `/vibe-ideate` (legacy) or engineer's first Build task (Disrupt path) | Structured handoff for the dev engineer |
 | `prd.md` | `/vibe-prd` (optional) | **Derived combined PRD** — merges `requirements-summary.md` + `engineering-brief.md` into a single document. Only generated when a stakeholder requires it. |
 
 ## Source Materials

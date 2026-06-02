@@ -48,15 +48,8 @@ const IGNORE_PROMPT_REFS = new Set([
 ]);
 
 const IGNORE_AGENT_REFS = new Set([
-  // Forward-reference: the new Disrupt phase agent. The Disrupt prompts and reference
-  // doc already mention it because PR 1 ships the templates/prompts and PR 2 ships the
-  // agent itself. Remove this entry once .github/agents/vibe-disrupt.agent.md exists.
-  'vibe-disrupt',
-  // Add other examples or future-state placeholders here, e.g. 'vibe-fictional'.
-  //
-  // Note: the agent-ref regex matches `VIBE` followed by space-separated capitalised
-  // words. Names containing `&` or hyphens (e.g. "VIBE Design & Develop") will only
-  // partial-match; if you introduce such a name, prefer a single-word slug.
+  // Forward-reference placeholders for agents that don't exist yet.
+  // (Currently empty — vibe-disrupt agent now exists.)
 ]);
 
 /* --------------------------------------------------------------------- *

@@ -1,6 +1,6 @@
 ---
 description: "Map the future-state user journey from current-state + selected concept — Disrupt deliverable (Wk 2)"
-agent: "VIBE Engagement Lead"
+agent: "VIBE Disrupt"
 argument-hint: "[engagement=...]"
 ---
 
