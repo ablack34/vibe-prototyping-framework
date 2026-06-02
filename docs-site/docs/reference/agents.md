@@ -11,12 +11,13 @@ All VIBE agents and their roles.
 
 | Agent | Phase | Description |
 |-------|-------|-------------|
-| `@VIBE Engagement Lead` | All | Orchestrator — manages all 6 phases, shows the Preparation **and** Discovery (9 readiness fields + 3 required deliverables) dashboards, tells you what to do next |
+| `@VIBE Engagement Lead` | All | Orchestrator — manages all phases (Preparation → Discover → Disrupt → Design & Develop → Deliver, with legacy Define + Ideate alternative path after Discover), shows the Preparation, Discovery, **and Disrupt** readiness dashboards, detects which path the engagement took and presents the right Design & Develop handoff |
 | `@VIBE Preparation` | Preparation | Week 0 source-first orchestrator — drafts both briefs, kicks off dual-path research, generates the 4-week meeting schedule |
 | `@VIBE Discover` | Discover | Source-first context gathering — ingests docs, transcripts, questionnaires, then asks about gaps. Drives the three required deliverables (`personas.md`, `problem-statement.md`, `current-state-journey.md`) via `/vibe-personas`, `/vibe-problem-statement`, `/vibe-current-journey` |
 | `@VIBE Transcript Analyst` | Discover | Extracts VIBE-specific signals from Teams meeting transcripts |
-| `@VIBE Define` | Define | Problem framing, value analysis, use case prioritization — reads `personas.md`, `problem-statement.md`, and `current-state-journey.md` as canonical inputs (stops with a "go back to Discover" message if any are missing or below Grade B) |
-| `@VIBE Ideate` | Ideate | Brainstorms AI-powered concepts across form factors |
+| `@VIBE Disrupt` | Disrupt | **The one phase where the customer is in the room co-creating with us.** Orchestrates the Week-2 workshop end-to-end: pre-workshop agenda + candidate concepts (`/vibe-workshop-agenda`, `/vibe-concepts`); post-workshop record + selected concept + storyboard + future-state journey (`/vibe-workshop-record`, `/vibe-selected-concept`, `/vibe-storyboard`, `/vibe-future-journey`). The storyboard is the contract handed to engineering. |
+| `@VIBE Define` | Define (legacy) | Problem framing, value analysis, use case prioritization — reads `personas.md`, `problem-statement.md`, and `current-state-journey.md` as canonical inputs. Kept available for engagements that started before Disrupt existed; new engagements should use Disrupt. |
+| `@VIBE Ideate` | Ideate (legacy) | Brainstorms AI-powered concepts across form factors. Kept available for legacy engagements; new engagements use Disrupt's `/vibe-concepts` + `/vibe-selected-concept` instead. |
 | `@VIBE Data Prep` | Build | Guides preparation of customer data files for the prototype |
 | `@VIBE Deliver` | Deliver | Generates roadmap, backlog, limitations doc, and handoff package |
 

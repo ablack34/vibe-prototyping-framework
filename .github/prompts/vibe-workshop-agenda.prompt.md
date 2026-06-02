@@ -1,6 +1,6 @@
 ---
 description: "Generate the Disrupt workshop agenda from Discover deliverables — Disrupt deliverable (Wk 2, pre-workshop)"
-agent: "VIBE Engagement Lead"
+agent: "VIBE Disrupt"
 argument-hint: "[engagement=...]"
 ---
 
@@ -90,7 +90,7 @@ Update `state.json.readiness.disrupt.workshopAgenda`:
 }
 ```
 
-If `readiness.disrupt` does not yet exist in state.json, create it with this single field. (The full Disrupt readiness schema lands when the `@VIBE Disrupt` agent is introduced — until then, this field exists in isolation.)
+If `readiness.disrupt` does not yet exist in state.json, create it with this single field.
 
 ### Step 7 — Present and ask for review
 

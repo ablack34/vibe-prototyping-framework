@@ -1,6 +1,6 @@
 ---
 description: "Generate the storyboard from the selected concept + future-state journey — Disrupt flagship deliverable (Wk 2)"
-agent: "VIBE Engagement Lead"
+agent: "VIBE Disrupt"
 argument-hint: "[engagement=...]"
 ---
 
@@ -89,7 +89,7 @@ Update `state.json.readiness.disrupt.storyboard`:
 }
 ```
 
-If `readiness.disrupt` does not yet exist in state.json, create it. (Full Disrupt schema lands when the `@VIBE Disrupt` agent is introduced.)
+If `readiness.disrupt` does not yet exist in state.json, create it.
 
 ### Step 7 — Present and ask for review
 
