@@ -172,14 +172,15 @@ After completing all steps, present:
 - Summary of files processed (name, rows, columns)
 - Generated artifacts (types file, models file, service file, README)
 - Any issues or warnings discovered
-- Recommended next step: hand the prepared data to the engineer to scaffold the prototype in the form factor selected during Ideate (web app, conversational, agentic, Copilot extension, low-code, etc.)
+- Recommended next step: hand the prepared data to the engineer to scaffold the prototype in the form factor selected in `engagement/{{engagement-kebab}}/selected-concept.md` (web app, conversational, agentic, Copilot extension, low-code, etc.) — chosen during the Disrupt workshop, or during Ideate on the legacy path.
 
 End with a directive:
 
 ```
 ───────────────────────────────────────────
 👉 NEXT: Share `scaffold/data/README.md` with the engineer. They'll scaffold
-   the prototype in the form factor chosen during Ideate. If you ARE the
-   engineer, click "❓ What's Next?" for guidance.
+   the prototype in the form factor named in `selected-concept.md` (chosen
+   during the Disrupt workshop, or during Ideate on the legacy path). If you
+   ARE the engineer, click "❓ What's Next?" for guidance.
 ───────────────────────────────────────────
 ```

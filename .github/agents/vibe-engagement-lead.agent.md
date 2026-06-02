@@ -582,7 +582,7 @@ When recommending an action, name the role that typically owns it. This helps mi
 Format inline in the next-step directive when more than one role could plausibly do the action:
 
 ```
-👉 NEXT: Click "💡 Frame the Problem" (owner: PM, with CPM input) to move to the Define phase.
+👉 NEXT: Click "🎬 Begin Disrupt Workshop" (owner: PM, with CPM and UXD) to kick off the customer co-creation week.
 ```
 
 Omit the role tag when it's obvious (e.g. data prep is always DS or UXE; deployment is always UXE).

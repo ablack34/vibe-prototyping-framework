@@ -67,7 +67,7 @@ You can run a full engagement end-to-end against a fixture customer before doing
 /vibe-demo
 ```
 
-This seeds [`sources/`](sources/) and [`engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md`](engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md) with the **Contoso Field Services — Dispatcher AI** fixture (customer brief, questionnaire responses, two Teams transcripts, three CSVs) and pre-seeds the three required Discover deliverables (personas, problem statement, current-state journey) into `engagement/contoso-dispatcher-ai/` so the Discover gate is already green. From there `@VIBE Discover`, `@VIBE Disrupt` (or legacy `@VIBE Define` + `/vibe-ideate`) and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/contoso/`](demo/contoso/).
+This seeds [`sources/`](sources/) with the **Contoso Field Services — Dispatcher AI** fixture (customer brief, questionnaire responses, two Teams transcripts, three CSVs) and creates `engagement/contoso-dispatcher-ai/` with a filled `PROJECT-CONTEXT.md` plus a populated `customer-brief.md` and a blank-scaffold `engagement-brief.md` (so `@VIBE Preparation` has real work to do). The three Discover deliverables (personas, problem statement, current-state journey) are **not** pre-seeded — they're generated fresh when you run `@VIBE Discover` so you can see the agent actually work. From there `@VIBE Discover`, `@VIBE Disrupt` (or legacy `@VIBE Define` + `/vibe-ideate`) and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/contoso/`](demo/contoso/).
 
 ---
 
