@@ -31,7 +31,7 @@ The handoff data is form-factor agnostic — how it's displayed depends on the p
 
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
-| `templates/PROJECT-CONTEXT.md` | `handoff-data.json` — structured handoff data with all sections |
+| `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` | `handoff-data.json` — structured handoff data with all sections |
 | `templates/requirements-summary.md` | `templates/PROTOTYPE-LIMITATIONS.md` — honest limitations |
 | `templates/solution-design.md` | Updated `state.json` — deliver phase complete |
 | `templates/CHECK-IN-NOTES.md` | |
@@ -54,7 +54,7 @@ Before producing deliverables, verify these artifacts exist. Flag any that are m
 
 | Artifact | Required? | If Missing |
 |----------|----------|-----------|
-| `templates/PROJECT-CONTEXT.md` (filled) | Yes | Cannot proceed — run `@VIBE Discover` first |
+| `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` (filled) | Yes | Cannot proceed — run `@VIBE Discover` first |
 | `templates/requirements-summary.md` (approved) | Yes | Cannot proceed — run `@VIBE Define` first |
 | `templates/solution-design.md` | Recommended | Deliver will work but handoff will be less complete |
 | `templates/CHECK-IN-NOTES.md` | Recommended | Roadmap won't include customer feedback |

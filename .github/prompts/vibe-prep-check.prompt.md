@@ -16,8 +16,8 @@ A focused health-check for the **Preparation phase only**. Lighter and faster th
 
 | # | Check | Severity if missing |
 |---|---|---|
-| 1 | `templates/engagement-brief.md` is filled (not just placeholders) | **critical** |
-| 2 | `templates/customer-brief.md` is filled (not just placeholders) | **critical** |
+| 1 | `engagement/{{engagement-kebab}}/engagement-brief.md` is filled (not just placeholders) | **critical** |
+| 2 | `engagement/{{engagement-kebab}}/customer-brief.md` is filled (not just placeholders) | **critical** |
 | 3 | `sources/research/customer-public.md` exists with cited sources | warn |
 | 4 | `sources/research/m365-researcher-prompt.md` was generated | warn |
 | 5 | `sources/research/research-summary.md` exists (both research paths complete) | warn |

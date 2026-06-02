@@ -18,8 +18,8 @@ This is the framing the entire Disrupt workshop pivots around. It must sound lik
 
 ### Step 1 — Read all sources
 
-- `templates/PROJECT-CONTEXT.md` (especially Section 3 Problem Statement — has the kickoff seed)
-- `templates/customer-brief.md` (the customer's voice — language to mirror)
+- `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` (especially Section 3 Problem Statement — has the kickoff seed)
+- `engagement/{{engagement-kebab}}/customer-brief.md` (the customer's voice — language to mirror)
 - `engagement/{{engagement-kebab}}/personas.md` (the primary persona is the "I am")
 - Every transcript in `sources/` (look for pain quotes, impact mentions, root-cause statements)
 - `sources/questionnaire-responses.md` (especially impact / "why does this matter" questions)

@@ -1,6 +1,6 @@
 # Problem Statement
 
-> **Discover deliverable.** **Auto-generated** by `/vibe-problem-statement` from `templates/PROJECT-CONTEXT.md`, `engagement/{{engagement-kebab}}/personas.md`, and your sources. Review, refine the language with the customer, and approve.
+> **Discover deliverable.** **Auto-generated** by `/vibe-problem-statement` from `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md`, `engagement/{{engagement-kebab}}/personas.md`, and your sources. Review, refine the language with the customer, and approve.
 >
 > **How this document gets populated:**
 > 1. `@VIBE Discover` fills PROJECT-CONTEXT.md Section 3 (Problem Statement) from sources

@@ -18,7 +18,7 @@ This is the document the **Disrupt workshop transforms** into a future-state jou
 
 ### Step 1 — Read all sources
 
-- `templates/PROJECT-CONTEXT.md` (Section 5 Data Available — system inventory; Section 6 Stakeholders)
+- `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` (Section 5 Data Available — system inventory; Section 6 Stakeholders)
 - `engagement/{{engagement-kebab}}/personas.md` (the primary persona is the journey's protagonist)
 - `engagement/{{engagement-kebab}}/problem-statement.md` (the "Because..." line names the systemic blockers)
 - Every transcript in `sources/` (look for descriptions of "how it works today", "first I do X, then Y", screen-share narrations)

@@ -51,7 +51,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Say (while it runs):**
 > "One command. The harness is copying the Contoso fixture into `sources/` — the customer brief, two questionnaires, two transcripts, three CSV files. It's also pre-filling `PROJECT-CONTEXT.md` with the customer details and creating the engagement folder structure. This is the equivalent of about 90 minutes of setup that a TPM would normally do by hand before they can even start the engagement."
 
-**Show when done:** The `sources/` folder populated, `templates/PROJECT-CONTEXT.md` with Sandra Holtz / Matthias Köhler filled in.
+**Show when done:** The `sources/` folder populated, `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` with Sandra Holtz / Matthias Köhler filled in.
 
 ---
 

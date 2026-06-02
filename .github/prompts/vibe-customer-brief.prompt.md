@@ -6,7 +6,9 @@ argument-hint: "[engagement=...]"
 
 # VIBE Customer Brief
 
-Produce `templates/customer-brief.md` in the customer's voice. Handles three situations: the customer wrote one themselves, the customer hasn't written one (extract from sales artefacts), or more sources have arrived and the brief needs a refresh.
+Produce `engagement/{{engagement-kebab}}/customer-brief.md` in the customer's voice. Handles three situations: the customer wrote one themselves, the customer hasn't written one (extract from sales artefacts), or more sources have arrived and the brief needs a refresh.
+
+If `engagement/{{engagement-kebab}}/customer-brief.md` doesn't exist yet (e.g. the engagement was scaffolded before this prompt was added), copy `templates/customer-brief.md` to that path first and fill it there. **Never modify `templates/customer-brief.md`** — it's a blank scaffold.
 
 This is one of the two core artifacts of the Preparation phase. It is distinct from `engagement-brief.md` (Studio 42 internal). Together they cover both sides of the engagement worldview before Discover starts.
 
@@ -38,7 +40,7 @@ Categorize each source as `customer-authored`, `customer-quoted`, or `s42-narrat
 
 ### Step 3 — Write the brief
 
-Fill `templates/customer-brief.md` following its structure. Critical rules:
+Fill `engagement/{{engagement-kebab}}/customer-brief.md` following its structure. Critical rules:
 
 - **First-person, plain language.** "We have 280 technicians," not "The customer operates a workforce of 280 technicians."
 - **Quote directly when possible.** If the customer said "dispatchers get yelled at by customers" in a transcript, use that line, with `[quoted from transcript-kickoff.md, 11:42]`.

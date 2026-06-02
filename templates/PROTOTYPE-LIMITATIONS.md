@@ -60,6 +60,6 @@
 | Source code | This repository | Full React + .NET codebase |
 | Requirements | `templates/requirements-summary.md` | Approved requirements |
 | Solution design | `templates/solution-design.md` | Architecture and decisions |
-| Product roadmap | `templates/PROJECT-CONTEXT.md` | Full engagement context |
+| Product roadmap | `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` | Full engagement context |
 | ADO backlog | {{ADO_PROJECT_URL}} | Epics, features, and user stories |
 | Deployed prototype | {{PROTOTYPE_URL}} | Live Azure deployment |

@@ -20,9 +20,9 @@ This is **source-first**: read every available source before fabricating any per
 
 Read everything that could yield persona signal:
 
-- `templates/PROJECT-CONTEXT.md` (Section 6 Stakeholders, Section 8 User Personas if filled)
-- `templates/customer-brief.md` (the customer's voice — names roles in their language)
-- `templates/engagement-brief.md` (S42 view — names key stakeholders)
+- `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` (Section 6 Stakeholders, Section 8 User Personas if filled)
+- `engagement/{{engagement-kebab}}/customer-brief.md` (the customer's voice — names roles in their language)
+- `engagement/{{engagement-kebab}}/engagement-brief.md` (S42 view — names key stakeholders)
 - Every transcript in `sources/` (look for first-person speakers, named individuals, quoted pains)
 - `sources/questionnaire-responses.md` (or equivalent)
 - `sources/research/research-summary.md` (industry persona research from Preparation)

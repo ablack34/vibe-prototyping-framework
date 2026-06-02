@@ -1,6 +1,6 @@
 # Current-State User Journey
 
-> **Discover deliverable.** **Auto-generated** by `/vibe-current-journey` from `templates/PROJECT-CONTEXT.md` Section 5 (Data Available), `engagement/{{engagement-kebab}}/personas.md`, and your sources. Review and approve.
+> **Discover deliverable.** **Auto-generated** by `/vibe-current-journey` from `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` Section 5 (Data Available), `engagement/{{engagement-kebab}}/personas.md`, and your sources. Review and approve.
 >
 > **How this document gets populated:**
 > 1. `@VIBE Discover` fills PROJECT-CONTEXT.md with stakeholders, systems, and current-state context

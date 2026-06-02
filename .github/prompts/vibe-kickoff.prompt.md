@@ -23,10 +23,10 @@ Start a new VIBE Prototyping engagement. Creates the engagement tracking structu
    - If replacing: delete the old directory before creating the new one
 
 1. Create `engagement/{{engagement-kebab}}/` (committed shared artifacts) and `.copilot-tracking/vibe/{{engagement-kebab}}/` (gitignored per-user state), using a kebab-case name derived from the customer and project.
-2. Fill `templates/PROJECT-CONTEXT.md` with the provided inputs (this is the canonical copy — don't duplicate it).
-3. **Generate both briefs** from the inputs:
-   - Copy `templates/engagement-brief.md` and fill known fields (the Studio 42 internal view: commercial context, squad, risks).
-   - Copy `templates/customer-brief.md` and fill known fields **in the customer's voice** based on the kickoff inputs. Mark the doc `[DRAFT — needs customer validation]` at the top since this is generated, not customer-authored. Mark unknown fields with `[needs follow-up]` rather than fabricating.
+2. Copy `templates/PROJECT-CONTEXT.md` to `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` and fill it with the provided inputs. **The engagement copy is the canonical filled-in version — `templates/PROJECT-CONTEXT.md` stays a blank scaffold and must never be modified.**
+3. **Generate both briefs** from the inputs (same copy-and-fill pattern — every filled artifact lives in `engagement/{{engagement-kebab}}/`, not `templates/`):
+   - Copy `templates/engagement-brief.md` to `engagement/{{engagement-kebab}}/engagement-brief.md` and fill known fields (the Studio 42 internal view: commercial context, squad, risks).
+   - Copy `templates/customer-brief.md` to `engagement/{{engagement-kebab}}/customer-brief.md` and fill known fields **in the customer's voice** based on the kickoff inputs. Mark the doc `[DRAFT — needs customer validation]` at the top since this is generated, not customer-authored. Mark unknown fields with `[needs follow-up]` rather than fabricating.
 4. Initialize `state.json` with engagement metadata, readiness tracking, and set `currentPhase` to **`preparation`** (not `discover` — Preparation runs first now).
 5. **Generate the full 4-week meeting schedule** in `sources/meeting-templates.md` covering all 7 meetings (Kickoff, Discover Working Session 1, Discover Working Session 2, Disrupt Workshop, Check-in 1, Check-in 2, Handoff). Each entry uses the `[VIBE] {{Customer}} — {{Type}}` naming convention and includes a copy-paste-ready Outlook invite body. This replaces the older "4 generic templates" approach. (See `/vibe-schedule` for the canonical schedule structure.)
 6. Present a summary of what was created and recommend handing off to the Preparation agent:
@@ -41,10 +41,9 @@ Start a new VIBE Prototyping engagement. Creates the engagement tracking structu
 
 📁 Files created:
   • .copilot-tracking/vibe/{{engagement-kebab}}/state.json (per-user, gitignored)
-  • engagement/{{engagement-kebab}}/ (committed — agent outputs land here)
-  • templates/PROJECT-CONTEXT.md (filled in)
-  • templates/engagement-brief.md (S42 internal, draft)
-  • templates/customer-brief.md (customer voice, [DRAFT — needs customer validation])
+  • engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md (filled in)
+  • engagement/{{engagement-kebab}}/engagement-brief.md (S42 internal, draft)
+  • engagement/{{engagement-kebab}}/customer-brief.md (customer voice, [DRAFT — needs customer validation])
   • sources/meeting-templates.md (full 4-week schedule — 7 meetings, copy into Outlook)
 
 📋 Next steps (in order):

@@ -18,7 +18,7 @@ Produce `sources/meeting-templates.md` with **every meeting the engagement needs
 
 ### Step 1 — Read context
 
-Read `templates/PROJECT-CONTEXT.md` for customer name + sponsor. Read `templates/engagement-brief.md` for squad roster. Read `templates/customer-brief.md` for any timing constraints the customer mentioned.
+Read `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` for customer name + sponsor. Read `engagement/{{engagement-kebab}}/engagement-brief.md` for squad roster. Read `engagement/{{engagement-kebab}}/customer-brief.md` for any timing constraints the customer mentioned.
 
 ### Step 2 — Produce the 4-week schedule
 

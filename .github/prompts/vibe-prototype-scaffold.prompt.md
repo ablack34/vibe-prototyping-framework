@@ -33,7 +33,7 @@ The scaffold in `scaffold/` is a **React 19 + .NET 9** stack for **web-app** for
    Only continue past this step if the form factor is web-app or the user explicitly overrides.
 
 1. Read these files to understand what needs to be built:
-   - `templates/PROJECT-CONTEXT.md` — Problem, personas, desired outcome
+   - `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` — Problem, personas, desired outcome
    - `templates/requirements-summary.md` — Prioritized requirements with acceptance criteria
    - `templates/solution-design.md` — Architecture and build phases (if exists)
    - `scaffold/data/README.md` — Available data models (if data prep has been done)

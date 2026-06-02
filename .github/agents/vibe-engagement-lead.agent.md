@@ -95,8 +95,8 @@ Create:
 
 - `engagement/{{engagement-kebab}}/` — shared artifacts folder (committed)
 - `.copilot-tracking/vibe/{{engagement-kebab}}/state.json` — per-user engagement state (gitignored)
-- Fill `templates/PROJECT-CONTEXT.md` with the kickoff inputs (this is the single canonical copy, no duplicate)
-- Copy `templates/engagement-brief.md` placeholders if not already filled
+- Fill `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` with the kickoff inputs (this is the single canonical copy, no duplicate)
+- Copy `engagement/{{engagement-kebab}}/engagement-brief.md` placeholders if not already filled
 
 Initialize `state.json`:
 
@@ -190,7 +190,7 @@ Hand off to **`VIBE Preparation`** via the **🛠 Begin Preparation** button. Th
 
 - Read everything in `sources/`
 - Kick off `/vibe-research` (public web via Task Researcher + paste-back prompt for M365 Copilot's Researcher agent)
-- Populate `templates/engagement-brief.md` and `templates/customer-brief.md` from sources
+- Populate `engagement/{{engagement-kebab}}/engagement-brief.md` and `engagement/{{engagement-kebab}}/customer-brief.md` from sources
 - Finalize the 4-week meeting schedule
 - Show the 7-field Preparation readiness dashboard
 - Hand off to Discover only when all 7 fields are at Grade B or higher
@@ -363,7 +363,7 @@ When the user asks what to do next (or at the start of any conversation), follow
 2. **Scan the actual file system** to detect drift:
    - List `engagement/{{engagement-kebab}}/` — each artifact present (`discovery-summary.md`, `transcript-analysis.md`, `personas.md`, `problem-statement.md`, `current-state-journey.md`, `workshop-agenda.md`, `ideation-concepts.md`, `selected-concept.md`, `spark-prompts.md`, `storyboard.md`, `future-state-journey.md`, `workshop-record.md`, `engineering-brief.md`, `handoff-data.json`) bumps the corresponding phase from `not-started`/`in-progress`/`complete` even if state.json says otherwise.
    - List `sources/` — count customer documents, transcript files, questionnaire responses.
-   - Check `templates/PROJECT-CONTEXT.md` and `templates/requirements-summary.md` — if they have real content (not just placeholders), mark the corresponding readiness fields.
+   - Check `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` and `templates/requirements-summary.md` — if they have real content (not just placeholders), mark the corresponding readiness fields.
    - Check `scaffold/data/` and `scaffold/web/src/api.ts` — if customer data has been wired in, Build is underway.
 3. **If the file system shows progress that state.json doesn't, update state.json** silently and use the reconciled state to report. Tell the user once at the bottom: *"I refreshed your local state.json to match what's in the repo."*
 4. **Then** present the readiness dashboard.

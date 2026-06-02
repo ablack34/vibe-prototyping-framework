@@ -63,5 +63,5 @@ Contoso Field Services GmbH is a Munich-headquartered HVAC and industrial-coolin
 
 - `sources/research/customer-public.md` — public web research (Task Researcher, 2026-05-12)
 - `sources/research/m365-researcher-results.md` — M365 Copilot Researcher (Priya Raman, 2026-05-13)
-- `templates/customer-brief.md` — customer's own voice (Sandra Holtz)
-- `templates/engagement-brief.md` — Studio 42 internal brief
+- `engagement/contoso-dispatcher-ai/customer-brief.md` — customer's own voice (Sandra Holtz)
+- `engagement/contoso-dispatcher-ai/engagement-brief.md` — Studio 42 internal brief

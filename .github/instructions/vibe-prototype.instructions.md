@@ -14,7 +14,7 @@ Standards for prototype code. Prototypes prioritize speed and clarity over produ
 Before building any UI:
 
 1. Read `templates/requirements-summary.md` for what needs to be demonstrated
-2. Read `templates/PROJECT-CONTEXT.md` for personas and desired outcomes
+2. Read `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` for personas and desired outcomes
 3. Choose layout patterns that fit the problem (dashboard, wizard, chat, form, map, timeline — whatever is appropriate)
 4. Choose a visual tone that fits the customer's context (enterprise, clinical, consumer, creative)
 5. Only build components the requirements call for

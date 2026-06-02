@@ -146,7 +146,7 @@ Scenes below map to these stages — typically one scene per stage, sometimes tw
 | 2 | `engagement/{{engagement-kebab}}/current-state-journey.md` § Stage {{N}} | {{REFERENCE}} |
 | 3 | `engagement/{{engagement-kebab}}/selected-concept.md` | {{REFERENCE}} |
 | 4 | `engagement/{{engagement-kebab}}/future-state-journey.md` § Stage {{N}} | {{REFERENCE}} |
-| 5 | `templates/engagement-brief.md` § Success metrics | {{REFERENCE}} |
+| 5 | `engagement/{{engagement-kebab}}/engagement-brief.md` § Success metrics | {{REFERENCE}} |
 
 ---
 

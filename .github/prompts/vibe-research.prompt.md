@@ -36,7 +36,7 @@ If `sources/research/` doesn't exist, create it.
 
 ### Step 1 — Frame the research
 
-Read `templates/engagement-brief.md` and `templates/customer-brief.md`. Compose a 5-7 line research framing that includes:
+Read `engagement/{{engagement-kebab}}/engagement-brief.md` and `engagement/{{engagement-kebab}}/customer-brief.md`. Compose a 5-7 line research framing that includes:
 
 - Customer name + sector
 - The problem we're trying to help with

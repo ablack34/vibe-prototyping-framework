@@ -21,7 +21,7 @@ Process feedback from a customer check-in meeting. Supports two input modes:
 1. If `source=transcript`: delegate to `VIBE Transcript Analyst` with `type=check-in`. The agent finds the most recent `[VIBE]` meeting for this engagement. Then append extracted findings to `templates/CHECK-IN-NOTES.md`.
 2. If `source=notes`: ask the user to paste their raw notes, then structure them into the CHECK-IN-NOTES.md check-in log format (What Was Shown, Customer Feedback, Decisions Made, New Requests, Action Items).
 3. If `templates/CHECK-IN-NOTES.md` doesn't exist yet (first check-in), create it from the template. For subsequent check-ins, append a new entry.
-4. In both modes, update `templates/PROJECT-CONTEXT.md` with any new decisions or requirements discovered.
+4. In both modes, update `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` with any new decisions or requirements discovered.
 5. Update the engagement `state.json` with a check-in timestamp.
 6. Present a summary of extracted items and recommend next actions.
 

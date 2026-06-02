@@ -30,8 +30,8 @@ The Discover deliverables anchor every concept. Block with `👉 BLOCKED:` if an
 Read everything that anchors the concepts:
 
 - The 3 Discover deliverables above (treat as canonical)
-- `templates/PROJECT-CONTEXT.md` — for the desired-outcome and data inventory
-- `templates/customer-brief.md` and `templates/engagement-brief.md` — for the customer's voice and S42 view
+- `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` — for the desired-outcome and data inventory
+- `engagement/{{engagement-kebab}}/customer-brief.md` and `engagement/{{engagement-kebab}}/engagement-brief.md` — for the customer's voice and S42 view
 - `sources/research/research-summary.md` — if it exists, for industry context
 - `engagement/{{engagement-kebab}}/workshop-agenda.md` (if exists) — to know what the customer is expecting to see in the workshop
 - Any prior `engagement/{{engagement-kebab}}/ideation-concepts.md` — don't overwrite signed-off concepts; append new variants instead

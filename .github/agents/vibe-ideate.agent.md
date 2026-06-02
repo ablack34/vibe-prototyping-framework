@@ -30,7 +30,7 @@ This phase is for the **whole squad** (TPMs, designers, engineers) and can even 
 
 | Reads (Input) | Produces (Output) |
 |--------------|-------------------|
-| `templates/PROJECT-CONTEXT.md` — problem, personas, desired outcome | `ideation-concepts.md` — 2-3 concepts with comparison |
+| `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` — problem, personas, desired outcome | `ideation-concepts.md` — 2-3 concepts with comparison |
 | `templates/requirements-summary.md` — prioritized use cases | `selected-concept.md` — chosen concept with narrative |
 | `engagement/{{engagement-kebab}}/` — transcript analysis, discovery summary | `spark-prompts.md` — GitHub Spark + Copilot Studio prompts |
 | `sources/` — customer documents | `engineering-brief.md` — structured handoff for the engineer |
@@ -109,7 +109,7 @@ This is powerful because the TPM or designer can visualize concepts and get cust
 
 Read:
 
-- `templates/PROJECT-CONTEXT.md` (or the engagement copy) — Problem, personas, desired outcome
+- `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` — Problem, personas, desired outcome
 - `templates/requirements-summary.md` — Prioritized requirements
 - `engagement/{{engagement-kebab}}/` — Transcript analysis, discovery summary, any ideation artifacts
 - `sources/` — Any customer documents, questionnaire responses, workshop notes
