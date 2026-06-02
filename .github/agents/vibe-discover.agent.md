@@ -18,9 +18,13 @@ handoffs:
     agent: VIBE Discover
     prompt: /vibe-current-journey
     send: true
-  - label: "💡 Move to Define"
+  - label: "🎬 Begin Disrupt Workshop"
+    agent: VIBE Disrupt
+    prompt: "Discovery is complete. Begin the Disrupt phase — generate the workshop agenda and pre-vet candidate concepts before the workshop, then capture the workshop output. Disrupt is the one phase where the customer is in the room co-creating with us."
+    send: true
+  - label: "💡 Move to Define (legacy)"
     agent: VIBE Define
-    prompt: "Discovery is complete. Begin problem framing and use case prioritization."
+    prompt: "Discovery is complete. Begin problem framing and use case prioritization. Note: Define + Ideate are the legacy path — new engagements should use Disrupt instead."
     send: true
   - label: "🔍 Deep Research"
     agent: Task Researcher
