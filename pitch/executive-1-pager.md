@@ -23,7 +23,7 @@ To scale AI-first consulting, we don't need a new offering. We need a **delivery
 | | |
 |---|---|
 | 🤖 **Agents do the paperwork** | TPM facilitates and captures sources; the harness handles synthesis, documentation, ideation, and handoff |
-| 👥 **3 of 5 phases run without an engineer** | Discover, Define, Ideate driven by TPM or designer — engineers spend Build time on the prototype, not interviewing the team |
+| 👥 **4 of 5 phases run without an engineer** | Preparation, Discover, Disrupt, and Deliver driven by TPM or designer — engineers spend Build time on the prototype, not interviewing the team |
 | 📊 **Process-dependent quality** | Any team member with the harness produces the same high-quality artifacts — best practices encoded in the tooling, not tribal knowledge |
 | ♻️ **Improvements compound** | Every engagement that uses the harness surfaces an improvement that helps the next one |
 
@@ -31,7 +31,7 @@ To scale AI-first consulting, we don't need a new offering. We need a **delivery
 
 ## Proof you can see today
 
-- **Run it yourself**: `/vibe-demo` in any clone of the template seeds a full Contoso Field Services scenario — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief — and walks Discover → Define → Ideate → Build → Deliver end-to-end
+- **Run it yourself**: `/vibe-demo` in any clone of the template seeds a full Contoso Field Services scenario — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief — and walks Preparation → Discover → Disrupt → Build → Deliver end-to-end
 - **Browse the docs**: [https://wonderful-flower-0a2a87e03.7.azurestaticapps.net](https://wonderful-flower-0a2a87e03.7.azurestaticapps.net)
 - **Track record**: the harness codifies the patterns that delivered Siemens, Novartis, and Coca-Cola. **The floor we're raising.**
 

@@ -14,6 +14,9 @@
  *   7. "The N Phases"     label whose number-word doesn't match the actual count
  *   8. state.json.*       paths in any markdown that don't match the canonical
  *                         schema declared in vibe-engagement-lead.agent.md
+ *   9. Retired phase names (Define / Ideate) referenced in user-facing prose
+ *                         after PR #13 retired those phases (with allowlists for
+ *                         history, migration, and verb usage).
  *
  * Pure Node ESM, no external dependencies. Exit 0 if all errors clean,
  * exit 1 if any error finding, exit 2 on unexpected failure. Warnings
@@ -706,6 +709,78 @@ async function checkPhaseCountProse(expectedPhaseCount) {
 }
 
 /* --------------------------------------------------------------------- *
+ * Retired-phase-name check (error)                                       *
+ *                                                                        *
+ * PR #13 retired the Define and Ideate phases (folded into Discover and  *
+ * Disrupt respectively). Stale references survived in 16 places across   *
+ * 11 user-facing files because the other checks only validate structured *
+ * references (state.json keys, /vibe-* prompts) — not prose phase names. *
+ *                                                                        *
+ * This check flags `\b(Define|Ideate)\b` in user-facing surfaces:        *
+ *   - docs-site/docs/**, templates/**, pitch/**, demo/**, README.md      *
+ *                                                                        *
+ * Internal files allowed to mention the names (history, migration, or    *
+ * verb usage) are explicitly allowlisted. Same with specific line        *
+ * patterns (VIBE acronym tagline, "Define future-state journey" verb).   *
+ *                                                                        *
+ * If a new legitimate use surfaces, add it to one of the allowlists.     *
+ * --------------------------------------------------------------------- */
+
+const RETIRED_PHASE_ALLOW_FILES = new Set([
+  // Documents the phase change history — must name the retired phases by name.
+  '.github/PHASE_CHANGE_PLAYBOOK.md',
+  // Migration logic for legacy state.json files names the retired phase keys
+  // explicitly so older engagements can be normalised on the fly.
+  '.github/agents/vibe-engagement-lead.agent.md',
+  // "Define personas as a typed enum" — verb usage in coding standard.
+  '.github/instructions/vibe-prototype.instructions.md',
+  // Spoken-line quote explaining the change ("it replaces what we used to split
+  // into Define and Ideate"). Removing the phase names would defeat the point.
+  'pitch/demo-script.md',
+  // This file mentions the names in allowlists and explanatory comments.
+  'scripts/check-phase-consistency.mjs',
+]);
+
+const RETIRED_PHASE_ALLOW_LINE_PATTERNS = [
+  // VIBE acronym tagline on the landing page — "Ideate" here is the I in VIBE,
+  // not the retired phase.
+  /Visualize\.\s+Ideate\.\s+Build\.\s+Evaluate\./,
+  // Disrupt workshop agenda step heading — "Define" is a verb ("the step where
+  // you define the future-state journey"), not the retired phase.
+  /Define future-state journey/,
+];
+
+async function checkRetiredPhaseNames(files) {
+  const regex = /\b(Define|Ideate)\b/g;
+  const inScope = (file) => {
+    const rel = relative(repoRoot, file).replace(/\\/g, '/');
+    if (RETIRED_PHASE_ALLOW_FILES.has(rel)) return false;
+    return (
+      rel.startsWith('docs-site/docs/') ||
+      rel.startsWith('templates/') ||
+      rel.startsWith('pitch/') ||
+      rel.startsWith('demo/') ||
+      rel === 'README.md' ||
+      rel === 'CONTRIBUTING.md'
+    );
+  };
+  for (const file of files) {
+    if (!inScope(file)) continue;
+    const content = await readFile(file, 'utf8');
+    const lines = content.split('\n');
+    lines.forEach((line, i) => {
+      if (RETIRED_PHASE_ALLOW_LINE_PATTERNS.some(p => p.test(line))) return;
+      regex.lastIndex = 0;
+      let m;
+      while ((m = regex.exec(line)) !== null) {
+        addFinding('error', 'retired-phase', file, i + 1,
+          `references retired phase "${m[1]}" — Define and Ideate were folded into Discover and Disrupt in PR #13. Use "Disrupt" or "Discover" instead, or add an allowlist entry in scripts/check-phase-consistency.mjs if this is a legitimate verb/historical usage.`);
+      }
+    });
+  }
+}
+
+/* --------------------------------------------------------------------- *
  * Reporting                                                              *
  * --------------------------------------------------------------------- */
 
@@ -755,7 +830,7 @@ function printReport() {
     'prompt-ref', 'prompt-path', 'agent-ref', 'agent-frontmatter',
     'sidebar-pos', 'sidebar-label', 'sidebar-items',
     'schema-load', 'state-path',
-    'reference-docs', 'phase-count-prose',
+    'reference-docs', 'phase-count-prose', 'retired-phase',
   ];
   const orderedKeys = [
     ...checkOrder.filter(k => byCheck.has(k)),
@@ -799,6 +874,7 @@ async function main() {
   await checkStateJsonRefs(files, schema);
   await checkReferenceDocCompleteness();
   await checkPhaseCountProse(phaseCount);
+  await checkRetiredPhaseNames(files);
 
   return printReport();
 }

@@ -67,7 +67,7 @@
 
 ## 4. Tech Stack
 
-> **Determined after the Ideate phase.** The prototype's form factor and technology
+> **Determined after the Disrupt workshop.** The prototype's form factor and technology
 > should be driven by the selected concept, not prescribed upfront.
 > The engineer fills this section during Design & Develop.
 

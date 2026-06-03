@@ -75,4 +75,4 @@ Discover cannot close until **every persona is at Grade B or higher**. The `stat
 |---|---|---|---|
 | {{REVIEWER_NAME}} | {{REVIEWER_ROLE}} | {{DATE}} | {{SIGNATURE}} |
 
-> Customer sign-off is recommended (but not required) before moving to Define. If the customer has not yet reviewed, leave the row blank and add it after the next check-in.
+> Customer sign-off is recommended (but not required) before moving to Disrupt. If the customer has not yet reviewed, leave the row blank and add it after the next check-in.

@@ -62,7 +62,7 @@ To scale AI-first consulting, we don't need a new offering. We need to remove th
   <div className="value-card">
     <div className="value-icon">👥</div>
     <h3>Empowerment</h3>
-    <p>4 of 6 phases run without an engineer. AI-first consulting becomes a TPM-led practice — engineers stop being the bottleneck and start being the multiplier.</p>
+    <p>4 of 5 phases run without an engineer. AI-first consulting becomes a TPM-led practice — engineers stop being the bottleneck and start being the multiplier.</p>
   </div>
 </div>
 
@@ -100,7 +100,7 @@ You don't have to take any of this on faith. The harness ships with a complete d
   <div className="value-card">
     <div className="value-icon">▶️</div>
     <h3>3 — Run the engagement</h3>
-    <p>Click the prompts the agent suggests: Preparation → Discover → Define → Ideate → Build → Deliver. Watch the artifacts populate.</p>
+    <p>Click the prompts the agent suggests: Preparation → Discover → Disrupt → Build → Deliver. Watch the artifacts populate.</p>
   </div>
   <div className="value-card">
     <div className="value-icon">📖</div>

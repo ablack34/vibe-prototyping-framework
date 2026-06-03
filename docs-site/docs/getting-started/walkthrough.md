@@ -117,7 +117,7 @@ Grades — 9 readiness fields:
   Desired outcome        B   Data inventory         B
   Stakeholder map        A   Success criteria       C (customer hasn't signed off on
                                                        quantified targets yet — carry
-                                                       this into Define as the first
+                                                       this into Disrupt as the first
                                                        thing to lock with the customer)
   Constraints            A
 

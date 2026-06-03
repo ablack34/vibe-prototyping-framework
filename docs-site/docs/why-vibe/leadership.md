@@ -63,31 +63,25 @@ The harness moves VIBE methodology from people's heads into tooling. The deliver
   </div>
   <div className="phase-card">
     <div className="phase-number">03</div>
-    <h3>Define</h3>
-    <p>Harness frames the $50K vs $50M value, prioritizes use cases with evidence-based scoring, generates requirements.</p>
-    <div className="phase-who">👥 TPM / Designer</div>
+    <h3>Disrupt</h3>
+    <p>Week 2 workshop with the customer. Harness drafts the agenda, generates 2-3 concept candidates + Spark prompts pre-workshop, then captures the workshop record and produces future-journey + storyboard.</p>
+    <div className="phase-who">👥 Delivery team + customer</div>
   </div>
   <div className="phase-card">
     <div className="phase-number">04</div>
-    <h3>Ideate</h3>
-    <p>Harness brainstorms 2-3 concepts across form factors. Validated against requirements. Spark prompts for instant visualization.</p>
-    <div className="phase-who">👥 Anyone</div>
-  </div>
-  <div className="phase-card">
-    <div className="phase-number">05</div>
     <h3>Build</h3>
     <p>Engineer receives a structured brief. Builds from the concept, not from scratch. Check-in feedback captured automatically.</p>
     <div className="phase-who">🔧 Engineer</div>
   </div>
   <div className="phase-card">
-    <div className="phase-number">06</div>
+    <div className="phase-number">05</div>
     <h3>Deliver</h3>
     <p>Harness generates handoff package step by step: vision, roadmap, backlog, limitations — all validated for consistency.</p>
     <div className="phase-who">👥 Anyone</div>
   </div>
 </div>
 
-**4 of 6 phases run without an engineer.** A TPM or designer drives most of the engagement independently. Engineering capacity stops being the bottleneck.
+**4 of 5 phases run without an engineer.** A TPM or designer drives most of the engagement independently. Engineering capacity stops being the bottleneck.
 
 ---
 
@@ -101,7 +95,7 @@ The harness moves VIBE methodology from people's heads into tooling. The deliver
 | **Concept exploration** | Drifts to "another web dashboard" | 2-3 validated concepts across form factors |
 | **Engineering handoff** | Verbal briefing, "figure it out" | Structured engineering brief with screen specs and data mapping |
 | **Handoff package** | Manual slide deck, incomplete backlog | Auto-generated `handoff-data.json` with cross-reference validation |
-| **Time to first prototype concept** | 1-2 weeks (await engineer) | 2-3 days (TPM drives Preparation → Discover → Define → Ideate) |
+| **Time to first prototype concept** | 1-2 weeks (await engineer) | 2-3 days (TPM drives Preparation → Discover → Disrupt) |
 | **New team member onboarding** | Shadow someone for 2 engagements | Follow the prompts — onboarding *is* engagement #1 |
 
 See [What the Harness Changes](/why-vibe/impact) for the full qualitative breakdown and the HVE patterns the harness embeds.

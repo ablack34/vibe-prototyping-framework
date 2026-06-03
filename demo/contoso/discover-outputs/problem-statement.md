@@ -45,7 +45,7 @@ The kickoff transcript surfaced a meaningful sequencing tension that the custome
 - **Alt 2 (assignment-optimisation framing)**: "I'm trying to dispatch the *right* technician on the first call so the breach doesn't happen at all."
   — Bigger prize, touches dispatcher workflow and union conversation more deeply.
 
-The current Grade A statement above keeps **both** outcomes ("right tech … *and* warn the customer") because Sandra and Adam agreed both end up in the prototype, but **the order matters** — early-warning is the recommended first deliverable. Define will lock the sequencing.
+The current Grade A statement above keeps **both** outcomes ("right tech … *and* warn the customer") because Sandra and Adam agreed both end up in the prototype, but **the order matters** — early-warning is the recommended first deliverable. The Disrupt workshop will lock the sequencing.
 
 ---
 

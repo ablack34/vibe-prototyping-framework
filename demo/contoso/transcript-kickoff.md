@@ -65,7 +65,7 @@
 
 **[00:08:48] Sandra Holtz:** But it means the prototype absolutely cannot look like a replacement. It has to look like "dispatcher's new tool." Visual design matters here.
 
-**[00:09:15] Adam Black:** Captured. We'll need a designer view too, not just engineering. We can pull one in for the Ideate phase.
+**[00:09:15] Adam Black:** Captured. We'll need a designer view too, not just engineering. We can pull one in for the Disrupt workshop.
 
 **[00:09:52] Lena Friedrich:** Quick technical question — the F-Gas compliance data, can the prototype call into the spreadsheet, or do we need to mock it?
 
@@ -113,4 +113,4 @@
 - [ ] Workshop 1 Friday 10am Warsaw, attendees: Sandra, Bartosz, Anya Petrov, compliance lead (Matthias to confirm)
 - [ ] Discovery write-up by Wednesday EOD (Adam)
 - [ ] Designer onboarded by Workshop 1 (Adam / Priya)
-- [ ] Decision: SLA risk early-warning may be sequenced before assignment recommender — to be confirmed in Define phase
+- [ ] Decision: SLA risk early-warning may be sequenced before assignment recommender — to be confirmed during Disrupt workshop
