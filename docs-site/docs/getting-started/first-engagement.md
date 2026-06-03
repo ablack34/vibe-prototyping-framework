@@ -7,6 +7,48 @@ title: Your First Engagement
 
 A step-by-step walkthrough of running a complete VIBE engagement.
 
+## Before you begin: how the interface works
+
+VIBE responds to two distinct inputs in Copilot Chat. Both are typed into the chat input — neither requires opening a file.
+
+| Form | What it does | Example |
+|------|-------------|---------|
+| **`@VIBE <Agent Name>`** | Hands the conversation to an **orchestrator agent** that reads `state.json` + your filesystem and tells you what to do next | `@VIBE Engagement Lead`, `@VIBE Preparation`, `@VIBE Discover` |
+| **`/vibe-<command>`** | Runs a **specific prompt** that generates or updates a single deliverable | `/vibe-personas`, `/vibe-workshop-record`, `/vibe-storyboard` |
+
+When you're not sure what's next, start with `@VIBE Engagement Lead` — it'll point you at the right `/vibe-*` command via a NEXT directive.
+
+:::warning You must be in Agent mode
+VIBE prompts only appear in Copilot Chat **Agent mode**. If you type `/` and don't see `/vibe-*` in the dropdown, click the mode picker at the top of Copilot Chat and switch from Ask or Plan to Agent.
+:::
+
+### The NEXT directive
+
+**Every** VIBE agent response ends with a line that starts `👉 NEXT:` — that line is the single most important thing on the screen. NEXT directives come in four shapes:
+
+| Directive shape | What you do |
+|-----------------|-------------|
+| `👉 NEXT: Click "🛠 Begin Preparation"` | A **handoff button** renders below the response. Click it. |
+| `👉 NEXT: Run /vibe-personas ...` | Type or autocomplete the slash command in the chat input. |
+| `👉 NEXT: Type @VIBE Preparation ...` | Type the `@`-mention in the chat input. There is **no button** for `@`-mentions. |
+| `👉 NEXT: Reply with edits, or say "looks good" to sign off` | Just type your reply. No command or mention needed. |
+
+The third case (typed `@`-mention with no button) is the one that catches everyone the first time. If the directive names an `@VIBE` agent and you're hunting for a button, **stop hunting** — type the name into the chat input directly.
+
+### Three folders to know
+
+| Folder | What lives there | Edit by hand? |
+|--------|-----------------|---------------|
+| `templates/` | Markdown scaffolds the AI reads as starting structure | ❌ Never — agents read these, output goes to `engagement/<kebab>/` |
+| `sources/` | Raw inputs you drop in (transcripts, customer docs, RFPs). Agents read this folder automatically | ✅ Drop files here — but it's committed, so no real PII |
+| `engagement/<kebab>/` | Every populated deliverable. The shared truth, committed and visible to teammates | ✅ Reviewed (agent writes, you edit/approve) |
+
+A fourth path matters but is gitignored: `.copilot-tracking/vibe/<kebab>/state.json` tracks **your personal** view of phase progress. Each teammate has their own. You almost never edit it by hand.
+
+If you get stuck at any point, see the [first-run confusion troubleshooting](/reference/troubleshooting#first-run-confusion). For a phase-by-phase look at realistic agent output, see [What to Expect](/getting-started/walkthrough).
+
+---
+
 ## Step 1: Create the Workspace
 
 On the [framework's GitHub page](https://github.com/ablack34/vibe-prototyping-framework), click **["Use this template" → "Create a new repository"](https://github.com/ablack34/vibe-prototyping-framework/generate)**. Name it `<customer>-<engagement>` (e.g., `contoso-field-scheduling`) and make it private.

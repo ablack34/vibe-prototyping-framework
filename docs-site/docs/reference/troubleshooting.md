@@ -7,6 +7,41 @@ title: Troubleshooting
 
 Common issues and fixes when running a VIBE engagement.
 
+## First-run confusion
+
+Real questions from real first runs. If you're new to the harness, skim these before anything else.
+
+### "The agent said proceed from VIBE Discover but I just ran VIBE Preparation"
+
+The orchestrator doesn't remember prior chat turns. It derives progress from `state.json` plus the files on disk in `engagement/<kebab>/`. If `state.json` says Discover is in progress (perhaps from an earlier session or another teammate), it'll suggest proceeding from there.
+
+To get the orchestrator's recommendation back in sync:
+
+1. Re-run `@VIBE Engagement Lead` — it reconciles `state.json` against the actual files in `engagement/<kebab>/` and re-derives "what's next".
+2. If the recommendation still seems wrong, run `/vibe-doctor` — it does a deeper health check and surfaces the single highest-value next action.
+3. As a last resort, delete `.copilot-tracking/vibe/<kebab>/state.json` (it's per-user and gitignored — your committed work in `engagement/<kebab>/` is safe) and let `@VIBE Engagement Lead` rebuild it from your filesystem.
+
+### "The NEXT directive said `@VIBE Preparation` but there was no button"
+
+`@`-mentions are **typed inputs, not buttons**. Click into the Copilot Chat input, type `@VIBE Preparation`, hit `Enter`. Only the handoff actions named in quotes (e.g. `Click "🛠 Begin Preparation"`) render as buttons — `@`-mentions and `/`-commands are always typed.
+
+### "I typed into `templates/personas.md` and the agent didn't see my edits"
+
+That's expected. Templates are AI scaffolds — agents read them for structure but write *populated* files to `engagement/<kebab>/`. Your edits to a template don't show up anywhere downstream.
+
+**Fix:** move your edits into `engagement/<kebab>/personas.md`. Or — better — drop the underlying sources (e.g. a transcript) into `sources/` and let the agent regenerate.
+
+### "Nothing happened even though the agent said it did something"
+
+Two common causes:
+
+1. **Wrong Copilot mode** — VIBE only works in Agent mode. Check the mode picker at the top of Copilot Chat and switch from Ask or Plan.
+2. **Multiple engagements in one repo** — if you have several `engagement/<kebab>/` folders, the agent may have written to a different one than you expected. Pass `engagement="..."` explicitly on `/vibe-*` prompts to disambiguate, or rely on the orchestrator (which always names the active engagement at the top of its response).
+
+### "The agent ran the post-workshop prompts in the wrong order"
+
+That was a real bug, fixed in PR #14. Post-workshop order is now **strict**: `/vibe-workshop-record` → `/vibe-selected-concept` → `/vibe-future-journey` → `/vibe-storyboard`. If you see the orchestrator suggesting `/vibe-storyboard` before `/vibe-future-journey` on a current version, file an issue.
+
 ## Copilot Chat & Prompts
 
 | Problem | Cause | Fix |
