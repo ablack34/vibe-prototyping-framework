@@ -30,6 +30,10 @@ Open Copilot Chat (`Ctrl+Shift+I`), switch to **Agent mode**, and type:
 /vibe-kickoff customer="<your-customer>" problem="<describe the problem>"
 ```
 
+:::tip New to the UI mechanics?
+If you're not sure how to invoke `@`-agents, what the `👉 NEXT:` directive looks like, or which folder each generated file lands in, read [How to Use VIBE Day-to-Day](/getting-started/how-to-use) first. It's a 5-minute orientation that prevents the most common first-engagement confusion.
+:::
+
 **What happens:**
 - Fills `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` with the inputs
 - Creates `engagement/<your-engagement>/` (shared with the team, committed)

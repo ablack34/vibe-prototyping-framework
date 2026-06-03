@@ -23,6 +23,8 @@ const sidebars: SidebarsConfig = {
         'getting-started/setup',
         'getting-started/first-engagement',
         'getting-started/roles',
+        'getting-started/how-to-use',
+        'getting-started/walkthrough',
       ],
     },
     {

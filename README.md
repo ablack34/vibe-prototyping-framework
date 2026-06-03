@@ -20,7 +20,7 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
    /vibe-kickoff customer="<your-customer>" problem="<describe the problem>"
    ```
 
-4. After every step the agent ends with a `👉 NEXT:` directive. **Click the recommended button and keep going.** If you're ever lost, click **❓ What's Next?**.
+4. After every step the agent ends with a `👉 NEXT:` directive. **Click the recommended button, type the requested command, or reply as instructed — and keep going.** If you're ever lost, click **❓ What's Next?** or read [How to Use VIBE Day-to-Day](docs-site/docs/getting-started/how-to-use.md) for the UI mechanics.
 
 > Already inside another engagement? Run `/vibe-new customer="…" engagement="…"` and it'll `gh repo create` a sibling for you.
 
@@ -33,6 +33,7 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 | Full walkthrough, role guides, phase deep-dives, prompt/agent reference | **The docs site** — `cd docs-site && npm install && npm run start`, then open `http://localhost:3000`. Or browse the source under [`docs-site/docs/`](docs-site/docs/). |
 | First-time machine setup | [`docs-site/docs/getting-started/setup.md`](docs-site/docs/getting-started/setup.md) |
 | Step-by-step engagement walkthrough | [`docs-site/docs/getting-started/first-engagement.md`](docs-site/docs/getting-started/first-engagement.md) |
+| How to use VIBE day-to-day in VS Code (`@`-mentions vs `/`-commands, NEXT directive, folder layout) | [`docs-site/docs/getting-started/how-to-use.md`](docs-site/docs/getting-started/how-to-use.md) |
 | What each phase actually looks like (run against the demo) | [`docs-site/docs/getting-started/walkthrough.md`](docs-site/docs/getting-started/walkthrough.md) |
 | MCP servers + troubleshooting | [`docs-site/docs/reference/mcp.md`](docs-site/docs/reference/mcp.md) · [`docs-site/docs/reference/troubleshooting.md`](docs-site/docs/reference/troubleshooting.md) |
 

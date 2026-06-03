@@ -66,5 +66,5 @@ You don't need an engagement repo open to verify Copilot itself works — but to
 :::
 
 :::info Want to see what the framework looks like end-to-end before you start?
-See [What to Expect](/getting-started/walkthrough) for realistic agent output from every phase, run against the Contoso demo fixture.
+First, read [How to Use VIBE Day-to-Day](/getting-started/how-to-use) for the UI mechanics (how to invoke agents, read NEXT directives, find your files). Then see [What to Expect](/getting-started/walkthrough) for realistic agent output from every phase, run against the Contoso demo fixture.
 :::
