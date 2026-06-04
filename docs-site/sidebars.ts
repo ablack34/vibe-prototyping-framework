@@ -22,6 +22,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'getting-started/setup',
         'getting-started/first-engagement',
+        'getting-started/walkthrough',
         'getting-started/roles',
       ],
     },
@@ -45,6 +46,8 @@ const sidebars: SidebarsConfig = {
         'reference/prompts',
         'reference/agents',
         'reference/templates',
+        'reference/mcp',
+        'reference/troubleshooting',
       ],
     },
   ],
