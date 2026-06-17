@@ -32,3 +32,6 @@ Thumbs.db
 
 # VIBE Web Surface — local pointer store (per-user, not the source of truth)
 surface/.engagements.json
+
+# VIBE runner scratch (composed invocation)
+.vibe/
