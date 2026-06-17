@@ -5,19 +5,24 @@
 //   node surface/server.mjs   →   http://localhost:4310
 //
 // Endpoints:
-//   GET  /api/config        -> template + default owner
-//   GET  /api/engagements   -> the local pointer store (engagement -> repo)
-//   POST /api/engagements   -> create a repo from the template, verify the engine
-//                              shipped, record the pointer, return the repo.
+//   GET  /api/config           -> template + default owner
+//   GET  /api/engagements      -> the local pointer store (engagement -> repo)
+//   POST /api/engagements      -> create a repo from the template, verify the engine
+//                                 shipped, record the pointer, return the repo.
+//   GET  /api/board            -> local engagements with live gate state (dashboard)
+//   GET  /api/board/<kebab>    -> one engagement: gates + rendered deliverables
 
 import { createServer } from 'node:http';
 import { execSync } from 'node:child_process';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname } from 'node:path';
+import { computeGates, GATES } from '../scripts/gates-lib.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = join(__dir, '..');
+const ENGAGE_ROOT = join(REPO_ROOT, 'engagement');
 const PORT = process.env.PORT || 4310;
 const TEMPLATE_OWNER = process.env.TEMPLATE_OWNER || 'ablack34';
 const TEMPLATE_REPO = process.env.TEMPLATE_REPO || 'vibe-prototyping-framework';
@@ -138,6 +143,75 @@ async function createEngagement(input) {
   return { code: 201, body: record };
 }
 
+// ---- dashboard: local engagements + live gate state ----
+// The engagement git working tree IS the source of truth; for the MVP the server
+// reads it directly. (Production swaps this for the GitHub Contents API — same
+// shape, so the UI is unchanged.)
+
+const DELIVERABLE_TITLES = {
+  'personas.md': 'Personas',
+  'problem-statement.md': 'Problem statement',
+  'current-state-journey.md': 'Current-state journey',
+  'selected-concept.md': 'Selected concept',
+  'future-state-journey.md': 'Future-state journey',
+  'storyboard.md': 'Storyboard',
+};
+const FILE_GATE = Object.fromEntries(
+  Object.entries(GATES).flatMap(([gate, cfg]) => cfg.files.map((f) => [f, gate])),
+);
+
+function deliverablesFrom(gateObj) {
+  return Object.keys(DELIVERABLE_TITLES).map((file) => {
+    const a = gateObj.artifacts[file] || { present: false };
+    return {
+      file,
+      title: DELIVERABLE_TITLES[file],
+      gate: FILE_GATE[file],
+      present: !!a.present,
+      grade: a.grade ?? null,
+      gradePass: !!a.gradePass,
+      signedOffBy: a.signedOffBy ?? null,
+      signedOffAt: a.signedOffAt ?? null,
+      stale: !!a.stale,
+    };
+  });
+}
+
+async function listEngagementDirs() {
+  if (!existsSync(ENGAGE_ROOT)) return [];
+  const entries = await readdir(ENGAGE_ROOT, { withFileTypes: true });
+  return entries
+    .filter((e) => e.isDirectory() && !e.name.startsWith('.') && !e.name.startsWith('_'))
+    .map((e) => e.name);
+}
+
+async function boardSummary() {
+  const out = [];
+  for (const kebab of await listEngagementDirs()) {
+    const g = computeGates(join(ENGAGE_ROOT, kebab));
+    out.push({
+      kebab,
+      gates: g.gates,
+      handoffReady: g.handoffReady,
+      deliverables: deliverablesFrom(g),
+    });
+  }
+  return out;
+}
+
+async function boardDetail(kebab) {
+  const dir = join(ENGAGE_ROOT, kebab);
+  if (!existsSync(dir)) return null;
+  const g = computeGates(dir);
+  const deliverables = deliverablesFrom(g);
+  for (const d of deliverables) {
+    if (d.present) {
+      try { d.markdown = await readFile(join(dir, d.file), 'utf8'); } catch { d.markdown = ''; }
+    }
+  }
+  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables };
+}
+
 // ---- tiny static + JSON server ----
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
@@ -170,6 +244,15 @@ const server = createServer(async (req, res) => {
       const input = raw ? JSON.parse(raw) : {};
       const { code, body } = await createEngagement(input);
       return send(res, code, body);
+    }
+
+    if (req.method === 'GET' && url.pathname === '/api/board')
+      return send(res, 200, await boardSummary());
+
+    const detail = url.pathname.match(/^\/api\/board\/([A-Za-z0-9][A-Za-z0-9-]*)$/);
+    if (req.method === 'GET' && detail) {
+      const data = await boardDetail(detail[1]);
+      return data ? send(res, 200, data) : send(res, 404, { error: 'Engagement not found' });
     }
 
     if (req.method === 'GET') return serveStatic(res, url.pathname);

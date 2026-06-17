@@ -61,6 +61,57 @@ async function loadList() {
   box.innerHTML = list.map(itemRow).join('');
 }
 
+function boardPill(status) {
+  const map = {
+    GREEN: ['Ready', 'pill-green'],
+    INCOMPLETE: ['In progress', 'pill-amber'],
+    NOT_STARTED: ['Not started', 'pill-grey'],
+  };
+  const [label, cls] = map[status] || [status, 'pill-grey'];
+  return `<span class="pill ${cls}">${label}</span>`;
+}
+
+function dots(deliverables) {
+  return deliverables.map((d) => {
+    const cls = !d.present ? 'dot-empty' : (d.stale ? 'dot-stale' : (d.signedOffBy ? 'dot-signed' : 'dot-present'));
+    return `<span class="dot ${cls}" title="${escapeHtml(d.title)}"></span>`;
+  }).join('');
+}
+
+function boardCard(e) {
+  const present = e.deliverables.filter((d) => d.present).length;
+  const total = e.deliverables.length;
+  const handoff = e.handoffReady
+    ? '<span class="hand ready">hand-off ready ✓</span>'
+    : '<span class="hand">phases 1–3</span>';
+  return `<a class="board-card" href="/engagement.html?kebab=${encodeURIComponent(e.kebab)}">
+    <div class="bc-main">
+      <div class="bc-name">${escapeHtml(e.kebab)}</div>
+      <div class="bc-gates">Discover ${boardPill(e.gates.discover.status)} &nbsp; Disrupt ${boardPill(e.gates.disrupt.status)}</div>
+    </div>
+    <div class="bc-right">
+      <div class="bc-dots" title="${present}/${total} deliverables generated">${dots(e.deliverables)}</div>
+      <div class="bc-foot">${handoff}<span class="bc-open">Open dashboard →</span></div>
+    </div>
+  </a>`;
+}
+
+async function loadBoard() {
+  const box = $('board');
+  try {
+    const board = await (await fetch('/api/board')).json();
+    if (!board.length) {
+      box.innerHTML = '<p class="muted empty">No local engagement folders yet. Generated deliverables appear here.</p>';
+      $('board-hint').textContent = '';
+      return;
+    }
+    box.innerHTML = board.map(boardCard).join('');
+    $('board-hint').textContent = `${board.length} engagement${board.length > 1 ? 's' : ''} · live gate state`;
+  } catch (e) {
+    box.innerHTML = `<p class="muted empty">Could not load board: ${escapeHtml(String(e.message || e))}</p>`;
+  }
+}
+
 $('name').addEventListener('input', updatePreview);
 $('owner').addEventListener('input', updatePreview);
 
@@ -95,6 +146,7 @@ $('form').addEventListener('submit', async (ev) => {
       $('description').value = '';
       updatePreview();
       loadList();
+      loadBoard();
     }
   } catch (err) {
     statusEl('err', `❌ ${escapeHtml(String(err.message || err))}`);
@@ -105,3 +157,4 @@ $('form').addEventListener('submit', async (ev) => {
 
 loadConfig();
 loadList();
+loadBoard();
