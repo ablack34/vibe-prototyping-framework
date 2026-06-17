@@ -29,3 +29,6 @@ Thumbs.db
 
 # Azure
 .azure/
+
+# VIBE runner scratch (composed invocation)
+.vibe/
