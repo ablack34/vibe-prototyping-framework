@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIBE — New Engagement</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div>
+        <div class="brand-title">VIBE Web Surface</div>
+        <div class="brand-sub">Start a prototyping engagement — no VS Code required</div>
+      </div>
+    </div>
+    <div class="phasebar">
+      <span class="phase active">Preparation</span>
+      <span class="phase">Discover</span>
+      <span class="phase">Disrupt</span>
+      <span class="phase">Build</span>
+      <span class="phase">Deliver</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="card form-card">
+      <h1>New engagement</h1>
+      <p class="muted">
+        Creates a private GitHub repository from the VIBE template. The whole engine —
+        agents, prompts, templates — ships inside it, ready to drive.
+      </p>
+
+      <form id="form">
+        <label>
+          Engagement name
+          <input id="name" type="text" placeholder="e.g. Contoso Dispatcher AI" autocomplete="off" required />
+        </label>
+
+        <div class="preview">
+          Repo to be created:
+          <code id="preview">owner/&lt;name&gt;</code>
+        </div>
+
+        <div class="row">
+          <label class="grow">
+            Owner (org or user)
+            <input id="owner" type="text" autocomplete="off" />
+          </label>
+          <label class="check">
+            <input id="private" type="checkbox" checked />
+            Private
+          </label>
+        </div>
+
+        <label>
+          Description <span class="muted">(optional)</span>
+          <input id="description" type="text" placeholder="One line about this engagement" autocomplete="off" />
+        </label>
+
+        <button id="submit" type="submit">Create engagement</button>
+        <div id="status" class="status" hidden></div>
+      </form>
+    </section>
+
+    <section class="card list-card">
+      <h2>Engagements</h2>
+      <div id="list" class="list"><p class="muted empty">None yet — create your first above.</p></div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

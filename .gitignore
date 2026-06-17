@@ -29,3 +29,6 @@ Thumbs.db
 
 # Azure
 .azure/
+
+# VIBE Web Surface — local pointer store (per-user, not the source of truth)
+surface/.engagements.json
