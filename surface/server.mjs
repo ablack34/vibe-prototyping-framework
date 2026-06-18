@@ -25,6 +25,7 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname } from 'node:path';
 import { computeGates, computeGatesFromContents, GATES, signoff } from '../scripts/gates-lib.mjs';
+import { tidyRepo } from './tidy-repo.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dir, '..');
@@ -175,6 +176,20 @@ async function createEngagement(input) {
   const repo = gen.json;
   const enginePresent = await engineShipped(repo.full_name);
 
+  // A generated repo inherits the WHOLE framework — the control surface, docs
+  // site, other engagements, and framework-only deploy workflows (which fail
+  // noisily on the engine's commits). Strip it down to just the engine + what the
+  // engineer needs, in one commit, so the designer's repo is clean from the start.
+  let tidied = false;
+  try {
+    const t = await tidyRepo(repo.full_name, {
+      token: token(),
+      defaultBranch: repo.default_branch || 'main',
+      keepEngagement: kebab(displayName),
+    });
+    tidied = !!t.ok;
+  } catch { tidied = false; }
+
   // The engine (run-phase.yml) needs a Copilot-enabled token to run in the new
   // repo's Actions. Mirror the signed-in user's token in as a repo secret so the
   // "Generate" button can dispatch a phase with no further setup.
@@ -190,6 +205,7 @@ async function createEngagement(input) {
     htmlUrl: repo.html_url,
     private: repo.private,
     enginePresent,
+    tidied,
     secretSet,
     actionsEnabled: actionsOn,
     createdAt: new Date().toISOString(),
