@@ -372,6 +372,7 @@ async function boardDetail(kebab) {
     commitSha: g.commitSha ?? null,
     deliverables,
     sources,
+    kinds: sourceKindMeta(),
     provenance: { bySource },
   };
 }
@@ -545,6 +546,11 @@ const SOURCE_KINDS = {
   'other': { label: 'Other source', single: false, path: (id, slug) => `sources/${slug}.md` },
 };
 
+// The kind metadata the frontend needs to render the add-source form + labels.
+function sourceKindMeta() {
+  return Object.fromEntries(Object.entries(SOURCE_KINDS).map(([k, v]) => [k, { label: v.label, single: v.single }]));
+}
+
 // Map a committed repo path back to a source kind + display name, for listing.
 function classifySource(id, path) {
   if (path === `engagement/${id}/customer-brief.md`) return { kind: 'customer-brief', name: 'Customer brief' };
@@ -686,7 +692,20 @@ const server = createServer(async (req, res) => {
       const id = url.searchParams.get('kebab');
       const rec = (await readStore()).find((r) => (r.id || '') === id);
       if (!rec || !rec.repo) return send(res, 404, { error: 'Engagement not found' });
-      return send(res, 200, { sources: await listSources(rec), kinds: Object.fromEntries(Object.entries(SOURCE_KINDS).map(([k, v]) => [k, { label: v.label, single: v.single }])) });
+      return send(res, 200, { sources: await listSources(rec), kinds: sourceKindMeta() });
+    }
+
+    // Fetch one source/deliverable file's raw text for the in-app viewer. Path is
+    // confined to the engagement's sources/ tree or its own engagement/<id>/ folder.
+    if (req.method === 'GET' && url.pathname === '/api/source') {
+      const id = url.searchParams.get('kebab');
+      const path = url.searchParams.get('path') || '';
+      const rec = (await readStore()).find((r) => (r.id || '') === id);
+      if (!rec || !rec.repo) return send(res, 404, { error: 'Engagement not found' });
+      if (path.includes('..') || !(path.startsWith('sources/') || path.startsWith(`engagement/${id}/`)))
+        return send(res, 400, { error: 'Invalid source path.' });
+      const text = await fetchRepoFile(rec.repo, path);
+      return text == null ? send(res, 404, { error: 'Source not found' }) : send(res, 200, { path, text });
     }
 
     if (req.method === 'POST' && url.pathname === '/api/sources') {
