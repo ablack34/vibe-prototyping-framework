@@ -72,7 +72,7 @@ function deliverableCard(d) {
     ${d.present ? provSummary(d) : ''}
     <div class="card-actions">
       <button class="btn-view" data-file="${d.file}" ${d.present ? '' : 'disabled'}>View</button>
-      ${!d.present && GENERATABLE.has(d.file) ? `<button class="btn-gen" data-gen="${d.file}">Generate</button>` : ''}
+      ${!d.present && GENERATABLE.has(d.file) ? `<button class="btn-gen" data-gen="${d.file}"><span class="gen-ico">✨</span><span class="gen-txt">Generate</span></button>` : ''}
       ${d.present && d.gradePass && !d.signedOffBy && !d.stale ? `<button class="btn-approve" data-approve="${d.file}">Approve</button>` : ''}
     </div>
   </div>`;
@@ -159,36 +159,92 @@ function usedByHtml(s) {
     `${n ? `<span class="cite-count">${n} citation${n === 1 ? '' : 's'}</span>` : ''}</span>`;
 }
 
-function openViewer(file) {
+// ---- slide-over viewer with a small navigation stack so drilling from a
+// deliverable into a source (a "Generated from" chip, an in-text source path,
+// or a markdown link) — and back — never loses your place or navigates the
+// whole page away to a 404. -------------------------------------------------
+let VIEWER_STACK = [];
+
+function renderViewerChrome() {
+  const back = document.getElementById('viewer-back');
+  if (back) back.hidden = VIEWER_STACK.length < 2;
+}
+
+function renderDeliverableView(file) {
   const d = DELIVERABLES.find((x) => x.file === file);
   if (!d || !d.present) return;
   document.getElementById('viewer-title').textContent = d.title;
-  const meta = d.signedOffBy ? `Signed off by ${d.signedOffBy}` : (d.present ? 'Awaiting approval' : '');
+  const meta = d.signedOffBy ? `Signed off by ${d.signedOffBy}` : 'Awaiting approval';
   document.getElementById('viewer-meta').innerHTML = `${gradeBadge(d.grade, d.gradePass)} <span class="vm">${meta}</span>`;
   const body = document.getElementById('viewer-body');
   body.innerHTML = provLegend(d.provenance) + window.renderMarkdown(d.markdown || '');
   decorateProvenance(body);
-  document.getElementById('viewer').hidden = false;
+  body.scrollTop = 0;
 }
-function closeViewer() { document.getElementById('viewer').hidden = true; }
 
-// In-app source viewer (lifecycle §13.2): fetch a source/deliverable file's raw
-// text and render it in the same slide-over. Reached from "Generated from" chips,
-// in-deliverable source chips, and the bucket's per-source View button.
-async function openSourceViewer(path) {
+async function renderSourceView(path) {
   document.getElementById('viewer-title').textContent = srcDisplay(path);
   document.getElementById('viewer-meta').innerHTML = `<span class="vm">Source · <code>${path}</code></span>`;
   const body = document.getElementById('viewer-body');
-  body.innerHTML = '<p class="muted">Loading source…</p>';
-  document.getElementById('viewer').hidden = false;
+  body.innerHTML = '<p class="muted">Loading…</p>';
+  body.scrollTop = 0;
   try {
     const r = await fetch(`/api/source?kebab=${kebab}&path=${encodeURIComponent(path)}`);
     const b = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(b.error || 'Could not load source.');
+    if (!r.ok) {
+      if (r.status === 404) {
+        body.innerHTML = `<div class="viewer-missing">
+          <p><strong>Not in this engagement yet.</strong></p>
+          <p class="muted">This deliverable points to <code>${path}</code>, but that file hasn’t been generated or added to the repo yet. Generate the upstream deliverable (or add the source) and it’ll resolve.</p>
+        </div>`;
+        return;
+      }
+      throw new Error(b.error || 'Could not open this file here.');
+    }
     body.innerHTML = window.renderMarkdown(b.text || '');
   } catch (e) {
-    body.innerHTML = `<p class="err">${e.message}</p>`;
+    body.innerHTML = `<div class="viewer-missing"><p class="err">${e.message}</p><p class="muted"><code>${path}</code></p></div>`;
   }
+}
+
+function renderViewerTop() {
+  const top = VIEWER_STACK[VIEWER_STACK.length - 1];
+  if (!top) return;
+  document.getElementById('viewer').hidden = false;
+  renderViewerChrome();
+  if (top.kind === 'deliv') renderDeliverableView(top.file);
+  else renderSourceView(top.path);
+}
+
+// fromViewer = the click originated inside the open viewer → push onto the
+// stack (so Back returns here); otherwise it's a fresh open from the board.
+function viewerNavigate(entry, fromViewer) {
+  if (fromViewer && VIEWER_STACK.length) VIEWER_STACK.push(entry);
+  else VIEWER_STACK = [entry];
+  renderViewerTop();
+}
+function viewerBack() {
+  if (VIEWER_STACK.length > 1) { VIEWER_STACK.pop(); renderViewerTop(); }
+}
+function openViewer(file, fromViewer) {
+  const d = DELIVERABLES.find((x) => x.file === file);
+  if (!d || !d.present) return;
+  viewerNavigate({ kind: 'deliv', file }, fromViewer);
+}
+function openSourceViewer(path, fromViewer) {
+  viewerNavigate({ kind: 'src', path }, fromViewer);
+}
+function closeViewer() { document.getElementById('viewer').hidden = true; VIEWER_STACK = []; }
+
+// Treat anything that isn't an absolute URL / mail / tel / in-page anchor as a
+// repo-relative path so in-deliverable markdown links stay inside the app.
+function isRepoLink(href) {
+  return href && !/^(https?:|mailto:|tel:|#|\/\/)/i.test(href);
+}
+function normalizeRepoPath(href) {
+  let p = href.replace(/[#?].*$/, '').replace(/^\.\//, '').replace(/^(\.\.\/)+/, '');
+  if (p && !p.includes('/')) p = `engagement/${kebab}/${p}`;
+  return p;
 }
 
 function banner(html, kind = 'info') {
@@ -202,6 +258,24 @@ function banner(html, kind = 'info') {
 
 function setGenButtons(disabled) {
   document.querySelectorAll('.btn-gen').forEach((b) => (b.disabled = disabled));
+}
+
+// Mark the one clicked Generate button as actively working (spinner + label) so
+// it's unmistakable which deliverable is being produced.
+let GEN_BTN = null;
+function setGenBusy(file) {
+  GEN_BTN = document.querySelector(`.btn-gen[data-gen="${file}"]`);
+  if (GEN_BTN) {
+    GEN_BTN.classList.add('is-busy');
+    GEN_BTN.innerHTML = '<span class="spin"></span><span class="gen-txt">Generating…</span>';
+  }
+}
+function clearGenBusy() {
+  if (GEN_BTN) {
+    GEN_BTN.classList.remove('is-busy');
+    GEN_BTN.innerHTML = '<span class="gen-ico">✨</span><span class="gen-txt">Generate</span>';
+  }
+  GEN_BTN = null;
 }
 
 // ---- sources: the designer's own customer materials that ground Discover ----
@@ -243,7 +317,8 @@ function renderSources() {
         <h2>Sources</h2>
         <p class="sources-sub">Discover reads everything here before it generates. Add the customer's brief, transcripts, questionnaire and research so the deliverables are grounded in their world — not demo data.</p>
       </div>
-      <button class="btn-add-src" id="src-toggle" type="button">✎ Paste text</button>
+      <button class="btn-add-src" id="src-toggle" type="button"
+              title="Type or paste text directly — a verbal note, a key quote, a snippet — without uploading a file">✎ Add text note</button>
     </div>
 
     <div class="dropzone" id="dropzone" tabindex="0" role="button"
@@ -258,6 +333,7 @@ function renderSources() {
 
     <div class="src-list">${list}</div>
     <form class="src-form" id="src-form" hidden>
+      <p class="src-paste-hint"><strong>For text you type or paste directly</strong> — a verbal note from a call, a key quote, a snippet. Have it as a file (Word, PowerPoint, Excel, PDF, transcript)? <strong>Use the drop zone above</strong> instead.</p>
       <div class="src-row">
         <label class="grow">Type
           <select id="src-kind">${opts}</select>
@@ -319,10 +395,10 @@ function wireSources() {
   kindSel.addEventListener('change', syncName);
   toggle.addEventListener('click', () => {
     form.hidden = !form.hidden;
-    toggle.textContent = form.hidden ? '✎ Paste text' : '× Close';
+    toggle.textContent = form.hidden ? '✎ Add text note' : '× Close';
   });
   document.getElementById('src-cancel').addEventListener('click', () => {
-    form.hidden = true; toggle.textContent = '✎ Paste text';
+    form.hidden = true; toggle.textContent = '✎ Add text note';
   });
   form.addEventListener('submit', (e) => { e.preventDefault(); saveSource(); });
 }
@@ -375,6 +451,7 @@ function enqueueFiles(fileList) {
 function renderQueue() {
   const el = document.getElementById('upqueue');
   if (!el) return;
+  el.className = 'upqueue';
   if (!UPLOAD_QUEUE.length) { el.hidden = true; el.innerHTML = ''; return; }
   el.hidden = false;
   const opts = (sel) => Object.entries(SRC_KINDS)
@@ -419,18 +496,22 @@ async function uploadQueue() {
   if (!items.length) return;
   const status = document.getElementById('up-status') || document.querySelector('#upqueue .src-status');
   const go = document.getElementById('up-go');
-  const set = (text, cls = '') => {
+  const set = (text, cls = '', busy = false) => {
     UPQ_MSG = { text, cls };
-    const s = document.querySelector('#upqueue .src-status');
-    if (s) { s.hidden = false; s.className = `src-status ${cls}`; s.textContent = text; }
-    else if (status) { status.hidden = false; status.className = `src-status ${cls}`; status.textContent = text; }
+    const target = document.querySelector('#upqueue .src-status') || status;
+    if (!target) return;
+    target.hidden = false;
+    target.className = `src-status ${cls}`;
+    target.innerHTML = (busy ? '<span class="spin"></span>' : '') + text;
   };
-  if (go) go.disabled = true;
+  const qEl = document.getElementById('upqueue');
+  if (qEl) qEl.classList.add('up-busy');
+  if (go) { go.disabled = true; go.classList.add('up-go-busy'); go.innerHTML = '<span class="spin"></span>Converting…'; }
   const okIds = new Set(); const failed = [];
   let i = 0;
   for (const it of items) {
     i++;
-    set(`Uploading ${it.file.name} (${i}/${items.length})${it.group === 'convert' ? ' — converting…' : ''}`);
+    set(`Uploading ${it.file.name} (${i}/${items.length})${it.group === 'convert' ? ' — converting to Markdown…' : '…'}`, '', true);
     try {
       const dataBase64 = await readFileB64(it.file);
       const r = await fetch('/api/sources', {
@@ -477,9 +558,10 @@ async function generate(file) {
   if (RUNNING) return;
   RUNNING = true;
   setGenButtons(true);
+  setGenBusy(file);
   const title = (DELIVERABLES.find((d) => d.file === file) || {}).title || file;
   const grounded = SOURCES.length > 0;
-  banner(`⏳ Generating <strong>${title}</strong> ${grounded ? 'from your sources' : '(Contoso demo data — no sources added)'} — dispatching the engine…`);
+  banner(`<span class="spin"></span> Generating <strong>${title}</strong> ${grounded ? 'from your sources' : '(Contoso demo data — no sources added)'} — dispatching the engine…`, 'busy');
 
   let priorId = null;
   try { priorId = (await (await fetch(`/api/run/status?kebab=${kebab}`)).json()).databaseId || null; } catch { /* none yet */ }
@@ -493,7 +575,7 @@ async function generate(file) {
     if (!res.ok) { const b = await res.json().catch(() => ({})); throw new Error(b.detail || b.error || 'Dispatch failed'); }
   } catch (e) {
     banner(`❌ ${e.message}`, 'err');
-    RUNNING = false; setGenButtons(false);
+    RUNNING = false; clearGenBusy(); setGenButtons(false);
     return;
   }
 
@@ -506,9 +588,9 @@ async function generate(file) {
     const link = run.url ? ` <a href="${run.url}" target="_blank" rel="noopener">view run ↗</a>` : '';
 
     if (!isNew) {
-      banner(`⏳ Generating <strong>${title}</strong> — queuing the run…`);
+      banner(`<span class="spin"></span> Generating <strong>${title}</strong> — queuing the run…`, 'busy');
     } else if (run.status !== 'completed') {
-      banner(`⏳ Generating <strong>${title}</strong> — engine running in GitHub Actions (${run.status})…${link}`);
+      banner(`<span class="spin"></span> Generating <strong>${title}</strong> — engine running in GitHub Actions (${run.status})…${link}`, 'busy');
     } else {
       clearInterval(poll);
       RUNNING = false;
@@ -517,7 +599,7 @@ async function generate(file) {
         setTimeout(load, 900);
       } else {
         banner(`❌ Run ${run.conclusion || 'failed'}.${link}`, 'err');
-        setGenButtons(false);
+        clearGenBusy(); setGenButtons(false);
       }
       return;
     }
@@ -525,7 +607,7 @@ async function generate(file) {
       clearInterval(poll);
       RUNNING = false;
       banner(`⏱ Still running — check Actions.${link}`);
-      setGenButtons(false);
+      clearGenBusy(); setGenButtons(false);
     }
   }, 5000);
 }
@@ -595,14 +677,28 @@ async function load() {
   else loadSources();
 }
 
-document.addEventListener('click', (e) => { if (e.target.dataset.close !== undefined) closeViewer(); });
-// Delegated provenance navigation: source chips → open the source; "Used by" chips
-// → open the deliverable. Works for chips rendered in cards and inside the viewer.
 document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-close]')) { closeViewer(); return; }
+  if (e.target.closest('#viewer-back')) { viewerBack(); return; }
+
+  const inViewer = !!e.target.closest('#viewer-body');
+
+  // Provenance chips: source path → open the source; "Used by" → open the deliverable.
   const srcEl = e.target.closest('[data-srcpath]');
-  if (srcEl) { e.preventDefault(); openSourceViewer(srcEl.getAttribute('data-srcpath')); return; }
+  if (srcEl) { e.preventDefault(); openSourceViewer(srcEl.getAttribute('data-srcpath'), inViewer); return; }
   const delEl = e.target.closest('[data-deliv]');
-  if (delEl) { e.preventDefault(); openViewer(delEl.getAttribute('data-deliv')); }
+  if (delEl) { e.preventDefault(); openViewer(delEl.getAttribute('data-deliv'), inViewer); return; }
+
+  // Markdown links inside a deliverable that point at repo files (e.g.
+  // engagement/<kebab>/PROJECT-CONTEXT.md) must open in the in-app viewer with a
+  // Back button — never navigate the whole page away to a 404.
+  if (inViewer) {
+    const a = e.target.closest('a[href]');
+    if (a && isRepoLink(a.getAttribute('href'))) {
+      e.preventDefault();
+      openSourceViewer(normalizeRepoPath(a.getAttribute('href')), true);
+    }
+  }
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
 load();
