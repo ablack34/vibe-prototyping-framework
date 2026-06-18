@@ -250,6 +250,40 @@ main.dash { max-width: 1040px; }
 .genbanner.err { border-color: #e5534b; }
 .genbanner a { color: var(--accent); }
 
+/* sources panel */
+.sources-panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 28px; }
+.sources-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.sources-head h2 { margin: 0 0 4px; font-size: 18px; }
+.sources-sub { margin: 0; font-size: 13px; color: var(--muted); max-width: 70ch; line-height: 1.5; }
+.btn-add-src { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 8px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.btn-add-src:hover { border-color: var(--accent); color: var(--accent); }
+.src-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.src-card { display: flex; align-items: center; gap: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 9px; padding: 10px 14px; }
+.src-kind { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--accent); background: rgba(110, 168, 254, 0.12); padding: 3px 8px; border-radius: 5px; white-space: nowrap; }
+.src-name { font-size: 14px; color: var(--text); flex: 1; }
+.src-link { font-size: 12px; color: var(--muted); text-decoration: none; }
+.src-link:hover { color: var(--accent); }
+.src-empty { font-size: 13px; color: var(--muted); background: var(--panel-2); border: 1px dashed var(--line); border-radius: 9px; padding: 14px 16px; line-height: 1.5; }
+.src-empty strong { color: var(--text); }
+.src-form { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+.src-form label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.src-form .src-row { display: flex; gap: 12px; }
+.src-form .grow { flex: 1; }
+.src-form select, .src-form input[type=text], .src-form input:not([type]), .src-form textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; color: var(--text); font: inherit; font-weight: 400; padding: 9px 12px; width: 100%; }
+.src-form textarea { resize: vertical; min-height: 120px; font-family: ui-monospace, "Cascadia Code", monospace; font-size: 13px; }
+.src-form select:focus, .src-form input:focus, .src-form textarea:focus { outline: none; border-color: var(--accent); }
+.src-actions { display: flex; align-items: center; gap: 10px; }
+.src-actions .grow { flex: 1; }
+.src-file-btn { flex-direction: row !important; align-items: center; gap: 6px; font-size: 12px !important; font-weight: 600; color: var(--muted) !important; cursor: pointer; border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; }
+.src-file-btn:hover { border-color: var(--accent); color: var(--accent) !important; }
+.btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--muted); font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+.btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+.btn-save-src { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: none; color: #0b0e16; font-size: 13px; font-weight: 700; padding: 8px 18px; border-radius: 8px; cursor: pointer; }
+.btn-save-src:hover { filter: brightness(1.08); }
+.src-status { font-size: 13px; color: var(--muted); }
+.src-status.ok { color: var(--green); }
+.src-status.err { color: var(--red); }
+
 /* grade badge */
 .grade { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 6px; white-space: nowrap; }
 .grade-pass { background: rgba(74, 222, 128, 0.14); color: var(--green); }

@@ -14,9 +14,13 @@
 //   GET  /api/board/<kebab>    -> one engagement: gates + rendered deliverables
 //   (?source=local on either reads the in-repo engagement/ folders — dev fallback)
 //   POST /api/run              -> dispatch a phase (run-phase.yml) in the engagement repo
+//                                 (seedDemo=false once the designer has added sources)
 //   GET  /api/run/status?kebab -> latest engine run status for the engagement
 //   POST /api/approve          -> write a sign-off row into a deliverable + refresh
 //                                 the engagement's committed gates.json
+//   GET  /api/sources?kebab    -> the designer-added sources in the engagement repo
+//   POST /api/sources          -> commit a customer source (brief/transcript/etc.) so
+//                                 the engine reads it on the next Generate
 
 import { createServer } from 'node:http';
 import { execSync } from 'node:child_process';
@@ -357,15 +361,19 @@ async function runPhase(input) {
   if (!prompt) return { code: 400, body: { error: `No generator is wired for "${file}".` } };
   const rec = (await readStore()).find((r) => (r.id || '') === kebab);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
+  // Once the designer has added real sources, stop seeding the Contoso demo so
+  // the engine grounds the deliverable in their materials. The frontend passes
+  // seedDemo explicitly; default to true to preserve the canned-demo flow.
+  const seed = input.seedDemo === false ? 'false' : 'true';
   try {
     execSync(
-      `gh workflow run run-phase.yml --repo ${rec.repo} -f prompt=${prompt} -f engagement=${kebab} -f seed_demo=true`,
+      `gh workflow run run-phase.yml --repo ${rec.repo} -f prompt=${prompt} -f engagement=${kebab} -f seed_demo=${seed}`,
       { stdio: 'pipe' },
     );
   } catch (e) {
     return { code: 502, body: { error: 'Could not dispatch the run.', detail: String(e.stderr || e.message || e).trim() } };
   }
-  return { code: 202, body: { ok: true, repo: rec.repo, prompt, engagement: kebab } };
+  return { code: 202, body: { ok: true, repo: rec.repo, prompt, engagement: kebab, seededDemo: seed === 'true' } };
 }
 
 async function runStatus(kebab) {
@@ -488,6 +496,92 @@ async function approveDeliverable(input) {
   return { code: 200, body: { ok: true, file, signedOffBy: name, signedOffAt: today(), gatesRefreshed: refreshed.ok } };
 }
 
+// ---- sources: let the designer add their own customer materials ----
+// The engine reads from sources/ and engagement/<kebab>/ before it generates a
+// Discover deliverable. These are the canonical slots the run-phase seed step
+// fills with demo data — so a designer's real materials land where the engine
+// already looks, and Generate (seed_demo=false) grounds the output in them.
+const SOURCE_KINDS = {
+  'customer-brief': { label: 'Customer brief', single: true, path: (id) => `engagement/${id}/customer-brief.md` },
+  'transcript': { label: 'Meeting transcript', single: false, path: (id, slug) => `sources/transcript-${slug}.md` },
+  'questionnaire': { label: 'Questionnaire responses', single: true, path: () => 'sources/questionnaire-responses.md' },
+  'research': { label: 'Research summary', single: true, path: () => 'sources/research/research-summary.md' },
+  'other': { label: 'Other source', single: false, path: (id, slug) => `sources/${slug}.md` },
+};
+
+// Map a committed repo path back to a source kind + display name, for listing.
+function classifySource(id, path) {
+  if (path === `engagement/${id}/customer-brief.md`) return { kind: 'customer-brief', name: 'Customer brief' };
+  if (path === 'sources/questionnaire-responses.md') return { kind: 'questionnaire', name: 'Questionnaire responses' };
+  if (path === 'sources/research/research-summary.md') return { kind: 'research', name: 'Research summary' };
+  const t = path.match(/^sources\/transcript-(.+)\.md$/);
+  if (t) return { kind: 'transcript', name: t[1].replace(/-/g, ' ') };
+  const o = path.match(/^sources\/(.+)\.md$/);
+  if (o && o[1] !== 'README') return { kind: 'other', name: o[1].replace(/-/g, ' ') };
+  return null;
+}
+
+async function listRepoDir(fullName, dir) {
+  const r = await gh(`/repos/${fullName}/contents/${dir}`);
+  return r.status === 200 && Array.isArray(r.json) ? r.json.filter((e) => e.type === 'file') : [];
+}
+
+// The designer-added sources in an engagement repo (everything under sources/
+// except the README placeholder, plus the customer brief).
+async function listSources(rec) {
+  const id = rec.id;
+  const seen = new Set();
+  const out = [];
+  const add = (f) => {
+    const c = classifySource(id, f.path);
+    if (c && !seen.has(f.path)) { seen.add(f.path); out.push({ ...c, path: f.path, size: f.size, htmlUrl: f.html_url }); }
+  };
+  for (const f of await listRepoDir(rec.repo, 'sources')) { if (f.name !== 'README.md') add(f); }
+  for (const f of await listRepoDir(rec.repo, 'sources/research')) add(f);
+  const brief = await gh(`/repos/${rec.repo}/contents/engagement/${id}/customer-brief.md`);
+  if (brief.status === 200 && brief.json?.path) add(brief.json);
+  return out;
+}
+
+async function addSource(input) {
+  const id = String(input.kebab || '').trim();
+  const kind = String(input.kind || '').trim();
+  const name = String(input.name || '').trim();
+  const content = typeof input.content === 'string' ? input.content : '';
+  if (!id) return { code: 400, body: { error: 'Engagement is required.' } };
+  const spec = SOURCE_KINDS[kind];
+  if (!spec) return { code: 400, body: { error: `Unknown source type "${kind}".` } };
+  if (!content.trim()) return { code: 400, body: { error: 'Source content is empty.' } };
+  if (!spec.single && !name) return { code: 400, body: { error: `A name is required for a ${spec.label.toLowerCase()}.` } };
+  const rec = (await readStore()).find((r) => (r.id || '') === id);
+  if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
+
+  const slug = spec.single ? null : kebab(name);
+  if (!spec.single && !slug) return { code: 400, body: { error: 'Could not derive a filename from that name.' } };
+  const path = spec.path(id, slug);
+  if (path.includes('..') || !(path.startsWith('sources/') || path.startsWith(`engagement/${id}/`)))
+    return { code: 400, body: { error: 'Invalid source path.' } };
+
+  const cur = await gh(`/repos/${rec.repo}/contents/${path}`);
+  const body = {
+    message: `Add source: ${spec.label}${name ? ` (${name})` : ''} — via VIBE web surface`,
+    content: Buffer.from(content, 'utf8').toString('base64'),
+  };
+  if (cur.status === 200 && cur.json?.sha) body.sha = cur.json.sha;
+  const put = await gh(`/repos/${rec.repo}/contents/${path}`, { method: 'PUT', body });
+  if (put.status !== 200 && put.status !== 201)
+    return { code: 502, body: { error: 'Could not save the source.', detail: put.json?.message } };
+
+  // Mark the engagement as source-backed so Generate stops seeding Contoso.
+  try {
+    const store = await readStore();
+    const r = store.find((x) => (x.id || '') === id);
+    if (r && !r.sourcesAdded) { r.sourcesAdded = true; await writeStore(store); }
+  } catch { /* non-fatal: the frontend also passes seedDemo explicitly */ }
+
+  return { code: 200, body: { ok: true, path, kind, name: name || spec.label, updated: cur.status === 200 } };
+}
+
 // ---- tiny static + JSON server ----
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
@@ -549,6 +643,21 @@ const server = createServer(async (req, res) => {
       for await (const chunk of req) raw += chunk;
       const input = raw ? JSON.parse(raw) : {};
       const { code, body } = await approveDeliverable(input);
+      return send(res, code, body);
+    }
+
+    if (req.method === 'GET' && url.pathname === '/api/sources') {
+      const id = url.searchParams.get('kebab');
+      const rec = (await readStore()).find((r) => (r.id || '') === id);
+      if (!rec || !rec.repo) return send(res, 404, { error: 'Engagement not found' });
+      return send(res, 200, { sources: await listSources(rec), kinds: Object.fromEntries(Object.entries(SOURCE_KINDS).map(([k, v]) => [k, { label: v.label, single: v.single }])) });
+    }
+
+    if (req.method === 'POST' && url.pathname === '/api/sources') {
+      let raw = '';
+      for await (const chunk of req) raw += chunk;
+      const input = raw ? JSON.parse(raw) : {};
+      const { code, body } = await addSource(input);
       return send(res, code, body);
     }
 

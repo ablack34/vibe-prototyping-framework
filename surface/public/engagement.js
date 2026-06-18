@@ -10,6 +10,8 @@ const source = params.get('source');
 let DELIVERABLES = [];
 const GENERATABLE = new Set(['personas.md', 'problem-statement.md', 'current-state-journey.md']);
 let RUNNING = false;
+let SOURCES = [];
+let SRC_KINDS = {};
 
 function pill(status) {
   const map = {
@@ -106,6 +108,120 @@ function setGenButtons(disabled) {
   document.querySelectorAll('.btn-gen').forEach((b) => (b.disabled = disabled));
 }
 
+// ---- sources: the designer's own customer materials that ground Discover ----
+async function loadSources() {
+  try {
+    const r = await fetch(`/api/sources?kebab=${kebab}`);
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    SOURCES = d.sources || [];
+    SRC_KINDS = d.kinds || {};
+  } catch { SOURCES = []; }
+  renderSources();
+}
+
+function srcKindLabel(k) { return (SRC_KINDS[k] && SRC_KINDS[k].label) || k; }
+
+function renderSources() {
+  const el = document.getElementById('sources');
+  if (!el) return;
+  const list = SOURCES.length
+    ? SOURCES.map((s) => `<div class="src-card">
+        <span class="src-kind">${srcKindLabel(s.kind)}</span>
+        <span class="src-name">${s.name}</span>
+        ${s.htmlUrl ? `<a class="src-link" href="${s.htmlUrl}" target="_blank" rel="noopener">View ↗</a>` : ''}
+      </div>`).join('')
+    : `<div class="src-empty">No sources yet — <strong>Generate</strong> will fall back to the Contoso demo data. Add your customer's materials to ground the deliverables in their world.</div>`;
+  const opts = Object.entries(SRC_KINDS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('');
+
+  el.innerHTML = `
+    <div class="sources-head">
+      <div>
+        <h2>Sources</h2>
+        <p class="sources-sub">Discover reads everything here before it generates. Add the customer's brief, transcripts, questionnaire and research so the deliverables are grounded in their world — not demo data.</p>
+      </div>
+      <button class="btn-add-src" id="src-toggle" type="button">+ Add source</button>
+    </div>
+    <div class="src-list">${list}</div>
+    <form class="src-form" id="src-form" hidden>
+      <div class="src-row">
+        <label class="grow">Type
+          <select id="src-kind">${opts}</select>
+        </label>
+        <label class="grow" id="src-name-wrap">Name
+          <input id="src-name" placeholder="e.g. Kickoff call" autocomplete="off" />
+        </label>
+      </div>
+      <label>Content
+        <textarea id="src-content" rows="8" placeholder="Paste the brief, transcript or notes here…"></textarea>
+      </label>
+      <div class="src-actions">
+        <label class="src-file-btn">📄 Load text file
+          <input type="file" id="src-file" accept=".md,.txt,.vtt,.csv,text/*" hidden />
+        </label>
+        <span class="grow"></span>
+        <button type="button" class="btn-ghost" id="src-cancel">Cancel</button>
+        <button type="submit" class="btn-save-src">Add source</button>
+      </div>
+      <div class="src-status" id="src-status" hidden></div>
+    </form>`;
+  wireSources();
+}
+
+function wireSources() {
+  const form = document.getElementById('src-form');
+  const toggle = document.getElementById('src-toggle');
+  if (!form || !toggle) return;
+  const kindSel = document.getElementById('src-kind');
+  const nameWrap = document.getElementById('src-name-wrap');
+  const fileInput = document.getElementById('src-file');
+  const contentEl = document.getElementById('src-content');
+
+  const syncName = () => {
+    const single = SRC_KINDS[kindSel.value] && SRC_KINDS[kindSel.value].single;
+    nameWrap.style.display = single ? 'none' : '';
+  };
+  syncName();
+  kindSel.addEventListener('change', syncName);
+  toggle.addEventListener('click', () => {
+    form.hidden = !form.hidden;
+    toggle.textContent = form.hidden ? '+ Add source' : '× Close';
+  });
+  document.getElementById('src-cancel').addEventListener('click', () => {
+    form.hidden = true; toggle.textContent = '+ Add source';
+  });
+  fileInput.addEventListener('change', async () => {
+    const f = fileInput.files[0];
+    if (!f) return;
+    contentEl.value = await f.text();
+    const nameEl = document.getElementById('src-name');
+    if (nameEl && !nameEl.value) nameEl.value = f.name.replace(/\.[^.]+$/, '');
+  });
+  form.addEventListener('submit', (e) => { e.preventDefault(); saveSource(); });
+}
+
+async function saveSource() {
+  const kind = document.getElementById('src-kind').value;
+  const name = (document.getElementById('src-name').value || '').trim();
+  const content = document.getElementById('src-content').value;
+  const status = document.getElementById('src-status');
+  const single = SRC_KINDS[kind] && SRC_KINDS[kind].single;
+  const fail = (msg) => { status.hidden = false; status.className = 'src-status err'; status.textContent = msg; };
+  if (!content.trim()) return fail('Add some content first.');
+  if (!single && !name) return fail('Give this source a name.');
+  status.hidden = false; status.className = 'src-status'; status.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/sources', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kebab, kind, name, content }),
+    });
+    const b = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(b.error || 'Could not save the source.');
+    await loadSources();
+  } catch (e) { fail(e.message); }
+}
+
 // Dispatch a phase in the engagement's repo, then poll until the engine run
 // finishes and reload the board (the engine commits the deliverable + gates.json).
 async function generate(file) {
@@ -113,7 +229,8 @@ async function generate(file) {
   RUNNING = true;
   setGenButtons(true);
   const title = (DELIVERABLES.find((d) => d.file === file) || {}).title || file;
-  banner(`⏳ Generating <strong>${title}</strong> — dispatching the engine…`);
+  const grounded = SOURCES.length > 0;
+  banner(`⏳ Generating <strong>${title}</strong> ${grounded ? 'from your sources' : '(Contoso demo data — no sources added)'} — dispatching the engine…`);
 
   let priorId = null;
   try { priorId = (await (await fetch(`/api/run/status?kebab=${kebab}`)).json()).databaseId || null; } catch { /* none yet */ }
@@ -122,7 +239,7 @@ async function generate(file) {
     const res = await fetch('/api/run', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kebab, file }),
+      body: JSON.stringify({ kebab, file, seedDemo: !grounded }),
     });
     if (!res.ok) { const b = await res.json().catch(() => ({})); throw new Error(b.detail || b.error || 'Dispatch failed'); }
   } catch (e) {
@@ -219,6 +336,8 @@ async function load() {
     b.addEventListener('click', () => generate(b.dataset.gen)));
   document.querySelectorAll('.btn-approve').forEach((b) =>
     b.addEventListener('click', () => approve(b.dataset.approve)));
+
+  loadSources();
 }
 
 document.addEventListener('click', (e) => { if (e.target.dataset.close !== undefined) closeViewer(); });
