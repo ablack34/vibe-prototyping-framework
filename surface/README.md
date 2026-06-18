@@ -20,6 +20,13 @@ templates) shipped inside it, ready to drive.
 
 - Node 18+ (uses built-in `fetch`; no `npm install` needed — zero dependencies).
 - GitHub CLI authenticated: `gh auth status` should show you logged in with `repo` scope.
+- *Optional — for Office/PDF source uploads:* Python 3.10+ with Microsoft
+  [MarkItDown](https://github.com/microsoft/markitdown):
+  `pip install "markitdown[docx,pptx,xlsx,pdf]"`. This lets designers drop Word,
+  PowerPoint, Excel and PDF materials into the source bucket — the server converts
+  them to Markdown at ingest (committing both the raw original and the extracted
+  `.md` the engine cites). Without it the bucket still accepts `.md`/`.txt`/`.vtt`
+  transcripts and pasted text; Office/PDF uploads return an actionable install hint.
 
 ## Run
 
@@ -35,6 +42,7 @@ Optional environment overrides:
 | `PORT` | `4310` | Port to serve on |
 | `TEMPLATE_OWNER` | `ablack34` | Owner of the template repo |
 | `TEMPLATE_REPO` | `vibe-prototyping-framework` | The template repo |
+| `MARKITDOWN_PYTHON` | `python` | Python interpreter used to run MarkItDown for Office/PDF source conversion |
 
 ## What it does
 

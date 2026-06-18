@@ -20,16 +20,23 @@
 //                                 the engagement's committed gates.json
 //   GET  /api/sources?kebab    -> the designer-added sources in the engagement repo
 //   POST /api/sources          -> commit a customer source (brief/transcript/etc.) so
-//                                 the engine reads it on the next Generate
+//                                 the engine reads it on the next Generate. Accepts
+//                                 pasted text, native-text uploads, and Office/PDF
+//                                 uploads (auto-converted to Markdown via MarkItDown;
+//                                 raw original committed alongside the extracted .md)
 
 import { createServer } from 'node:http';
-import { execSync } from 'node:child_process';
-import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { execSync, execFile } from 'node:child_process';
+import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname } from 'node:path';
+import { tmpdir } from 'node:os';
+import { randomUUID } from 'node:crypto';
+import { promisify } from 'node:util';
 import { computeGates, computeGatesFromContents, extractProvenance, GATES, signoff } from '../scripts/gates-lib.mjs';
 import { tidyRepo } from './tidy-repo.mjs';
+const execFileP = promisify(execFile);
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dir, '..');
@@ -538,6 +545,53 @@ async function approveDeliverable(input) {
 // Discover deliverable. These are the canonical slots the run-phase seed step
 // fills with demo data — so a designer's real materials land where the engine
 // already looks, and Generate (seed_demo=false) grounds the output in them.
+
+// What the bucket accepts, in three handling groups (spec §7):
+//   text    — read as-is, the engine cites it directly (.md/.txt/.vtt/.srt/.csv…)
+//   convert — Office/PDF, converted to Markdown at ingest via Microsoft MarkItDown;
+//             BOTH the extracted .md (the grounding source) and the raw original
+//             (downloadable) are committed
+//   image   — true non-text (photos/screenshots): no extractable words, held for
+//             human reference only, NOT fed to the engine (reference tray is P4)
+const CONVERT_EXTS = new Set(['.docx', '.pptx', '.xlsx', '.xls', '.pdf']);
+const IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp', '.heic', '.tif', '.tiff']);
+function formatGroup(filename) {
+  const e = extname(filename || '').toLowerCase();
+  if (CONVERT_EXTS.has(e)) return 'convert';
+  if (IMAGE_EXTS.has(e)) return 'image';
+  return 'text'; // .md/.txt/.vtt/.srt/.csv/.json/.log and pasted text
+}
+
+// Convert an Office/PDF document to LLM-ready Markdown with Microsoft MarkItDown.
+// Runs as `python -m markitdown <tempfile>`; the host needs `pip install
+// 'markitdown[...]'` once (override the interpreter with MARKITDOWN_PYTHON).
+// Conversion is format-normalization plumbing — it does not touch the "engine is
+// the single source of truth for deliverables" principle.
+const MARKITDOWN_PY = process.env.MARKITDOWN_PYTHON || 'python';
+async function convertToMarkdown(buffer, filename) {
+  const tmp = join(tmpdir(), `vibe-mit-${randomUUID()}${extname(filename).toLowerCase()}`);
+  await writeFile(tmp, buffer);
+  try {
+    const { stdout } = await execFileP(MARKITDOWN_PY, ['-m', 'markitdown', tmp], {
+      maxBuffer: 48 * 1024 * 1024,
+      windowsHide: true,
+    });
+    return stdout;
+  } finally {
+    try { await unlink(tmp); } catch { /* best effort */ }
+  }
+}
+
+// Commit one file to an engagement repo (create or update) via the Contents API.
+async function putRepoFile(repo, path, base64Content, message) {
+  const cur = await gh(`/repos/${repo}/contents/${path}`);
+  const body = { message, content: base64Content };
+  if (cur.status === 200 && cur.json?.sha) body.sha = cur.json.sha;
+  const put = await gh(`/repos/${repo}/contents/${path}`, { method: 'PUT', body });
+  if (put.status !== 200 && put.status !== 201) return { ok: false, detail: put.json?.message };
+  return { ok: true, updated: cur.status === 200 };
+}
+
 const SOURCE_KINDS = {
   'customer-brief': { label: 'Customer brief', single: true, path: (id) => `engagement/${id}/customer-brief.md` },
   'transcript': { label: 'Meeting transcript', single: false, path: (id, slug) => `sources/transcript-${slug}.md` },
@@ -569,19 +623,33 @@ async function listRepoDir(fullName, dir) {
 }
 
 // The designer-added sources in an engagement repo (everything under sources/
-// except the README placeholder, plus the customer brief).
+// except the README placeholder, plus the customer brief). When a converted
+// Office/PDF source has a raw original committed alongside it (same stem, a
+// CONVERT_EXTS extension), that original is attached so the UI can offer it for
+// download while the engine still cites the extracted .md.
 async function listSources(rec) {
   const id = rec.id;
+  const all = [];
+  for (const f of await listRepoDir(rec.repo, 'sources')) all.push(f);
+  for (const f of await listRepoDir(rec.repo, 'sources/research')) all.push(f);
+  for (const f of await listRepoDir(rec.repo, `engagement/${id}`)) all.push(f);
+  const rawByStem = new Map();
+  for (const f of all) {
+    const e = extname(f.path).toLowerCase();
+    if (CONVERT_EXTS.has(e)) rawByStem.set(f.path.slice(0, -e.length), f);
+  }
   const seen = new Set();
   const out = [];
-  const add = (f) => {
+  for (const f of all) {
+    if (f.name === 'README.md') continue;
     const c = classifySource(id, f.path);
-    if (c && !seen.has(f.path)) { seen.add(f.path); out.push({ ...c, path: f.path, size: f.size, htmlUrl: f.html_url }); }
-  };
-  for (const f of await listRepoDir(rec.repo, 'sources')) { if (f.name !== 'README.md') add(f); }
-  for (const f of await listRepoDir(rec.repo, 'sources/research')) add(f);
-  const brief = await gh(`/repos/${rec.repo}/contents/engagement/${id}/customer-brief.md`);
-  if (brief.status === 200 && brief.json?.path) add(brief.json);
+    if (!c || seen.has(f.path)) continue;
+    seen.add(f.path);
+    const entry = { ...c, path: f.path, size: f.size, htmlUrl: f.html_url };
+    const raw = rawByStem.get(f.path.replace(/\.md$/, ''));
+    if (raw) entry.original = { name: raw.name, path: raw.path, htmlUrl: raw.html_url, ext: extname(raw.path).slice(1) };
+    out.push(entry);
+  }
   return out;
 }
 
@@ -589,30 +657,63 @@ async function addSource(input) {
   const id = String(input.kebab || '').trim();
   const kind = String(input.kind || '').trim();
   const name = String(input.name || '').trim();
-  const content = typeof input.content === 'string' ? input.content : '';
+  const filename = String(input.filename || '').trim();
   if (!id) return { code: 400, body: { error: 'Engagement is required.' } };
   const spec = SOURCE_KINDS[kind];
   if (!spec) return { code: 400, body: { error: `Unknown source type "${kind}".` } };
-  if (!content.trim()) return { code: 400, body: { error: 'Source content is empty.' } };
   if (!spec.single && !name) return { code: 400, body: { error: `A name is required for a ${spec.label.toLowerCase()}.` } };
   const rec = (await readStore()).find((r) => (r.id || '') === id);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
 
+  // Resolve the grounding text + (for converted uploads) the raw original.
+  let content = '';
+  let raw = null; // { buffer, ext }
+  let original = null; // original filename, for honest receipts
+  if (input.dataBase64) {
+    const buffer = Buffer.from(String(input.dataBase64), 'base64');
+    if (!buffer.length) return { code: 400, body: { error: 'The uploaded file was empty.' } };
+    if (buffer.length > 25 * 1024 * 1024)
+      return { code: 413, body: { error: 'That file is larger than 25 MB. Trim it or paste the relevant text.' } };
+    const group = formatGroup(filename);
+    if (group === 'image')
+      return { code: 415, body: { error: 'Images are held for reference only and aren’t fed to the engine yet (a later release adds an image tray). Drop a document (.docx, .pptx, .xlsx, .pdf) or text instead.' } };
+    if (group === 'convert') {
+      try { content = await convertToMarkdown(buffer, filename); }
+      catch (e) {
+        return { code: 501, body: {
+          error: `Couldn’t convert ${filename || 'that file'}. The MarkItDown converter isn’t available on the server — install it with: pip install "markitdown[docx,pptx,xlsx,pdf]"`,
+          detail: String(e?.message || e),
+        } };
+      }
+      raw = { buffer, ext: extname(filename).toLowerCase() };
+      original = filename;
+    } else {
+      content = buffer.toString('utf8');
+    }
+  } else {
+    content = typeof input.content === 'string' ? input.content : '';
+  }
+  if (!content.trim()) return { code: 400, body: { error: 'Source content is empty.' } };
+
   const slug = spec.single ? null : kebab(name);
   if (!spec.single && !slug) return { code: 400, body: { error: 'Could not derive a filename from that name.' } };
   const path = spec.path(id, slug);
-  if (path.includes('..') || !(path.startsWith('sources/') || path.startsWith(`engagement/${id}/`)))
-    return { code: 400, body: { error: 'Invalid source path.' } };
+  const inScope = (p) => !p.includes('..') && (p.startsWith('sources/') || p.startsWith(`engagement/${id}/`));
+  if (!inScope(path)) return { code: 400, body: { error: 'Invalid source path.' } };
 
-  const cur = await gh(`/repos/${rec.repo}/contents/${path}`);
-  const body = {
-    message: `Add source: ${spec.label}${name ? ` (${name})` : ''} — via VIBE web surface`,
-    content: Buffer.from(content, 'utf8').toString('base64'),
-  };
-  if (cur.status === 200 && cur.json?.sha) body.sha = cur.json.sha;
-  const put = await gh(`/repos/${rec.repo}/contents/${path}`, { method: 'PUT', body });
-  if (put.status !== 200 && put.status !== 201)
-    return { code: 502, body: { error: 'Could not save the source.', detail: put.json?.message } };
+  // Commit the raw original first (so the extracted .md never points at a missing
+  // download), then the grounding markdown the engine reads and cites.
+  if (raw) {
+    const rawPath = path.replace(/\.md$/, raw.ext);
+    if (!inScope(rawPath)) return { code: 400, body: { error: 'Invalid source path.' } };
+    const r = await putRepoFile(rec.repo, rawPath, raw.buffer.toString('base64'),
+      `Add source original: ${original} — via VIBE web surface`);
+    if (!r.ok) return { code: 502, body: { error: 'Could not save the original file.', detail: r.detail } };
+  }
+  const label = original || name;
+  const msg = `Add source: ${spec.label}${label ? ` (${label})` : ''}${raw ? ' — converted to Markdown' : ''} — via VIBE web surface`;
+  const put = await putRepoFile(rec.repo, path, Buffer.from(content, 'utf8').toString('base64'), msg);
+  if (!put.ok) return { code: 502, body: { error: 'Could not save the source.', detail: put.detail } };
 
   // Mark the engagement as source-backed so Generate stops seeding Contoso.
   try {
@@ -621,7 +722,7 @@ async function addSource(input) {
     if (r && !r.sourcesAdded) { r.sourcesAdded = true; await writeStore(store); }
   } catch { /* non-fatal: the frontend also passes seedDemo explicitly */ }
 
-  return { code: 200, body: { ok: true, path, kind, name: name || spec.label, updated: cur.status === 200 } };
+  return { code: 200, body: { ok: true, path, kind, name: name || spec.label, original, converted: !!raw, updated: put.updated } };
 }
 
 // ---- tiny static + JSON server ----

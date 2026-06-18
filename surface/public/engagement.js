@@ -13,6 +13,9 @@ let RUNNING = false;
 let SOURCES = [];
 let SRC_KINDS = {};
 let PROVENANCE = { bySource: {} };
+let UPLOAD_QUEUE = [];
+let UPQ_ID = 0;
+let UPQ_MSG = null;
 
 function pill(status) {
   const map = {
@@ -223,8 +226,10 @@ function renderSources() {
         <div class="src-card-top">
           <span class="src-kind">${srcKindLabel(s.kind)}</span>
           <span class="src-name">${s.name}</span>
+          ${s.original ? `<span class="src-orig" title="Converted from ${s.original.name}">from ${s.original.ext.toUpperCase()}</span>` : ''}
           <span class="grow"></span>
           <button class="src-view" data-srcpath="${s.path}">View</button>
+          ${s.original && s.original.htmlUrl ? `<a class="src-link" href="${s.original.htmlUrl}" target="_blank" rel="noopener" title="Download ${s.original.name}">Original ↧</a>` : ''}
           ${s.htmlUrl ? `<a class="src-link" href="${s.htmlUrl}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}
         </div>
         ${usedByHtml(s)}
@@ -238,8 +243,19 @@ function renderSources() {
         <h2>Sources</h2>
         <p class="sources-sub">Discover reads everything here before it generates. Add the customer's brief, transcripts, questionnaire and research so the deliverables are grounded in their world — not demo data.</p>
       </div>
-      <button class="btn-add-src" id="src-toggle" type="button">+ Add source</button>
+      <button class="btn-add-src" id="src-toggle" type="button">✎ Paste text</button>
     </div>
+
+    <div class="dropzone" id="dropzone" tabindex="0" role="button"
+         aria-label="Drop customer materials, or click to browse">
+      <div class="dz-icon">⬇</div>
+      <div class="dz-main">Drop customer materials here</div>
+      <div class="dz-sub">Word, PowerPoint, Excel &amp; PDF are converted to Markdown automatically · transcripts, .txt, .csv used as-is · or click to browse</div>
+      <input type="file" id="dz-input" multiple hidden
+             accept=".md,.markdown,.txt,.vtt,.srt,.csv,.json,.log,.docx,.pptx,.xlsx,.xls,.pdf" />
+    </div>
+    <div class="upqueue" id="upqueue" hidden></div>
+
     <div class="src-list">${list}</div>
     <form class="src-form" id="src-form" hidden>
       <div class="src-row">
@@ -254,9 +270,6 @@ function renderSources() {
         <textarea id="src-content" rows="8" placeholder="Paste the brief, transcript or notes here…"></textarea>
       </label>
       <div class="src-actions">
-        <label class="src-file-btn">📄 Load text file
-          <input type="file" id="src-file" accept=".md,.txt,.vtt,.csv,text/*" hidden />
-        </label>
         <span class="grow"></span>
         <button type="button" class="btn-ghost" id="src-cancel">Cancel</button>
         <button type="submit" class="btn-save-src">Add source</button>
@@ -267,14 +280,37 @@ function renderSources() {
 }
 
 function wireSources() {
-  const form = document.getElementById('src-form');
   const toggle = document.getElementById('src-toggle');
+  const form = document.getElementById('src-form');
+  const dz = document.getElementById('dropzone');
+  const dzInput = document.getElementById('dz-input');
+
+  // The bucket: drag-drop + click-to-browse → multi-file queue.
+  if (dz && dzInput) {
+    dz.addEventListener('click', () => dzInput.click());
+    dz.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dzInput.click(); }
+    });
+    dzInput.addEventListener('change', () => {
+      if (dzInput.files.length) enqueueFiles(dzInput.files);
+      dzInput.value = '';
+    });
+    ['dragenter', 'dragover'].forEach((ev) => dz.addEventListener(ev, (e) => {
+      e.preventDefault(); dz.classList.add('dz-over');
+    }));
+    dz.addEventListener('dragleave', (e) => { e.preventDefault(); dz.classList.remove('dz-over'); });
+    dz.addEventListener('drop', (e) => {
+      e.preventDefault(); dz.classList.remove('dz-over');
+      const f = e.dataTransfer && e.dataTransfer.files;
+      if (f && f.length) enqueueFiles(f);
+    });
+  }
+  renderQueue();
+
+  // The paste-text form (quick entry for text the designer types/pastes).
   if (!form || !toggle) return;
   const kindSel = document.getElementById('src-kind');
   const nameWrap = document.getElementById('src-name-wrap');
-  const fileInput = document.getElementById('src-file');
-  const contentEl = document.getElementById('src-content');
-
   const syncName = () => {
     const single = SRC_KINDS[kindSel.value] && SRC_KINDS[kindSel.value].single;
     nameWrap.style.display = single ? 'none' : '';
@@ -283,19 +319,134 @@ function wireSources() {
   kindSel.addEventListener('change', syncName);
   toggle.addEventListener('click', () => {
     form.hidden = !form.hidden;
-    toggle.textContent = form.hidden ? '+ Add source' : '× Close';
+    toggle.textContent = form.hidden ? '✎ Paste text' : '× Close';
   });
   document.getElementById('src-cancel').addEventListener('click', () => {
-    form.hidden = true; toggle.textContent = '+ Add source';
-  });
-  fileInput.addEventListener('change', async () => {
-    const f = fileInput.files[0];
-    if (!f) return;
-    contentEl.value = await f.text();
-    const nameEl = document.getElementById('src-name');
-    if (nameEl && !nameEl.value) nameEl.value = f.name.replace(/\.[^.]+$/, '');
+    form.hidden = true; toggle.textContent = '✎ Paste text';
   });
   form.addEventListener('submit', (e) => { e.preventDefault(); saveSource(); });
+}
+
+// ---- the upload bucket: auto-detect, queue, convert-on-upload --------------
+const UP_CONVERT = ['docx', 'pptx', 'xlsx', 'xls', 'pdf'];
+const UP_IMAGE = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'heic', 'tif', 'tiff'];
+function fileExt(name) { return (name.toLowerCase().match(/\.([^.]+)$/) || [, ''])[1]; }
+function fileGroup(name) {
+  const e = fileExt(name);
+  if (UP_CONVERT.includes(e)) return 'convert';
+  if (UP_IMAGE.includes(e)) return 'image';
+  return 'text';
+}
+// Suggest a kind from the filename — shown as an editable default, never forced.
+function detectKind(name) {
+  const n = name.toLowerCase();
+  const e = fileExt(name);
+  if (e === 'vtt' || e === 'srt' || /transcript|call|meeting|standup|interview/.test(n)) return 'transcript';
+  if (/brief/.test(n)) return 'customer-brief';
+  if (/questionnaire|survey/.test(n)) return 'questionnaire';
+  if (/research/.test(n)) return 'research';
+  return 'other';
+}
+function groupBadge(group, name) {
+  const ext = (fileExt(name) || 'text').toUpperCase();
+  if (group === 'convert') return `<span class="up-badge up-conv">${ext} → Markdown</span>`;
+  if (group === 'image') return `<span class="up-badge up-img">Image · reference</span>`;
+  return `<span class="up-badge up-text">${ext} · as-is</span>`;
+}
+function readFileB64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(',').pop());
+    r.onerror = () => reject(new Error('Could not read ' + file.name));
+    r.readAsDataURL(file);
+  });
+}
+function enqueueFiles(fileList) {
+  UPQ_MSG = null;
+  for (const file of fileList) {
+    const group = fileGroup(file.name);
+    UPLOAD_QUEUE.push({
+      id: ++UPQ_ID, file, name: file.name.replace(/\.[^.]+$/, ''),
+      kind: detectKind(file.name), group, skip: group === 'image',
+    });
+  }
+  renderQueue();
+}
+function renderQueue() {
+  const el = document.getElementById('upqueue');
+  if (!el) return;
+  if (!UPLOAD_QUEUE.length) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  const opts = (sel) => Object.entries(SRC_KINDS)
+    .map(([k, v]) => `<option value="${k}" ${k === sel ? 'selected' : ''}>${v.label}</option>`).join('');
+  const rows = UPLOAD_QUEUE.map((it) => `
+    <div class="up-row ${it.skip ? 'up-skip' : ''}" data-upid="${it.id}">
+      ${groupBadge(it.group, it.file.name)}
+      <span class="up-file" title="${it.file.name}">${it.file.name}</span>
+      <select class="up-kind" data-upid="${it.id}" ${it.skip ? 'disabled' : ''}>${opts(it.kind)}</select>
+      <input class="up-name" data-upid="${it.id}" value="${it.name}" placeholder="name" ${it.skip ? 'disabled' : ''} />
+      <button type="button" class="up-rm" data-uprm="${it.id}" title="Remove" aria-label="Remove">×</button>
+    </div>`).join('');
+  const n = UPLOAD_QUEUE.filter((x) => !x.skip).length;
+  const msg = UPQ_MSG ? `<span class="src-status ${UPQ_MSG.cls}">${UPQ_MSG.text}</span>` : '';
+  el.innerHTML = `
+    <div class="up-list">${rows}</div>
+    ${UPLOAD_QUEUE.some((x) => x.skip) ? `<div class="up-note">Images are held for your reference only — not sent to the engine yet.</div>` : ''}
+    <div class="up-actions">
+      <button type="button" class="btn-ghost" id="up-clear">Clear</button>
+      <button type="button" class="btn-save-src" id="up-go" ${n ? '' : 'disabled'}>Add ${n} source${n === 1 ? '' : 's'}</button>
+      ${msg}
+    </div>`;
+  wireQueue();
+}
+function wireQueue() {
+  document.querySelectorAll('.up-kind').forEach((s) => s.addEventListener('change', () => {
+    const it = UPLOAD_QUEUE.find((x) => x.id === +s.dataset.upid); if (it) it.kind = s.value;
+  }));
+  document.querySelectorAll('.up-name').forEach((i) => i.addEventListener('input', () => {
+    const it = UPLOAD_QUEUE.find((x) => x.id === +i.dataset.upid); if (it) it.name = i.value.trim();
+  }));
+  document.querySelectorAll('[data-uprm]').forEach((b) => b.addEventListener('click', () => {
+    UPLOAD_QUEUE = UPLOAD_QUEUE.filter((x) => x.id !== +b.dataset.uprm); UPQ_MSG = null; renderQueue();
+  }));
+  const clear = document.getElementById('up-clear');
+  if (clear) clear.addEventListener('click', () => { UPLOAD_QUEUE = []; UPQ_MSG = null; renderQueue(); });
+  const go = document.getElementById('up-go');
+  if (go) go.addEventListener('click', uploadQueue);
+}
+async function uploadQueue() {
+  const items = UPLOAD_QUEUE.filter((x) => !x.skip);
+  if (!items.length) return;
+  const status = document.getElementById('up-status') || document.querySelector('#upqueue .src-status');
+  const go = document.getElementById('up-go');
+  const set = (text, cls = '') => {
+    UPQ_MSG = { text, cls };
+    const s = document.querySelector('#upqueue .src-status');
+    if (s) { s.hidden = false; s.className = `src-status ${cls}`; s.textContent = text; }
+    else if (status) { status.hidden = false; status.className = `src-status ${cls}`; status.textContent = text; }
+  };
+  if (go) go.disabled = true;
+  const okIds = new Set(); const failed = [];
+  let i = 0;
+  for (const it of items) {
+    i++;
+    set(`Uploading ${it.file.name} (${i}/${items.length})${it.group === 'convert' ? ' — converting…' : ''}`);
+    try {
+      const dataBase64 = await readFileB64(it.file);
+      const r = await fetch('/api/sources', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kebab, kind: it.kind, name: it.name, filename: it.file.name, dataBase64 }),
+      });
+      const b = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(b.error || 'upload failed');
+      okIds.add(it.id);
+    } catch (e) { failed.push(`${it.file.name} — ${e.message}`); }
+  }
+  UPLOAD_QUEUE = UPLOAD_QUEUE.filter((x) => !okIds.has(x.id)); // keep images + any failures
+  UPQ_MSG = failed.length
+    ? { text: `Added ${okIds.size}. Failed: ${failed.join('; ')}`, cls: 'err' }
+    : { text: `Added ${okIds.size} source${okIds.size === 1 ? '' : 's'}.`, cls: 'ok' };
+  await load(); // re-renders sources + queue (UPQ_MSG persists through renderQueue)
 }
 
 async function saveSource() {
