@@ -8,6 +8,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 export const GATES = {
   discover: {
@@ -24,6 +25,14 @@ const RANK = { A: 3, B: 2, C: 1 };
 export function blobSha(path) {
   try { return execSync(`git hash-object "${path}"`, { encoding: 'utf8' }).trim(); }
   catch { return null; }
+}
+
+// Pure-JS equivalent of `git hash-object` for in-memory content (no working tree).
+// Lets the web surface compute the same SHA the engine commits, so a server-side
+// gate refresh binds sign-off to the exact bytes git will store.
+export function gitBlobSha(content) {
+  const buf = Buffer.from(content, 'utf8');
+  return createHash('sha1').update(`blob ${buf.length}\0`).update(buf).digest('hex');
 }
 
 export function lowestGrade(text) {
@@ -52,45 +61,40 @@ export function signoff(text) {
   return null;
 }
 
-// Compute the full gate object for an engagement directory. `prior` is an earlier
-// gates.json (or {}), used to carry sign-off SHAs forward so edit-after-sign-off
-// flips an artifact stale.
-export function computeGates(dir, prior = { artifacts: {} }) {
-  const out = {
-    engagement: dir.split(/[\\/]/).filter(Boolean).pop(),
-    generatedAt: new Date().toISOString(),
-    artifacts: {},
-    gates: {},
+// Evaluate a single present artifact. `prior` is that artifact's record from an
+// earlier gates.json (or undefined): if it was signed by the same person, its
+// sign-off SHA carries forward so an edit-after-sign-off flips it stale.
+function evalArtifact(text, sha, prior) {
+  const grade = lowestGrade(text);
+  const so = signoff(text);
+  const wasSigned = prior?.signedOffSha;
+  const signedOffSha = so
+    ? (wasSigned && prior.signedOffBy === so.by ? wasSigned : sha)
+    : null;
+  const isStale = !!(so && signedOffSha && signedOffSha !== sha);
+  return {
+    present: true,
+    grade,
+    gradePass: grade ? RANK[grade] >= RANK.B : false,
+    signedOffBy: so?.by ?? null,
+    signedOffAt: so?.at ?? null,
+    sha,
+    signedOffSha,
+    stale: isStale,
   };
+}
 
+// Roll the per-artifact records up into gate statuses + handoffReady, in place.
+function rollup(out) {
   for (const [gate, cfg] of Object.entries(GATES)) {
     let present = 0, passing = 0, signedOk = true, stale = false;
     for (const f of cfg.files) {
-      const p = join(dir, f);
-      if (!existsSync(p)) { out.artifacts[f] = { present: false }; continue; }
+      const a = out.artifacts[f];
+      if (!a || !a.present) continue;
       present++;
-      const text = readFileSync(p, 'utf8');
-      const grade = lowestGrade(text);
-      const so = signoff(text);
-      const sha = blobSha(p);
-      const wasSigned = prior.artifacts?.[f]?.signedOffSha;
-      const signedOffSha = so
-        ? (wasSigned && prior.artifacts[f].signedOffBy === so.by ? wasSigned : sha)
-        : null;
-      const isStale = !!(so && signedOffSha && signedOffSha !== sha);
-      out.artifacts[f] = {
-        present: true,
-        grade,
-        gradePass: grade ? RANK[grade] >= RANK.B : false,
-        signedOffBy: so?.by ?? null,
-        signedOffAt: so?.at ?? null,
-        sha,
-        signedOffSha,
-        stale: isStale,
-      };
-      if (out.artifacts[f].gradePass) passing++;
-      if (cfg.requireSignoff.includes(f) && !so) signedOk = false;
-      if (isStale) stale = true;
+      if (a.gradePass) passing++;
+      if (cfg.requireSignoff.includes(f) && !a.signedOffBy) signedOk = false;
+      if (a.stale) stale = true;
     }
     const complete = present === cfg.files.length;
     out.gates[gate] = {
@@ -102,9 +106,49 @@ export function computeGates(dir, prior = { artifacts: {} }) {
       stale,
     };
   }
-
   out.handoffReady = out.gates.discover.status === 'GREEN' && out.gates.disrupt.status === 'GREEN';
+}
+
+// Compute the full gate object for an engagement directory. `prior` is an earlier
+// gates.json (or {}), used to carry sign-off SHAs forward so edit-after-sign-off
+// flips an artifact stale.
+export function computeGates(dir, prior = { artifacts: {} }) {
+  const out = {
+    engagement: dir.split(/[\\/]/).filter(Boolean).pop(),
+    generatedAt: new Date().toISOString(),
+    artifacts: {},
+    gates: {},
+  };
+
+  for (const cfg of Object.values(GATES)) {
+    for (const f of cfg.files) {
+      const p = join(dir, f);
+      if (!existsSync(p)) { out.artifacts[f] = { present: false }; continue; }
+      out.artifacts[f] = evalArtifact(readFileSync(p, 'utf8'), blobSha(p), prior.artifacts?.[f]);
+    }
+  }
+
+  rollup(out);
   try { out.commitSha = execSync('git rev-parse HEAD', { cwd: dir, encoding: 'utf8' }).trim(); }
   catch { out.commitSha = null; }
+  return out;
+}
+
+// Same computation as computeGates, but driven by in-memory file contents instead
+// of a working tree. `contents` maps each gate filename to its text (or null when
+// absent). Lets the web surface refresh gates.json from the GitHub Contents API
+// after a web sign-off — sharing evalArtifact/rollup means it can never disagree
+// with the CLI generator.
+export function computeGatesFromContents(engagement, contents, prior = { artifacts: {} }, commitSha = null) {
+  const out = { engagement, generatedAt: new Date().toISOString(), artifacts: {}, gates: {} };
+  for (const cfg of Object.values(GATES)) {
+    for (const f of cfg.files) {
+      const text = contents[f];
+      if (text == null) { out.artifacts[f] = { present: false }; continue; }
+      out.artifacts[f] = evalArtifact(text, gitBlobSha(text), prior.artifacts?.[f]);
+    }
+  }
+  rollup(out);
+  out.commitSha = commitSha;
   return out;
 }

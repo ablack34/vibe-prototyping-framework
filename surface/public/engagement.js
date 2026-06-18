@@ -66,6 +66,7 @@ function deliverableCard(d) {
     <div class="card-actions">
       <button class="btn-view" data-file="${d.file}" ${d.present ? '' : 'disabled'}>View</button>
       ${!d.present && GENERATABLE.has(d.file) ? `<button class="btn-gen" data-gen="${d.file}">Generate</button>` : ''}
+      ${d.present && d.gradePass && !d.signedOffBy && !d.stale ? `<button class="btn-approve" data-approve="${d.file}">Approve</button>` : ''}
     </div>
   </div>`;
 }
@@ -163,6 +164,27 @@ async function generate(file) {
   }, 5000);
 }
 
+// Record a web sign-off on a deliverable, then reload so the card flips to signed.
+async function approve(file) {
+  const title = (DELIVERABLES.find((d) => d.file === file) || {}).title || file;
+  banner(`⏳ Recording sign-off for <strong>${title}</strong>…`);
+  document.querySelectorAll('.btn-approve').forEach((b) => (b.disabled = true));
+  try {
+    const res = await fetch('/api/approve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kebab, file }),
+    });
+    const b = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(b.error || 'Approve failed');
+    banner(`✅ <strong>${title}</strong> signed off by ${b.signedOffBy}. Refreshing…`, 'ok');
+    setTimeout(load, 700);
+  } catch (e) {
+    banner(`❌ ${e.message}`, 'err');
+    document.querySelectorAll('.btn-approve').forEach((b) => (b.disabled = false));
+  }
+}
+
 async function load() {
   if (!kebab) { document.getElementById('gates').innerHTML = '<p class="err">No engagement specified.</p>'; return; }
   let data;
@@ -195,6 +217,8 @@ async function load() {
     b.addEventListener('click', () => openViewer(b.dataset.file)));
   document.querySelectorAll('.btn-gen').forEach((b) =>
     b.addEventListener('click', () => generate(b.dataset.gen)));
+  document.querySelectorAll('.btn-approve').forEach((b) =>
+    b.addEventListener('click', () => approve(b.dataset.approve)));
 }
 
 document.addEventListener('click', (e) => { if (e.target.dataset.close !== undefined) closeViewer(); });

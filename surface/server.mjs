@@ -15,6 +15,8 @@
 //   (?source=local on either reads the in-repo engagement/ folders — dev fallback)
 //   POST /api/run              -> dispatch a phase (run-phase.yml) in the engagement repo
 //   GET  /api/run/status?kebab -> latest engine run status for the engagement
+//   POST /api/approve          -> write a sign-off row into a deliverable + refresh
+//                                 the engagement's committed gates.json
 
 import { createServer } from 'node:http';
 import { execSync } from 'node:child_process';
@@ -22,7 +24,7 @@ import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname } from 'node:path';
-import { computeGates, GATES } from '../scripts/gates-lib.mjs';
+import { computeGates, computeGatesFromContents, GATES, signoff } from '../scripts/gates-lib.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dir, '..');
@@ -362,6 +364,114 @@ async function runStatus(kebab) {
   } catch { return null; }
 }
 
+// ---- approve a deliverable from the web (write sign-off + refresh gates) ----
+// The board reads each deliverable's sign-off from the committed gates.json, so
+// approving has to do two things in the engagement's repo: (1) write a real row
+// into the deliverable's "## Sign-off" table, and (2) recompute + commit
+// gates.json. The recompute runs server-side with the engine's own gate logic
+// (computeGatesFromContents) — no Actions round-trip — so the card flips to
+// "signed off" the moment the board reloads.
+
+function userDisplayName() {
+  try {
+    const n = execSync('gh api user --jq .name', { encoding: 'utf8' }).trim();
+    if (n && n !== 'null' && n !== '') return n;
+  } catch { /* fall back to login */ }
+  return login();
+}
+const today = () => new Date().toISOString().slice(0, 10);
+
+// Insert a sign-off row into a deliverable's "## Sign-off" table. Returns the new
+// text, or null if it's already signed (caller treats that as a no-op).
+function applySignoff(text, name, role, date) {
+  if (signoff(text)) return null;
+  const row = `| ${name} | ${role} | ${date} | Approved via VIBE web surface |`;
+  const m = text.match(/##\s*Sign-?off[^\n]*\n/i);
+  if (!m) {
+    return `${text.replace(/\s*$/, '')}\n\n## Sign-off\n\n` +
+      `| Reviewed by | Role | Date | Signature / approval note |\n|---|---|---|---|\n${row}\n`;
+  }
+  const start = m.index + m[0].length;
+  const head = text.slice(0, start);
+  const lines = text.slice(start).split('\n');
+  let sep = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\s*\|\s*-{2,}/.test(lines[i])) { sep = i; break; }
+    if (/^\s*#{1,6}\s/.test(lines[i])) break; // hit the next section before any table
+  }
+  if (sep === -1) {
+    return `${head}\n| Reviewed by | Role | Date | Signature / approval note |\n|---|---|---|---|\n${row}\n` +
+      text.slice(start);
+  }
+  const next = lines[sep + 1] ?? '';
+  const placeholder = next.includes('|') && !/[A-Za-z0-9]/.test(next.replace(/\{\{[^}]*\}\}/g, ''));
+  if (placeholder) lines[sep + 1] = row;
+  else lines.splice(sep + 1, 0, row);
+  return head + lines.join('\n');
+}
+
+// Recompute the engagement's gates.json from its repo contents (with any just-
+// written file passed in via `overrides`, to avoid read-after-write lag) and
+// commit it back. Shares the engine's gate logic so it can never drift.
+async function refreshRepoGates(fullName, id, overrides = {}, commitSha = null) {
+  const contents = {};
+  for (const f of Object.keys(DELIVERABLE_TITLES)) {
+    contents[f] = f in overrides ? overrides[f] : await fetchRepoFile(fullName, `engagement/${id}/${f}`);
+  }
+  const gatesPath = `engagement/${id}/gates.json`;
+  const cur = await gh(`/repos/${fullName}/contents/${gatesPath}`);
+  let prior = { artifacts: {} };
+  if (cur.status === 200 && cur.json?.content) {
+    try { prior = JSON.parse(Buffer.from(cur.json.content, cur.json.encoding || 'base64').toString('utf8')); }
+    catch { /* keep default */ }
+  }
+  const out = computeGatesFromContents(id, contents, prior, commitSha ?? prior.commitSha ?? null);
+  const body = {
+    message: `Refresh gates after web sign-off (${id})`,
+    content: Buffer.from(JSON.stringify(out, null, 2) + '\n', 'utf8').toString('base64'),
+  };
+  if (cur.status === 200 && cur.json?.sha) body.sha = cur.json.sha;
+  const put = await gh(`/repos/${fullName}/contents/${gatesPath}`, { method: 'PUT', body });
+  return { ok: put.status === 200 || put.status === 201, gates: out };
+}
+
+async function approveDeliverable(input) {
+  const id = String(input.kebab || '').trim();
+  const file = String(input.file || '').trim();
+  if (!id) return { code: 400, body: { error: 'Engagement is required.' } };
+  if (!DELIVERABLE_TITLES[file]) return { code: 400, body: { error: `Unknown deliverable "${file}".` } };
+  const rec = (await readStore()).find((r) => (r.id || '') === id);
+  if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
+
+  const path = `engagement/${id}/${file}`;
+  const cur = await gh(`/repos/${rec.repo}/contents/${path}`);
+  if (cur.status !== 200 || !cur.json?.content)
+    return { code: 404, body: { error: `${DELIVERABLE_TITLES[file]} hasn't been generated yet.` } };
+  const text = Buffer.from(cur.json.content, cur.json.encoding || 'base64').toString('utf8');
+
+  const existing = signoff(text);
+  if (existing)
+    return { code: 409, body: { error: 'Already approved.', signedOffBy: existing.by, signedOffAt: existing.at } };
+
+  const name = userDisplayName();
+  const next = applySignoff(text, name, 'Designer / PM', today());
+  if (!next) return { code: 409, body: { error: 'Already approved.' } };
+
+  const put = await gh(`/repos/${rec.repo}/contents/${path}`, {
+    method: 'PUT',
+    body: {
+      message: `Approve ${file} — web sign-off by ${name}`,
+      content: Buffer.from(next, 'utf8').toString('base64'),
+      sha: cur.json.sha,
+    },
+  });
+  if (put.status !== 200 && put.status !== 201)
+    return { code: 502, body: { error: 'Could not write the sign-off.', detail: put.json?.message } };
+
+  const refreshed = await refreshRepoGates(rec.repo, id, { [file]: next }, put.json?.commit?.sha ?? null);
+  return { code: 200, body: { ok: true, file, signedOffBy: name, signedOffAt: today(), gatesRefreshed: refreshed.ok } };
+}
+
 // ---- tiny static + JSON server ----
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
@@ -417,6 +527,14 @@ const server = createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/api/run/status')
       return send(res, 200, (await runStatus(url.searchParams.get('kebab'))) || {});
+
+    if (req.method === 'POST' && url.pathname === '/api/approve') {
+      let raw = '';
+      for await (const chunk of req) raw += chunk;
+      const input = raw ? JSON.parse(raw) : {};
+      const { code, body } = await approveDeliverable(input);
+      return send(res, code, body);
+    }
 
     if (req.method === 'GET') return serveStatic(res, url.pathname);
     return send(res, 405, { error: 'Method not allowed' });
