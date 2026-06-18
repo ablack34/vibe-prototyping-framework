@@ -5,6 +5,7 @@
 const PHASES = ['Preparation', 'Discover', 'Disrupt', 'Build', 'Deliver'];
 const params = new URLSearchParams(location.search);
 const kebab = params.get('kebab');
+const source = params.get('source');
 
 let DELIVERABLES = [];
 
@@ -92,7 +93,7 @@ async function load() {
   if (!kebab) { document.getElementById('gates').innerHTML = '<p class="err">No engagement specified.</p>'; return; }
   let data;
   try {
-    const r = await fetch(`/api/board/${kebab}`);
+    const r = await fetch(`/api/board/${kebab}${source === 'local' ? '?source=local' : ''}`);
     if (!r.ok) throw new Error((await r.json()).error || r.statusText);
     data = await r.json();
   } catch (e) {
@@ -101,10 +102,12 @@ async function load() {
   }
 
   DELIVERABLES = data.deliverables;
-  document.getElementById('eng-name').textContent = kebab;
-  document.getElementById('eng-sub').textContent = data.handoffReady
-    ? 'Ready for engineering hand-off'
-    : 'Phases 1–3 in progress';
+  document.getElementById('eng-name').textContent = data.name || kebab;
+  const subBase = data.handoffReady ? 'Ready for engineering hand-off' : 'Phases 1–3 in progress';
+  const repoLink = data.htmlUrl
+    ? ` · <a href="${data.htmlUrl}" target="_blank" rel="noopener">${data.repo} ↗</a>`
+    : '';
+  document.getElementById('eng-sub').innerHTML = subBase + repoLink;
 
   renderTimeline(data.gates);
 

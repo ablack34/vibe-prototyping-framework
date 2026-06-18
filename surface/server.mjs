@@ -9,8 +9,10 @@
 //   GET  /api/engagements      -> the local pointer store (engagement -> repo)
 //   POST /api/engagements      -> create a repo from the template, verify the engine
 //                                 shipped, record the pointer, return the repo.
-//   GET  /api/board            -> local engagements with live gate state (dashboard)
+//   GET  /api/board            -> engagements (from the pointer store) with live gate
+//                                 state read from each engagement's own repo
 //   GET  /api/board/<kebab>    -> one engagement: gates + rendered deliverables
+//   (?source=local on either reads the in-repo engagement/ folders — dev fallback)
 
 import { createServer } from 'node:http';
 import { execSync } from 'node:child_process';
@@ -83,6 +85,49 @@ async function engineShipped(fullName) {
   return false;
 }
 
+// Mirror the signed-in user's token into the new repo as the engine secret.
+// gh reads the value from STDIN when --body is omitted, so it never hits argv.
+function setRepoSecret(fullName, name, value) {
+  execSync(`gh secret set ${name} --repo ${fullName}`, { input: value, stdio: ['pipe', 'pipe', 'pipe'] });
+}
+
+// Best-effort: is Actions enabled on the repo? null if we couldn't tell.
+function actionsEnabled(fullName) {
+  try {
+    return execSync(`gh api /repos/${fullName}/actions/permissions --jq .enabled`, { encoding: 'utf8' }).trim() === 'true';
+  } catch { return null; }
+}
+
+// Read a file's text from a repo via the GitHub Contents API (base64 → utf8).
+async function fetchRepoFile(fullName, path, ref) {
+  const q = ref ? `?ref=${encodeURIComponent(ref)}` : '';
+  const r = await gh(`/repos/${fullName}/contents/${path}${q}`);
+  if (r.status !== 200 || !r.json?.content) return null;
+  return Buffer.from(r.json.content, r.json.encoding || 'base64').toString('utf8');
+}
+
+// The committed gates.json IS the gate state — fetch + parse it from the repo.
+async function repoGates(fullName, id) {
+  const txt = await fetchRepoFile(fullName, `engagement/${id}/gates.json`);
+  if (!txt) return null;
+  try { return JSON.parse(txt); } catch { return null; }
+}
+
+// Shape-compatible "nothing run yet" gates for a freshly provisioned engagement.
+function emptyGates() {
+  const gates = {};
+  for (const [gate, cfg] of Object.entries(GATES)) {
+    gates[gate] = {
+      status: 'NOT_STARTED',
+      artifactsPresent: `0/${cfg.files.length}`,
+      gradePassing: `0/${cfg.files.length}`,
+      signoffOk: true,
+      stale: false,
+    };
+  }
+  return { artifacts: {}, gates, handoffReady: false, commitSha: null };
+}
+
 async function createEngagement(input) {
   const displayName = String(input.name || '').trim();
   if (!displayName) return { code: 400, body: { error: 'Engagement name is required.' } };
@@ -126,6 +171,14 @@ async function createEngagement(input) {
   const repo = gen.json;
   const enginePresent = await engineShipped(repo.full_name);
 
+  // The engine (run-phase.yml) needs a Copilot-enabled token to run in the new
+  // repo's Actions. Mirror the signed-in user's token in as a repo secret so the
+  // "Generate" button can dispatch a phase with no further setup.
+  let secretSet = false;
+  try { setRepoSecret(repo.full_name, 'COPILOT_GITHUB_TOKEN', token()); secretSet = true; }
+  catch { secretSet = false; }
+  const actionsOn = actionsEnabled(repo.full_name);
+
   const record = {
     id: kebab(displayName),
     name: displayName,
@@ -133,6 +186,8 @@ async function createEngagement(input) {
     htmlUrl: repo.html_url,
     private: repo.private,
     enginePresent,
+    secretSet,
+    actionsEnabled: actionsOn,
     createdAt: new Date().toISOString(),
     createdBy: login(),
   };
@@ -185,7 +240,7 @@ async function listEngagementDirs() {
     .map((e) => e.name);
 }
 
-async function boardSummary() {
+async function boardSummaryLocal() {
   const out = [];
   for (const kebab of await listEngagementDirs()) {
     const g = computeGates(join(ENGAGE_ROOT, kebab));
@@ -199,7 +254,32 @@ async function boardSummary() {
   return out;
 }
 
-async function boardDetail(kebab) {
+// Primary board: one row per provisioned engagement (from the pointer store),
+// with gate state read live from that engagement's own repo (its committed
+// gates.json). A repo with no phase run yet shows as NOT_STARTED.
+async function boardSummary() {
+  const store = await readStore();
+  const out = [];
+  for (const rec of store) {
+    const id = rec.id || kebab(rec.name || '');
+    if (!id || !rec.repo) continue;
+    const g = (await repoGates(rec.repo, id)) || emptyGates();
+    out.push({
+      kebab: id,
+      name: rec.name || id,
+      repo: rec.repo,
+      htmlUrl: rec.htmlUrl,
+      enginePresent: rec.enginePresent !== false,
+      secretSet: rec.secretSet === true,
+      gates: g.gates,
+      handoffReady: !!g.handoffReady,
+      deliverables: deliverablesFrom(g),
+    });
+  }
+  return out;
+}
+
+async function boardDetailLocal(kebab) {
   const dir = join(ENGAGE_ROOT, kebab);
   if (!existsSync(dir)) return null;
   const g = computeGates(dir);
@@ -210,6 +290,31 @@ async function boardDetail(kebab) {
     }
   }
   return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables };
+}
+
+// Primary detail: gate state + rendered deliverables read from the engagement's
+// own repo via the Contents API.
+async function boardDetail(kebab) {
+  const store = await readStore();
+  const rec = store.find((r) => (r.id || '') === kebab);
+  if (!rec || !rec.repo) return null;
+  const g = (await repoGates(rec.repo, kebab)) || emptyGates();
+  const deliverables = deliverablesFrom(g);
+  for (const d of deliverables) {
+    if (d.present) d.markdown = (await fetchRepoFile(rec.repo, `engagement/${kebab}/${d.file}`)) || '';
+  }
+  return {
+    kebab,
+    name: rec.name || kebab,
+    repo: rec.repo,
+    htmlUrl: rec.htmlUrl,
+    enginePresent: rec.enginePresent !== false,
+    secretSet: rec.secretSet === true,
+    gates: g.gates,
+    handoffReady: !!g.handoffReady,
+    commitSha: g.commitSha ?? null,
+    deliverables,
+  };
 }
 
 // ---- tiny static + JSON server ----
@@ -247,11 +352,13 @@ const server = createServer(async (req, res) => {
     }
 
     if (req.method === 'GET' && url.pathname === '/api/board')
-      return send(res, 200, await boardSummary());
+      return send(res, 200, url.searchParams.get('source') === 'local'
+        ? await boardSummaryLocal() : await boardSummary());
 
     const detail = url.pathname.match(/^\/api\/board\/([A-Za-z0-9][A-Za-z0-9-]*)$/);
     if (req.method === 'GET' && detail) {
-      const data = await boardDetail(detail[1]);
+      const data = url.searchParams.get('source') === 'local'
+        ? await boardDetailLocal(detail[1]) : await boardDetail(detail[1]);
       return data ? send(res, 200, data) : send(res, 404, { error: 'Engagement not found' });
     }
 

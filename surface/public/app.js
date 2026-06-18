@@ -1,4 +1,5 @@
 const $ = (id) => document.getElementById(id);
+const SOURCE = new URLSearchParams(location.search).get('source');
 
 function toKebab(s) {
   return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -84,9 +85,15 @@ function boardCard(e) {
   const handoff = e.handoffReady
     ? '<span class="hand ready">hand-off ready ✓</span>'
     : '<span class="hand">phases 1–3</span>';
-  return `<a class="board-card" href="/engagement.html?kebab=${encodeURIComponent(e.kebab)}">
+  const repoLine = e.repo ? `<div class="bc-repo">${escapeHtml(e.repo)}</div>` : '';
+  const warn = e.secretSet === false
+    ? '<span class="bc-warn" title="Engine secret not set on this repo — phases cannot run until it is reprovisioned">⚠ not runnable</span>'
+    : '';
+  const href = `/engagement.html?kebab=${encodeURIComponent(e.kebab)}${SOURCE === 'local' ? '&source=local' : ''}`;
+  return `<a class="board-card" href="${href}">
     <div class="bc-main">
-      <div class="bc-name">${escapeHtml(e.kebab)}</div>
+      <div class="bc-name">${escapeHtml(e.name || e.kebab)} ${warn}</div>
+      ${repoLine}
       <div class="bc-gates">Discover ${boardPill(e.gates.discover.status)} &nbsp; Disrupt ${boardPill(e.gates.disrupt.status)}</div>
     </div>
     <div class="bc-right">
@@ -99,14 +106,15 @@ function boardCard(e) {
 async function loadBoard() {
   const box = $('board');
   try {
-    const board = await (await fetch('/api/board')).json();
+    const board = await (await fetch(`/api/board${SOURCE === 'local' ? '?source=local' : ''}`)).json();
     if (!board.length) {
-      box.innerHTML = '<p class="muted empty">No local engagement folders yet. Generated deliverables appear here.</p>';
+      box.innerHTML = '<p class="muted empty">No engagements yet — create one above and it appears here, reading live gate state from its own repo.</p>';
       $('board-hint').textContent = '';
       return;
     }
     box.innerHTML = board.map(boardCard).join('');
-    $('board-hint').textContent = `${board.length} engagement${board.length > 1 ? 's' : ''} · live gate state`;
+    const src = SOURCE === 'local' ? ' · local folders' : '';
+    $('board-hint').textContent = `${board.length} engagement${board.length > 1 ? 's' : ''} · live gate state${src}`;
   } catch (e) {
     box.innerHTML = `<p class="muted empty">Could not load board: ${escapeHtml(String(e.message || e))}</p>`;
   }

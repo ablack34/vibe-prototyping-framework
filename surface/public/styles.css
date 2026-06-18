@@ -181,6 +181,8 @@ button:disabled { opacity: 0.55; cursor: progress; }
 }
 .board-card:hover { border-color: var(--accent); }
 .bc-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+.bc-repo { font-size: 11px; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; margin-bottom: 6px; }
+.bc-warn { font-size: 11px; font-weight: 600; color: #f0b429; margin-left: 6px; }
 .bc-gates { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .bc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 .bc-dots { display: flex; gap: 4px; }
