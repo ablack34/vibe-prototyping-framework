@@ -34,7 +34,7 @@ import { dirname, join, extname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { randomUUID } from 'node:crypto';
 import { promisify } from 'node:util';
-import { computeGates, computeGatesFromContents, extractProvenance, GATES, signoff } from '../scripts/gates-lib.mjs';
+import { computeGates, computeGatesFromContents, extractProvenance, GATES, signoff, lowestGrade } from '../scripts/gates-lib.mjs';
 import { tidyRepo } from './tidy-repo.mjs';
 const execFileP = promisify(execFile);
 
