@@ -263,6 +263,100 @@ function deliverablesFrom(gateObj) {
   });
 }
 
+// ---- Disrupt: the Week-2 workshop flow -------------------------------------
+// Disrupt has a real workshop in the middle: pre-workshop artifacts the engine
+// drafts, an offline workshop the designer captures into sources/workshop/, then a
+// strict post-workshop chain. Only selected-concept / future-state-journey /
+// storyboard are gated (GATES.disrupt). The four supporting artifacts below aren't
+// gated, so the engine's gate logic doesn't track them — we grade them inline with
+// the SAME lowestGrade/signoff helpers so the two can't drift, and surface them as
+// cards so the whole phase is drivable from the web, in order.
+const DISRUPT_SUPPORT_TITLES = {
+  'workshop-agenda.md': 'Workshop agenda',
+  'ideation-concepts.md': 'Ideation concepts',
+  'spark-prompts.md': 'Spark prompts',
+  'workshop-record.md': 'Workshop record',
+};
+// Per-artifact Disrupt metadata: stage, whether it's gated, whether the web can
+// generate it, whether it carries a "## Sign-off" table, and what must exist before
+// it can be generated. `requires` tokens:
+//   discoverPass    — the 3 Discover deliverables are all Grade B+
+//   discoverSigned  — …and all signed off (the agenda's hard gate)
+//   workshopCapture — at least one file under sources/workshop/
+//   <file.md>       — that deliverable is present
+const DISRUPT_META = {
+  'workshop-agenda.md':      { stage: 'pre',  gated: false, generatable: true,  signoff: true,  graded: true,  requires: ['discoverSigned'] },
+  'ideation-concepts.md':    { stage: 'pre',  gated: false, generatable: true,  signoff: false, graded: true,  requires: ['discoverPass'], alsoProduces: 'spark-prompts.md' },
+  'spark-prompts.md':        { stage: 'pre',  gated: false, generatable: false, signoff: false, graded: false, pasteOut: true,  requires: ['ideation-concepts.md'] },
+  'workshop-record.md':      { stage: 'post', gated: false, generatable: true,  signoff: true,  graded: false, requires: ['workshopCapture'] },
+  'selected-concept.md':     { stage: 'post', gated: true,  generatable: true,  signoff: true,  graded: true,  requires: ['workshop-record.md'] },
+  'future-state-journey.md': { stage: 'post', gated: true,  generatable: true,  signoff: true,  graded: true,  requires: ['selected-concept.md', 'current-state-journey.md'] },
+  'storyboard.md':           { stage: 'post', gated: true,  generatable: true,  signoff: true,  graded: true,  requires: ['selected-concept.md'] },
+};
+
+function disruptLabel(file) {
+  return DISRUPT_SUPPORT_TITLES[file] || DELIVERABLE_TITLES[file] || file;
+}
+
+// Card for a non-gated support artifact, graded inline from its markdown.
+function evalSupport(file, text) {
+  const present = text != null;
+  const grade = present ? lowestGrade(text) : null;
+  const so = present ? signoff(text) : null;
+  return {
+    file,
+    title: disruptLabel(file),
+    gate: 'disrupt',
+    present,
+    grade,
+    gradePass: grade === 'A' || grade === 'B',
+    signedOffBy: so?.by ?? null,
+    signedOffAt: so?.at ?? null,
+    stale: false,
+    markdown: present ? text : undefined,
+  };
+}
+
+function disruptReadiness(meta, ctx) {
+  const reasons = [];
+  for (const req of meta.requires || []) {
+    if (req === 'discoverPass') { if (!ctx.discoverPass) reasons.push('generate the three Discover deliverables to Grade B+ first'); }
+    else if (req === 'discoverSigned') { if (!ctx.discoverSigned) reasons.push('approve the three Discover deliverables first (the agenda needs a signed-off baseline)'); }
+    else if (req === 'workshopCapture') { if (!ctx.workshopCount) reasons.push('add at least one workshop capture below first'); }
+    else if (req.endsWith('.md')) { if (!ctx.present.has(req)) reasons.push(`generate ${disruptLabel(req)} first`); }
+  }
+  return { ready: reasons.length === 0, blockedReason: reasons.join(' · ') };
+}
+
+// Fetch + grade the four support artifacts, add them as cards, then tag every
+// Disrupt card (support + the three gated ones already in `deliverables`) with its
+// stage + ordering/readiness so the UI can present the workshop flow in order.
+async function assembleDisrupt(deliverables, fetchFile, workshopCount) {
+  for (const file of Object.keys(DISRUPT_SUPPORT_TITLES)) {
+    deliverables.push(evalSupport(file, await fetchFile(file)));
+  }
+  const present = new Set(deliverables.filter((d) => d.present).map((d) => d.file));
+  const discover = deliverables.filter((d) => d.gate === 'discover');
+  const discoverPass = discover.length === 3 && discover.every((d) => d.gradePass);
+  const discoverSigned = discover.length === 3 && discover.every((d) => d.signedOffBy);
+  const ctx = { present, discoverPass, discoverSigned, workshopCount };
+  for (const d of deliverables) {
+    const meta = DISRUPT_META[d.file];
+    if (!meta) continue;
+    d.stage = meta.stage;
+    d.gated = meta.gated;
+    d.generatable = meta.generatable;
+    d.signoffRequired = meta.signoff;
+    d.graded = meta.graded !== false;
+    if (meta.pasteOut) d.pasteOut = true;
+    if (meta.alsoProduces) d.alsoProduces = meta.alsoProduces;
+    d.signoffCapable = !!(d.markdown && /##\s*Sign-?off/i.test(d.markdown));
+    const { ready, blockedReason } = disruptReadiness(meta, ctx);
+    d.ready = ready;
+    d.blockedReason = blockedReason;
+  }
+}
+
 async function listEngagementDirs() {
   if (!existsSync(ENGAGE_ROOT)) return [];
   const entries = await readdir(ENGAGE_ROOT, { withFileTypes: true });
@@ -345,9 +439,17 @@ async function boardDetailLocal(kebab) {
       try { d.markdown = await readFile(join(dir, d.file), 'utf8'); } catch { d.markdown = ''; }
     }
   }
-  const bySource = attachDeliverableProvenance(deliverables, []);
+  let workshopSources = [];
+  try {
+    const ents = await readdir(join(dir, '..', '..', 'sources', 'workshop'), { withFileTypes: true });
+    workshopSources = ents.filter((e) => e.isFile() && e.name !== 'README.md')
+      .map((e) => ({ kind: 'workshop', name: e.name.replace(/\.[^.]+$/, '').replace(/-/g, ' '), path: `sources/workshop/${e.name}` }));
+  } catch { /* none captured yet */ }
+  const localFetch = async (f) => { try { return await readFile(join(dir, f), 'utf8'); } catch { return null; } };
+  await assembleDisrupt(deliverables, localFetch, workshopSources.length);
+  const bySource = attachDeliverableProvenance(deliverables, workshopSources.map((s) => s.path));
   const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
-  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, provenance: { bySource } };
+  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, provenance: { bySource } };
 }
 
 // Primary detail: gate state + rendered deliverables read from the engagement's
@@ -361,9 +463,17 @@ async function boardDetail(kebab) {
   for (const d of deliverables) {
     if (d.present) d.markdown = (await fetchRepoFile(rec.repo, `engagement/${kebab}/${d.file}`)) || '';
   }
-  const sources = await listSources(rec);
-  const bySource = attachDeliverableProvenance(deliverables, sources.map((s) => s.path));
-  for (const s of sources) {
+  // Sources split: workshop captures (sources/workshop/) drive the Disrupt phase,
+  // not Discover, so they show in the Disrupt section — keep them out of the main
+  // Sources bucket but still pass their paths to provenance so workshop-record's
+  // citations resolve.
+  const allSources = await listSources(rec);
+  const sources = allSources.filter((s) => s.kind !== 'workshop');
+  const workshopSources = allSources.filter((s) => s.kind === 'workshop');
+  await assembleDisrupt(deliverables,
+    (f) => fetchRepoFile(rec.repo, `engagement/${kebab}/${f}`), workshopSources.length);
+  const bySource = attachDeliverableProvenance(deliverables, allSources.map((s) => s.path));
+  for (const s of allSources) {
     const e = bySource[s.path] || { usedBy: [], citationCount: 0 };
     s.usedBy = e.usedBy;
     s.citationCount = e.citationCount;
@@ -387,6 +497,7 @@ async function boardDetail(kebab) {
     sources,
     context,
     kinds: sourceKindMeta(),
+    disrupt: { gate: g.gates.disrupt, workshopSources },
     provenance: { bySource },
   };
 }
@@ -394,15 +505,29 @@ async function boardDetail(kebab) {
 // ---- run a phase from the web (dispatch the engine workflow) ----
 // Each generatable deliverable maps to the VIBE prompt that produces it. Clicking
 // "Generate" dispatches run-phase.yml in the engagement's OWN repo; the engine
-// writes the deliverable + gates.json back, and the board re-reads it. Scoped to
-// the Discover deliverables — the Disrupt ones need workshop sources seed_demo
-// doesn't provide.
+// writes the deliverable + gates.json back, and the board re-reads it.
 const FILE_PROMPT = {
+  // Discover (grounds in sources/, optionally the Contoso demo seed).
   'PROJECT-CONTEXT.md': 'vibe-context',
   'personas.md': 'vibe-personas',
   'problem-statement.md': 'vibe-problem-statement',
   'current-state-journey.md': 'vibe-current-journey',
+  // Disrupt (Week-2 workshop). These ground in the Discover deliverables already
+  // in the repo + the designer's workshop captures — never the Contoso seed — so
+  // runPhase forces seed_demo=false for them (see DISRUPT_PROMPTS).
+  'workshop-agenda.md': 'vibe-workshop-agenda',
+  'ideation-concepts.md': 'vibe-concepts',
+  'workshop-record.md': 'vibe-workshop-record',
+  'selected-concept.md': 'vibe-selected-concept',
+  'future-state-journey.md': 'vibe-future-journey',
+  'storyboard.md': 'vibe-storyboard',
 };
+// The Disrupt generators must never re-seed the Contoso demo sources: by Disrupt
+// the grounding is the engagement's own Discover deliverables + workshop captures.
+const DISRUPT_PROMPTS = new Set([
+  'vibe-workshop-agenda', 'vibe-concepts', 'vibe-workshop-record',
+  'vibe-selected-concept', 'vibe-future-journey', 'vibe-storyboard',
+]);
 
 async function runPhase(input) {
   const kebab = String(input.kebab || '').trim();
@@ -414,8 +539,10 @@ async function runPhase(input) {
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
   // Once the designer has added real sources, stop seeding the Contoso demo so
   // the engine grounds the deliverable in their materials. The frontend passes
-  // seedDemo explicitly; default to true to preserve the canned-demo flow.
-  const seed = input.seedDemo === false ? 'false' : 'true';
+  // seedDemo explicitly; default to true to preserve the canned-demo flow. Disrupt
+  // generators never seed — they ground in the existing Discover deliverables +
+  // workshop captures, so re-seeding Contoso would only add noise.
+  const seed = (DISRUPT_PROMPTS.has(prompt) || input.seedDemo === false) ? 'false' : 'true';
   try {
     execSync(
       `gh workflow run run-phase.yml --repo ${rec.repo} -f prompt=${prompt} -f engagement=${kebab} -f seed_demo=${seed}`,
@@ -511,18 +638,28 @@ async function refreshRepoGates(fullName, id, overrides = {}, commitSha = null) 
   return { ok: put.status === 200 || put.status === 201, gates: out };
 }
 
+// The deliverables a designer can sign off from the web: the six gated ones plus
+// the two Disrupt support artifacts that carry a "## Sign-off" table (the agenda
+// and the workshop record). Approving a non-gated artifact writes its sign-off row
+// but doesn't touch gates.json (it isn't part of any gate).
+const APPROVABLE = {
+  ...DELIVERABLE_TITLES,
+  'workshop-agenda.md': DISRUPT_SUPPORT_TITLES['workshop-agenda.md'],
+  'workshop-record.md': DISRUPT_SUPPORT_TITLES['workshop-record.md'],
+};
+
 async function approveDeliverable(input) {
   const id = String(input.kebab || '').trim();
   const file = String(input.file || '').trim();
   if (!id) return { code: 400, body: { error: 'Engagement is required.' } };
-  if (!DELIVERABLE_TITLES[file]) return { code: 400, body: { error: `Unknown deliverable "${file}".` } };
+  if (!APPROVABLE[file]) return { code: 400, body: { error: `Unknown deliverable "${file}".` } };
   const rec = (await readStore()).find((r) => (r.id || '') === id);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
 
   const path = `engagement/${id}/${file}`;
   const cur = await gh(`/repos/${rec.repo}/contents/${path}`);
   if (cur.status !== 200 || !cur.json?.content)
-    return { code: 404, body: { error: `${DELIVERABLE_TITLES[file]} hasn't been generated yet.` } };
+    return { code: 404, body: { error: `${APPROVABLE[file]} hasn't been generated yet.` } };
   const text = Buffer.from(cur.json.content, cur.json.encoding || 'base64').toString('utf8');
 
   const existing = signoff(text);
@@ -544,7 +681,12 @@ async function approveDeliverable(input) {
   if (put.status !== 200 && put.status !== 201)
     return { code: 502, body: { error: 'Could not write the sign-off.', detail: put.json?.message } };
 
-  const refreshed = await refreshRepoGates(rec.repo, id, { [file]: next }, put.json?.commit?.sha ?? null);
+  // Only the gated deliverables affect gates.json; refreshing for the support ones
+  // would be a no-op commit, so skip it.
+  const gated = file in DELIVERABLE_TITLES;
+  const refreshed = gated
+    ? await refreshRepoGates(rec.repo, id, { [file]: next }, put.json?.commit?.sha ?? null)
+    : { ok: true };
   return { code: 200, body: { ok: true, file, signedOffBy: name, signedOffAt: today(), gatesRefreshed: refreshed.ok } };
 }
 
@@ -606,11 +748,21 @@ const SOURCE_KINDS = {
   'questionnaire': { label: 'Questionnaire responses', single: true, path: () => 'sources/questionnaire-responses.md' },
   'research': { label: 'Research summary', single: true, path: () => 'sources/research/research-summary.md' },
   'other': { label: 'Other source', single: false, path: (id, slug) => `sources/${slug}.md` },
+  // Workshop captures live under sources/workshop/ and feed the Disrupt phase
+  // (workshop-record reads them). Surfaced in the Disrupt section, not the Discover
+  // Sources bucket — so it's deliberately excluded from sourceKindMeta().
+  'workshop': { label: 'Workshop capture', single: false, path: (id, slug) => `sources/workshop/${slug}.md` },
 };
 
-// The kind metadata the frontend needs to render the add-source form + labels.
+// The kind metadata the frontend needs to render the Discover add-source form +
+// labels. Workshop captures have their own bucket in the Disrupt section, so the
+// kind is omitted here (it would only clutter the Discover dropdown).
 function sourceKindMeta() {
-  return Object.fromEntries(Object.entries(SOURCE_KINDS).map(([k, v]) => [k, { label: v.label, single: v.single }]));
+  return Object.fromEntries(
+    Object.entries(SOURCE_KINDS)
+      .filter(([k]) => k !== 'workshop')
+      .map(([k, v]) => [k, { label: v.label, single: v.single }]),
+  );
 }
 
 // Map a committed repo path back to a source kind + display name, for listing.
@@ -620,8 +772,12 @@ function classifySource(id, path) {
   if (path === 'sources/research/research-summary.md') return { kind: 'research', name: 'Research summary' };
   const t = path.match(/^sources\/transcript-(.+)\.md$/);
   if (t) return { kind: 'transcript', name: t[1].replace(/-/g, ' ') };
+  // Workshop must be matched before the generic sources/*.md rule below, which
+  // would otherwise swallow sources/workshop/foo.md as an "other" named "workshop/foo".
+  const w = path.match(/^sources\/workshop\/(.+)\.md$/);
+  if (w) return { kind: 'workshop', name: w[1].replace(/-/g, ' ') };
   const o = path.match(/^sources\/(.+)\.md$/);
-  if (o && o[1] !== 'README') return { kind: 'other', name: o[1].replace(/-/g, ' ') };
+  if (o && o[1] !== 'README' && !o[1].includes('/')) return { kind: 'other', name: o[1].replace(/-/g, ' ') };
   return null;
 }
 
@@ -640,6 +796,7 @@ async function listSources(rec) {
   const all = [];
   for (const f of await listRepoDir(rec.repo, 'sources')) all.push(f);
   for (const f of await listRepoDir(rec.repo, 'sources/research')) all.push(f);
+  for (const f of await listRepoDir(rec.repo, 'sources/workshop')) all.push(f);
   for (const f of await listRepoDir(rec.repo, `engagement/${id}`)) all.push(f);
   const rawByStem = new Map();
   for (const f of all) {

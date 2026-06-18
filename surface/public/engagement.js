@@ -19,6 +19,10 @@ let PROVENANCE = { bySource: {} };
 let UPLOAD_QUEUE = [];
 let UPQ_ID = 0;
 let UPQ_MSG = null;
+// Disrupt workshop-capture bucket (separate queue from the Discover bucket).
+let WS_QUEUE = [];
+let WSQ_ID = 0;
+let WSQ_MSG = null;
 
 // Escape user/repo-derived strings before interpolating into innerHTML.
 function esc(s) {
@@ -66,13 +70,16 @@ function renderTimeline(gates) {
   }).join('<div class="phase-link"></div>');
 }
 
-function deliverableCard(d) {
-  let state, stateCls;
-  if (!d.present) { state = 'Not generated yet'; stateCls = 'st-missing'; }
-  else if (d.stale) { state = 'Edited after sign-off — needs re-approval'; stateCls = 'st-stale'; }
-  else if (d.signedOffBy) { state = `Signed off by ${d.signedOffBy}${d.signedOffAt ? ' · ' + d.signedOffAt : ''}`; stateCls = 'st-signed'; }
-  else { state = 'Awaiting approval'; stateCls = 'st-await'; }
+// Shared card-state line (used by both the Discover and Disrupt cards).
+function cardState(d) {
+  if (!d.present) return ['Not generated yet', 'st-missing'];
+  if (d.stale) return ['Edited after sign-off — needs re-approval', 'st-stale'];
+  if (d.signedOffBy) return [`Signed off by ${d.signedOffBy}${d.signedOffAt ? ' · ' + d.signedOffAt : ''}`, 'st-signed'];
+  return ['Awaiting approval', 'st-await'];
+}
 
+function deliverableCard(d) {
+  const [state, stateCls] = cardState(d);
   return `<div class="dcard ${d.present ? '' : 'dcard-empty'}">
     <div class="card-top">
       <div class="card-title">${d.title}</div>
@@ -97,6 +104,79 @@ function gateBlock(name, gate, deliverables) {
     </div>
     <div class="cards">${deliverables.map(deliverableCard).join('')}</div>
   </div>`;
+}
+
+// ---- Disrupt: the Week-2 workshop flow -------------------------------------
+// A richer card than Discover's: it honours the strict generation order (a locked
+// Generate button with the reason why), offers regeneration (so a stale storyboard
+// can be refreshed), and treats spark-prompts as a paste-OUT artifact for Spark.
+function disruptCard(d) {
+  let [state, stateCls] = cardState(d);
+  if (d.pasteOut && d.present) { state = 'Ready to paste into Spark'; stateCls = 'st-signed'; }
+  const star = d.gated ? '<span class="dz-star" title="Gated — required to move to Build">★</span>' : '';
+
+  let actions = `<button class="btn-view" data-file="${esc(d.file)}" ${d.present ? '' : 'disabled'}>View</button>`;
+  if (d.pasteOut) {
+    if (d.present) {
+      actions += `<button class="btn-spark" data-spark="${esc(d.file)}">📋 Copy prompts</button>`;
+      actions += `<a class="btn-spark-open" href="https://spark.github.com" target="_blank" rel="noopener">Open Spark ↗</a>`;
+    }
+  } else if (!d.present && d.generatable) {
+    actions += d.ready
+      ? `<button class="btn-gen" data-gen="${esc(d.file)}"><span class="gen-ico">✨</span><span class="gen-txt">Generate</span></button>`
+      : `<button class="btn-gen" data-gen="${esc(d.file)}" disabled title="${esc(d.blockedReason)}"><span class="gen-ico">🔒</span><span class="gen-txt">Generate</span></button>`;
+  } else if (d.present && d.generatable) {
+    actions += `<button class="btn-gen btn-soft" data-gen="${esc(d.file)}"><span class="gen-ico">↻</span><span class="gen-txt">Regenerate</span></button>`;
+  }
+  const canApprove = d.signoffCapable && d.present && !d.signedOffBy && !d.stale && (d.graded ? d.gradePass : true);
+  if (canApprove) actions += `<button class="btn-approve" data-approve="${esc(d.file)}">Approve</button>`;
+
+  const lock = (!d.present && d.generatable && !d.ready && d.blockedReason)
+    ? `<div class="dz-lock">🔒 ${esc(d.blockedReason)}</div>` : '';
+  const sparkHint = (d.pasteOut && !d.present)
+    ? `<div class="dz-hint">Produced when you generate <strong>Ideation concepts</strong> — paste-ready prompts for GitHub Spark &amp; Copilot Studio.</div>` : '';
+
+  return `<div class="dcard ${d.present ? '' : 'dcard-empty'} ${d.gated ? 'dcard-gated' : ''}">
+    <div class="card-top">
+      <div class="card-title">${star}${esc(d.title)}</div>
+      ${d.graded ? gradeBadge(d.grade, d.gradePass) : ''}
+    </div>
+    <div class="card-state ${stateCls}">${esc(state)}</div>
+    ${d.present ? provSummary(d) : ''}
+    ${lock}${sparkHint}
+    <div class="card-actions">${actions}</div>
+  </div>`;
+}
+
+// The Disrupt section: a workshop-in-the-middle flow — pre-workshop pre-reads, a
+// capture bucket (sources/workshop/), then the strict post-workshop chain.
+function renderDisrupt(data) {
+  const el = document.getElementById('disrupt');
+  if (!el) return;
+  const ds = data.deliverables.filter((d) => d.gate === 'disrupt');
+  if (!ds.length) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  const gate = (data.disrupt && data.disrupt.gate) || data.gates.disrupt;
+  const ws = (data.disrupt && data.disrupt.workshopSources) || [];
+  const stage = (s) => ds.filter((d) => d.stage === s);
+  const group = (head, sub, cards) => `
+    <div class="dz-group">
+      <div class="dz-group-head"><h3>${head}</h3><span class="dz-group-sub">${sub}</span></div>
+      <div class="cards">${cards.map(disruptCard).join('')}</div>
+    </div>`;
+  el.innerHTML = `
+    <div class="gate gate-disrupt">
+      <div class="gate-head">
+        <h2>Disrupt ${pill(gate.status)}</h2>
+        <div class="gate-counts">${gate.artifactsPresent} gated present · ${gate.gradePassing} grade-passing${gate.stale ? ' · ⚠ stale' : ''}</div>
+      </div>
+      <p class="dz-intro">The Week-2 co-creation workshop. Draft the pre-reads, run the workshop offline and drop the capture below, then generate the post-workshop chain in order — <strong>selected concept → future-state journey → storyboard</strong> (★ gated, required to move to Build).</p>
+      ${group('① Before the workshop', 'Drafted from your signed-off Discover deliverables', stage('pre'))}
+      ${renderWorkshopBucket(ws)}
+      ${group('③ After the workshop', 'Generated in order from the workshop capture', stage('post'))}
+    </div>`;
+  el.querySelectorAll('.btn-spark').forEach((b) => b.addEventListener('click', () => copySpark(b.dataset.spark)));
+  wireWorkshopBucket();
 }
 
 // ---- provenance ("receipts"): make the source→deliverable map visible --------
@@ -605,6 +685,197 @@ async function saveSource() {
   } catch (e) { fail(e.message); }
 }
 
+// ---- the Disrupt workshop-capture bucket (sources/workshop/) ----------------
+// A focused uploader (fixed kind = 'workshop') for what the designer brings back
+// from the offline workshop. Shares the leaf helpers (fileGroup/groupBadge/
+// readFileB64) with the Discover bucket but keeps its own queue so the two don't
+// interfere.
+function renderWorkshopBucket(ws) {
+  const list = ws.length
+    ? ws.map((s) => `<div class="src-card src-card-sm">
+        <div class="src-card-top">
+          <span class="src-kind">Capture</span>
+          <span class="src-name">${esc(s.name)}</span>
+          ${s.original ? `<span class="src-orig" title="Converted from ${esc(s.original.name)}">from ${esc(String(s.original.ext).toUpperCase())}</span>` : ''}
+          <span class="grow"></span>
+          <button class="src-view" data-srcpath="${esc(s.path)}">View</button>
+          ${s.original && s.original.htmlUrl ? `<a class="src-link" href="${esc(s.original.htmlUrl)}" target="_blank" rel="noopener" title="Download ${esc(s.original.name)}">Original ↧</a>` : ''}
+          ${s.htmlUrl ? `<a class="src-link" href="${esc(s.htmlUrl)}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}
+        </div>
+      </div>`).join('')
+    : `<div class="src-empty">No captures yet. After the session, drop the workshop notes, whiteboard exports, transcript or recap deck here — <strong>Workshop record</strong> reads them.</div>`;
+  return `
+    <div class="dz-group dz-capture">
+      <div class="dz-group-head"><h3>② Workshop capture</h3><span class="dz-group-sub">What you bring back from the room — saved to sources/workshop/</span></div>
+      <div class="dropzone dropzone-sm" id="ws-dropzone" tabindex="0" role="button" aria-label="Drop workshop captures, or click to browse">
+        <div class="dz-icon">⬇</div>
+        <div class="dz-main">Drop workshop notes, transcripts &amp; recap decks</div>
+        <div class="dz-sub">Word, PowerPoint, Excel &amp; PDF → Markdown · notes/.txt/.vtt used as-is · or click to browse</div>
+        <input type="file" id="ws-input" multiple hidden accept="${UP_ACCEPT}" />
+      </div>
+      <div class="upqueue" id="ws-queue" hidden></div>
+      <div class="ws-note-bar">
+        <button class="btn-add-src" id="ws-note-toggle" type="button" title="Type a quick note from the room instead of uploading a file">✎ Add a note</button>
+      </div>
+      <form class="src-form" id="ws-form" hidden>
+        <label>Workshop note
+          <textarea id="ws-content" rows="5" placeholder="The concept the room rallied behind, a key decision, a verbatim reaction…"></textarea>
+        </label>
+        <div class="src-row"><label class="grow">Name
+          <input id="ws-name" placeholder="e.g. Concept vote" autocomplete="off" /></label></div>
+        <div class="src-actions"><span class="grow"></span>
+          <button type="button" class="btn-ghost" id="ws-cancel">Cancel</button>
+          <button type="submit" class="btn-save-src">Add capture</button>
+        </div>
+        <div class="src-status" id="ws-status" hidden></div>
+      </form>
+      <div class="src-list">${list}</div>
+    </div>`;
+}
+
+function wireWorkshopBucket() {
+  const dz = document.getElementById('ws-dropzone');
+  const input = document.getElementById('ws-input');
+  if (dz && input) {
+    dz.addEventListener('click', () => input.click());
+    dz.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+    input.addEventListener('change', () => { if (input.files.length) enqueueWorkshop(input.files); input.value = ''; });
+    ['dragenter', 'dragover'].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add('dz-over'); }));
+    dz.addEventListener('dragleave', (e) => { e.preventDefault(); dz.classList.remove('dz-over'); });
+    dz.addEventListener('drop', (e) => {
+      e.preventDefault(); dz.classList.remove('dz-over');
+      const f = e.dataTransfer && e.dataTransfer.files;
+      if (f && f.length) enqueueWorkshop(f);
+    });
+  }
+  renderWsQueue();
+  const toggle = document.getElementById('ws-note-toggle');
+  const form = document.getElementById('ws-form');
+  if (toggle && form) {
+    toggle.addEventListener('click', () => { form.hidden = !form.hidden; toggle.textContent = form.hidden ? '✎ Add a note' : '× Close'; });
+    document.getElementById('ws-cancel').addEventListener('click', () => { form.hidden = true; toggle.textContent = '✎ Add a note'; });
+    form.addEventListener('submit', (e) => { e.preventDefault(); saveWorkshopNote(); });
+  }
+}
+
+function enqueueWorkshop(fileList) {
+  WSQ_MSG = null;
+  for (const file of fileList) {
+    const group = fileGroup(file.name);
+    WS_QUEUE.push({ id: ++WSQ_ID, file, name: file.name.replace(/\.[^.]+$/, ''), group, skip: group === 'image' });
+  }
+  renderWsQueue();
+}
+
+function renderWsQueue() {
+  const el = document.getElementById('ws-queue');
+  if (!el) return;
+  if (!WS_QUEUE.length) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  const rows = WS_QUEUE.map((it) => `
+    <div class="up-row ${it.skip ? 'up-skip' : ''}" data-wsid="${it.id}">
+      ${groupBadge(it.group, it.file.name)}
+      <span class="up-file" title="${esc(it.file.name)}">${esc(it.file.name)}</span>
+      <input class="up-name" data-wsid="${it.id}" value="${esc(it.name)}" placeholder="name" ${it.skip ? 'disabled' : ''} />
+      <button type="button" class="up-rm" data-wsrm="${it.id}" title="Remove" aria-label="Remove">×</button>
+    </div>`).join('');
+  const n = WS_QUEUE.filter((x) => !x.skip).length;
+  const msg = `<span class="src-status ${WSQ_MSG ? WSQ_MSG.cls : ''}"${WSQ_MSG ? '' : ' hidden'}>${WSQ_MSG ? esc(WSQ_MSG.text) : ''}</span>`;
+  el.innerHTML = `
+    <div class="up-list">${rows}</div>
+    ${WS_QUEUE.some((x) => x.skip) ? `<div class="up-note">Images are held for your reference only — not sent to the engine yet.</div>` : ''}
+    <div class="up-actions">
+      <button type="button" class="btn-ghost" id="ws-clear">Clear</button>
+      <button type="button" class="btn-save-src" id="ws-go" ${n ? '' : 'disabled'}>Add ${n} capture${n === 1 ? '' : 's'}</button>
+      ${msg}
+    </div>`;
+  document.querySelectorAll('#ws-queue .up-name').forEach((i) => i.addEventListener('input', () => {
+    const it = WS_QUEUE.find((x) => x.id === +i.dataset.wsid); if (it) it.name = i.value.trim();
+  }));
+  document.querySelectorAll('#ws-queue [data-wsrm]').forEach((b) => b.addEventListener('click', () => {
+    WS_QUEUE = WS_QUEUE.filter((x) => x.id !== +b.dataset.wsrm); WSQ_MSG = null; renderWsQueue();
+  }));
+  const clear = document.getElementById('ws-clear');
+  if (clear) clear.addEventListener('click', () => { WS_QUEUE = []; WSQ_MSG = null; renderWsQueue(); });
+  const go = document.getElementById('ws-go');
+  if (go) go.addEventListener('click', uploadWorkshop);
+}
+
+async function uploadWorkshop() {
+  const items = WS_QUEUE.filter((x) => !x.skip);
+  if (!items.length) return;
+  const go = document.getElementById('ws-go');
+  const set = (text, cls = '', busy = false) => {
+    WSQ_MSG = { text, cls };
+    const t = document.querySelector('#ws-queue .src-status');
+    if (!t) return;
+    t.hidden = false; t.className = `src-status ${cls}`;
+    t.innerHTML = (busy ? '<span class="spin"></span>' : '') + esc(text);
+  };
+  if (go) { go.disabled = true; go.classList.add('up-go-busy'); go.innerHTML = '<span class="spin"></span>Adding…'; }
+  const okIds = new Set(); const failed = [];
+  let i = 0;
+  for (const it of items) {
+    i++;
+    set(`Uploading ${it.file.name} (${i}/${items.length})${it.group === 'convert' ? ' — converting to Markdown…' : '…'}`, '', true);
+    try {
+      const dataBase64 = await readFileB64(it.file);
+      const r = await fetch('/api/sources', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kebab, kind: 'workshop', name: it.name || it.file.name.replace(/\.[^.]+$/, ''), filename: it.file.name, dataBase64 }),
+      });
+      const b = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(b.error || 'upload failed');
+      okIds.add(it.id);
+    } catch (e) { failed.push(`${it.file.name} — ${e.message}`); }
+  }
+  WS_QUEUE = WS_QUEUE.filter((x) => !okIds.has(x.id));
+  WSQ_MSG = failed.length
+    ? { text: `Added ${okIds.size}. Failed: ${failed.join('; ')}`, cls: 'err' }
+    : { text: `Added ${okIds.size} capture${okIds.size === 1 ? '' : 's'}.`, cls: 'ok' };
+  if (!failed.length) banner(`✅ Added ${okIds.size} workshop capture${okIds.size === 1 ? '' : 's'}.`, 'ok');
+  await load();
+}
+
+async function saveWorkshopNote() {
+  const name = (document.getElementById('ws-name').value || '').trim();
+  const content = document.getElementById('ws-content').value;
+  const status = document.getElementById('ws-status');
+  const fail = (m) => { status.hidden = false; status.className = 'src-status err'; status.textContent = m; };
+  if (!content.trim()) return fail('Add some content first.');
+  if (!name) return fail('Give this capture a name.');
+  status.hidden = false; status.className = 'src-status'; status.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/sources', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kebab, kind: 'workshop', name, content }),
+    });
+    const b = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(b.error || 'Could not save the capture.');
+    await load();
+  } catch (e) { fail(e.message); }
+}
+
+// Copy the spark-prompts.md body to the clipboard so the designer can paste the
+// ready-made Spark / Copilot Studio prompts straight into spark.github.com.
+async function copySpark(file) {
+  const d = DELIVERABLES.find((x) => x.file === file);
+  let text = d && d.markdown;
+  if (!text) {
+    try {
+      const r = await fetch(`/api/source?kebab=${kebab}&path=${encodeURIComponent('engagement/' + kebab + '/' + file)}`);
+      if (r.ok) text = (await r.json()).text;
+    } catch { /* fall through */ }
+  }
+  if (!text) { banner('❌ Nothing to copy yet — generate Ideation concepts first.', 'err'); return; }
+  try {
+    await navigator.clipboard.writeText(text);
+    banner('📋 Spark prompts copied — paste them into <a href="https://spark.github.com" target="_blank" rel="noopener">spark.github.com ↗</a> before the workshop.', 'ok');
+  } catch {
+    banner('Couldn’t access the clipboard — open the file with View and copy manually.', 'err');
+  }
+}
+
 // Dispatch a phase in the engagement's repo, then poll until the engine run
 // finishes and reload the board (the engine commits the deliverable + gates.json).
 async function generate(file) {
@@ -612,9 +883,17 @@ async function generate(file) {
   RUNNING = true;
   setGenButtons(true);
   setGenBusy(file);
-  const title = RUN_TITLES[file] || (DELIVERABLES.find((d) => d.file === file) || {}).title || file;
+  const d = DELIVERABLES.find((x) => x.file === file);
+  const title = RUN_TITLES[file] || (d || {}).title || file;
+  const isDisrupt = d && d.gate === 'disrupt';
   const grounded = SOURCES.length > 0;
-  banner(`<span class="spin"></span> Generating <strong>${title}</strong> ${grounded ? 'from your sources' : '(Contoso demo data — no sources added)'} — dispatching the engine…`, 'busy');
+  // Disrupt deliverables ground in the signed-off Discover deliverables + workshop
+  // captures, never the Contoso seed — so the "demo data" caveat only applies to
+  // Discover with no sources added.
+  const groundNote = isDisrupt
+    ? 'from your Discover deliverables &amp; workshop captures'
+    : (grounded ? 'from your sources' : '(Contoso demo data — no sources added)');
+  banner(`<span class="spin"></span> Generating <strong>${esc(title)}</strong> ${groundNote} — dispatching the engine…`, 'busy');
 
   let priorId = null;
   try { priorId = (await (await fetch(`/api/run/status?kebab=${kebab}`)).json()).databaseId || null; } catch { /* none yet */ }
@@ -623,7 +902,7 @@ async function generate(file) {
     const res = await fetch('/api/run', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kebab, file, seedDemo: !grounded }),
+      body: JSON.stringify({ kebab, file, seedDemo: isDisrupt ? false : !grounded }),
     });
     if (!res.ok) { const b = await res.json().catch(() => ({})); throw new Error(b.detail || b.error || 'Dispatch failed'); }
   } catch (e) {
@@ -713,11 +992,12 @@ async function load() {
 
   renderTimeline(data.gates);
 
+  // Discover gates render in #gates; Disrupt gets its own richer section (#disrupt)
+  // that models the workshop-in-the-middle flow.
   const discoverDs = data.deliverables.filter((d) => d.gate === 'discover');
-  const disruptDs = data.deliverables.filter((d) => d.gate === 'disrupt');
   document.getElementById('gates').innerHTML =
-    gateBlock('Discover', data.gates.discover, discoverDs) +
-    gateBlock('Disrupt', data.gates.disrupt, disruptDs);
+    gateBlock('Discover', data.gates.discover, discoverDs);
+  renderDisrupt(data);
 
   document.querySelectorAll('.btn-view').forEach((b) =>
     b.addEventListener('click', () => openViewer(b.dataset.file)));
