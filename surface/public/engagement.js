@@ -47,17 +47,20 @@ function gradeBadge(grade, pass) {
   return `<span class="grade ${cls}">Grade ${grade}</span>`;
 }
 
-function phaseState(gates) {
+function phaseState(gates, prep) {
   const d = gates.discover.status;
   const di = gates.disrupt.status;
+  const prepState = !prep ? 'done'
+    : prep.status === 'ready' ? 'done'
+    : prep.status === 'partial' ? 'active' : 'pending';
   const discover = d === 'GREEN' ? 'done' : (String(gates.discover.artifactsPresent).split('/')[0] === '0' ? 'pending' : 'active');
   const disrupt = di === 'GREEN' ? 'done' : (discover === 'done' ? 'active' : 'pending');
   const build = di === 'GREEN' ? 'active' : 'pending';
-  return { Preparation: 'done', Discover: discover, Disrupt: disrupt, Build: build, Deliver: 'pending' };
+  return { Preparation: prepState, Discover: discover, Disrupt: disrupt, Build: build, Deliver: 'pending' };
 }
 
-function renderTimeline(gates) {
-  const st = phaseState(gates);
+function renderTimeline(gates, prep) {
+  const st = phaseState(gates, prep);
   document.getElementById('phasebar').innerHTML = PHASES.map((p, idx) => {
     const s = st[p];
     const mark = s === 'done' ? '✓' : (idx + 1);
@@ -179,7 +182,81 @@ function renderDisrupt(data) {
   wireWorkshopBucket();
 }
 
-// ---- provenance ("receipts"): make the source→deliverable map visible --------
+// ---- Preparation: Week-0 setup (the two briefs + research + schedule) --------
+// Ungraded artifacts judged by presence, not a grade pill. ★ marks the two gating
+// briefs. The M365 Researcher prompt is a paste-OUT artifact (Path B of the dual-path
+// research): copy it, run it in M365 Copilot's Researcher agent, paste the result back.
+function preparationCard(d) {
+  let [state, stateCls] = cardState(d);
+  if (d.present && !d.signoffCapable) { state = 'Drafted'; stateCls = 'st-signed'; }
+  if (d.pasteOut && d.present) { state = 'Ready to paste into M365 Copilot'; stateCls = 'st-signed'; }
+  const star = d.gateCritical ? '<span class="dz-star" title="Required to complete Preparation">★</span>' : '';
+
+  let actions = `<button class="btn-view" data-file="${esc(d.file)}" ${d.present ? '' : 'disabled'}>View</button>`;
+  if (d.pasteOut) {
+    if (d.present) {
+      actions += `<button class="btn-m365" data-m365="${esc(d.file)}">📋 Copy prompt</button>`;
+      actions += `<a class="btn-spark-open" href="https://m365.cloud.microsoft" target="_blank" rel="noopener">Open M365 Copilot ↗</a>`;
+    }
+  } else if (!d.present && d.generatable) {
+    actions += d.ready
+      ? `<button class="btn-gen" data-gen="${esc(d.file)}"><span class="gen-ico">✨</span><span class="gen-txt">Generate</span></button>`
+      : `<button class="btn-gen" data-gen="${esc(d.file)}" disabled title="${esc(d.blockedReason)}"><span class="gen-ico">🔒</span><span class="gen-txt">Generate</span></button>`;
+  } else if (d.present && d.generatable) {
+    actions += `<button class="btn-gen btn-soft" data-gen="${esc(d.file)}"><span class="gen-ico">↻</span><span class="gen-txt">Regenerate</span></button>`;
+  }
+
+  const lock = (!d.present && d.generatable && !d.ready && d.blockedReason)
+    ? `<div class="dz-lock">🔒 ${esc(d.blockedReason)}</div>` : '';
+  const pasteHint = (d.pasteOut && !d.present)
+    ? '<div class="dz-hint">Produced when you run <strong>Public web research</strong> — a ready-to-paste prompt for M365 Copilot’s Researcher agent.</div>' : '';
+
+  return `<div class="dcard ${d.present ? '' : 'dcard-empty'} ${d.gateCritical ? 'dcard-gated' : ''}">
+    <div class="card-top">
+      <div class="card-title">${star}${esc(d.title)}</div>
+    </div>
+    <div class="card-state ${stateCls}">${esc(state)}</div>
+    ${d.present ? provSummary(d) : ''}
+    ${lock}${pasteHint}
+    <div class="card-actions">${actions}</div>
+  </div>`;
+}
+
+// The Preparation section: phase-1 setup. Two gating briefs (★), the dual-path
+// customer research (public web + the M365 Researcher paste-out/paste-back), and the
+// 4-week meeting schedule. Ungraded — the gate is simply "both briefs present".
+function renderPreparation(data) {
+  const el = document.getElementById('preparation');
+  if (!el) return;
+  const ps = data.deliverables.filter((d) => d.gate === 'preparation');
+  if (!ps.length) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  const gate = (data.preparation && data.preparation.gate) || { status: 'empty', engagementBrief: false, customerBrief: false };
+  const rr = (data.preparation && data.preparation.researchResults) || [];
+  const grp = (g) => ps.filter((d) => d.group === g);
+  const gatePill = gate.status === 'ready' ? '<span class="pill pill-green">Ready</span>'
+    : gate.status === 'partial' ? '<span class="pill pill-amber">In progress</span>'
+    : '<span class="pill pill-grey">Not started</span>';
+  const group = (head, sub, cards, extra = '') => `
+    <div class="dz-group">
+      <div class="dz-group-head"><h3>${head}</h3><span class="dz-group-sub">${sub}</span></div>
+      <div class="cards">${cards.map(preparationCard).join('')}</div>
+      ${extra}
+    </div>`;
+  el.innerHTML = `
+    <div class="gate gate-prep">
+      <div class="gate-head">
+        <h2>Preparation ${gatePill}</h2>
+        <div class="gate-counts">${gate.engagementBrief ? '✓' : '○'} engagement brief · ${gate.customerBrief ? '✓' : '○'} customer brief</div>
+      </div>
+      <p class="dz-intro">Week-0 setup. Draft the two briefs (★ — both needed to complete Preparation), run the dual-path customer research, and lay out the meeting schedule. Everything grounds in the sources you add above — never demo data.</p>
+      ${group('① The two briefs', 'Studio 42’s internal view + the customer’s own voice', grp('brief'))}
+      ${group('② Customer research', 'Public web (in-app) + M365 Researcher (paste-out → paste-back) → synthesis', grp('research'), renderResearchBucket(rr))}
+      ${group('③ Meeting schedule', 'The 4-week cadence — kickoff, discovery, the Disrupt workshop, check-ins, handoff', grp('schedule'))}
+    </div>`;
+  el.querySelectorAll('.btn-m365').forEach((b) => b.addEventListener('click', () => copyM365Prompt(b.dataset.m365)));
+  wireResearchBucket();
+}
 function srcDisplay(path) {
   const s = SOURCES.find((x) => x.path === path);
   if (s) return s.name;
@@ -856,6 +933,107 @@ async function saveWorkshopNote() {
   } catch (e) { fail(e.message); }
 }
 
+// ---- Preparation research paste-back (sources/research/m365-researcher-results.md)
+// Path B of the dual-path research: the designer runs the copied prompt in M365
+// Copilot's Researcher agent and pastes the response back here (text or a saved file).
+// It grounds the research synthesis. Single results doc per engagement.
+function renderResearchBucket(rr) {
+  const got = rr.length
+    ? rr.map((s) => `<div class="src-card src-card-sm">
+        <div class="src-card-top">
+          <span class="src-kind">M365 results</span>
+          <span class="src-name">${esc(s.name)}</span>
+          <span class="grow"></span>
+          <button class="src-view" data-srcpath="${esc(s.path)}">View</button>
+          ${s.htmlUrl ? `<a class="src-link" href="${esc(s.htmlUrl)}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}
+        </div>
+      </div>`).join('')
+    : '';
+  return `
+    <div class="dz-capture rr-capture">
+      <div class="dz-group-head"><h3>↩ Paste back the M365 Researcher results</h3><span class="dz-group-sub">Run the copied prompt in M365 Copilot, then paste the response here — it grounds the synthesis</span></div>
+      ${got
+        ? `<div class="src-list">${got}</div>`
+        : '<div class="src-empty">No results yet. Copy the <strong>M365 Researcher prompt</strong> above, run it in M365 Copilot’s Researcher agent, then paste the response back here. Once it lands, <strong>Research synthesis</strong> unlocks.</div>'}
+      <form class="src-form" id="rr-form">
+        <label>M365 Researcher response
+          <textarea id="rr-content" rows="6" placeholder="Paste the full response from M365 Copilot’s Researcher agent here…"></textarea>
+        </label>
+        <div class="src-actions">
+          <label class="btn-ghost rr-file-btn">Drop / browse a file<input type="file" id="rr-input" hidden accept="${UP_ACCEPT}" /></label>
+          <span class="grow"></span>
+          <button type="submit" class="btn-save-src" id="rr-save">${rr.length ? 'Replace results' : 'Save results'}</button>
+        </div>
+        <div class="src-status" id="rr-status" hidden></div>
+      </form>
+    </div>`;
+}
+
+function wireResearchBucket() {
+  const form = document.getElementById('rr-form');
+  if (!form) return;
+  form.addEventListener('submit', (e) => { e.preventDefault(); saveResearchResults(); });
+  const input = document.getElementById('rr-input');
+  if (input) input.addEventListener('change', () => { if (input.files.length) uploadResearchFile(input.files[0]); input.value = ''; });
+}
+
+async function saveResearchResults() {
+  const content = document.getElementById('rr-content').value;
+  const status = document.getElementById('rr-status');
+  const fail = (m) => { status.hidden = false; status.className = 'src-status err'; status.textContent = m; };
+  if (!content.trim()) return fail('Paste the M365 Researcher response first, or drop a file.');
+  status.hidden = false; status.className = 'src-status'; status.textContent = 'Saving…';
+  try {
+    const r = await fetch('/api/sources', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kebab, kind: 'm365-results', content }),
+    });
+    const b = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(b.error || 'Could not save the results.');
+    banner('✅ M365 Researcher results saved — you can now generate the Research synthesis.', 'ok');
+    await load();
+  } catch (e) { fail(e.message); }
+}
+
+async function uploadResearchFile(file) {
+  const status = document.getElementById('rr-status');
+  const set = (m, cls = '', busy = false) => { status.hidden = false; status.className = `src-status ${cls}`; status.innerHTML = (busy ? '<span class="spin"></span>' : '') + esc(m); };
+  if (fileGroup(file.name) === 'image') return set('Images can’t be used as research — paste the text or drop a document.', 'err');
+  set(`Uploading ${file.name}${fileGroup(file.name) === 'convert' ? ' — converting to Markdown…' : '…'}`, '', true);
+  try {
+    const dataBase64 = await readFileB64(file);
+    const r = await fetch('/api/sources', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kebab, kind: 'm365-results', filename: file.name, dataBase64 }),
+    });
+    const b = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(b.error || 'upload failed');
+    banner('✅ M365 Researcher results saved — you can now generate the Research synthesis.', 'ok');
+    await load();
+  } catch (e) { set(e.message, 'err'); }
+}
+
+// Copy the M365 Researcher prompt to the clipboard so the designer can paste it into
+// M365 Copilot's Researcher agent (Path B of the dual-path research). The response they
+// get back is pasted into the research bucket above.
+async function copyM365Prompt(file) {
+  const d = DELIVERABLES.find((x) => x.file === file);
+  let text = d && d.markdown;
+  if (!text) {
+    try {
+      const r = await fetch(`/api/source?kebab=${kebab}&path=${encodeURIComponent('sources/research/' + file)}`);
+      if (r.ok) text = (await r.json()).text;
+    } catch { /* fall through */ }
+  }
+  if (!text) { banner('❌ Nothing to copy yet — run Public web research first.', 'err'); return; }
+  try {
+    await navigator.clipboard.writeText(text);
+    banner('📋 M365 Researcher prompt copied — paste it into <a href="https://m365.cloud.microsoft" target="_blank" rel="noopener">M365 Copilot ↗</a> → Agents → Researcher, then paste the result back below.', 'ok');
+  } catch {
+    banner('Couldn’t access the clipboard — open the file with View and copy manually.', 'err');
+  }
+}
+
 // Copy the spark-prompts.md body to the clipboard so the designer can paste the
 // ready-made Spark / Copilot Studio prompts straight into spark.github.com.
 async function copySpark(file) {
@@ -886,13 +1064,16 @@ async function generate(file) {
   const d = DELIVERABLES.find((x) => x.file === file);
   const title = RUN_TITLES[file] || (d || {}).title || file;
   const isDisrupt = d && d.gate === 'disrupt';
+  const isPrep = d && d.gate === 'preparation';
   const grounded = SOURCES.length > 0;
   // Disrupt deliverables ground in the signed-off Discover deliverables + workshop
-  // captures, never the Contoso seed — so the "demo data" caveat only applies to
-  // Discover with no sources added.
+  // captures, never the Contoso seed; Preparation grounds in the designer's sources &
+  // briefs — so the "demo data" caveat only applies to Discover with no sources added.
   const groundNote = isDisrupt
     ? 'from your Discover deliverables &amp; workshop captures'
-    : (grounded ? 'from your sources' : '(Contoso demo data — no sources added)');
+    : isPrep
+      ? 'from your sources &amp; briefs'
+      : (grounded ? 'from your sources' : '(Contoso demo data — no sources added)');
   banner(`<span class="spin"></span> Generating <strong>${esc(title)}</strong> ${groundNote} — dispatching the engine…`, 'busy');
 
   let priorId = null;
@@ -902,7 +1083,7 @@ async function generate(file) {
     const res = await fetch('/api/run', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kebab, file, seedDemo: isDisrupt ? false : !grounded }),
+      body: JSON.stringify({ kebab, file, seedDemo: (isDisrupt || isPrep) ? false : !grounded }),
     });
     if (!res.ok) { const b = await res.json().catch(() => ({})); throw new Error(b.detail || b.error || 'Dispatch failed'); }
   } catch (e) {
@@ -990,10 +1171,12 @@ async function load() {
     : '';
   document.getElementById('eng-sub').innerHTML = subBase + repoLink;
 
-  renderTimeline(data.gates);
+  renderTimeline(data.gates, data.preparation && data.preparation.gate);
 
-  // Discover gates render in #gates; Disrupt gets its own richer section (#disrupt)
-  // that models the workshop-in-the-middle flow.
+  // Preparation (phase 1) gets its own section above the Discover gates; Discover gates
+  // render in #gates; Disrupt gets its own richer section (#disrupt) that models the
+  // workshop-in-the-middle flow.
+  renderPreparation(data);
   const discoverDs = data.deliverables.filter((d) => d.gate === 'discover');
   document.getElementById('gates').innerHTML =
     gateBlock('Discover', data.gates.discover, discoverDs);

@@ -79,12 +79,17 @@ Step by step:
 
 ## What's wired (and what isn't)
 
-The surface covers **Discover (phase 2) and Disrupt (phase 3)** — every deliverable
-in those phases has a web button. `FILE_PROMPT` in `server.mjs` is the single source
-of that mapping:
+The surface covers **Preparation (phase 1), Discover (phase 2) and Disrupt (phase 3)**
+— every deliverable in those phases has a web button. `FILE_PROMPT` in `server.mjs` is
+the single source of that mapping:
 
 | Web action | File produced | Prompt dispatched | Agent |
 |------------|---------------|-------------------|-------|
+| Generate Engagement brief | `engagement-brief.md` | `vibe-engagement-brief` | VIBE Preparation |
+| Generate Customer brief | `customer-brief.md` | `vibe-customer-brief` | VIBE Preparation |
+| Generate Public web research | `customer-public.md` (+ `m365-researcher-prompt.md`) | `vibe-research` | VIBE Preparation |
+| Generate Research synthesis | `research-summary.md` | `vibe-research` | VIBE Preparation |
+| Generate Meeting schedule | `meeting-templates.md` | `vibe-schedule` | VIBE Preparation |
 | Synthesize context | `PROJECT-CONTEXT.md` | `vibe-context` | VIBE Discover |
 | Generate Personas | `personas.md` | `vibe-personas` | VIBE Discover |
 | Generate Problem Statement | `problem-statement.md` | `vibe-problem-statement` | VIBE Discover |
@@ -96,10 +101,41 @@ of that mapping:
 | Generate Future-state journey | `future-state-journey.md` | `vibe-future-journey` | VIBE Disrupt |
 | Generate Storyboard | `storyboard.md` | `vibe-storyboard` | VIBE Disrupt |
 
-Preparation (phase 1) and the engineer-owned Build/Deliver prompts still exist and
-run in VS Code — they simply have no web button yet. Adding one is a one-line
+The engineer-owned Build/Deliver prompts still exist and run in VS Code — they simply
+have no web button yet (the 3→4 hand-off is deliberate). Adding one is a one-line
 `FILE_PROMPT` entry plus UI, **no engine change**, because `resolve-prompt.mjs` is
 generic.
+
+### The Preparation phase (Week-0 setup)
+
+Preparation is **ungraded**: its artifacts have no `gates.json` rubric, so the surface
+judges them by **presence + sign-off**, not a grade pill (`assemblePrep` in
+`server.mjs`). The phase gate mirrors `/vibe-prep-check` — the **two briefs**
+(`engagement-brief.md`, `customer-brief.md`) are the critical/gating artifacts (they
+wear a ★); research and schedule are recommended, not blocking. The `#preparation`
+section (`renderPreparation` in `engagement.js`) renders three groups:
+
+1. **The two briefs** — Studio 42's internal `engagement-brief` + the customer's own
+   `customer-brief`. Both are generatable from the designer's sources, and both gate
+   the phase. (`customer-brief.md` is dual-natured: it's also a *source* kind that
+   grounds Discover, so it intentionally appears both in the Sources bucket and as a
+   Preparation card.)
+2. **Customer research** — the **dual-path** research. *Path A* (`vibe-research`) writes
+   `customer-public.md` from the public web in-app. *Path B* is a **paste-out /
+   paste-back** loop: the same run also emits `m365-researcher-prompt.md`, a ready-to-run
+   prompt the designer copies into **M365 Copilot's Researcher agent** (we can't invoke
+   it programmatically), then pastes the response back into a focused bucket (saved to
+   `sources/research/m365-researcher-results.md`, source kind `m365-results`). Only once
+   that result exists does **Research synthesis** (`research-summary.md`) unlock — it
+   reconciles both paths with per-fact attribution.
+3. **Meeting schedule** — `vibe-schedule` lays out the 4-week cadence to
+   `sources/meeting-templates.md`.
+
+Like Disrupt, Preparation runs always dispatch `seed_demo=false`: they ground in the
+designer's real sources and briefs, never the Contoso seed. Because the research and
+schedule prompts write into `sources/` (not `engagement/`), `run-phase.yml` widens its
+verify + commit steps to stage `sources/` **on grounded runs only** — on a demo run,
+`sources/` holds seeded inputs that must never be committed back.
 
 ### The Disrupt phase (workshop-in-the-middle)
 
@@ -183,13 +219,13 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 | `GET /api/engagements` | List known engagements (from `.engagements.json`) |
 | `POST /api/engagements` | Provision a new engagement repo from the template |
 | `GET /api/board` | List engagements with summary gate state |
-| `GET /api/board/:kebab` | Full board detail: gates, deliverables (+markdown), sources, **context** presence, provenance, **disrupt** (gate + workshop captures) |
+| `GET /api/board/:kebab` | Full board detail: gates, deliverables (+markdown), sources, **context** presence, provenance, **preparation** (gate + M365 research results), **disrupt** (gate + workshop captures) |
 | `POST /api/run` | Dispatch a phase run (`{ kebab, file, seedDemo }`) |
 | `GET /api/run/status` | Latest `run-phase.yml` run status for an engagement |
 | `POST /api/approve` | Record a web sign-off on a deliverable (Discover + the two sign-off-capable Disrupt artifacts) |
 | `GET /api/sources` | List an engagement's sources (+ kinds metadata) |
 | `GET /api/source` | Fetch one source/deliverable's markdown (scoped to `sources/` or `engagement/<id>/`) |
-| `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown). `kind:'workshop'` routes to `sources/workshop/` for Disrupt captures |
+| `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown). `kind:'workshop'` routes to `sources/workshop/` for Disrupt captures; `kind:'m365-results'` routes to `sources/research/m365-researcher-results.md` for the Preparation research paste-back |
 
 ## Files
 
@@ -197,7 +233,7 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 |------|------|
 | `surface/server.mjs` | Zero-dependency Node HTTP server: routes, GitHub calls, run dispatch, source ingest |
 | `surface/public/index.html` + `app.js` | Landing page: engagement list + "New engagement" |
-| `surface/public/engagement.html` + `engagement.js` | The engagement dashboard (timeline, gates, deliverable cards, sources bucket, context band, **Disrupt section + workshop bucket**, viewer) |
+| `surface/public/engagement.html` + `engagement.js` | The engagement dashboard (timeline, gates, deliverable cards, sources bucket, context band, **Preparation section + research paste-back bucket**, **Disrupt section + workshop bucket**, viewer) |
 | `surface/public/markdown.js` | Tiny client-side Markdown renderer for the viewer |
 | `surface/public/styles.css` | All styling (dark theme, design-token `:root` vars) |
 | `surface/tidy-repo.mjs` | Post-provision cleanup of a generated engagement repo |

@@ -88,13 +88,22 @@ jobs:
         run: |
           set -euo pipefail
           ENG="engagement/${ENGAGEMENT}"
-          # Did the run create or change any markdown deliverable in the engagement?
-          if [ -z "$(git status --porcelain "$ENG" | grep -E '\.md$' || true)" ] && [ ! -f "$ENG/personas.md" ]; then
-            echo "::error::No deliverable was produced under $ENG. See the run log artifact."
+          # Most deliverables land in $ENG; some Preparation prompts (research,
+          # schedule) write into sources/ instead. On a grounded run (seed_demo=false)
+          # nothing is pre-seeded, so any sources/ change is genuine engine output and
+          # we widen the check to include it. On a demo run we only trust $ENG, so the
+          # seeded inputs under sources/ aren't mistaken for output.
+          if [ "${{ inputs.seed_demo }}" = "true" ]; then
+            SCOPE="$ENG"
+          else
+            SCOPE="$ENG sources"
+          fi
+          if [ -z "$(git status --porcelain $SCOPE | grep -E '\.md$' || true)" ] && [ ! -f "$ENG/personas.md" ]; then
+            echo "::error::No deliverable was produced (checked: $SCOPE). See the run log artifact."
             exit 1
           fi
-          echo "Engine output present under $ENG:"
-          ls -la "$ENG"
+          echo "Engine output present (checked: $SCOPE):"
+          git status --porcelain $SCOPE || true
 
       - name: Compute committed gates ledger
         run: node scripts/gen-gates.mjs "engagement/${ENGAGEMENT}"
@@ -106,6 +115,13 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$ENG"
+          # Preparation research/schedule prompts write into sources/. Stage those too,
+          # but only on a grounded run — on a demo run sources/ holds seeded inputs we
+          # never want to commit back. (Discover/Disrupt engine runs don't write under
+          # sources/, so this is a harmless no-op for them.)
+          if [ "${{ inputs.seed_demo }}" != "true" ]; then
+            git add sources
+          fi
           if git diff --cached --quiet; then
             echo "Nothing to commit (engine produced no tracked change)."
             exit 0
