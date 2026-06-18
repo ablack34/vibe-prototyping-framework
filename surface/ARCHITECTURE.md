@@ -79,8 +79,9 @@ Step by step:
 
 ## What's wired (and what isn't)
 
-The surface is scoped to the Discover deliverables, so only these prompts have
-buttons today. `FILE_PROMPT` in `server.mjs` is the single source of that mapping:
+The surface covers **Discover (phase 2) and Disrupt (phase 3)** — every deliverable
+in those phases has a web button. `FILE_PROMPT` in `server.mjs` is the single source
+of that mapping:
 
 | Web action | File produced | Prompt dispatched | Agent |
 |------------|---------------|-------------------|-------|
@@ -88,11 +89,45 @@ buttons today. `FILE_PROMPT` in `server.mjs` is the single source of that mappin
 | Generate Personas | `personas.md` | `vibe-personas` | VIBE Discover |
 | Generate Problem Statement | `problem-statement.md` | `vibe-problem-statement` | VIBE Discover |
 | Generate Current Journey | `current-state-journey.md` | `vibe-current-journey` | VIBE Discover |
+| Generate Workshop agenda | `workshop-agenda.md` | `vibe-workshop-agenda` | VIBE Disrupt |
+| Generate Ideation concepts | `ideation-concepts.md` (+ `spark-prompts.md`) | `vibe-concepts` | VIBE Disrupt |
+| Generate Workshop record | `workshop-record.md` | `vibe-workshop-record` | VIBE Disrupt |
+| Generate Selected concept | `selected-concept.md` | `vibe-selected-concept` | VIBE Disrupt |
+| Generate Future-state journey | `future-state-journey.md` | `vibe-future-journey` | VIBE Disrupt |
+| Generate Storyboard | `storyboard.md` | `vibe-storyboard` | VIBE Disrupt |
 
-Every other framework prompt (research, questionnaire, disrupt, build, deliver…)
-still exists and runs in VS Code — it simply has no web button yet. Adding one is a
-one-line `FILE_PROMPT` entry plus UI, **no engine change**, because
-`resolve-prompt.mjs` is generic.
+Preparation (phase 1) and the engineer-owned Build/Deliver prompts still exist and
+run in VS Code — they simply have no web button yet. Adding one is a one-line
+`FILE_PROMPT` entry plus UI, **no engine change**, because `resolve-prompt.mjs` is
+generic.
+
+### The Disrupt phase (workshop-in-the-middle)
+
+Disrupt has a shape Discover doesn't: a customer co-creation workshop happens
+**offline**, in the middle of the phase. The surface models this as three groups in
+a dedicated `#disrupt` section (`renderDisrupt` in `engagement.js`):
+
+1. **Before the workshop** — `workshop-agenda` + `ideation-concepts` (and the
+   paste-out `spark-prompts`) draft from the **signed-off** Discover deliverables.
+   The agenda is a hard gate: it stays locked until all three Discover deliverables
+   are Grade B+ **and** signed off.
+2. **Workshop capture** — a focused bucket that saves what the designer brings back
+   from the room to `sources/workshop/` (same MarkItDown conversion as the Discover
+   bucket). These captures are deliberately kept **out** of the Discover sources
+   dropdown so a workshop photo can't be mistaken for Discover grounding evidence,
+   but they are still fed to provenance so workshop-record citations resolve.
+3. **After the workshop** — the strict post-workshop chain, generated in order:
+   `workshop-record → selected-concept → future-state-journey → storyboard`. Each
+   step's Generate button is **locked with the reason why** until its predecessor
+   exists; the three Build-gating deliverables wear a ★.
+
+Only `selected-concept`, `future-state-journey` and `storyboard` are in
+`GATES.disrupt`. The four support artifacts (agenda, concepts, spark-prompts,
+record) are **not** gated — `server.mjs` grades them inline with the *same*
+`lowestGrade`/`signoff` exports the CLI uses (`evalSupport`/`assembleDisrupt`), so
+the web and CLI views can't drift. Disrupt runs always dispatch `seed_demo=false`:
+they ground in the Discover deliverables and workshop captures, never the Contoso
+seed.
 
 ## The synthesize-context step
 
@@ -148,13 +183,13 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 | `GET /api/engagements` | List known engagements (from `.engagements.json`) |
 | `POST /api/engagements` | Provision a new engagement repo from the template |
 | `GET /api/board` | List engagements with summary gate state |
-| `GET /api/board/:kebab` | Full board detail: gates, deliverables (+markdown), sources, **context** presence, provenance |
+| `GET /api/board/:kebab` | Full board detail: gates, deliverables (+markdown), sources, **context** presence, provenance, **disrupt** (gate + workshop captures) |
 | `POST /api/run` | Dispatch a phase run (`{ kebab, file, seedDemo }`) |
 | `GET /api/run/status` | Latest `run-phase.yml` run status for an engagement |
-| `POST /api/approve` | Record a web sign-off on a deliverable |
+| `POST /api/approve` | Record a web sign-off on a deliverable (Discover + the two sign-off-capable Disrupt artifacts) |
 | `GET /api/sources` | List an engagement's sources (+ kinds metadata) |
 | `GET /api/source` | Fetch one source/deliverable's markdown (scoped to `sources/` or `engagement/<id>/`) |
-| `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown) |
+| `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown). `kind:'workshop'` routes to `sources/workshop/` for Disrupt captures |
 
 ## Files
 
@@ -162,7 +197,7 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 |------|------|
 | `surface/server.mjs` | Zero-dependency Node HTTP server: routes, GitHub calls, run dispatch, source ingest |
 | `surface/public/index.html` + `app.js` | Landing page: engagement list + "New engagement" |
-| `surface/public/engagement.html` + `engagement.js` | The engagement dashboard (timeline, gates, deliverable cards, sources bucket, context band, viewer) |
+| `surface/public/engagement.html` + `engagement.js` | The engagement dashboard (timeline, gates, deliverable cards, sources bucket, context band, **Disrupt section + workshop bucket**, viewer) |
 | `surface/public/markdown.js` | Tiny client-side Markdown renderer for the viewer |
 | `surface/public/styles.css` | All styling (dark theme, design-token `:root` vars) |
 | `surface/tidy-repo.mjs` | Post-provision cleanup of a generated engagement repo |

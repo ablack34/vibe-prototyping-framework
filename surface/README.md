@@ -21,7 +21,12 @@ engine running headless in GitHub Actions.
 - **Synthesize context** — builds `PROJECT-CONTEXT.md` (the single source of truth)
   from those sources, the headless equivalent of `/vibe-kickoff`.
 - **Generate deliverables** — runs the Discover prompts (personas, problem
-  statement, current-state journey), grounded in the designer's sources.
+  statement, current-state journey) **and the Disrupt prompts** (workshop agenda,
+  ideation concepts, workshop record, selected concept, future-state journey,
+  storyboard), grounded in the designer's sources.
+- **Run the Disrupt workshop** — draft the pre-reads, drop what you bring back from
+  the offline co-creation session into a dedicated workshop-capture bucket, then
+  generate the post-workshop chain in its required order.
 - **Review & approve** — read every source and deliverable in-app (with provenance
   showing what fed what) and sign a deliverable off, writing the sign-off into the
   repo's `gates.json`.
@@ -68,8 +73,8 @@ Optional environment overrides:
 ## Scope
 
 The surface covers the **designer/PM-owned phases (1–3)** — capturing sources and
-generating/approving the Discover deliverables. Build and Deliver (engineer-owned)
-stay in VS Code / the repo.
+generating/approving the **Discover and Disrupt** deliverables (Preparation has no
+web buttons yet). Build and Deliver (engineer-owned) stay in VS Code / the repo.
 
 Adding a new web-runnable step is a one-line `FILE_PROMPT` entry in `server.mjs` plus
 UI — **no engine change** — because `resolve-prompt.mjs` is generic over any prompt.
