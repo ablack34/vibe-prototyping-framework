@@ -357,6 +357,114 @@ async function assembleDisrupt(deliverables, fetchFile, workshopCount) {
   }
 }
 
+// ---- Preparation: Week-0 setup (the two briefs + research + schedule) ----------
+// Preparation has no gates.json gate, so its artifacts are ungraded: the web reads
+// the committed files only (state.json grades are per-user + gitignored), so we
+// surface them as present/absent cards and compute the phase's readiness — both
+// briefs present — server-side, mirroring /vibe-prep-check (the briefs are critical;
+// research + schedule are recommended, not blocking). Unlike Discover/Disrupt
+// deliverables they live at mixed paths — the briefs under engagement/<kebab>/,
+// research under sources/research/, the schedule at sources/meeting-templates.md — so
+// each card carries its own repo path. The dual-path research reuses the proven
+// paste-out (Spark) + paste-back (workshop bucket) mechanics: vibe-research writes
+// customer-public.md + the M365 Researcher prompt; the designer runs that prompt in
+// M365 Copilot and pastes the result back as a source; re-running synthesises
+// research-summary.md once both inputs exist.
+const PREP_TITLES = {
+  'engagement-brief.md': 'Engagement brief',
+  'customer-brief.md': 'Customer brief',
+  'customer-public.md': 'Public web research',
+  'm365-researcher-prompt.md': 'M365 Researcher prompt',
+  'research-summary.md': 'Research synthesis',
+  'meeting-templates.md': 'Meeting schedule',
+};
+// Per-artifact Preparation metadata: repo path, UI group, whether it's one of the two
+// gating briefs, whether the web can generate it, plus the paste-out flag and ordering
+// preconditions. `requires` tokens:
+//   <file>.md    — that artifact is present
+//   m365Results  — at least one M365 Researcher result has been pasted back
+const PREP_META = {
+  'engagement-brief.md':       { path: (k) => `engagement/${k}/engagement-brief.md`, group: 'brief',    gate: true,  generatable: true,  requires: [] },
+  'customer-brief.md':         { path: (k) => `engagement/${k}/customer-brief.md`,   group: 'brief',    gate: true,  generatable: true,  requires: [] },
+  'customer-public.md':        { path: () => 'sources/research/customer-public.md',  group: 'research', gate: false, generatable: true,  requires: [], alsoProduces: 'm365-researcher-prompt.md' },
+  'm365-researcher-prompt.md': { path: () => 'sources/research/m365-researcher-prompt.md', group: 'research', gate: false, generatable: false, pasteOut: true, requires: ['customer-public.md'] },
+  'research-summary.md':       { path: () => 'sources/research/research-summary.md', group: 'research', gate: false, generatable: true,  requires: ['customer-public.md', 'm365Results'] },
+  'meeting-templates.md':      { path: () => 'sources/meeting-templates.md',         group: 'schedule', gate: false, generatable: true,  requires: [] },
+};
+
+function prepLabel(file) { return PREP_TITLES[file] || file; }
+
+// Preparation card, judged by presence + sign-off only (the briefs grade into
+// state.json, not the document, so there's no in-doc grade to read — keep it honest
+// and surface presence, not a grade pill).
+function evalPrep(file, text) {
+  const present = text != null;
+  const so = present ? signoff(text) : null;
+  return {
+    file,
+    title: prepLabel(file),
+    gate: 'preparation',
+    present,
+    grade: null,
+    gradePass: false,
+    graded: false,
+    signedOffBy: so?.by ?? null,
+    signedOffAt: so?.at ?? null,
+    stale: false,
+    markdown: present ? text : undefined,
+  };
+}
+
+function prepReadiness(meta, ctx) {
+  const reasons = [];
+  for (const req of meta.requires || []) {
+    if (req === 'm365Results') { if (!ctx.m365Count) reasons.push('paste back the M365 Researcher results first'); }
+    else if (req.endsWith('.md')) { if (!ctx.present.has(req)) reasons.push(`generate ${prepLabel(req)} first`); }
+  }
+  return { ready: reasons.length === 0, blockedReason: reasons.join(' · ') };
+}
+
+// The Preparation gate mirrors /vibe-prep-check: the two briefs are the critical
+// (gating) artifacts; research + schedule are recommended, not blocking.
+function computePrepGate(cards) {
+  const eb = cards.find((c) => c.file === 'engagement-brief.md');
+  const cb = cards.find((c) => c.file === 'customer-brief.md');
+  const have = (eb?.present ? 1 : 0) + (cb?.present ? 1 : 0);
+  return {
+    status: have === 2 ? 'ready' : have === 1 ? 'partial' : 'empty',
+    engagementBrief: !!eb?.present,
+    customerBrief: !!cb?.present,
+  };
+}
+
+// Fetch the six Preparation artifacts, push them as cards onto `deliverables`, tag
+// each with its group + ordering/readiness, and return the phase gate. `fetchAt`
+// resolves a repo-relative path to its text (or null). `m365Count` is how many M365
+// Researcher results have been pasted back (gates the synthesis step).
+async function assemblePrep(deliverables, fetchAt, kebab, m365Count) {
+  const cards = [];
+  for (const file of Object.keys(PREP_TITLES)) {
+    cards.push(evalPrep(file, await fetchAt(PREP_META[file].path(kebab))));
+  }
+  const present = new Set(cards.filter((c) => c.present).map((c) => c.file));
+  const ctx = { present, m365Count: m365Count || 0 };
+  for (const c of cards) {
+    const meta = PREP_META[c.file];
+    c.group = meta.group;
+    c.gateCritical = !!meta.gate;
+    c.generatable = !!meta.generatable;
+    c.graded = false;
+    if (meta.pasteOut) c.pasteOut = true;
+    if (meta.alsoProduces) c.alsoProduces = meta.alsoProduces;
+    c.signoffCapable = !!(c.markdown && /##\s*Sign-?off/i.test(c.markdown));
+    const { ready, blockedReason } = prepReadiness(meta, ctx);
+    c.ready = ready;
+    c.blockedReason = blockedReason;
+    deliverables.push(c);
+  }
+  return computePrepGate(cards);
+}
+
 async function listEngagementDirs() {
   if (!existsSync(ENGAGE_ROOT)) return [];
   const entries = await readdir(ENGAGE_ROOT, { withFileTypes: true });
@@ -447,9 +555,19 @@ async function boardDetailLocal(kebab) {
   } catch { /* none captured yet */ }
   const localFetch = async (f) => { try { return await readFile(join(dir, f), 'utf8'); } catch { return null; } };
   await assembleDisrupt(deliverables, localFetch, workshopSources.length);
-  const bySource = attachDeliverableProvenance(deliverables, workshopSources.map((s) => s.path));
+  // Preparation artifacts live at mixed repo paths (briefs in engagement/, research +
+  // schedule under sources/), so fetch repo-relative from the repo root.
+  const repoFetch = async (p) => { try { return await readFile(join(REPO_ROOT, p), 'utf8'); } catch { return null; } };
+  let researchResults = [];
+  try {
+    const rents = await readdir(join(REPO_ROOT, 'sources', 'research'), { withFileTypes: true });
+    researchResults = rents.filter((e) => e.isFile() && /m365-researcher-results/i.test(e.name))
+      .map((e) => ({ kind: 'm365-results', name: e.name.replace(/\.[^.]+$/, '').replace(/-/g, ' '), path: `sources/research/${e.name}` }));
+  } catch { /* none pasted back yet */ }
+  const prepGate = await assemblePrep(deliverables, repoFetch, kebab, researchResults.length);
+  const bySource = attachDeliverableProvenance(deliverables, [...workshopSources, ...researchResults].map((s) => s.path));
   const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
-  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, provenance: { bySource } };
+  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, preparation: { gate: prepGate, researchResults }, provenance: { bySource } };
 }
 
 // Primary detail: gate state + rendered deliverables read from the engagement's
@@ -468,10 +586,14 @@ async function boardDetail(kebab) {
   // Sources bucket but still pass their paths to provenance so workshop-record's
   // citations resolve.
   const allSources = await listSources(rec);
-  const sources = allSources.filter((s) => s.kind !== 'workshop');
+  const sources = allSources.filter((s) => s.kind !== 'workshop' && s.kind !== 'm365-results');
   const workshopSources = allSources.filter((s) => s.kind === 'workshop');
+  const researchResults = allSources.filter((s) => s.kind === 'm365-results');
   await assembleDisrupt(deliverables,
     (f) => fetchRepoFile(rec.repo, `engagement/${kebab}/${f}`), workshopSources.length);
+  // Preparation artifacts span engagement/ + sources/, so fetch repo-relative.
+  const prepGate = await assemblePrep(deliverables,
+    (p) => fetchRepoFile(rec.repo, p), kebab, researchResults.length);
   const bySource = attachDeliverableProvenance(deliverables, allSources.map((s) => s.path));
   for (const s of allSources) {
     const e = bySource[s.path] || { usedBy: [], citationCount: 0 };
@@ -498,6 +620,7 @@ async function boardDetail(kebab) {
     context,
     kinds: sourceKindMeta(),
     disrupt: { gate: g.gates.disrupt, workshopSources },
+    preparation: { gate: prepGate, researchResults },
     provenance: { bySource },
   };
 }
@@ -507,6 +630,17 @@ async function boardDetail(kebab) {
 // "Generate" dispatches run-phase.yml in the engagement's OWN repo; the engine
 // writes the deliverable + gates.json back, and the board re-reads it.
 const FILE_PROMPT = {
+  // Preparation (Week-0). The two briefs ground in sources/ + each other; research and
+  // schedule ground in the briefs + PROJECT-CONTEXT. None ever re-seed Contoso
+  // (PREP_PROMPTS forces seed_demo=false). customer-public.md and research-summary.md
+  // both dispatch the one idempotent vibe-research prompt: it writes the public brief +
+  // the M365 paste-out prompt first, then synthesises the summary once the M365
+  // Researcher results have been pasted back.
+  'engagement-brief.md': 'vibe-engagement-brief',
+  'customer-brief.md': 'vibe-customer-brief',
+  'customer-public.md': 'vibe-research',
+  'research-summary.md': 'vibe-research',
+  'meeting-templates.md': 'vibe-schedule',
   // Discover (grounds in sources/, optionally the Contoso demo seed).
   'PROJECT-CONTEXT.md': 'vibe-context',
   'personas.md': 'vibe-personas',
@@ -528,6 +662,11 @@ const DISRUPT_PROMPTS = new Set([
   'vibe-workshop-agenda', 'vibe-concepts', 'vibe-workshop-record',
   'vibe-selected-concept', 'vibe-future-journey', 'vibe-storyboard',
 ]);
+// Preparation generators ground in the designer's sources + the briefs, never the
+// Contoso seed, so they also force seed_demo=false.
+const PREP_PROMPTS = new Set([
+  'vibe-engagement-brief', 'vibe-customer-brief', 'vibe-research', 'vibe-schedule',
+]);
 
 async function runPhase(input) {
   const kebab = String(input.kebab || '').trim();
@@ -539,10 +678,11 @@ async function runPhase(input) {
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
   // Once the designer has added real sources, stop seeding the Contoso demo so
   // the engine grounds the deliverable in their materials. The frontend passes
-  // seedDemo explicitly; default to true to preserve the canned-demo flow. Disrupt
-  // generators never seed — they ground in the existing Discover deliverables +
-  // workshop captures, so re-seeding Contoso would only add noise.
-  const seed = (DISRUPT_PROMPTS.has(prompt) || input.seedDemo === false) ? 'false' : 'true';
+  // seedDemo explicitly; default to true to preserve the canned-demo flow. Disrupt and
+  // Preparation generators never seed — they ground in the engagement's own materials
+  // (Discover deliverables + workshop captures, or the designer's sources + briefs), so
+  // re-seeding Contoso would only add noise.
+  const seed = (DISRUPT_PROMPTS.has(prompt) || PREP_PROMPTS.has(prompt) || input.seedDemo === false) ? 'false' : 'true';
   try {
     execSync(
       `gh workflow run run-phase.yml --repo ${rec.repo} -f prompt=${prompt} -f engagement=${kebab} -f seed_demo=${seed}`,
@@ -746,12 +886,18 @@ const SOURCE_KINDS = {
   'customer-brief': { label: 'Customer brief', single: true, path: (id) => `engagement/${id}/customer-brief.md` },
   'transcript': { label: 'Meeting transcript', single: false, path: (id, slug) => `sources/transcript-${slug}.md` },
   'questionnaire': { label: 'Questionnaire responses', single: true, path: () => 'sources/questionnaire-responses.md' },
-  'research': { label: 'Research summary', single: true, path: () => 'sources/research/research-summary.md' },
   'other': { label: 'Other source', single: false, path: (id, slug) => `sources/${slug}.md` },
   // Workshop captures live under sources/workshop/ and feed the Disrupt phase
   // (workshop-record reads them). Surfaced in the Disrupt section, not the Discover
   // Sources bucket — so it's deliberately excluded from sourceKindMeta().
   'workshop': { label: 'Workshop capture', single: false, path: (id, slug) => `sources/workshop/${slug}.md` },
+  // M365 Researcher paste-back: the result the designer copies out of M365 Copilot
+  // and pastes back. Lives under sources/research/ so the engine reads it when
+  // synthesising research-summary.md. Managed by the Preparation research bucket, so —
+  // like workshop — it's excluded from the generic Sources dropdown. (The research
+  // summary, public brief, and M365 prompt are engine OUTPUTS, not designer inputs, so
+  // they have no source kind at all.)
+  'm365-results': { label: 'M365 research results', single: true, path: () => 'sources/research/m365-researcher-results.md' },
 };
 
 // The kind metadata the frontend needs to render the Discover add-source form +
@@ -760,7 +906,7 @@ const SOURCE_KINDS = {
 function sourceKindMeta() {
   return Object.fromEntries(
     Object.entries(SOURCE_KINDS)
-      .filter(([k]) => k !== 'workshop')
+      .filter(([k]) => k !== 'workshop' && k !== 'm365-results')
       .map(([k, v]) => [k, { label: v.label, single: v.single }]),
   );
 }
@@ -769,15 +915,21 @@ function sourceKindMeta() {
 function classifySource(id, path) {
   if (path === `engagement/${id}/customer-brief.md`) return { kind: 'customer-brief', name: 'Customer brief' };
   if (path === 'sources/questionnaire-responses.md') return { kind: 'questionnaire', name: 'Questionnaire responses' };
-  if (path === 'sources/research/research-summary.md') return { kind: 'research', name: 'Research summary' };
+  // The M365 Researcher paste-back is the one designer-provided file under
+  // sources/research/; the rest of that folder (customer-public, m365 prompt, research
+  // synthesis) are Preparation engine OUTPUTS, surfaced as Preparation cards, not
+  // sources — the generic sources/<x>.md rule below already excludes subdirectories.
+  if (path === 'sources/research/m365-researcher-results.md') return { kind: 'm365-results', name: 'M365 research results' };
   const t = path.match(/^sources\/transcript-(.+)\.md$/);
   if (t) return { kind: 'transcript', name: t[1].replace(/-/g, ' ') };
   // Workshop must be matched before the generic sources/*.md rule below, which
   // would otherwise swallow sources/workshop/foo.md as an "other" named "workshop/foo".
   const w = path.match(/^sources\/workshop\/(.+)\.md$/);
   if (w) return { kind: 'workshop', name: w[1].replace(/-/g, ' ') };
+  // meeting-templates.md is the Preparation schedule (an engine output, shown as a
+  // Preparation card), not a designer source — exclude it like README.
   const o = path.match(/^sources\/(.+)\.md$/);
-  if (o && o[1] !== 'README' && !o[1].includes('/')) return { kind: 'other', name: o[1].replace(/-/g, ' ') };
+  if (o && o[1] !== 'README' && o[1] !== 'meeting-templates' && !o[1].includes('/')) return { kind: 'other', name: o[1].replace(/-/g, ' ') };
   return null;
 }
 

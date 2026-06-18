@@ -18,6 +18,10 @@ engine running headless in GitHub Actions.
 - **Source bucket** — designers drop customer materials (transcripts, briefs, Word/
   PowerPoint/Excel/PDF, pasted notes) into the engagement; Office/PDF are converted
   to Markdown at ingest.
+- **Preparation setup** — draft the two briefs (`engagement-brief`, `customer-brief`),
+  run the **dual-path** customer research (public web in-app + a paste-out/paste-back
+  loop with M365 Copilot's Researcher agent → a reconciled synthesis), and lay out the
+  4-week meeting schedule — all grounded in the designer's sources.
 - **Synthesize context** — builds `PROJECT-CONTEXT.md` (the single source of truth)
   from those sources, the headless equivalent of `/vibe-kickoff`.
 - **Generate deliverables** — runs the Discover prompts (personas, problem
@@ -73,8 +77,8 @@ Optional environment overrides:
 ## Scope
 
 The surface covers the **designer/PM-owned phases (1–3)** — capturing sources and
-generating/approving the **Discover and Disrupt** deliverables (Preparation has no
-web buttons yet). Build and Deliver (engineer-owned) stay in VS Code / the repo.
+generating/approving the **Preparation, Discover and Disrupt** deliverables. Build and
+Deliver (engineer-owned) stay in VS Code / the repo.
 
 Adding a new web-runnable step is a one-line `FILE_PROMPT` entry in `server.mjs` plus
 UI — **no engine change** — because `resolve-prompt.mjs` is generic over any prompt.
