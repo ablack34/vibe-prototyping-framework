@@ -8,6 +8,8 @@ const kebab = params.get('kebab');
 const source = params.get('source');
 
 let DELIVERABLES = [];
+const GENERATABLE = new Set(['personas.md', 'problem-statement.md', 'current-state-journey.md']);
+let RUNNING = false;
 
 function pill(status) {
   const map = {
@@ -63,6 +65,7 @@ function deliverableCard(d) {
     <div class="card-state ${stateCls}">${state}</div>
     <div class="card-actions">
       <button class="btn-view" data-file="${d.file}" ${d.present ? '' : 'disabled'}>View</button>
+      ${!d.present && GENERATABLE.has(d.file) ? `<button class="btn-gen" data-gen="${d.file}">Generate</button>` : ''}
     </div>
   </div>`;
 }
@@ -88,6 +91,77 @@ function openViewer(file) {
   document.getElementById('viewer').hidden = false;
 }
 function closeViewer() { document.getElementById('viewer').hidden = true; }
+
+function banner(html, kind = 'info') {
+  const el = document.getElementById('genbanner');
+  if (!el) return;
+  if (!html) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  el.className = `genbanner ${kind}`;
+  el.innerHTML = html;
+}
+
+function setGenButtons(disabled) {
+  document.querySelectorAll('.btn-gen').forEach((b) => (b.disabled = disabled));
+}
+
+// Dispatch a phase in the engagement's repo, then poll until the engine run
+// finishes and reload the board (the engine commits the deliverable + gates.json).
+async function generate(file) {
+  if (RUNNING) return;
+  RUNNING = true;
+  setGenButtons(true);
+  const title = (DELIVERABLES.find((d) => d.file === file) || {}).title || file;
+  banner(`⏳ Generating <strong>${title}</strong> — dispatching the engine…`);
+
+  let priorId = null;
+  try { priorId = (await (await fetch(`/api/run/status?kebab=${kebab}`)).json()).databaseId || null; } catch { /* none yet */ }
+
+  try {
+    const res = await fetch('/api/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kebab, file }),
+    });
+    if (!res.ok) { const b = await res.json().catch(() => ({})); throw new Error(b.detail || b.error || 'Dispatch failed'); }
+  } catch (e) {
+    banner(`❌ ${e.message}`, 'err');
+    RUNNING = false; setGenButtons(false);
+    return;
+  }
+
+  let tries = 0;
+  const poll = setInterval(async () => {
+    tries++;
+    let run = {};
+    try { run = await (await fetch(`/api/run/status?kebab=${kebab}`)).json(); } catch { /* transient */ }
+    const isNew = run.databaseId && run.databaseId !== priorId;
+    const link = run.url ? ` <a href="${run.url}" target="_blank" rel="noopener">view run ↗</a>` : '';
+
+    if (!isNew) {
+      banner(`⏳ Generating <strong>${title}</strong> — queuing the run…`);
+    } else if (run.status !== 'completed') {
+      banner(`⏳ Generating <strong>${title}</strong> — engine running in GitHub Actions (${run.status})…${link}`);
+    } else {
+      clearInterval(poll);
+      RUNNING = false;
+      if (run.conclusion === 'success') {
+        banner(`✅ <strong>${title}</strong> generated and committed to the repo. Refreshing…`, 'ok');
+        setTimeout(load, 900);
+      } else {
+        banner(`❌ Run ${run.conclusion || 'failed'}.${link}`, 'err');
+        setGenButtons(false);
+      }
+      return;
+    }
+    if (tries > 90) {
+      clearInterval(poll);
+      RUNNING = false;
+      banner(`⏱ Still running — check Actions.${link}`);
+      setGenButtons(false);
+    }
+  }, 5000);
+}
 
 async function load() {
   if (!kebab) { document.getElementById('gates').innerHTML = '<p class="err">No engagement specified.</p>'; return; }
@@ -119,6 +193,8 @@ async function load() {
 
   document.querySelectorAll('.btn-view').forEach((b) =>
     b.addEventListener('click', () => openViewer(b.dataset.file)));
+  document.querySelectorAll('.btn-gen').forEach((b) =>
+    b.addEventListener('click', () => generate(b.dataset.gen)));
 }
 
 document.addEventListener('click', (e) => { if (e.target.dataset.close !== undefined) closeViewer(); });

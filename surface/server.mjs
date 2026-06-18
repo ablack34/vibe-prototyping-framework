@@ -13,6 +13,8 @@
 //                                 state read from each engagement's own repo
 //   GET  /api/board/<kebab>    -> one engagement: gates + rendered deliverables
 //   (?source=local on either reads the in-repo engagement/ folders — dev fallback)
+//   POST /api/run              -> dispatch a phase (run-phase.yml) in the engagement repo
+//   GET  /api/run/status?kebab -> latest engine run status for the engagement
 
 import { createServer } from 'node:http';
 import { execSync } from 'node:child_process';
@@ -317,6 +319,49 @@ async function boardDetail(kebab) {
   };
 }
 
+// ---- run a phase from the web (dispatch the engine workflow) ----
+// Each generatable deliverable maps to the VIBE prompt that produces it. Clicking
+// "Generate" dispatches run-phase.yml in the engagement's OWN repo; the engine
+// writes the deliverable + gates.json back, and the board re-reads it. Scoped to
+// the Discover deliverables — the Disrupt ones need workshop sources seed_demo
+// doesn't provide.
+const FILE_PROMPT = {
+  'personas.md': 'vibe-personas',
+  'problem-statement.md': 'vibe-problem-statement',
+  'current-state-journey.md': 'vibe-current-journey',
+};
+
+async function runPhase(input) {
+  const kebab = String(input.kebab || '').trim();
+  const file = String(input.file || '').trim();
+  const prompt = FILE_PROMPT[file];
+  if (!kebab) return { code: 400, body: { error: 'Engagement is required.' } };
+  if (!prompt) return { code: 400, body: { error: `No generator is wired for "${file}".` } };
+  const rec = (await readStore()).find((r) => (r.id || '') === kebab);
+  if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
+  try {
+    execSync(
+      `gh workflow run run-phase.yml --repo ${rec.repo} -f prompt=${prompt} -f engagement=${kebab} -f seed_demo=true`,
+      { stdio: 'pipe' },
+    );
+  } catch (e) {
+    return { code: 502, body: { error: 'Could not dispatch the run.', detail: String(e.stderr || e.message || e).trim() } };
+  }
+  return { code: 202, body: { ok: true, repo: rec.repo, prompt, engagement: kebab } };
+}
+
+async function runStatus(kebab) {
+  const rec = (await readStore()).find((r) => (r.id || '') === kebab);
+  if (!rec || !rec.repo) return null;
+  try {
+    const out = execSync(
+      `gh run list --repo ${rec.repo} --workflow run-phase.yml --limit 1 --json databaseId,status,conclusion,url,createdAt`,
+      { encoding: 'utf8' },
+    );
+    return JSON.parse(out)[0] || null;
+  } catch { return null; }
+}
+
 // ---- tiny static + JSON server ----
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
@@ -361,6 +406,17 @@ const server = createServer(async (req, res) => {
         ? await boardDetailLocal(detail[1]) : await boardDetail(detail[1]);
       return data ? send(res, 200, data) : send(res, 404, { error: 'Engagement not found' });
     }
+
+    if (req.method === 'POST' && url.pathname === '/api/run') {
+      let raw = '';
+      for await (const chunk of req) raw += chunk;
+      const input = raw ? JSON.parse(raw) : {};
+      const { code, body } = await runPhase(input);
+      return send(res, code, body);
+    }
+
+    if (req.method === 'GET' && url.pathname === '/api/run/status')
+      return send(res, 200, (await runStatus(url.searchParams.get('kebab'))) || {});
 
     if (req.method === 'GET') return serveStatic(res, url.pathname);
     return send(res, 405, { error: 'Method not allowed' });

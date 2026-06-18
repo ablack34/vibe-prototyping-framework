@@ -239,6 +239,13 @@ main.dash { max-width: 1040px; }
 .btn-view { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; margin: 0; }
 .btn-view:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
 .btn-view:disabled { opacity: .4; cursor: not-allowed; }
+.btn-gen { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: none; color: #0b0e16; font-size: 12px; font-weight: 700; padding: 7px 14px; border-radius: 8px; margin: 0; cursor: pointer; }
+.btn-gen:hover:not(:disabled) { filter: brightness(1.08); }
+.btn-gen:disabled { opacity: .45; cursor: not-allowed; }
+.genbanner { border: 1px solid var(--line); background: var(--panel-2); border-radius: 10px; padding: 12px 16px; margin-bottom: 18px; font-size: 14px; color: var(--text); }
+.genbanner.ok  { border-color: var(--green); }
+.genbanner.err { border-color: #e5534b; }
+.genbanner a { color: var(--accent); }
 
 /* grade badge */
 .grade { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 6px; white-space: nowrap; }
