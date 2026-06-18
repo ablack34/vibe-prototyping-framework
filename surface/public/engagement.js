@@ -9,6 +9,9 @@ const source = params.get('source');
 
 let DELIVERABLES = [];
 const GENERATABLE = new Set(['personas.md', 'problem-statement.md', 'current-state-journey.md']);
+// Friendly titles for runnable artifacts that aren't graded deliverable cards.
+const RUN_TITLES = { 'PROJECT-CONTEXT.md': 'Project context' };
+let CONTEXT = { present: false, path: '' };
 let RUNNING = false;
 let SOURCES = [];
 let SRC_KINDS = {};
@@ -263,17 +266,19 @@ function setGenButtons(disabled) {
 // Mark the one clicked Generate button as actively working (spinner + label) so
 // it's unmistakable which deliverable is being produced.
 let GEN_BTN = null;
+let GEN_BTN_HTML = '';
 function setGenBusy(file) {
   GEN_BTN = document.querySelector(`.btn-gen[data-gen="${file}"]`);
   if (GEN_BTN) {
+    GEN_BTN_HTML = GEN_BTN.innerHTML;
     GEN_BTN.classList.add('is-busy');
-    GEN_BTN.innerHTML = '<span class="spin"></span><span class="gen-txt">Generating…</span>';
+    GEN_BTN.innerHTML = '<span class="spin"></span><span class="gen-txt">Working…</span>';
   }
 }
 function clearGenBusy() {
   if (GEN_BTN) {
     GEN_BTN.classList.remove('is-busy');
-    GEN_BTN.innerHTML = '<span class="gen-ico">✨</span><span class="gen-txt">Generate</span>';
+    GEN_BTN.innerHTML = GEN_BTN_HTML || '<span class="gen-ico">✨</span><span class="gen-txt">Generate</span>';
   }
   GEN_BTN = null;
 }
@@ -353,6 +358,42 @@ function renderSources() {
       <div class="src-status" id="src-status" hidden></div>
     </form>`;
   wireSources();
+  renderContext();
+}
+
+// The "Project context" band. PROJECT-CONTEXT.md is the single source of truth the
+// three Discover deliverables ground in, so the designer should synthesize it from
+// their sources BEFORE generating personas/problem/journey. Self-wires its own
+// action button so it works no matter when it's (re)rendered.
+function renderContext() {
+  const el = document.getElementById('context');
+  if (!el) return;
+  const path = CONTEXT.path || `engagement/${kebab}/PROJECT-CONTEXT.md`;
+  const hasSources = SOURCES.length > 0;
+  let body;
+  if (CONTEXT.present) {
+    body = `<div class="ctx-row ctx-ok">
+        <span class="ctx-badge">✓ Synthesized</span>
+        <span class="ctx-copy">Built from your sources — your personas, problem statement and journey ground in this when you generate them.</span>
+        <span class="grow"></span>
+        <button class="src-view" data-srcpath="${path}">View</button>
+        <button class="btn-gen btn-soft" data-gen="PROJECT-CONTEXT.md"><span class="gen-ico">↻</span><span class="gen-txt">Re-synthesize</span></button>
+      </div>`;
+  } else if (hasSources) {
+    body = `<div class="ctx-row">
+        <span class="ctx-copy"><strong>Step 1 — synthesize your project context.</strong> The engine reads every source and builds <code>PROJECT-CONTEXT.md</code>, the single source of truth your Discover deliverables ground in. Do this before you generate them.</span>
+        <span class="grow"></span>
+        <button class="btn-gen" data-gen="PROJECT-CONTEXT.md"><span class="gen-ico">✨</span><span class="gen-txt">Synthesize context</span></button>
+      </div>`;
+  } else {
+    body = `<div class="ctx-row ctx-empty">
+        <span class="ctx-copy">Add your customer's sources above, then synthesize the <strong>project context</strong> that grounds every Discover deliverable.</span>
+      </div>`;
+  }
+  el.hidden = false;
+  el.innerHTML = `<div class="ctx-head"><h2>Project context</h2><span class="ctx-sub">The single source of truth · synthesized from your sources</span></div>${body}`;
+  const go = el.querySelector('.btn-gen[data-gen="PROJECT-CONTEXT.md"]');
+  if (go) go.addEventListener('click', () => generate('PROJECT-CONTEXT.md'));
 }
 
 function wireSources() {
@@ -559,7 +600,7 @@ async function generate(file) {
   RUNNING = true;
   setGenButtons(true);
   setGenBusy(file);
-  const title = (DELIVERABLES.find((d) => d.file === file) || {}).title || file;
+  const title = RUN_TITLES[file] || (DELIVERABLES.find((d) => d.file === file) || {}).title || file;
   const grounded = SOURCES.length > 0;
   banner(`<span class="spin"></span> Generating <strong>${title}</strong> ${grounded ? 'from your sources' : '(Contoso demo data — no sources added)'} — dispatching the engine…`, 'busy');
 
@@ -648,6 +689,7 @@ async function load() {
   DELIVERABLES = data.deliverables;
   if (data.sources) SOURCES = data.sources;
   if (data.kinds) SRC_KINDS = data.kinds;
+  CONTEXT = data.context || { present: false, path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
   PROVENANCE = data.provenance || { bySource: {} };
   document.getElementById('eng-name').textContent = data.name || kebab;
   const subBase = data.handoffReady ? 'Ready for engineering hand-off' : 'Phases 1–3 in progress';

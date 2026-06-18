@@ -346,7 +346,8 @@ async function boardDetailLocal(kebab) {
     }
   }
   const bySource = attachDeliverableProvenance(deliverables, []);
-  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, provenance: { bySource } };
+  const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
+  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, provenance: { bySource } };
 }
 
 // Primary detail: gate state + rendered deliverables read from the engagement's
@@ -367,6 +368,11 @@ async function boardDetail(kebab) {
     s.usedBy = e.usedBy;
     s.citationCount = e.citationCount;
   }
+  // PROJECT-CONTEXT.md is the single source of truth the Discover deliverables
+  // ground in. It isn't a graded gate, so surface its presence separately so the
+  // designer can synthesize it (from sources) before generating deliverables.
+  const ctxPath = `engagement/${kebab}/PROJECT-CONTEXT.md`;
+  const context = { present: (await fetchRepoFile(rec.repo, ctxPath)) != null, path: ctxPath };
   return {
     kebab,
     name: rec.name || kebab,
@@ -379,6 +385,7 @@ async function boardDetail(kebab) {
     commitSha: g.commitSha ?? null,
     deliverables,
     sources,
+    context,
     kinds: sourceKindMeta(),
     provenance: { bySource },
   };
@@ -391,6 +398,7 @@ async function boardDetail(kebab) {
 // the Discover deliverables — the Disrupt ones need workshop sources seed_demo
 // doesn't provide.
 const FILE_PROMPT = {
+  'PROJECT-CONTEXT.md': 'vibe-context',
   'personas.md': 'vibe-personas',
   'problem-statement.md': 'vibe-problem-statement',
   'current-state-journey.md': 'vibe-current-journey',

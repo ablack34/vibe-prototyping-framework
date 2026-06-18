@@ -42,6 +42,7 @@ These cover the main engagement flow:
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
+| `/vibe-context` | Synthesize or refresh `engagement/<name>/PROJECT-CONTEXT.md` (the single source of truth) from all sources. **Run before the three Discover deliverables** — they ground in this file | `engagement` (optional) |
 | `/vibe-questionnaire` | Generate Microsoft Forms questionnaires | `type` (optional: customer/account/both) |
 | `/vibe-transcript` | Process Teams meeting transcripts | `engagement`, `dateRange`, `participants`, `type` (discovery/check-in) |
 | `/vibe-capture` | Quick insight capture during meetings | `note` (required), `speaker`, `category` |

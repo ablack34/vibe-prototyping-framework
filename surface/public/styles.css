@@ -290,6 +290,20 @@ main.dash { max-width: 1040px; }
 .src-view { background: var(--bg); border: 1px solid var(--line); color: var(--muted); font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 7px; cursor: pointer; white-space: nowrap; }
 .src-view:hover { border-color: var(--accent); color: var(--accent); }
 
+/* ---- project context band (PROJECT-CONTEXT.md synthesize step) ---- */
+.context-band { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 20px; margin: -8px 0 28px; }
+.ctx-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.ctx-head h2 { margin: 0; font-size: 16px; }
+.ctx-sub { font-size: 12px; color: var(--muted); }
+.ctx-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.ctx-copy { font-size: 13px; color: var(--text); line-height: 1.5; max-width: 78ch; }
+.ctx-copy code { background: var(--bg); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; font-size: 12px; }
+.ctx-row.ctx-empty .ctx-copy { color: var(--muted); }
+.ctx-badge { flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--green); background: rgba(74, 222, 128, 0.14); border: 1px solid var(--green); border-radius: 999px; padding: 3px 11px; }
+.ctx-row.ctx-ok .ctx-copy { color: var(--muted); }
+.btn-gen.btn-soft { background: transparent; color: var(--accent); border: 1px solid var(--line); font-weight: 600; }
+.btn-gen.btn-soft:hover:not(:disabled) { border-color: var(--accent); box-shadow: none; filter: none; background: rgba(110, 168, 254, 0.10); }
+
 /* ---- provenance: receipts (source <-> deliverable map) ---- */
 /* Bucket source card: which deliverables consumed this source */
 .src-usedby { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 12px; }
