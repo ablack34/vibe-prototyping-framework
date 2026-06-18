@@ -20,6 +20,13 @@ let UPLOAD_QUEUE = [];
 let UPQ_ID = 0;
 let UPQ_MSG = null;
 
+// Escape user/repo-derived strings before interpolating into innerHTML.
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
 function pill(status) {
   const map = {
     GREEN: ['Ready', 'pill-green'],
@@ -39,7 +46,7 @@ function gradeBadge(grade, pass) {
 function phaseState(gates) {
   const d = gates.discover.status;
   const di = gates.disrupt.status;
-  const discover = d === 'GREEN' ? 'done' : (gates.discover.artifactsPresent === '0/3' ? 'pending' : 'active');
+  const discover = d === 'GREEN' ? 'done' : (String(gates.discover.artifactsPresent).split('/')[0] === '0' ? 'pending' : 'active');
   const disrupt = di === 'GREEN' ? 'done' : (discover === 'done' ? 'active' : 'pending');
   const build = di === 'GREEN' ? 'active' : 'pending';
   return { Preparation: 'done', Discover: discover, Disrupt: disrupt, Build: build, Deliver: 'pending' };
@@ -111,7 +118,7 @@ function provSummary(d) {
   if (p.supportMix.quoted) mix.push(`<span class="mix mix-q">🟢 ${p.supportMix.quoted} quoted</span>`);
   if (p.supportMix.reasoned) mix.push(`<span class="mix mix-r">🔵 ${p.supportMix.reasoned} reasoned</span>`);
   const chips = (p.sources || [])
-    .map((s) => `<button class="prov-src-chip" data-srcpath="${s}" title="Open ${s}">${srcDisplay(s)}</button>`)
+    .map((s) => `<button class="prov-src-chip" data-srcpath="${esc(s)}" title="Open ${esc(s)}">${esc(srcDisplay(s))}</button>`)
     .join('');
   if (!chips && !mix.length) return '';
   return `<div class="prov-summary">
@@ -156,7 +163,7 @@ function decorateProvenance(container) {
 // "Used by" chips + citation count on a bucket source card.
 function usedByHtml(s) {
   if (!s.usedBy || !s.usedBy.length) return '<span class="src-unused">Not yet used by a deliverable</span>';
-  const chips = s.usedBy.map((f) => `<button class="used-chip" data-deliv="${f}">${delivTitle(f)}</button>`).join('');
+  const chips = s.usedBy.map((f) => `<button class="used-chip" data-deliv="${esc(f)}">${esc(delivTitle(f))}</button>`).join('');
   const n = s.citationCount || 0;
   return `<span class="src-usedby"><span class="usedby-label">Used by</span>${chips}` +
     `${n ? `<span class="cite-count">${n} citation${n === 1 ? '' : 's'}</span>` : ''}</span>`;
@@ -187,7 +194,7 @@ function renderDeliverableView(file) {
 
 async function renderSourceView(path) {
   document.getElementById('viewer-title').textContent = srcDisplay(path);
-  document.getElementById('viewer-meta').innerHTML = `<span class="vm">Source · <code>${path}</code></span>`;
+  document.getElementById('viewer-meta').innerHTML = `<span class="vm">Source · <code>${esc(path)}</code></span>`;
   const body = document.getElementById('viewer-body');
   body.innerHTML = '<p class="muted">Loading…</p>';
   body.scrollTop = 0;
@@ -198,7 +205,7 @@ async function renderSourceView(path) {
       if (r.status === 404) {
         body.innerHTML = `<div class="viewer-missing">
           <p><strong>Not in this engagement yet.</strong></p>
-          <p class="muted">This deliverable points to <code>${path}</code>, but that file hasn’t been generated or added to the repo yet. Generate the upstream deliverable (or add the source) and it’ll resolve.</p>
+          <p class="muted">This deliverable points to <code>${esc(path)}</code>, but that file hasn’t been generated or added to the repo yet. Generate the upstream deliverable (or add the source) and it’ll resolve.</p>
         </div>`;
         return;
       }
@@ -206,7 +213,7 @@ async function renderSourceView(path) {
     }
     body.innerHTML = window.renderMarkdown(b.text || '');
   } catch (e) {
-    body.innerHTML = `<div class="viewer-missing"><p class="err">${e.message}</p><p class="muted"><code>${path}</code></p></div>`;
+    body.innerHTML = `<div class="viewer-missing"><p class="err">${esc(e.message)}</p><p class="muted"><code>${esc(path)}</code></p></div>`;
   }
 }
 
@@ -303,13 +310,13 @@ function renderSources() {
   const list = SOURCES.length
     ? SOURCES.map((s) => `<div class="src-card">
         <div class="src-card-top">
-          <span class="src-kind">${srcKindLabel(s.kind)}</span>
-          <span class="src-name">${s.name}</span>
-          ${s.original ? `<span class="src-orig" title="Converted from ${s.original.name}">from ${s.original.ext.toUpperCase()}</span>` : ''}
+          <span class="src-kind">${esc(srcKindLabel(s.kind))}</span>
+          <span class="src-name">${esc(s.name)}</span>
+          ${s.original ? `<span class="src-orig" title="Converted from ${esc(s.original.name)}">from ${esc(String(s.original.ext).toUpperCase())}</span>` : ''}
           <span class="grow"></span>
-          <button class="src-view" data-srcpath="${s.path}">View</button>
-          ${s.original && s.original.htmlUrl ? `<a class="src-link" href="${s.original.htmlUrl}" target="_blank" rel="noopener" title="Download ${s.original.name}">Original ↧</a>` : ''}
-          ${s.htmlUrl ? `<a class="src-link" href="${s.htmlUrl}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}
+          <button class="src-view" data-srcpath="${esc(s.path)}">View</button>
+          ${s.original && s.original.htmlUrl ? `<a class="src-link" href="${esc(s.original.htmlUrl)}" target="_blank" rel="noopener" title="Download ${esc(s.original.name)}">Original ↧</a>` : ''}
+          ${s.htmlUrl ? `<a class="src-link" href="${esc(s.htmlUrl)}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}
         </div>
         ${usedByHtml(s)}
       </div>`).join('')
@@ -332,7 +339,7 @@ function renderSources() {
       <div class="dz-main">Drop customer materials here</div>
       <div class="dz-sub">Word, PowerPoint, Excel &amp; PDF are converted to Markdown automatically · transcripts, .txt, .csv used as-is · or click to browse</div>
       <input type="file" id="dz-input" multiple hidden
-             accept=".md,.markdown,.txt,.vtt,.srt,.csv,.json,.log,.docx,.pptx,.xlsx,.xls,.pdf" />
+             accept="${UP_ACCEPT}" />
     </div>
     <div class="upqueue" id="upqueue" hidden></div>
 
@@ -447,6 +454,10 @@ function wireSources() {
 // ---- the upload bucket: auto-detect, queue, convert-on-upload --------------
 const UP_CONVERT = ['docx', 'pptx', 'xlsx', 'xls', 'pdf'];
 const UP_IMAGE = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'heic', 'tif', 'tiff'];
+const UP_TEXT = ['md', 'markdown', 'txt', 'vtt', 'srt', 'csv', 'json', 'log'];
+// Single source of truth for the file-picker filter, so it can't drift from
+// fileGroup(): everything we ingest as text plus everything we convert.
+const UP_ACCEPT = [...UP_TEXT, ...UP_CONVERT].map((e) => `.${e}`).join(',');
 function fileExt(name) { return (name.toLowerCase().match(/\.([^.]+)$/) || [, ''])[1]; }
 function fileGroup(name) {
   const e = fileExt(name);
@@ -500,13 +511,15 @@ function renderQueue() {
   const rows = UPLOAD_QUEUE.map((it) => `
     <div class="up-row ${it.skip ? 'up-skip' : ''}" data-upid="${it.id}">
       ${groupBadge(it.group, it.file.name)}
-      <span class="up-file" title="${it.file.name}">${it.file.name}</span>
+      <span class="up-file" title="${esc(it.file.name)}">${esc(it.file.name)}</span>
       <select class="up-kind" data-upid="${it.id}" ${it.skip ? 'disabled' : ''}>${opts(it.kind)}</select>
-      <input class="up-name" data-upid="${it.id}" value="${it.name}" placeholder="name" ${it.skip ? 'disabled' : ''} />
+      <input class="up-name" data-upid="${it.id}" value="${esc(it.name)}" placeholder="name" ${it.skip ? 'disabled' : ''} />
       <button type="button" class="up-rm" data-uprm="${it.id}" title="Remove" aria-label="Remove">×</button>
     </div>`).join('');
   const n = UPLOAD_QUEUE.filter((x) => !x.skip).length;
-  const msg = UPQ_MSG ? `<span class="src-status ${UPQ_MSG.cls}">${UPQ_MSG.text}</span>` : '';
+  // Always render the status node (hidden when empty) so in-flight upload
+  // progress has a guaranteed target to write into.
+  const msg = `<span class="src-status ${UPQ_MSG ? UPQ_MSG.cls : ''}"${UPQ_MSG ? '' : ' hidden'}>${UPQ_MSG ? esc(UPQ_MSG.text) : ''}</span>`;
   el.innerHTML = `
     <div class="up-list">${rows}</div>
     ${UPLOAD_QUEUE.some((x) => x.skip) ? `<div class="up-note">Images are held for your reference only — not sent to the engine yet.</div>` : ''}
@@ -535,15 +548,14 @@ function wireQueue() {
 async function uploadQueue() {
   const items = UPLOAD_QUEUE.filter((x) => !x.skip);
   if (!items.length) return;
-  const status = document.getElementById('up-status') || document.querySelector('#upqueue .src-status');
   const go = document.getElementById('up-go');
   const set = (text, cls = '', busy = false) => {
     UPQ_MSG = { text, cls };
-    const target = document.querySelector('#upqueue .src-status') || status;
+    const target = document.querySelector('#upqueue .src-status');
     if (!target) return;
     target.hidden = false;
     target.className = `src-status ${cls}`;
-    target.innerHTML = (busy ? '<span class="spin"></span>' : '') + text;
+    target.innerHTML = (busy ? '<span class="spin"></span>' : '') + esc(text);
   };
   const qEl = document.getElementById('upqueue');
   if (qEl) qEl.classList.add('up-busy');
@@ -637,6 +649,7 @@ async function generate(file) {
       RUNNING = false;
       if (run.conclusion === 'success') {
         banner(`✅ <strong>${title}</strong> generated and committed to the repo. Refreshing…`, 'ok');
+        clearGenBusy(); setGenButtons(false);
         setTimeout(load, 900);
       } else {
         banner(`❌ Run ${run.conclusion || 'failed'}.${link}`, 'err');
