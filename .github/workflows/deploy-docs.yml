@@ -12,6 +12,11 @@ jobs:
   deploy:
     name: Build & Deploy Docusaurus to SWA
     runs-on: ubuntu-latest
+    # Only the framework repo deploys the docs site. Provisioned engagement repos
+    # are generated from the template without repo variables, so this guard makes
+    # the job cleanly skip there (instead of failing on the missing SWA token) even
+    # on the initial template commit — before tidy-repo.mjs strips this workflow.
+    if: vars.DOCS_SWA_CONFIGURED == 'true'
     steps:
       - uses: actions/checkout@v4
 
