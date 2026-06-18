@@ -28,7 +28,7 @@ import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname } from 'node:path';
-import { computeGates, computeGatesFromContents, GATES, signoff } from '../scripts/gates-lib.mjs';
+import { computeGates, computeGatesFromContents, extractProvenance, GATES, signoff } from '../scripts/gates-lib.mjs';
 import { tidyRepo } from './tidy-repo.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
@@ -303,6 +303,31 @@ async function boardSummary() {
   return out;
 }
 
+// Compute provenance receipts for each rendered deliverable + the reverse index
+// (which source feeds which deliverable). Runs over the freshly-fetched markdown,
+// so the board is always current even when a committed gates.json predates the
+// provenance feature (the spec's on-the-fly fallback). Same extractProvenance the
+// engine/CLI use, so the two never disagree.
+function attachDeliverableProvenance(deliverables, knownPaths) {
+  const empty = () => ({ sources: [], citations: [], supportMix: { quoted: 0, reasoned: 0 } });
+  const bySource = {};
+  for (const d of deliverables) {
+    if (!d.present || !d.markdown) { d.provenance = empty(); continue; }
+    const p = extractProvenance(d.markdown, knownPaths);
+    d.provenance = p;
+    const used = new Set([...p.sources, ...p.citations.map((c) => c.source)]);
+    for (const s of used) {
+      (bySource[s] ||= { usedBy: [], citationCount: 0 });
+      if (!bySource[s].usedBy.includes(d.file)) bySource[s].usedBy.push(d.file);
+    }
+    for (const c of p.citations) {
+      (bySource[c.source] ||= { usedBy: [], citationCount: 0 });
+      bySource[c.source].citationCount++;
+    }
+  }
+  return bySource;
+}
+
 async function boardDetailLocal(kebab) {
   const dir = join(ENGAGE_ROOT, kebab);
   if (!existsSync(dir)) return null;
@@ -313,7 +338,8 @@ async function boardDetailLocal(kebab) {
       try { d.markdown = await readFile(join(dir, d.file), 'utf8'); } catch { d.markdown = ''; }
     }
   }
-  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables };
+  const bySource = attachDeliverableProvenance(deliverables, []);
+  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, provenance: { bySource } };
 }
 
 // Primary detail: gate state + rendered deliverables read from the engagement's
@@ -327,6 +353,13 @@ async function boardDetail(kebab) {
   for (const d of deliverables) {
     if (d.present) d.markdown = (await fetchRepoFile(rec.repo, `engagement/${kebab}/${d.file}`)) || '';
   }
+  const sources = await listSources(rec);
+  const bySource = attachDeliverableProvenance(deliverables, sources.map((s) => s.path));
+  for (const s of sources) {
+    const e = bySource[s.path] || { usedBy: [], citationCount: 0 };
+    s.usedBy = e.usedBy;
+    s.citationCount = e.citationCount;
+  }
   return {
     kebab,
     name: rec.name || kebab,
@@ -338,6 +371,8 @@ async function boardDetail(kebab) {
     handoffReady: !!g.handoffReady,
     commitSha: g.commitSha ?? null,
     deliverables,
+    sources,
+    provenance: { bySource },
   };
 }
 
@@ -449,7 +484,8 @@ async function refreshRepoGates(fullName, id, overrides = {}, commitSha = null) 
     try { prior = JSON.parse(Buffer.from(cur.json.content, cur.json.encoding || 'base64').toString('utf8')); }
     catch { /* keep default */ }
   }
-  const out = computeGatesFromContents(id, contents, prior, commitSha ?? prior.commitSha ?? null);
+  const out = computeGatesFromContents(id, contents, prior, commitSha ?? prior.commitSha ?? null,
+    (await listSources({ id, repo: fullName })).map((s) => s.path));
   const body = {
     message: `Refresh gates after web sign-off (${id})`,
     content: Buffer.from(JSON.stringify(out, null, 2) + '\n', 'utf8').toString('base64'),
