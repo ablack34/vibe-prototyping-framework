@@ -44,7 +44,7 @@ const ENGAGE_ROOT = join(REPO_ROOT, 'engagement');
 const PORT = process.env.PORT || 4310;
 const TEMPLATE_OWNER = process.env.TEMPLATE_OWNER || 'ablack34';
 const TEMPLATE_REPO = process.env.TEMPLATE_REPO || 'vibe-prototyping-framework';
-const STORE = join(__dir, '.engagements.json');
+const STORE = process.env.STORE || join(__dir, '.engagements.json');
 const PUBLIC = join(__dir, 'public');
 
 let cachedToken = null;
@@ -87,6 +87,7 @@ async function readStore() {
   try { return JSON.parse(await readFile(STORE, 'utf8')); } catch { return []; }
 }
 async function writeStore(list) {
+  await mkdir(dirname(STORE), { recursive: true });
   await writeFile(STORE, JSON.stringify(list, null, 2));
 }
 

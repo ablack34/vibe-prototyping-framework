@@ -30,7 +30,16 @@ RUN python3 -m venv /opt/markitdown \
 ENV MARKITDOWN_PYTHON=/opt/markitdown/bin/python
 
 WORKDIR /app
-COPY . /app
+COPY --chown=node:node . /app
+
+# Persist the engagement pointer store on a mounted volume (Azure Files in prod),
+# writable by the non-root runtime user. STORE is read by server.mjs at startup.
+RUN mkdir -p /data && chown node:node /data
+ENV STORE=/data/.engagements.json
+VOLUME ["/data"]
+
+# Drop root: the server only needs to read /app and write /data + the OS tempdir.
+USER node
 
 ENV PORT=4310
 EXPOSE 4310

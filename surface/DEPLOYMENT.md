@@ -142,16 +142,26 @@ user**, assign it a **Copilot Business seat**, mint the **fine-grained PAT**, th
 definitive end-to-end test — set that PAT as `COPILOT_GITHUB_TOKEN` on a demo repo and dispatch
 `run-phase.yml`. See *"What you need to provision"* at the foot of this doc.
 
-### Phase 1 — Containerize and prove locally
+### Phase 1 — Containerize and prove locally — DONE & PROVEN (2026-06-19)
 
-- **Write the Dockerfile** — done: [`surface/Dockerfile`](./Dockerfile) (Node 20 + GitHub CLI +
-  `markitdown[docx,pptx,xlsx,pdf]`), built and run-proven above. Baseline only — still to add:
-  non-root user and a slimmer multi-stage build before production.
-- Add the **`STORE` env override** so the pointer file can live on a mounted volume *(small
-  one-line code change in `server.mjs`; not yet done).*
-- Configure via env: `GH_TOKEN`, `TEMPLATE_OWNER/REPO`, `MARKITDOWN_PYTHON`, `STORE`, `PORT`.
-- **Acceptance:** in a local container, run the full flow end-to-end against a demo repo —
-  provision → add a source → synthesize context → generate a deliverable → see it on the board.
+- **Dockerfile** — done & hardened: [`surface/Dockerfile`](./Dockerfile) (Node 20 + GitHub CLI +
+  `markitdown[docx,pptx,xlsx,pdf]`), now runs as the **non-root `node` user** with a persistent
+  **`/data`** volume for the store. *(Still optional before production: a slimmer multi-stage /
+  trimmed image — it's large because MarkItDown pulls `onnxruntime`.)*
+- **`STORE` env override** — done: `server.mjs` now reads `process.env.STORE` (falling back to the
+  in-repo path), and `writeStore` ensures the directory exists. The pointer store can live on a
+  mounted volume.
+- **Configure via env** — `GH_TOKEN`, `TEMPLATE_OWNER/REPO`, `MARKITDOWN_PYTHON`, `STORE`, `PORT`.
+- **Proven in-container (named volume + `GH_TOKEN` only):**
+  - Board read the store from the `STORE` path and pulled **live gates from GitHub** for a real repo.
+  - `POST /api/model` wrote the store to `/data` as the non-root user; the value **survived a
+    `docker restart`** → volume persistence works (gap #4 closed).
+  - `python -m markitdown returns.xlsx` (the server's exact call) produced a clean Markdown table →
+    Office/PDF ingest works in the image.
+- **Acceptance (deferred to Phase 2 on Azure):** a live `provision → generate` creates a real repo
+  and dispatches a real Actions run, so it's run once the container is actually on Azure rather than
+  spawning throwaway repos now. Every container-specific risk (toolchain, non-root, env config,
+  store persistence) is already proven.
 
 
 ### Phase 2 — Stand up Azure, locked down
