@@ -928,9 +928,11 @@ function classifySource(id, path) {
   const w = path.match(/^sources\/workshop\/(.+)\.md$/);
   if (w) return { kind: 'workshop', name: w[1].replace(/-/g, ' ') };
   // meeting-templates.md is the Preparation schedule (an engine output, shown as a
-  // Preparation card), not a designer source — exclude it like README.
+  // Preparation card), not a designer source — exclude it like README. data-*.md are
+  // the Discover grounding twins of staged mock data — they live in the Mock-data
+  // bucket (not double-listed here), so exclude them too.
   const o = path.match(/^sources\/(.+)\.md$/);
-  if (o && o[1] !== 'README' && o[1] !== 'meeting-templates' && !o[1].includes('/')) return { kind: 'other', name: o[1].replace(/-/g, ' ') };
+  if (o && o[1] !== 'README' && o[1] !== 'meeting-templates' && !o[1].startsWith('data-') && !o[1].includes('/')) return { kind: 'other', name: o[1].replace(/-/g, ' ') };
   return null;
 }
 
@@ -1043,14 +1045,20 @@ async function addSource(input) {
   return { code: 200, body: { ok: true, path, kind, name: name || spec.label, original, converted: !!raw, updated: put.updated } };
 }
 
-// ---- mock data: raw structured files for the prototype's data layer ---------
-// Designers stage the customer's CSV / Excel / JSON into sources/sample-data/.
-// They sync to the repo and the engineer's /vibe-data-prep agent turns them into
-// typed models + a DataService under scaffold/data/ during Build. Stored RAW (no
-// MarkItDown) — the agent needs the original structured bytes, not a Markdown table.
-// This is the opposite of the Sources bucket: sources GROUND what the AI writes;
-// mock data POWERS what the prototype renders. CSV/Excel/JSON only — a PDF/Word file
-// isn't structured data, so it belongs in the Sources bucket instead.
+// ---- mock data: structured files that do double duty ------------------------
+// Designers stage the customer's CSV / Excel / JSON here. Each file is committed
+// TWICE, for its two distinct jobs:
+//   1. RAW → sources/sample-data/<name>   — untouched bytes for the engineer's
+//      /vibe-data-prep agent, which turns them into typed models + a DataService
+//      under scaffold/data/ during Build (it needs the originals, not a table).
+//   2. GROUNDING twin → sources/data-<stem>.md — a readable form (Excel/CSV become
+//      Markdown tables via MarkItDown; JSON is fenced) so the SAME data also informs
+//      the Discover deliverables — a returns export shapes personas, pain points and
+//      the current-state journey, not just the prototype.
+// Kept as its own bucket (not folded into Sources) so the data-vs-evidence split
+// stays legible in the UI, while the grounding twin removes the artificial wall that
+// previously hid this data from the Discover generators. CSV/Excel/JSON only — a
+// PDF/Word file isn't structured data, so it belongs in the Sources bucket instead.
 const MOCKDATA_DIR = 'sources/sample-data';
 const DATA_EXTS = new Set(['.csv', '.xlsx', '.xls', '.json']);
 
@@ -1060,22 +1068,33 @@ const dataFileEntry = (f) => ({
 });
 
 // GitHub-backed listing (the live board). README placeholder + any non-data file
-// is filtered out so the bucket only ever shows real staged data.
+// is filtered out so the bucket only ever shows real staged data. Each entry is
+// flagged `grounded` when its Discover twin (sources/data-<stem>.md) exists.
 async function listMockData(rec) {
   const files = await listRepoDir(rec.repo, MOCKDATA_DIR);
+  const groundSet = new Set(
+    (await listRepoDir(rec.repo, 'sources'))
+      .filter((f) => /^data-.+\.md$/.test(f.name))
+      .map((f) => f.name),
+  );
   return files
     .filter((f) => f.name !== 'README.md' && DATA_EXTS.has(extname(f.name).toLowerCase()))
-    .map(dataFileEntry);
+    .map((f) => ({ ...dataFileEntry(f), grounded: groundSet.has(groundName(f.name).split('/').pop()) }));
 }
 
 // Local-dev listing (the ?source=local board), mirroring how workshop captures are
 // read off disk — no htmlUrl, since there's no committed blob to link to.
 async function listMockDataLocal() {
+  let groundSet = new Set();
+  try {
+    const s = await readdir(join(REPO_ROOT, 'sources'), { withFileTypes: true });
+    groundSet = new Set(s.filter((e) => e.isFile() && /^data-.+\.md$/.test(e.name)).map((e) => e.name));
+  } catch { /* no sources dir yet */ }
   try {
     const ents = await readdir(join(REPO_ROOT, 'sources', 'sample-data'), { withFileTypes: true });
     return ents
       .filter((e) => e.isFile() && e.name !== 'README.md' && DATA_EXTS.has(extname(e.name).toLowerCase()))
-      .map((e) => ({ name: e.name, path: `${MOCKDATA_DIR}/${e.name}`, ext: extname(e.name).slice(1).toLowerCase() }));
+      .map((e) => ({ name: e.name, path: `${MOCKDATA_DIR}/${e.name}`, ext: extname(e.name).slice(1).toLowerCase(), grounded: groundSet.has(groundName(e.name).split('/').pop()) }));
   } catch { return []; }
 }
 
@@ -1089,9 +1108,20 @@ function safeDataName(filename) {
   return (stem || 'data') + ext;
 }
 
-// Commit one raw data file to sources/sample-data/. No conversion, no grounding flag —
-// mock data feeds the prototype, not the Discover/Disrupt generators, so it must never
-// flip seedDemo or get cited as evidence.
+// The Discover grounding twin for a staged data file: sources/data-<stem>.md.
+// Dots in the stem become dashes so the filename is clean (returns.q3.csv →
+// sources/data-returns-q3.md). Excluded from the Sources list by classifySource.
+const groundName = (safe) => {
+  const e = extname(safe);
+  const stem = safe.slice(0, -e.length).replace(/\./g, '-');
+  return `sources/data-${stem}.md`;
+};
+
+// Commit a staged data file for BOTH its jobs: the raw original to
+// sources/sample-data/ (the prototype's data layer, read by /vibe-data-prep at Build)
+// and a readable grounding twin to sources/data-<stem>.md (so the same data also
+// informs the Discover deliverables). Because it now grounds, it flips sourcesAdded
+// like any real source, so Generate stops seeding Contoso.
 async function addMockData(input) {
   const id = String(input.kebab || '').trim();
   const filename = String(input.filename || '').trim();
@@ -1107,11 +1137,39 @@ async function addMockData(input) {
   const rec = (await readStore()).find((r) => (r.id || '') === id);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
 
+  // 1) Raw original → sources/sample-data/ (untouched bytes for Build).
   const path = `${MOCKDATA_DIR}/${safe}`;
   const put = await putRepoFile(rec.repo, path, buffer.toString('base64'),
     `Add mock data: ${safe} — via VIBE web surface`);
   if (!put.ok) return { code: 502, body: { error: 'Could not save the data file.', detail: put.detail } };
-  return { code: 200, body: { ok: true, path, name: safe, updated: put.updated } };
+
+  // 2) Grounding twin → sources/data-<stem>.md so the same data informs Discover.
+  //    Excel/CSV become Markdown tables via MarkItDown; JSON is fenced. If conversion
+  //    isn't available we keep the raw file (Build is unaffected) and skip grounding.
+  let grounded = false;
+  const ext = extname(safe).toLowerCase();
+  let groundMd = null;
+  if (ext === '.json') {
+    groundMd = '```json\n' + buffer.toString('utf8').trim() + '\n```\n';
+  } else {
+    try { groundMd = await convertToMarkdown(buffer, safe); }
+    catch { if (ext === '.csv') groundMd = buffer.toString('utf8'); }
+  }
+  if (groundMd && groundMd.trim()) {
+    const md = `# Customer data — ${safe}\n\n*Staged via the VIBE web surface; the raw file lives in \`${path}\` for the prototype's data layer.*\n\n${groundMd.trim()}\n`;
+    const gp = await putRepoFile(rec.repo, groundName(safe), Buffer.from(md, 'utf8').toString('base64'),
+      `Ground mock data in Discover: ${safe} — via VIBE web surface`);
+    grounded = gp.ok;
+  }
+
+  // Data now grounds Discover, so it counts as a real source → stop seeding Contoso.
+  try {
+    const store = await readStore();
+    const r = store.find((x) => (x.id || '') === id);
+    if (r && !r.sourcesAdded) { r.sourcesAdded = true; await writeStore(store); }
+  } catch { /* non-fatal: the frontend also passes seedDemo explicitly */ }
+
+  return { code: 200, body: { ok: true, path, name: safe, updated: put.updated, grounded } };
 }
 
 // ---- tiny static + JSON server ----

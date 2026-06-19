@@ -165,24 +165,32 @@ the web and CLI views can't drift. Disrupt runs always dispatch `seed_demo=false
 they ground in the Discover deliverables and workshop captures, never the Contoso
 seed.
 
-### The Mock-data bucket (staging the prototype's data layer)
+### The Mock-data bucket (data that does double duty)
 
-The structured data that *powers* the prototype is distinct from the Sources that
-*ground* what the AI writes. The `#data` section (`renderData` in `engagement.js`) is a
-staging bucket for the customer's **CSV / Excel / JSON** — the only formats the `VIBE
-Data Prep` agent consumes. Files commit **raw** (no MarkItDown — the agent needs the
-original structured bytes) to `sources/sample-data/`, where the engineer's
-`/vibe-data-prep` later turns them into typed models + a `DataService` under
-`scaffold/data/` during Build.
+The `#data` section (`renderData` in `engagement.js`) is a staging bucket for the
+customer's **CSV / Excel / JSON** — the only formats the `VIBE Data Prep` agent
+consumes. It's kept as its own bucket (not folded into Sources) so the data-vs-evidence
+split stays legible, but each staged file is committed **twice**, for its two jobs:
 
-It is deliberately the **opposite** of the Sources bucket: sources convert to Markdown
-and are cited as evidence; mock data stays raw and never grounds a deliverable — so
-`addMockData` never flips `seedDemo` and never feeds provenance. A PDF or Word file isn't
-structured data, so the bucket rejects it (HTTP 415) and points the designer at the
-Sources bucket instead. A prominent advisory reinforces the agent's hard PII guardrail —
-**mock or anonymised data only**. The bucket is **always visible** (a capability advert)
-and sits at the bottom of the board: the bridge from the designer phases to
-engineer-owned Build.
+1. **Powers the prototype** — the **raw** original commits to `sources/sample-data/<name>`
+   (no MarkItDown; the agent needs the original structured bytes). The engineer's
+   `/vibe-data-prep` later turns it into typed models + a `DataService` under
+   `scaffold/data/` during Build.
+2. **Grounds Discover** — a readable **grounding twin** commits to `sources/data-<stem>.md`
+   (Excel/CSV → a Markdown table via MarkItDown; JSON → a fenced block). The Discover run
+   reads `sources/`, so the *same* returns export that powers the prototype can also shape
+   personas, pain points and the current-state journey.
+
+Because it now grounds, `addMockData` flips `sourcesAdded` like any real source (Generate
+stops seeding Contoso), and each board entry carries a `grounded` flag the UI renders as a
+**"✓ grounds Discover"** / **"raw only"** badge. The grounding twins are excluded from the
+Sources list (`classifySource` skips `data-*.md`) so a file is never double-listed across
+the two buckets. A PDF or Word file still isn't structured data, so the bucket rejects it
+(HTTP 415) and points the designer at the Sources bucket. Because the data now reaches a
+deliverable, the advisory is firmer — **mock or anonymised data only**; the agent's hard
+PII guardrail at Build is the backstop, not the front line. The bucket is **always visible**
+and sits at the bottom of the board: the bridge from the designer phases to engineer-owned
+Build.
 
 ## The synthesize-context step
 
@@ -245,8 +253,8 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 | `GET /api/sources` | List an engagement's sources (+ kinds metadata) |
 | `GET /api/source` | Fetch one source/deliverable's markdown (scoped to `sources/` or `engagement/<id>/`) |
 | `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown). `kind:'workshop'` routes to `sources/workshop/` for Disrupt captures; `kind:'m365-results'` routes to `sources/research/m365-researcher-results.md` for the Preparation research paste-back |
-| `GET /api/data` | List an engagement's staged mock data (raw files under `sources/sample-data/`) |
-| `POST /api/data` | Stage a raw CSV/Excel/JSON file into `sources/sample-data/` for the engineer's `/vibe-data-prep`. No conversion; non-data formats are rejected (415) |
+| `GET /api/data` | List an engagement's staged mock data (raw files under `sources/sample-data/`), each flagged `grounded` when its `sources/data-<stem>.md` Discover twin exists |
+| `POST /api/data` | Stage a CSV/Excel/JSON file. Commits the raw original to `sources/sample-data/` (for `/vibe-data-prep`) **and** a Markdown/JSON grounding twin to `sources/data-<stem>.md` (so it also grounds Discover); flips `sourcesAdded`. Non-data formats are rejected (415) |
 
 ## Files
 

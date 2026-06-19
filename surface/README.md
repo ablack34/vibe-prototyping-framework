@@ -32,10 +32,14 @@ engine running headless in GitHub Actions.
   the offline co-creation session into a dedicated workshop-capture bucket, then
   generate the post-workshop chain in its required order.
 - **Stage mock data** — drop the customer's **CSV / Excel / JSON** into a dedicated
-  Mock-data bucket. Files commit raw to `sources/sample-data/` (no conversion — kept
-  intact for the engineer) so `/vibe-data-prep` can turn them into the prototype's
-  typed data layer during Build. Distinct from the Source bucket: sources *ground*
-  what the AI writes; mock data *powers* what the prototype shows. PII advisory built in.
+  Mock-data bucket. Each file does **double duty**: the raw original commits to
+  `sources/sample-data/` (kept intact for `/vibe-data-prep` to turn into the prototype's
+  typed data layer at Build), **and** a Markdown/JSON grounding twin commits to
+  `sources/data-<stem>.md` so the *same* data also grounds Discover — a returns export can
+  shape personas and the journey, not just the prototype. Each file is badged
+  **✓ grounds Discover** once its twin exists. Kept as a separate bucket from Sources so
+  the data-vs-evidence split stays clear; PII advisory built in (the data now reaches a
+  deliverable, so anonymise first).
 - **Review & approve** — read every source and deliverable in-app (with provenance
   showing what fed what) and sign a deliverable off, writing the sign-off into the
   repo's `gates.json`.

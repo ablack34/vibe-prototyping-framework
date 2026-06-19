@@ -1147,11 +1147,13 @@ async function approve(file) {
   }
 }
 
-// ---- Mock data: raw structured files that power the prototype's data layer ---
-// Staged into sources/sample-data/ and synced to the repo; the engineer's
-// /vibe-data-prep agent turns them into typed models + a DataService during Build.
-// Distinct from Sources (which ground what the AI WRITES) — these power what the
-// prototype SHOWS. CSV/Excel/JSON only; documents belong in the Sources bucket.
+// ---- Mock data: structured files that do double duty ------------------------
+// Staged into sources/sample-data/ and synced to the repo. Each file is committed
+// twice: the RAW original powers the prototype (the engineer's /vibe-data-prep agent
+// turns it into typed models + a DataService at Build), and a Markdown/JSON grounding
+// twin (sources/data-<stem>.md) lets the SAME data inform the Discover deliverables —
+// a returns export shapes personas and the journey, not just the prototype. Kept as
+// its own bucket so data stays visually distinct from Sources; CSV/Excel/JSON only.
 const DATA_EXT_LIST = ['csv', 'xlsx', 'xls', 'json'];
 const DATA_ACCEPT = DATA_EXT_LIST.map((e) => `.${e}`).join(',');
 
@@ -1177,24 +1179,27 @@ function renderData(data) {
           <span class="src-kind data-ext">${esc(String(f.ext || 'data').toUpperCase())}</span>
           <span class="src-name">${esc(f.name)}</span>
           ${f.size != null ? `<span class="data-size">${esc(fmtBytes(f.size))}</span>` : ''}
+          ${f.grounded
+            ? '<span class="data-badge" title="Also converted to a table that grounds your Discover deliverables">✓ grounds Discover</span>'
+            : '<span class="data-badge data-badge-off" title="Raw file staged for Build; no Discover grounding twin was created">raw only</span>'}
           <span class="grow"></span>
           ${f.htmlUrl ? `<a class="src-link" href="${esc(f.htmlUrl)}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}
         </div>
       </div>`).join('')
-    : `<div class="src-empty">No mock data yet. Drop the customer's <strong>CSV, Excel or JSON</strong> here — the engineer's <code>/vibe-data-prep</code> turns it into the prototype's data layer during Build.</div>`;
+    : `<div class="src-empty">No mock data yet. Drop the customer's <strong>CSV, Excel or JSON</strong> here — it powers the prototype <em>and</em> grounds your Discover work.</div>`;
 
   el.innerHTML = `
     <div class="gate gate-data">
       <div class="gate-head">
         <h2>Mock data <span class="pill pill-grey">${files.length} file${files.length === 1 ? '' : 's'}</span></h2>
-        <div class="gate-counts">→ sources/sample-data/ · powers the prototype</div>
+        <div class="gate-counts">→ sources/sample-data/ · powers the prototype + grounds Discover</div>
       </div>
-      <p class="dz-intro">The structured data that <strong>powers the prototype</strong> the engineer builds — separate from the Sources above, which ground what the AI <em>writes</em>. Drop the customer's <strong>CSV / Excel / JSON</strong> here; it syncs to the repo and the engineer's <code>/vibe-data-prep</code> turns it into typed models during Build.</p>
-      <div class="data-warn">🔒 <strong>Mock or anonymised data only</strong> — never real customer PII. The Data Prep agent enforces a hard guardrail on names, emails, IDs and addresses; keep it clean from the start.</div>
+      <p class="dz-intro">The customer's structured data, doing <strong>two jobs</strong>: the raw file <strong>powers the prototype</strong> the engineer builds (<code>/vibe-data-prep</code> turns it into typed models), and a table version <strong>grounds your Discover work</strong> — a returns export can shape personas, pain points and the journey. Drop the customer's <strong>CSV / Excel / JSON</strong> here; documents still belong in the Sources bucket above.</p>
+      <div class="data-warn">🔒 <strong>Mock or anonymised data only</strong> — never real customer PII. It now feeds Discover too, so any names, emails, IDs or addresses would reach a deliverable. The Data Prep agent also enforces a hard guardrail at Build; keep it clean from the start.</div>
       <div class="dropzone" id="data-dropzone" tabindex="0" role="button" aria-label="Drop CSV, Excel or JSON, or click to browse">
         <div class="dz-icon">⬇</div>
         <div class="dz-main">Drop CSV, Excel or JSON here</div>
-        <div class="dz-sub">Structured/tabular data only · kept raw for the engineer · or click to browse</div>
+        <div class="dz-sub">Structured/tabular data only · kept raw for Build · also summarised to ground Discover · or click to browse</div>
         <input type="file" id="data-input" multiple hidden accept="${DATA_ACCEPT}" />
       </div>
       <div class="data-status" id="data-status" hidden></div>
@@ -1239,7 +1244,7 @@ async function uploadDataFiles(fileList) {
       ok++;
     } catch (e) { return set(e.message, 'err'); }
   }
-  banner(`✅ ${ok} data file${ok === 1 ? '' : 's'} staged for the engineer — synced to the repo.`, 'ok');
+  banner(`✅ ${ok} data file${ok === 1 ? '' : 's'} staged — raw for the prototype, and grounding your Discover work. Synced to the repo.`, 'ok');
   await load();
 }
 
