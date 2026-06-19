@@ -31,6 +31,29 @@ function esc(s) {
   ));
 }
 
+// Section help text for the facilitator — shown in the ⓘ info dot beside each
+// section heading. Plain language: what to do here, and why it matters.
+const TIPS = {
+  sources: "Everything the customer gives you — briefs, call transcripts, questionnaires, research. Discover reads all of it before it generates, so more real material means more grounded deliverables. With nothing here, the engine falls back to demo data.",
+  data: "The customer's structured data (CSV, Excel, JSON) — ask for it up front. It does two jobs: the raw file powers the prototype the engineer builds, and a table version grounds your Discover work. Mock or anonymised only, never real PII.",
+  preparation: "Week-0 setup: the two briefs (Studio 42's internal view + the customer's own voice — both required), the dual-path customer research, and the 4-week meeting schedule. Everything grounds in the sources above, never demo data.",
+  context: "The single source of truth. Synthesize it from your sources first — every Discover deliverable links back to it. Re-synthesize whenever you add new sources so it stays current.",
+  discover: "Phase 2: generate personas, the problem statement and the current-state journey — each grounded in your sources and auto-graded. Open each one to review, then Approve. All three signed off turns the gate green and unlocks Disrupt.",
+  disrupt: "The Week-2 workshop — the one phase the customer is in the room. Draft the pre-reads, run the workshop offline and drop your capture in the bucket, then generate selected concept → future-state journey → storyboard in order. The storyboard is the hand-off to engineering.",
+  model: "Which AI model the engine uses to generate deliverables. Default is Claude Sonnet 4.5 — a strong all-rounder. Heavier models reason harder but cost more; lighter ones are faster. Applies to every Generate in this engagement.",
+};
+
+// A small accessible info dot; its tip shows on hover/focus. Pass right=true to
+// anchor the bubble to the right edge (for dots near the top-right, e.g. the topbar).
+function infoDot(tip, right = false) {
+  const t = esc(tip);
+  return `<button type="button" class="info-dot${right ? ' tip-right' : ''}" data-tip="${t}" aria-label="${t}">i</button>`;
+}
+
+// Engine model setting (per engagement, persisted server-side). Seeded from the board.
+let MODEL = '';
+let MODELS = [];
+
 function pill(status) {
   const map = {
     GREEN: ['Ready', 'pill-green'],
@@ -98,11 +121,11 @@ function deliverableCard(d) {
   </div>`;
 }
 
-function gateBlock(name, gate, deliverables) {
+function gateBlock(name, gate, deliverables, tip) {
   const counts = `${gate.artifactsPresent} present · ${gate.gradePassing} grade-passing${gate.stale ? ' · ⚠ stale' : ''}`;
   return `<div class="gate">
     <div class="gate-head">
-      <h2>${name} ${pill(gate.status)}</h2>
+      <h2>${name} ${tip ? infoDot(tip) + ' ' : ''}${pill(gate.status)}</h2>
       <div class="gate-counts">${counts}</div>
     </div>
     <div class="cards">${deliverables.map(deliverableCard).join('')}</div>
@@ -170,7 +193,7 @@ function renderDisrupt(data) {
   el.innerHTML = `
     <div class="gate gate-disrupt">
       <div class="gate-head">
-        <h2>Disrupt ${pill(gate.status)}</h2>
+        <h2>Disrupt ${infoDot(TIPS.disrupt)} ${pill(gate.status)}</h2>
         <div class="gate-counts">${gate.artifactsPresent} gated present · ${gate.gradePassing} grade-passing${gate.stale ? ' · ⚠ stale' : ''}</div>
       </div>
       <p class="dz-intro">The Week-2 co-creation workshop. Draft the pre-reads, run the workshop offline and drop the capture below, then generate the post-workshop chain in order — <strong>selected concept → future-state journey → storyboard</strong> (★ gated, required to move to Build).</p>
@@ -246,7 +269,7 @@ function renderPreparation(data) {
   el.innerHTML = `
     <div class="gate gate-prep">
       <div class="gate-head">
-        <h2>Preparation ${gatePill}</h2>
+        <h2>Preparation ${infoDot(TIPS.preparation)} ${gatePill}</h2>
         <div class="gate-counts">${gate.engagementBrief ? '✓' : '○'} engagement brief · ${gate.customerBrief ? '✓' : '○'} customer brief</div>
       </div>
       <p class="dz-intro">Week-0 setup. Draft the two briefs (★ — both needed to complete Preparation), run the dual-path customer research, and lay out the meeting schedule. Everything grounds in the sources you add above — never demo data.</p>
@@ -483,7 +506,7 @@ function renderSources() {
   el.innerHTML = `
     <div class="sources-head">
       <div>
-        <h2>Sources</h2>
+        <h2>Sources ${infoDot(TIPS.sources)}</h2>
         <p class="sources-sub">Discover reads everything here before it generates. Add the customer's brief, transcripts, questionnaire and research so the deliverables are grounded in their world — not demo data.</p>
       </div>
       <button class="btn-add-src" id="src-toggle" type="button"
@@ -555,7 +578,7 @@ function renderContext() {
       </div>`;
   }
   el.hidden = false;
-  el.innerHTML = `<div class="ctx-head"><h2>Project context</h2><span class="ctx-sub">The single source of truth · synthesized from your sources</span></div>${body}`;
+  el.innerHTML = `<div class="ctx-head"><h2>Project context ${infoDot(TIPS.context)}</h2><span class="ctx-sub">The single source of truth · synthesized from your sources</span></div>${body}`;
   const go = el.querySelector('.btn-gen[data-gen="PROJECT-CONTEXT.md"]');
   if (go) go.addEventListener('click', () => generate('PROJECT-CONTEXT.md'));
 }
@@ -1191,7 +1214,7 @@ function renderData(data) {
   el.innerHTML = `
     <div class="gate gate-data">
       <div class="gate-head">
-        <h2>Mock data <span class="pill pill-grey">${files.length} file${files.length === 1 ? '' : 's'}</span></h2>
+        <h2>Mock data ${infoDot(TIPS.data)} <span class="pill pill-grey">${files.length} file${files.length === 1 ? '' : 's'}</span></h2>
         <div class="gate-counts">→ sources/sample-data/ · powers the prototype + grounds Discover</div>
       </div>
       <p class="dz-intro">The customer's structured data, doing <strong>two jobs</strong>: the raw file <strong>powers the prototype</strong> the engineer builds (<code>/vibe-data-prep</code> turns it into typed models), and a table version <strong>grounds your Discover work</strong> — a returns export can shape personas, pain points and the journey. Drop the customer's <strong>CSV / Excel / JSON</strong> here; documents still belong in the Sources bucket above.</p>
@@ -1248,6 +1271,49 @@ async function uploadDataFiles(fileList) {
   await load();
 }
 
+// Engine model picker (top bar). Persists the choice per engagement so every
+// Generate in this engagement runs the engine on the chosen model. Blank = the
+// Copilot CLI default (Claude Sonnet 4.5).
+function renderEngineBar() {
+  const el = document.getElementById('engine-pick');
+  if (!el || !MODELS.length) return;
+  const opts = MODELS.map((m) =>
+    `<option value="${esc(m.id)}"${m.id === MODEL ? ' selected' : ''}>${esc(m.label)}</option>`).join('');
+  el.hidden = false;
+  el.innerHTML = `
+    <span class="engine-label">Engine model</span>
+    ${infoDot(TIPS.model, true)}
+    <select id="engine-model" class="engine-model" aria-label="Engine model">${opts}</select>
+    <span class="engine-saved" id="engine-saved" aria-live="polite"></span>`;
+  const sel = el.querySelector('#engine-model');
+  const note = (text, cls) => {
+    const s = document.getElementById('engine-saved');
+    if (s) { s.textContent = text; s.className = `engine-saved${cls ? ' ' + cls : ''}`; }
+  };
+  sel.addEventListener('change', async () => {
+    const model = sel.value;
+    sel.disabled = true;
+    note('Saving…');
+    try {
+      const r = await fetch('/api/model', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kebab, model }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || r.statusText);
+      MODEL = model;
+      note('✓ Saved', 'ok');
+    } catch (e) {
+      note('✕ ' + e.message, 'err');
+      sel.value = MODEL;
+    } finally {
+      sel.disabled = false;
+      setTimeout(() => note(''), 2500);
+    }
+  });
+}
+
 async function load() {
   if (!kebab) { document.getElementById('gates').innerHTML = '<p class="err">No engagement specified.</p>'; return; }
   let data;
@@ -1265,6 +1331,8 @@ async function load() {
   if (data.kinds) SRC_KINDS = data.kinds;
   CONTEXT = data.context || { present: false, path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
   PROVENANCE = data.provenance || { bySource: {} };
+  MODEL = data.model || '';
+  MODELS = data.models || [];
   document.getElementById('eng-name').textContent = data.name || kebab;
   const subBase = data.handoffReady ? 'Ready for engineering hand-off' : 'Phases 1–3 in progress';
   const repoLink = data.htmlUrl
@@ -1272,6 +1340,7 @@ async function load() {
     : '';
   document.getElementById('eng-sub').innerHTML = subBase + repoLink;
 
+  renderEngineBar();
   renderTimeline(data.gates, data.preparation && data.preparation.gate);
 
   // Preparation (phase 1) gets its own section above the Discover gates; Discover gates
@@ -1280,7 +1349,7 @@ async function load() {
   renderPreparation(data);
   const discoverDs = data.deliverables.filter((d) => d.gate === 'discover');
   document.getElementById('gates').innerHTML =
-    gateBlock('Discover', data.gates.discover, discoverDs);
+    gateBlock('Discover', data.gates.discover, discoverDs, TIPS.discover);
   renderDisrupt(data);
 
   document.querySelectorAll('.btn-view').forEach((b) =>

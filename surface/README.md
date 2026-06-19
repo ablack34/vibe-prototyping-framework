@@ -43,6 +43,13 @@ engine running headless in GitHub Actions.
 - **Review & approve** — read every source and deliverable in-app (with provenance
   showing what fed what) and sign a deliverable off, writing the sign-off into the
   repo's `gates.json`.
+- **Choose the engine model** — a top-bar **Engine model** picker sets which AI model
+  the engine runs on, per engagement, persisted and applied to every Generate. Blank =
+  the Copilot CLI default (Claude Sonnet 4.5); the list also offers Claude Haiku/Opus,
+  GPT-5/GPT-5.1 and Gemini 3 Pro.
+- **Built-in facilitator help** — every section heading carries an **ⓘ** info dot with
+  plain-language guidance on what to do at that step, so a designer can run the whole
+  engagement without knowing the VS Code harness underneath.
 
 ## Why it works this way
 

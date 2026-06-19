@@ -23,6 +23,10 @@ on:
         description: Seed demo/contoso sources first (for a self-contained proof)
         type: boolean
         default: true
+      model:
+        description: Engine model id (blank = Copilot CLI default, Claude Sonnet 4.5)
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -71,12 +75,16 @@ jobs:
             exit 1
           fi
           AGENT="$(cat .vibe/agent.txt)"
-          echo "Running prompt '$PROMPT' as agent '$AGENT' for engagement '$ENGAGEMENT'…"
+          MODEL="${{ inputs.model }}"
+          MODEL_ARG=""
+          if [ -n "$MODEL" ]; then MODEL_ARG="--model $MODEL"; fi
+          echo "Running prompt '$PROMPT' as agent '$AGENT' (model: ${MODEL:-default}) for engagement '$ENGAGEMENT'…"
           # --allow-all = tools + paths + urls (lets the agent create the target dir
           # and write the deliverable); --no-ask-user + -s keep it non-interactive.
           timeout 900 copilot \
             -p "$(cat .vibe/invocation.md)" \
             --agent "$AGENT" \
+            $MODEL_ARG \
             --allow-all \
             --no-ask-user \
             --no-color \
