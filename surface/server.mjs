@@ -1186,7 +1186,12 @@ async function serveStatic(res, urlPath) {
   const file = join(PUBLIC, rel);
   if (!file.startsWith(PUBLIC) || !existsSync(file)) return send(res, 404, 'Not found', {});
   const body = await readFile(file);
-  send(res, 200, body, { 'Content-Type': MIME[extname(file)] || 'application/octet-stream' });
+  // no-cache so a freshly edited engagement.js/styles.css is always served — this is a
+  // dev/iteration tool, so correctness beats caching (avoids stale-asset confusion).
+  send(res, 200, body, {
+    'Content-Type': MIME[extname(file)] || 'application/octet-stream',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+  });
 }
 
 const server = createServer(async (req, res) => {
