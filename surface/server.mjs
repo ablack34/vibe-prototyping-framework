@@ -90,6 +90,21 @@ async function writeStore(list) {
   await writeFile(STORE, JSON.stringify(list, null, 2));
 }
 
+// Curated set of engine models the facilitator can pick from in the web surface.
+// id '' means "don't pass --model" → the Copilot CLI default (Claude Sonnet 4.5).
+// The chosen id is passed to run-phase.yml as `-f model=<id>`, which the workflow
+// turns into `copilot --model <id>`. Keep ids in step with the Copilot CLI's
+// supported models; unknown ids are rejected server-side before dispatch.
+const ENGINE_MODELS = [
+  { id: '', label: 'Default (Claude Sonnet 4.5)' },
+  { id: 'claude-haiku-4.5', label: 'Claude Haiku 4.5 — faster, lighter' },
+  { id: 'claude-opus-4.5', label: 'Claude Opus 4.5 — deeper reasoning' },
+  { id: 'gpt-5.1', label: 'GPT-5.1' },
+  { id: 'gpt-5', label: 'GPT-5' },
+  { id: 'gemini-3-pro-preview', label: 'Gemini 3 Pro (preview)' },
+];
+const isKnownModel = (id) => ENGINE_MODELS.some((m) => m.id === id);
+
 // Verify the engine (the framework's .github/) shipped into the new repo.
 // There can be a brief lag after generation, so retry a couple of times.
 async function engineShipped(fullName) {
@@ -567,7 +582,7 @@ async function boardDetailLocal(kebab) {
   const prepGate = await assemblePrep(deliverables, repoFetch, kebab, researchResults.length);
   const bySource = attachDeliverableProvenance(deliverables, [...workshopSources, ...researchResults].map((s) => s.path));
   const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
-  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, preparation: { gate: prepGate, researchResults }, mockData: { files: await listMockDataLocal() }, provenance: { bySource } };
+  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, preparation: { gate: prepGate, researchResults }, mockData: { files: await listMockDataLocal() }, provenance: { bySource }, model: '', models: ENGINE_MODELS };
 }
 
 // Primary detail: gate state + rendered deliverables read from the engagement's
@@ -623,6 +638,8 @@ async function boardDetail(kebab) {
     preparation: { gate: prepGate, researchResults },
     mockData: { files: await listMockData(rec) },
     provenance: { bySource },
+    model: rec.model || '',
+    models: ENGINE_MODELS,
   };
 }
 
@@ -684,15 +701,34 @@ async function runPhase(input) {
   // (Discover deliverables + workshop captures, or the designer's sources + briefs), so
   // re-seeding Contoso would only add noise.
   const seed = (DISRUPT_PROMPTS.has(prompt) || PREP_PROMPTS.has(prompt) || input.seedDemo === false) ? 'false' : 'true';
+  // Per-engagement model override. Empty/default → omit -f model so the engine uses
+  // the Copilot CLI default. Only pass a known, non-empty id (the workflow exposes a
+  // `model` input; older engagement repos without it would reject an unknown input).
+  const model = (rec.model && isKnownModel(rec.model)) ? rec.model : '';
+  const modelArg = model ? ` -f model=${model}` : '';
   try {
     execSync(
-      `gh workflow run run-phase.yml --repo ${rec.repo} -f prompt=${prompt} -f engagement=${kebab} -f seed_demo=${seed}`,
+      `gh workflow run run-phase.yml --repo ${rec.repo} -f prompt=${prompt} -f engagement=${kebab} -f seed_demo=${seed}${modelArg}`,
       { stdio: 'pipe' },
     );
   } catch (e) {
     return { code: 502, body: { error: 'Could not dispatch the run.', detail: String(e.stderr || e.message || e).trim() } };
   }
-  return { code: 202, body: { ok: true, repo: rec.repo, prompt, engagement: kebab, seededDemo: seed === 'true' } };
+  return { code: 202, body: { ok: true, repo: rec.repo, prompt, engagement: kebab, seededDemo: seed === 'true', model } };
+}
+
+// Persist the per-engagement engine model (validated against ENGINE_MODELS).
+async function setModel(input) {
+  const kebab = String(input.kebab || '').trim();
+  const model = String(input.model || '').trim();
+  if (!kebab) return { code: 400, body: { error: 'Engagement is required.' } };
+  if (!isKnownModel(model)) return { code: 400, body: { error: `Unknown model "${model}".` } };
+  const store = await readStore();
+  const rec = store.find((r) => (r.id || '') === kebab);
+  if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
+  rec.model = model;
+  await writeStore(store);
+  return { code: 200, body: { ok: true, model } };
 }
 
 async function runStatus(kebab) {
@@ -1232,6 +1268,14 @@ const server = createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/api/run/status')
       return send(res, 200, (await runStatus(url.searchParams.get('kebab'))) || {});
+
+    if (req.method === 'POST' && url.pathname === '/api/model') {
+      let raw = '';
+      for await (const chunk of req) raw += chunk;
+      const input = raw ? JSON.parse(raw) : {};
+      const { code, body } = await setModel(input);
+      return send(res, code, body);
+    }
 
     if (req.method === 'POST' && url.pathname === '/api/approve') {
       let raw = '';

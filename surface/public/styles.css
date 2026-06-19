@@ -199,6 +199,54 @@ button:disabled { opacity: 0.55; cursor: progress; }
 /* engagement page chrome */
 .back { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 600; }
 .back:hover { text-decoration: underline; }
+.topbar-right { display: flex; align-items: center; gap: 18px; }
+
+/* engine model picker (top bar) */
+.engine-pick { display: flex; align-items: center; gap: 8px; }
+.engine-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+.engine-model {
+  background: var(--panel-2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 5px 8px; font-size: 12.5px; font-family: inherit; cursor: pointer;
+}
+.engine-model:hover { border-color: var(--accent); }
+.engine-model:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.engine-saved { font-size: 12px; color: var(--muted); min-width: 52px; }
+.engine-saved.ok { color: var(--green); }
+.engine-saved.err { color: var(--red); }
+
+/* info dots — facilitator help beside section headings */
+.info-dot {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px; padding: 0; flex: none;
+  border-radius: 50%; border: 1px solid var(--line);
+  background: var(--panel-2); color: var(--muted);
+  font: italic 600 11px/1 Georgia, "Times New Roman", serif;
+  vertical-align: middle; cursor: help; position: relative;
+}
+.info-dot:hover, .info-dot:focus-visible {
+  background: var(--accent); color: #0b0d12; border-color: var(--accent); outline: none;
+}
+.info-dot::after {
+  content: attr(data-tip);
+  position: absolute; top: calc(100% + 9px); left: -4px;
+  width: max-content; max-width: 300px; white-space: normal; text-align: left;
+  background: #0b0d12; color: var(--text);
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  font: 400 12.5px/1.5 "Segoe UI", system-ui, sans-serif; font-style: normal;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .45); z-index: 60;
+  opacity: 0; visibility: hidden; transform: translateY(-3px);
+  transition: opacity .13s ease, transform .13s ease; pointer-events: none;
+}
+.info-dot.tip-right::after { left: auto; right: -4px; }
+.info-dot::before {
+  content: ""; position: absolute; top: calc(100% + 3px); left: 5px;
+  border: 6px solid transparent; border-bottom-color: var(--line); z-index: 61;
+  opacity: 0; visibility: hidden; transition: opacity .13s ease; pointer-events: none;
+}
+.info-dot.tip-right::before { left: auto; right: 5px; }
+.info-dot:hover::after, .info-dot:focus-visible::after { opacity: 1; visibility: visible; transform: translateY(0); }
+.info-dot:hover::before, .info-dot:focus-visible::before { opacity: 1; visibility: visible; }
 main.dash { max-width: 1040px; }
 
 /* phase timeline */

@@ -58,6 +58,8 @@ Step by step:
 1. **`server.mjs` → `runPhase()`** maps the requested file to a prompt id via
    `FILE_PROMPT`, then shells `gh workflow run run-phase.yml -f prompt=<id> -f
    engagement=<kebab> -f seed_demo=<bool>` **against the engagement's own repo**.
+   When the engagement has a non-default engine model set (see below), it also
+   appends `-f model=<id>`.
 2. **`run-phase.yml`** checks out the engagement repo, installs the Copilot CLI, and
    runs `scripts/resolve-prompt.mjs <prompt>`.
 3. **`resolve-prompt.mjs`** loads `.github/prompts/<id>.prompt.md`, resolves the
@@ -65,8 +67,10 @@ Step by step:
    substitutes `{{engagement-kebab}}` / `${input:…}`, and writes
    `.vibe/agent.txt` + `.vibe/invocation.md` (a headless, autonomous task prompt).
 4. **The engine step** runs `copilot -p "$(cat .vibe/invocation.md)" --agent "$(cat
-   .vibe/agent.txt)" --allow-all --no-ask-user`. The prompt body copies and fills
-   `templates/*.md` into `engagement/<kebab>/`.
+   .vibe/agent.txt)" [--model <id>] --allow-all --no-ask-user`. The `--model` flag is
+   added only when the `model` input is non-empty; otherwise the Copilot CLI default
+   (Claude Sonnet 4.5) is used. The prompt body copies and fills `templates/*.md` into
+   `engagement/<kebab>/`.
 5. **Verify + ledger + commit.** The workflow confirms a `.md` was produced under
    `engagement/<kebab>/`, regenerates the committed gate ledger (`gen-gates.mjs` →
    `gates.json`), and commits + pushes back to the repo.
@@ -237,6 +241,27 @@ shows a **Back** button, instead of navigating the whole page to a 404. Repo-rel
 links are intercepted and routed to the viewer; a file that isn't in the repo yet
 degrades to a friendly "Not in this engagement yet" message rather than an error.
 
+## Facilitator UX
+
+- **Section info dots.** Every section heading (Sources, Mock data, Preparation,
+  Project context, Discover, Disrupt) carries a small **ⓘ** dot. Hovering or focusing
+  it shows plain-language guidance on what to do at that step and why it matters — so a
+  designer who has never seen the VS Code harness can run the engagement unaided. The
+  copy lives in the `TIPS` map in `engagement.js`; the dot is rendered by `infoDot()`.
+
+- **Engine model picker.** A top-bar **Engine model** selector lets the facilitator
+  choose which AI model the engine runs on. The choice is **per engagement**, persisted
+  server-side (`POST /api/model` → the engagement's store record), and applied to *every*
+  subsequent Generate in that engagement. Blank means the Copilot CLI default
+  (**Claude Sonnet 4.5**); the curated allowlist (`ENGINE_MODELS` in `server.mjs`) also
+  offers Claude Haiku/Opus, GPT-5/GPT-5.1, and Gemini 3 Pro. The id flows
+  `select → /api/model → store → runPhase → -f model=<id> → copilot --model <id>`.
+
+  > Because each engagement repo carries its own copy of `run-phase.yml`, a non-default
+  > model only takes effect once the repo has the `model` workflow input. New provisions
+  > inherit it from the template; existing repos need the updated `run-phase.yml` synced
+  > in (same distribution rule as any other engine file).
+
 ## HTTP API
 
 All state-changing routes act on the engagement's repo under your `gh` identity.
@@ -247,9 +272,10 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 | `GET /api/engagements` | List known engagements (from `.engagements.json`) |
 | `POST /api/engagements` | Provision a new engagement repo from the template |
 | `GET /api/board` | List engagements with summary gate state |
-| `GET /api/board/:kebab` | Full board detail: gates, deliverables (+markdown), sources, **context** presence, provenance, **preparation** (gate + M365 research results), **disrupt** (gate + workshop captures), **mockData** (staged prototype data) |
-| `POST /api/run` | Dispatch a phase run (`{ kebab, file, seedDemo }`) |
+| `GET /api/board/:kebab` | Full board detail: gates, deliverables (+markdown), sources, **context** presence, provenance, **preparation** (gate + M365 research results), **disrupt** (gate + workshop captures), **mockData** (staged prototype data), **model** (the engagement's engine-model setting) + **models** (the allowlist for the picker) |
+| `POST /api/run` | Dispatch a phase run (`{ kebab, file, seedDemo }`). Honours the engagement's persisted engine model — passes `-f model=<id>` when set |
 | `GET /api/run/status` | Latest `run-phase.yml` run status for an engagement |
+| `POST /api/model` | Persist the engagement's engine model (`{ kebab, model }`); validated against the `ENGINE_MODELS` allowlist (`''` = Copilot CLI default). Every subsequent run uses it |
 | `POST /api/approve` | Record a web sign-off on a deliverable (Discover + the two sign-off-capable Disrupt artifacts) |
 | `GET /api/sources` | List an engagement's sources (+ kinds metadata) |
 | `GET /api/source` | Fetch one source/deliverable's markdown (scoped to `sources/` or `engagement/<id>/`) |
