@@ -58,6 +58,12 @@ param containerPort int = 4310
 @description('Mount a durable Azure Files store at /data. Requires storage-account shared-key access; set false where org policy disables shared keys (the store then falls back to ephemeral in-container storage).')
 param enablePersistentStore bool = true
 
+@description('Optional git-backed store: "owner/repo" of a private repo holding the engagement pointer list as committed JSON. Recommended when enablePersistentStore is false so the store survives restarts. Empty = local-file store.')
+param storeRepo string = ''
+
+@description('Path within storeRepo for the engagement store JSON.')
+param storePath string = 'engagements.json'
+
 @description('Tags applied to all resources')
 param tags object = {
   project: 'vibe-surface'
@@ -150,6 +156,8 @@ module app 'modules/container-app.bicep' = {
     storageAccountName: storage.outputs.accountName
     storageShareName: storage.outputs.shareName
     enablePersistentStore: enablePersistentStore
+    storeRepo: storeRepo
+    storePath: storePath
     authClientId: authClientId
     authClientSecret: authClientSecret
     authTenantId: authTenantId

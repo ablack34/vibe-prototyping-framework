@@ -202,6 +202,14 @@ Codified as infrastructure-as-code + CI/CD under [`surface/infra/`](./infra/) an
   engagement *pointers* (every engagement is a real GitHub repo; the board re-reads live gate state per
   repo), so ephemeral is acceptable for the pilot. Durable options: a storage-account policy exemption, or
   a future git-backed store. Documented in [`infra/README.md`](./infra/README.md#durable-store--org-policy-shared-key-access).
+- **Durable store — SHIPPED (git-backed).** Ephemeral `/data` meant a redeploy/restart wiped the board's
+  engagement-pointer list. Fixed without any storage mount: when the env var **`STORE_REPO`** (`owner/repo`)
+  is set, `readStore`/`writeStore` in `server.mjs` read/write the pointer JSON (`STORE_PATH`, default
+  `engagements.json`) in a small **private GitHub repo** via the Contents API (read-modify-write on the blob
+  sha, 409/422 retry), using the same service token the surface already holds. Pinned to one replica + the
+  read-before-write pattern in every handler keeps the sha fresh. Wired through Bicep (`storeRepo`/`storePath`
+  params → container env) and the pipeline (`vars.SURFACE_STORE_REPO`), so it survives every future deploy.
+  Unset = the original local-file store (dev). State repo for this pilot: `ablack34/vibe-surface-state`.
 - **Still to lock down for the pilot:** turn on the Entra Easy Auth wall (Part B), restricted to the named
   pilot users; and swap the run-as-you token for the dedicated **service-account** token + Copilot seat.
 

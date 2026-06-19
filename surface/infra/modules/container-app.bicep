@@ -40,6 +40,12 @@ param storageShareName string
 @description('When true, mount the Azure Files share at /data; when false, /data is ephemeral in-container storage')
 param enablePersistentStore bool = true
 
+@description('Optional git-backed store: "owner/repo" of a private repo holding the engagement pointer list as committed JSON. When set, the store survives restarts even with an ephemeral /data. Empty = local-file store.')
+param storeRepo string = ''
+
+@description('Path within storeRepo for the engagement store JSON.')
+param storePath string = 'engagements.json'
+
 @description('Optional Entra app (client) ID for the sign-in wall')
 param authClientId string = ''
 
@@ -164,6 +170,14 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
             {
               name: 'STORE'
               value: '/data/.engagements.json'
+            }
+            {
+              name: 'STORE_REPO'
+              value: storeRepo
+            }
+            {
+              name: 'STORE_PATH'
+              value: storePath
             }
             {
               name: 'GH_TOKEN'

@@ -82,11 +82,56 @@ function kebab(s) {
     .slice(0, 90);
 }
 
+// Optional git-backed store: when STORE_REPO ("owner/repo") is set, the engagement
+// pointer list lives as committed JSON in a small private GitHub repo instead of the
+// local /data file. This survives container restarts/redeploys — essential on hosts
+// where a durable Azure Files mount is blocked by policy and /data is ephemeral
+// (the engagement repos themselves are already the durable source of truth; only this
+// pointer list needs somewhere to live). Falls back to the local file when unset.
+const STORE_REPO = process.env.STORE_REPO || '';
+const STORE_PATH = process.env.STORE_PATH || 'engagements.json';
+const storeContentsPath = STORE_PATH.split('/').filter(Boolean).map(encodeURIComponent).join('/');
+// Last-seen blob sha, threaded read→write for the Contents API. Single replica + the
+// read-before-write pattern in every handler keeps this fresh; the 409/422 retry below
+// covers a stale sha. (High write concurrency could still lose an update, but designers
+// act sequentially and writes are rare — acceptable for the pilot.)
+let storeSha = null;
+
+async function readStoreGit() {
+  const { status, json } = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`);
+  if (status === 404) { storeSha = null; return []; }
+  if (status >= 300 || !json) throw new Error(`store read failed (${status})`);
+  storeSha = json.sha || null;
+  try {
+    const text = Buffer.from(json.content || '', json.encoding || 'base64').toString('utf8');
+    const data = JSON.parse(text);
+    return Array.isArray(data) ? data : [];
+  } catch { return []; }
+}
+
+async function writeStoreGit(list) {
+  const content = Buffer.from(JSON.stringify(list, null, 2), 'utf8').toString('base64');
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const body = { message: 'surface: update engagement store', content };
+    if (storeSha) body.sha = storeSha;
+    const { status, json } = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`, { method: 'PUT', body });
+    if (status < 300) { storeSha = (json && json.content && json.content.sha) || null; return; }
+    if ((status === 409 || status === 422) && attempt === 0) {
+      const cur = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`);
+      storeSha = (cur.status === 200 && cur.json) ? (cur.json.sha || null) : null;
+      continue;
+    }
+    throw new Error(`store write failed (${status})`);
+  }
+}
+
 async function readStore() {
+  if (STORE_REPO) return readStoreGit();
   if (!existsSync(STORE)) return [];
   try { return JSON.parse(await readFile(STORE, 'utf8')); } catch { return []; }
 }
 async function writeStore(list) {
+  if (STORE_REPO) return writeStoreGit(list);
   await mkdir(dirname(STORE), { recursive: true });
   await writeFile(STORE, JSON.stringify(list, null, 2));
 }

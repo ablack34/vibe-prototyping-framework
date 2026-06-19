@@ -51,6 +51,7 @@ jobs:
           LOCATION: ${{ vars.AZURE_LOCATION }}
           SERVICE_TOKEN: ${{ secrets.COPILOT_SERVICE_TOKEN }}
           PERSISTENT_STORE: ${{ vars.SURFACE_PERSISTENT_STORE }}
+          STORE_REPO: ${{ vars.SURFACE_STORE_REPO }}
           ENABLE_AUTH: ${{ inputs.enableAuth }}
           AUTH_CLIENT_ID: ${{ secrets.AUTH_CLIENT_ID }}
           AUTH_CLIENT_SECRET: ${{ secrets.AUTH_CLIENT_SECRET }}
@@ -76,6 +77,12 @@ jobs:
           # variable SURFACE_PERSISTENT_STORE=false in that case; /data is then ephemeral.
           if [ "${PERSISTENT_STORE}" = "false" ]; then
             params+=(enablePersistentStore=false)
+          fi
+          # Durable git-backed pointer store (recommended when the Azure Files mount is
+          # off): set the repo variable SURFACE_STORE_REPO=owner/repo to a private repo
+          # the service token can write. The store then survives restarts/redeploys.
+          if [ -n "${STORE_REPO}" ]; then
+            params+=(storeRepo="$STORE_REPO")
           fi
 
           az deployment sub create \
