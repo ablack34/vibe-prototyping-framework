@@ -65,6 +65,8 @@ If the sources suggest more than one valid framing (e.g. one transcript frames i
 | **B** | All 5 blanks filled, every blank sourced, impact may be emotional-only |
 | **C** | Any blank empty, OR any blank unsourced, OR generic phrasing ("efficiency opportunity", "scale challenges") |
 
+Write the resulting grade into the document's `> **Grade:** X` line (the template pins this marker right after the grading rubric) so the gate parser reads it.
+
 ### Step 7 — Update state.json
 
 Update `state.json.readiness.discover.problemStatementDoc`:

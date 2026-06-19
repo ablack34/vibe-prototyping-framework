@@ -36,14 +36,21 @@ export function gitBlobSha(content) {
 }
 
 export function lowestGrade(text) {
-  // Two canonical grade-marker styles appear across the deliverables:
-  //   Form A  `> **Grade:** A`   (colon form — personas)
-  //   Form B  `**Grade A** — …`  (inline bold form — problem-statement, journey)
-  // Both are matched. Rubric prose like `**Grade A (Strong)**` is excluded: it has
-  // no colon (fails A) and the letter is followed by " (" not "**" (fails B).
+  // Grade-marker styles seen across the deliverables. The engine isn't perfectly
+  // deterministic about phrasing, so all three are matched robustly:
+  //   Form A  `> **Grade:** A`         (colon form — personas template pins this)
+  //   Form B  `**Grade A** — …`        (inline bold form)
+  //   Form C  `> **Current grade: A**` (bold span ending in the grade letter — what
+  //                                      the engine improvises when a template does
+  //                                      NOT pin Form A; e.g. problem-statement,
+  //                                      current-state-journey before the marker fix)
+  // Rubric prose like `**Grade A (Strong)**` or `**Grade B or higher**` is excluded
+  // from every form: it has no colon (fails A), the letter is followed by " (" / " or"
+  // not "**" (fails B), and the letter is not adjacent to the closing `**` (fails C).
   const found = [];
   for (const m of text.matchAll(/\*\*Grade:\*{0,2}\s*([ABC])\b/gi)) found.push(m[1].toUpperCase());
   for (const m of text.matchAll(/\*\*Grade\s+([ABC])\*\*/gi)) found.push(m[1].toUpperCase());
+  for (const m of text.matchAll(/\*\*[^*]*\bgrade\s*[:\-–—]?\s*([ABC])\*\*/gi)) found.push(m[1].toUpperCase());
   if (!found.length) return null;
   return found.reduce((lo, g) => (RANK[g] < RANK[lo] ? g : lo), found[0]);
 }

@@ -90,6 +90,8 @@ The "Top pain points (ranked)" section at the bottom lists the 3 highest-impact 
 | **B** | ≥3 stages with stakeholders/systems/pains identified per stage, sourced |
 | **C** | <3 stages, OR stages missing stakeholders/systems/pains, OR unsourced/inferred stages |
 
+Write the resulting grade into the document's `> **Grade:** X` line (the template pins this marker right after the grading rubric) so the gate parser reads it.
+
 ### Step 8 — Update state.json
 
 Update `state.json.readiness.discover.currentStateJourney`:
