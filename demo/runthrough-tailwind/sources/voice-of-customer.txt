@@ -1,0 +1,86 @@
+VOICE OF THE CUSTOMER — TAILWIND TRADERS RETURNS
+=================================================
+Run-through fixture. Drag this into the Sources dropzone.
+
+Unedited verbatim extracts pulled from three places:
+  (1) post-return survey free-text (customers),
+  (2) Trustpilot / app-store reviews mentioning returns,
+  (3) internal Teams messages from contact-centre agents to Maya.
+
+Nothing here has been cleaned up. Spelling and tone are as written.
+
+
+--- (1) POST-RETURN SURVEY — CUSTOMER FREE TEXT -------------------
+
+"Sent my tent back on the 2nd. It's the 11th and I still haven't seen
+the refund. Had to message twice. Will think twice before ordering
+again to be honest." — survey score 2/10
+
+"The return label was easy, that bit was fine. Then silence. No email,
+no update, nothing for over a week. I had no idea if you'd even
+received it." — 3/10
+
+"Returned a jacket because the colour was completely different to the
+website. Got refunded eventually but no one asked me why, so I assume
+you'll keep selling it with the same misleading photo." — 4/10
+
+"Ordered three sizes of the same walking boot because your size guide
+is useless, kept one, sent two back. Felt weird, like I was doing
+something wrong, but how else am I supposed to find my size?" — 6/10
+
+"Quick and painless, refund came in two days. No complaints." — 9/10
+(NOTE from Maya: this one went to an experienced agent on a quiet day.
+That's the experience EVERYONE should get, not the lucky few.)
+
+"Faulty stove, leaked gas on first use, genuinely dangerous. Sent it
+back marked faulty and got treated like I was trying it on. Nine days
+to refund something that could've hurt someone. Sort it out." — 1/10
+
+"I return a fair bit, I know I do, but I always send stuff back in
+perfect condition. Got a slightly funny email implying I return too
+much. Made me feel like a criminal for using your own returns policy."
+— 3/10
+
+
+--- (2) PUBLIC REVIEWS ---------------------------------------------
+
+Trustpilot, 2 stars: "Great products, terrible returns. The buying
+experience is lovely and then if anything goes wrong you're on your own
+for a week and a half. It's the one thing letting them down."
+
+Trustpilot, 1 star: "Refund took 16 days over Christmas. SIXTEEN. I get
+it's busy but that's my money sat with you for over two weeks."
+
+App store, 3 stars: "Wish the app actually told you where your return
+is. You print the label and then it vanishes into a black hole until
+the money shows up. Just tell me you've got it."
+
+Trustpilot, 5 stars: "Returned a faulty rucksack, the agent I spoke to
+was brilliant and sorted it personally. Just a shame you have to get
+lucky with who picks it up."
+
+
+--- (3) INTERNAL — AGENT MESSAGES TO MAYA (Teams) ------------------
+
+Agent (Priya): "Maya this reason dropdown is doing my head in, what's
+the difference between 'not as described' and 'quality not expected'?
+Just putting Other again sorry"
+
+Agent (Callum): "Got a customer here on his 7th boot return this month,
+all 'too small', all worn soles. Pretty sure he's wearing them and
+sending them back. What do I do, I've got no way to flag it?"
+
+Agent (Priya): "Refund queue is at 600 this morning. We are not getting
+through this today. Can we pull anyone over from customer care?"
+
+Agent (Nadia): "Honestly half the time I don't know whether to refurb or
+restock, I can't see the item, I just pick restock so it's someone
+else's problem at the warehouse 🙈"
+
+Agent (Callum): "Spent 20 mins on one return digging through someone's
+order history to work out if they were legit. Multiply that by the queue
+and you see why we're behind."
+
+Maya (to the team): "I know the dropdown is broken and I know the queue
+is brutal. I'm raising it. Just keep the customers human in the meantime,
+that's the bit we can't automate away."

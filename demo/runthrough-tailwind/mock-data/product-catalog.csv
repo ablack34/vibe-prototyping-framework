@@ -1,0 +1,23 @@
+sku,product_name,category,subcategory,unit_price_gbp,supplier,return_rate_pct,avg_margin_pct,restockable
+TNT-2P-GRN,Summit 2-Person Tent,Camping,Tents,189.99,Apex Outdoors,22,38,yes
+BOOT-MTR-BRN,Trailmaster Walking Boot,Footwear,Boots,129.99,Stride Footwear,31,45,yes
+JKT-RNX-BLU,Rainex Waterproof Jacket,Clothing,Jackets,89.99,Stormline,26,42,yes
+FLC-COZ-GRY,Cosy Fleece Pullover,Clothing,Midlayer,39.99,Stormline,19,48,yes
+STV-DUO-SLV,DuoFlame Camping Stove,Cooking,Stoves,199.99,Apex Outdoors,12,30,yes
+RKS-45L-BLK,Voyager 45L Rucksack,Bags,Rucksacks,99.99,Apex Outdoors,15,40,yes
+SLP-3S-GRN,ThermaRest 3-Season Sleeping Bag,Camping,Sleep,79.99,Apex Outdoors,14,36,yes
+CHR-FLD-RED,Folding Camp Chair,Camping,Furniture,34.99,Apex Outdoors,9,50,yes
+GAZ-3M-CRM,Garden Gazebo 3m,Garden,Shelter,149.99,GreenLeaf,28,33,yes
+BBQ-KET-BLK,Kettle Charcoal BBQ,Garden,BBQ,119.99,GreenLeaf,17,35,yes
+HOS-25M-GRN,Expandable Garden Hose 25m,Garden,Watering,24.99,GreenLeaf,33,55,no
+DUV-TOG-WHT,13.5 Tog Duvet King,Home,Bedding,49.99,HomeNest,11,44,no
+PIL-MEM-WHT,Memory Foam Pillow,Home,Bedding,29.99,HomeNest,13,52,no
+LMP-DSK-BLK,LED Desk Lamp,Home,Lighting,27.99,BrightHome,16,47,yes
+KTL-15L-SLV,1.5L Electric Kettle,Home,Kitchen,32.99,BrightHome,14,41,yes
+HDP-NCN-BLK,Noise-Cancelling Headphones,Electronics,Audio,89.99,SoundWave,21,28,yes
+WCH-FIT-BLK,Fitness Watch,Electronics,Wearable,79.99,SoundWave,24,26,yes
+TRS-CRG-KHK,Cargo Trousers,Clothing,Trousers,44.99,Stride Footwear,29,46,yes
+GLV-INS-BLK,Insulated Gloves,Clothing,Accessories,19.99,Stormline,20,49,yes
+WTB-1L-BLU,1L Insulated Water Bottle,Accessories,Hydration,17.99,Apex Outdoors,8,53,no
+COOL-30L-BLU,Coolbox 30L,Camping,Cooking,54.99,Apex Outdoors,12,39,yes
+SOCK-MER-GRY,Merino Hiking Socks 3pk,Clothing,Accessories,16.99,Stride Footwear,18,50,no
