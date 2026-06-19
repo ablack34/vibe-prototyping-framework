@@ -189,8 +189,9 @@ the two buckets. A PDF or Word file still isn't structured data, so the bucket r
 (HTTP 415) and points the designer at the Sources bucket. Because the data now reaches a
 deliverable, the advisory is firmer — **mock or anonymised data only**; the agent's hard
 PII guardrail at Build is the backstop, not the front line. The bucket is **always visible**
-and sits at the bottom of the board: the bridge from the designer phases to engineer-owned
-Build.
+and sits **directly under the Sources panel, near the top of the board** — now that the
+data grounds Discover it's an up-front input, so the placement prompts the facilitator to
+ask the customer for their data early, alongside the other grounding sources.
 
 ## The synthesize-context step
 

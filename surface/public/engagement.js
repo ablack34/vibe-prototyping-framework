@@ -1282,7 +1282,6 @@ async function load() {
   document.getElementById('gates').innerHTML =
     gateBlock('Discover', data.gates.discover, discoverDs);
   renderDisrupt(data);
-  renderData(data);
 
   document.querySelectorAll('.btn-view').forEach((b) =>
     b.addEventListener('click', () => openViewer(b.dataset.file)));
@@ -1295,6 +1294,9 @@ async function load() {
   // citationCount); fall back to a direct fetch for the local-dev board.
   if (data.sources) { SRC_KINDS = data.kinds || SRC_KINDS; renderSources(); }
   else loadSources();
+  // Mock data sits directly under Sources (both are up-front grounding inputs the
+  // facilitator collects early), so render it alongside the sources panel.
+  renderData(data);
 }
 
 document.addEventListener('click', (e) => {
