@@ -116,13 +116,43 @@ Two assumptions could sink Shape B. Validate both before building anything:
 **Exit criteria:** both pass → proceed. If #1 fails → the pilot jumps toward the GitHub-App
 identity model (Shape C) sooner, because a shared *personal* token won't carry Copilot.
 
+#### Phase 0 findings — both unknowns RESOLVED (2026-06-19)
+
+**1. Token type — resolved by authoritative docs.** The official `@github/copilot` npm
+README (the exact CLI `run-phase.yml` installs) states you can *"authenticate using a
+**fine-grained PAT with the 'Copilot Requests' permission** enabled"* (set via `GH_TOKEN` /
+`GITHUB_TOKEN`; our workflow uses the Copilot-specific `COPILOT_GITHUB_TOKEN`, already proven
+in Actions run `27824098639`), and that *"an active Copilot subscription"* is required
+regardless. **So the Shape B design works:** a **service account with a Copilot seat** + a
+**fine-grained PAT (Copilot Requests permission)** can drive `copilot -p` headlessly — no
+OAuth device flow, no per-user token needed for the pilot. *(The proven-working local token
+today is a `gho_` user-OAuth token tied to a seat-holding account; the service-account PAT is
+the hostable equivalent.)*
+
+**2. Container + non-interactive `gh` — resolved empirically.** Built the image from
+[`surface/Dockerfile`](./Dockerfile) (Node 20 + GitHub CLI + MarkItDown) and ran it with only
+`GH_TOKEN` set (no `gh auth login` baked in). Results:
+- Server booted and resolved `as user: ablack34` → `gh api user` works non-interactively.
+- `GET /api/config` and `GET /api/board` both returned 200 → the server's `gh` REST path
+  (`gh api`) works headlessly in-container.
+- In-container tools confirmed: `gh 2.95.0`, `markitdown 0.1.6` (Python 3.11), `node 20.20`.
+
+**Still owned by you / IT (can't be done from here):** create the **service-account GitHub
+user**, assign it a **Copilot Business seat**, mint the **fine-grained PAT**, then run the one
+definitive end-to-end test — set that PAT as `COPILOT_GITHUB_TOKEN` on a demo repo and dispatch
+`run-phase.yml`. See *"What you need to provision"* at the foot of this doc.
+
 ### Phase 1 — Containerize and prove locally
 
-- Write the **Dockerfile** (Node 20 + GitHub CLI + `pip install markitdown[...]`).
-- Add the **`STORE` env override** so the pointer file can live on a mounted volume.
+- **Write the Dockerfile** — done: [`surface/Dockerfile`](./Dockerfile) (Node 20 + GitHub CLI +
+  `markitdown[docx,pptx,xlsx,pdf]`), built and run-proven above. Baseline only — still to add:
+  non-root user and a slimmer multi-stage build before production.
+- Add the **`STORE` env override** so the pointer file can live on a mounted volume *(small
+  one-line code change in `server.mjs`; not yet done).*
 - Configure via env: `GH_TOKEN`, `TEMPLATE_OWNER/REPO`, `MARKITDOWN_PYTHON`, `STORE`, `PORT`.
 - **Acceptance:** in a local container, run the full flow end-to-end against a demo repo —
   provision → add a source → synthesize context → generate a deliverable → see it on the board.
+
 
 ### Phase 2 — Stand up Azure, locked down
 
@@ -183,3 +213,31 @@ compromises:
 
 Everything else in this plan — the container, Entra auth, Key Vault, Azure Files,
 App Insights — carries forward unchanged.
+
+## What you need to provision (the gate's remaining human step)
+
+Phase 0 proved the *mechanism*. To finish the gate, someone with the right GitHub org / IT
+rights must create the shared service identity — this can't be automated from the surface:
+
+1. **Create a service-account GitHub user** (e.g. `vibe-engine-svc`) and give it access to the
+   template repo and wherever engagement repos should live.
+2. **Assign it a Copilot Business seat** (Org → Settings → Copilot → Access). *Without a seat,
+   no token will drive `copilot -p`, regardless of type.*
+3. **Mint a fine-grained PAT** on that account at
+   <https://github.com/settings/personal-access-tokens/new> with:
+   - **Copilot Requests** — to run the engine (`copilot -p`);
+   - **Administration: read/write** — create repos from the template + manage Actions secrets;
+   - **Contents: read/write** — the Actions run commits deliverables back;
+   - **Actions: read/write** + **Workflows: read/write** — dispatch and update `run-phase.yml`;
+   - **Metadata: read** (implied).
+
+   *(One token does double duty in the pilot: the surface's control-plane `gh` calls **and** the
+   mirrored engine `COPILOT_GITHUB_TOKEN`. These can be split into two narrower tokens later.)*
+4. **Run the one definitive test:** set that PAT as the `COPILOT_GITHUB_TOKEN` secret on a demo
+   engagement repo and dispatch `run-phase.yml` (e.g. `vibe-personas`). A green run that commits
+   a deliverable back closes Phase 0 end-to-end. *(Today's runs use a designer's own token; this
+   swaps in the service account's.)*
+
+Once that token exists, it goes into **Azure Key Vault** and the rest of the plan (Phases 1–4)
+proceeds.
+
