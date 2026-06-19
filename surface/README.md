@@ -9,6 +9,10 @@ engine running headless in GitHub Actions.
 > **Architecture:** see [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the full dispatch
 > chain (web → workflow → `resolve-prompt` → `copilot -p` → prompts/agents/templates),
 > the source→document→provenance flow, and the HTTP API.
+>
+> **Deployment:** see [`DEPLOYMENT.md`](./DEPLOYMENT.md) for the pilot plan to host the
+> surface on Azure (Container Apps + Entra) so designers can use it without VS Code or a
+> local toolchain.
 
 ## What it does
 

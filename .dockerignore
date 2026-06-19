@@ -1,0 +1,4 @@
+.git
+**/node_modules
+surface/.engagements.json
+.copilot-tracking

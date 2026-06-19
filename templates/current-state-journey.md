@@ -20,6 +20,8 @@ The agent grades this document **A / B / C**:
 
 Discover cannot close until this document is at **Grade B or higher**.
 
+> **Grade:** {{GRADE}}
+
 ---
 
 ## Key persona
