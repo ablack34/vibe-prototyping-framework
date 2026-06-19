@@ -164,13 +164,46 @@ definitive end-to-end test — set that PAT as `COPILOT_GITHUB_TOKEN` on a demo 
   store persistence) is already proven.
 
 
-### Phase 2 — Stand up Azure, locked down
+### Phase 2 — Stand up Azure, locked down — BUILT (IaC + pipeline) (2026-06-19)
 
-- Push the image to **ACR**; deploy to **Container Apps** (1 replica, HTTPS ingress).
-- Wire **Key Vault** (the service token) and an **Azure Files** mount (the store).
-- Turn on **Entra Easy Auth**, restricted to the **named pilot users only** (no anonymous).
-- **Acceptance:** a pilot designer opens the private HTTPS URL, signs in with their Microsoft
-  account, and drives an engagement. A non-pilot user is denied.
+Codified as infrastructure-as-code + CI/CD under [`surface/infra/`](./infra/) and
+[`.github/workflows/deploy-surface.yml`](../.github/workflows/deploy-surface.yml). See
+[`surface/infra/README.md`](./infra/README.md) for the operator guide.
+
+- **Bicep** (`surface/infra/main.bicep`, subscription scope, matches `scaffold/infra` conventions)
+  provisions the whole topology: **Container Apps** env + app (1 replica, HTTPS ingress, port 4310),
+  **ACR** (image, pulled via managed identity — no admin user), **Key Vault** (service token, read via
+  managed identity), **Storage + Azure Files** (`/data` store mount — optional; auto-skipped where org
+  policy disables storage shared keys, see the live note below), **Log Analytics + App Insights**,
+  a **user-assigned managed identity** (AcrPull + Key Vault Secrets User), and an **optional Entra Easy
+  Auth wall** (conditional on an app-registration client ID).
+- **Pipeline** (`deploy-surface.yml`) on push to `main` touching `surface/**`: **OIDC** login (federated
+  credentials, no stored passwords) → `az deployment sub create` → **`az acr build`** (image built inside
+  Azure, no Docker on the runner) → `az containerapp update`. Guarded by `vars.SURFACE_DEPLOY_CONFIGURED`
+  and stripped from provisioned engagement repos (`tidy-repo.mjs`).
+- **One-time bootstrap** (`surface/infra/bootstrap.ps1`) creates the OIDC identity, grants it deploy
+  rights, and wires the GitHub variables/secrets; Part B registers the Entra sign-in wall once the URL
+  exists.
+- **PROVEN live & serving (2026-06-19):** `az deployment sub create` stood the full topology up in
+  `rg-vibe-surface` (`provisioningState: Succeeded`) — role assignments, the Key Vault secret write, and
+  the managed-identity wiring all succeeded against real ARM. `az acr build` built the real surface image
+  in ACR and `az containerapp update` rolled it out. The live surface now answers over HTTPS:
+  `GET /api/config` → `200 {"template":"ablack34/vibe-prototyping-framework","defaultOwner":"ablack34"}`
+  and the SPA root (`200`, *"VIBE — New Engagement"*) — proving the whole secret chain end-to-end
+  (**managed identity → Key Vault → `GH_TOKEN` → `gh api user` resolved `ablack34`**). Deployed with a
+  designer's own `gh` token as the service token (run-as-you), exactly as the pipeline will with the
+  service-account `COPILOT_SERVICE_TOKEN`.
+- **Live finding — storage shared-key policy.** On this MCAPS subscription a corporate Azure Policy
+  force-disables `allowSharedKeyAccess` on every storage account (re-disabling it within seconds of an
+  override). Container Apps Azure Files mounts can authenticate **only** with the account key, so the
+  durable mount failed (`mount error(13): Permission denied`, revision stuck *Activating*). Fix: the mount
+  is now an **optional** Bicep param (`enablePersistentStore`, pipeline var `SURFACE_PERSISTENT_STORE`);
+  deployed with it **off** so `/data` is ephemeral and the app starts cleanly. The store is just
+  engagement *pointers* (every engagement is a real GitHub repo; the board re-reads live gate state per
+  repo), so ephemeral is acceptable for the pilot. Durable options: a storage-account policy exemption, or
+  a future git-backed store. Documented in [`infra/README.md`](./infra/README.md#durable-store--org-policy-shared-key-access).
+- **Still to lock down for the pilot:** turn on the Entra Easy Auth wall (Part B), restricted to the named
+  pilot users; and swap the run-as-you token for the dedicated **service-account** token + Copilot seat.
 
 ### Phase 3 — Observability and a runbook
 

@@ -29,6 +29,7 @@ const STRIP_FILES = new Set([
   '.github/workflows/ci.yml',
   '.github/workflows/deploy-api.yml',
   '.github/workflows/deploy-docs.yml',
+  '.github/workflows/deploy-surface.yml',
   '.github/workflows/deploy-swa.yml',
   '.github/workflows/phase-consistency.yml',
 ]);

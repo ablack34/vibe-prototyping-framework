@@ -1,0 +1,113 @@
+name: Deploy Surface (Azure Container Apps)
+
+# CD for the VIBE web surface (Shape B — hosted single-tenant on Azure).
+#
+# On a push to main that touches surface/**, this provisions/updates the Azure
+# infrastructure (Bicep), builds the container image inside Azure Container
+# Registry, and rolls it out to the Container App. See surface/infra/README.md
+# for the one-time bootstrap that sets up the OIDC trust + secrets/variables.
+#
+# Authenticates to Azure with OIDC (federated credentials) — no stored passwords.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "surface/**"
+      - ".github/workflows/deploy-surface.yml"
+  workflow_dispatch:
+    inputs:
+      enableAuth:
+        description: "Deploy with the Entra sign-in wall (needs AUTH_CLIENT_ID/AUTH_CLIENT_SECRET configured)"
+        type: boolean
+        default: false
+
+permissions:
+  id-token: write # required for azure/login OIDC
+  contents: read
+
+jobs:
+  deploy:
+    name: Build & deploy the surface
+    runs-on: ubuntu-latest
+    # Only a configured framework repo deploys the surface. Provisioned engagement
+    # repos never get this variable (and tidy-repo strips this workflow), so the
+    # job cleanly skips everywhere except where it's meant to run.
+    if: vars.SURFACE_DEPLOY_CONFIGURED == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Provision infrastructure (Bicep)
+        id: infra
+        env:
+          ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
+          LOCATION: ${{ vars.AZURE_LOCATION }}
+          SERVICE_TOKEN: ${{ secrets.COPILOT_SERVICE_TOKEN }}
+          PERSISTENT_STORE: ${{ vars.SURFACE_PERSISTENT_STORE }}
+          ENABLE_AUTH: ${{ inputs.enableAuth }}
+          AUTH_CLIENT_ID: ${{ secrets.AUTH_CLIENT_ID }}
+          AUTH_CLIENT_SECRET: ${{ secrets.AUTH_CLIENT_SECRET }}
+        run: |
+          set -euo pipefail
+          appName="ca-${ENV_NAME}"
+          rgName="rg-${ENV_NAME}"
+
+          # Preserve the currently-running image so re-provisioning doesn't flap the
+          # app back to the placeholder before the rollout step swaps in the new one.
+          current=$(az containerapp show -n "$appName" -g "$rgName" \
+            --query "properties.template.containers[0].image" -o tsv 2>/dev/null || true)
+
+          params=(environmentName="$ENV_NAME" location="$LOCATION" serviceToken="$SERVICE_TOKEN")
+          if [ -n "$current" ] && [[ "$current" != mcr.microsoft.com/* ]]; then
+            params+=(containerImage="$current")
+          fi
+          if [ "${ENABLE_AUTH}" = "true" ]; then
+            params+=(authClientId="$AUTH_CLIENT_ID" authClientSecret="$AUTH_CLIENT_SECRET")
+          fi
+          # Opt out of the durable Azure Files mount where org policy disables storage
+          # shared-key access (the mount can only auth via account key). Set the repo
+          # variable SURFACE_PERSISTENT_STORE=false in that case; /data is then ephemeral.
+          if [ "${PERSISTENT_STORE}" = "false" ]; then
+            params+=(enablePersistentStore=false)
+          fi
+
+          az deployment sub create \
+            --name "vibe-surface-${GITHUB_RUN_NUMBER}" \
+            --location "$LOCATION" \
+            --template-file surface/infra/main.bicep \
+            --parameters "${params[@]}" \
+            --query properties.outputs -o json > outputs.json
+
+          {
+            echo "acrName=$(jq -r '.acrName.value' outputs.json)"
+            echo "acrLoginServer=$(jq -r '.acrLoginServer.value' outputs.json)"
+            echo "containerAppName=$(jq -r '.containerAppName.value' outputs.json)"
+            echo "resourceGroupName=$(jq -r '.resourceGroupName.value' outputs.json)"
+            echo "fqdn=$(jq -r '.containerAppFqdn.value' outputs.json)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build image in ACR
+        run: |
+          set -euo pipefail
+          az acr build \
+            --registry "${{ steps.infra.outputs.acrName }}" \
+            --image "vibe-surface:${{ github.sha }}" \
+            --image "vibe-surface:latest" \
+            --file surface/Dockerfile .
+
+      - name: Roll out the new image
+        run: |
+          set -euo pipefail
+          az containerapp update \
+            --name "${{ steps.infra.outputs.containerAppName }}" \
+            --resource-group "${{ steps.infra.outputs.resourceGroupName }}" \
+            --image "${{ steps.infra.outputs.acrLoginServer }}/vibe-surface:${{ github.sha }}"
+          echo "### Surface deployed :rocket:" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://${{ steps.infra.outputs.fqdn }}" >> "$GITHUB_STEP_SUMMARY"
