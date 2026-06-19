@@ -567,7 +567,7 @@ async function boardDetailLocal(kebab) {
   const prepGate = await assemblePrep(deliverables, repoFetch, kebab, researchResults.length);
   const bySource = attachDeliverableProvenance(deliverables, [...workshopSources, ...researchResults].map((s) => s.path));
   const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
-  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, preparation: { gate: prepGate, researchResults }, provenance: { bySource } };
+  return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, preparation: { gate: prepGate, researchResults }, mockData: { files: await listMockDataLocal() }, provenance: { bySource } };
 }
 
 // Primary detail: gate state + rendered deliverables read from the engagement's
@@ -621,6 +621,7 @@ async function boardDetail(kebab) {
     kinds: sourceKindMeta(),
     disrupt: { gate: g.gates.disrupt, workshopSources },
     preparation: { gate: prepGate, researchResults },
+    mockData: { files: await listMockData(rec) },
     provenance: { bySource },
   };
 }
@@ -1042,6 +1043,77 @@ async function addSource(input) {
   return { code: 200, body: { ok: true, path, kind, name: name || spec.label, original, converted: !!raw, updated: put.updated } };
 }
 
+// ---- mock data: raw structured files for the prototype's data layer ---------
+// Designers stage the customer's CSV / Excel / JSON into sources/sample-data/.
+// They sync to the repo and the engineer's /vibe-data-prep agent turns them into
+// typed models + a DataService under scaffold/data/ during Build. Stored RAW (no
+// MarkItDown) — the agent needs the original structured bytes, not a Markdown table.
+// This is the opposite of the Sources bucket: sources GROUND what the AI writes;
+// mock data POWERS what the prototype renders. CSV/Excel/JSON only — a PDF/Word file
+// isn't structured data, so it belongs in the Sources bucket instead.
+const MOCKDATA_DIR = 'sources/sample-data';
+const DATA_EXTS = new Set(['.csv', '.xlsx', '.xls', '.json']);
+
+const dataFileEntry = (f) => ({
+  name: f.name, path: f.path, size: f.size, htmlUrl: f.html_url,
+  ext: extname(f.name).slice(1).toLowerCase(),
+});
+
+// GitHub-backed listing (the live board). README placeholder + any non-data file
+// is filtered out so the bucket only ever shows real staged data.
+async function listMockData(rec) {
+  const files = await listRepoDir(rec.repo, MOCKDATA_DIR);
+  return files
+    .filter((f) => f.name !== 'README.md' && DATA_EXTS.has(extname(f.name).toLowerCase()))
+    .map(dataFileEntry);
+}
+
+// Local-dev listing (the ?source=local board), mirroring how workshop captures are
+// read off disk — no htmlUrl, since there's no committed blob to link to.
+async function listMockDataLocal() {
+  try {
+    const ents = await readdir(join(REPO_ROOT, 'sources', 'sample-data'), { withFileTypes: true });
+    return ents
+      .filter((e) => e.isFile() && e.name !== 'README.md' && DATA_EXTS.has(extname(e.name).toLowerCase()))
+      .map((e) => ({ name: e.name, path: `${MOCKDATA_DIR}/${e.name}`, ext: extname(e.name).slice(1).toLowerCase() }));
+  } catch { return []; }
+}
+
+// Keep the customer's original filename but make it filesystem/URL-safe and force a
+// recognised data extension. Returns null for anything that isn't CSV / Excel / JSON.
+function safeDataName(filename) {
+  const base = String(filename || '').split(/[\\/]/).pop() || '';
+  const ext = extname(base).toLowerCase();
+  if (!DATA_EXTS.has(ext)) return null;
+  const stem = base.slice(0, -ext.length).replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+  return (stem || 'data') + ext;
+}
+
+// Commit one raw data file to sources/sample-data/. No conversion, no grounding flag —
+// mock data feeds the prototype, not the Discover/Disrupt generators, so it must never
+// flip seedDemo or get cited as evidence.
+async function addMockData(input) {
+  const id = String(input.kebab || '').trim();
+  const filename = String(input.filename || '').trim();
+  if (!id) return { code: 400, body: { error: 'Engagement is required.' } };
+  if (!input.dataBase64) return { code: 400, body: { error: 'Attach a CSV, Excel or JSON file.' } };
+  const safe = safeDataName(filename);
+  if (!safe)
+    return { code: 415, body: { error: `Only CSV, Excel (.xlsx/.xls) and JSON are accepted as mock data. “${filename}” isn’t structured data — if it’s a document, add it as a Source instead.` } };
+  const buffer = Buffer.from(String(input.dataBase64), 'base64');
+  if (!buffer.length) return { code: 400, body: { error: 'The uploaded file was empty.' } };
+  if (buffer.length > 25 * 1024 * 1024)
+    return { code: 413, body: { error: 'That file is larger than 25 MB. Trim or split it before staging.' } };
+  const rec = (await readStore()).find((r) => (r.id || '') === id);
+  if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
+
+  const path = `${MOCKDATA_DIR}/${safe}`;
+  const put = await putRepoFile(rec.repo, path, buffer.toString('base64'),
+    `Add mock data: ${safe} — via VIBE web surface`);
+  if (!put.ok) return { code: 502, body: { error: 'Could not save the data file.', detail: put.detail } };
+  return { code: 200, body: { ok: true, path, name: safe, updated: put.updated } };
+}
+
 // ---- tiny static + JSON server ----
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
@@ -1131,6 +1203,23 @@ const server = createServer(async (req, res) => {
       for await (const chunk of req) raw += chunk;
       const input = raw ? JSON.parse(raw) : {};
       const { code, body } = await addSource(input);
+      return send(res, code, body);
+    }
+
+    // Mock data: raw CSV/Excel/JSON staged into sources/sample-data/ for the engineer's
+    // /vibe-data-prep agent. GET lists what's staged; POST commits a raw file.
+    if (req.method === 'GET' && url.pathname === '/api/data') {
+      const id = url.searchParams.get('kebab');
+      const rec = (await readStore()).find((r) => (r.id || '') === id);
+      if (!rec || !rec.repo) return send(res, 404, { error: 'Engagement not found' });
+      return send(res, 200, { files: await listMockData(rec) });
+    }
+
+    if (req.method === 'POST' && url.pathname === '/api/data') {
+      let raw = '';
+      for await (const chunk of req) raw += chunk;
+      const input = raw ? JSON.parse(raw) : {};
+      const { code, body } = await addMockData(input);
       return send(res, code, body);
     }
 

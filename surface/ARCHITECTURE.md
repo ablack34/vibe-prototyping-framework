@@ -165,6 +165,25 @@ the web and CLI views can't drift. Disrupt runs always dispatch `seed_demo=false
 they ground in the Discover deliverables and workshop captures, never the Contoso
 seed.
 
+### The Mock-data bucket (staging the prototype's data layer)
+
+The structured data that *powers* the prototype is distinct from the Sources that
+*ground* what the AI writes. The `#data` section (`renderData` in `engagement.js`) is a
+staging bucket for the customer's **CSV / Excel / JSON** — the only formats the `VIBE
+Data Prep` agent consumes. Files commit **raw** (no MarkItDown — the agent needs the
+original structured bytes) to `sources/sample-data/`, where the engineer's
+`/vibe-data-prep` later turns them into typed models + a `DataService` under
+`scaffold/data/` during Build.
+
+It is deliberately the **opposite** of the Sources bucket: sources convert to Markdown
+and are cited as evidence; mock data stays raw and never grounds a deliverable — so
+`addMockData` never flips `seedDemo` and never feeds provenance. A PDF or Word file isn't
+structured data, so the bucket rejects it (HTTP 415) and points the designer at the
+Sources bucket instead. A prominent advisory reinforces the agent's hard PII guardrail —
+**mock or anonymised data only**. The bucket is **always visible** (a capability advert)
+and sits at the bottom of the board: the bridge from the designer phases to
+engineer-owned Build.
+
 ## The synthesize-context step
 
 `PROJECT-CONTEXT.md` is the engagement's **single source of truth** — the three
@@ -219,13 +238,15 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 | `GET /api/engagements` | List known engagements (from `.engagements.json`) |
 | `POST /api/engagements` | Provision a new engagement repo from the template |
 | `GET /api/board` | List engagements with summary gate state |
-| `GET /api/board/:kebab` | Full board detail: gates, deliverables (+markdown), sources, **context** presence, provenance, **preparation** (gate + M365 research results), **disrupt** (gate + workshop captures) |
+| `GET /api/board/:kebab` | Full board detail: gates, deliverables (+markdown), sources, **context** presence, provenance, **preparation** (gate + M365 research results), **disrupt** (gate + workshop captures), **mockData** (staged prototype data) |
 | `POST /api/run` | Dispatch a phase run (`{ kebab, file, seedDemo }`) |
 | `GET /api/run/status` | Latest `run-phase.yml` run status for an engagement |
 | `POST /api/approve` | Record a web sign-off on a deliverable (Discover + the two sign-off-capable Disrupt artifacts) |
 | `GET /api/sources` | List an engagement's sources (+ kinds metadata) |
 | `GET /api/source` | Fetch one source/deliverable's markdown (scoped to `sources/` or `engagement/<id>/`) |
 | `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown). `kind:'workshop'` routes to `sources/workshop/` for Disrupt captures; `kind:'m365-results'` routes to `sources/research/m365-researcher-results.md` for the Preparation research paste-back |
+| `GET /api/data` | List an engagement's staged mock data (raw files under `sources/sample-data/`) |
+| `POST /api/data` | Stage a raw CSV/Excel/JSON file into `sources/sample-data/` for the engineer's `/vibe-data-prep`. No conversion; non-data formats are rejected (415) |
 
 ## Files
 
@@ -233,7 +254,7 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 |------|------|
 | `surface/server.mjs` | Zero-dependency Node HTTP server: routes, GitHub calls, run dispatch, source ingest |
 | `surface/public/index.html` + `app.js` | Landing page: engagement list + "New engagement" |
-| `surface/public/engagement.html` + `engagement.js` | The engagement dashboard (timeline, gates, deliverable cards, sources bucket, context band, **Preparation section + research paste-back bucket**, **Disrupt section + workshop bucket**, viewer) |
+| `surface/public/engagement.html` + `engagement.js` | The engagement dashboard (timeline, gates, deliverable cards, sources bucket, context band, **Preparation section + research paste-back bucket**, **Disrupt section + workshop bucket**, **Mock-data bucket**, viewer) |
 | `surface/public/markdown.js` | Tiny client-side Markdown renderer for the viewer |
 | `surface/public/styles.css` | All styling (dark theme, design-token `:root` vars) |
 | `surface/tidy-repo.mjs` | Post-provision cleanup of a generated engagement repo |

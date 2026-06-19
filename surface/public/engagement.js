@@ -1147,6 +1147,102 @@ async function approve(file) {
   }
 }
 
+// ---- Mock data: raw structured files that power the prototype's data layer ---
+// Staged into sources/sample-data/ and synced to the repo; the engineer's
+// /vibe-data-prep agent turns them into typed models + a DataService during Build.
+// Distinct from Sources (which ground what the AI WRITES) — these power what the
+// prototype SHOWS. CSV/Excel/JSON only; documents belong in the Sources bucket.
+const DATA_EXT_LIST = ['csv', 'xlsx', 'xls', 'json'];
+const DATA_ACCEPT = DATA_EXT_LIST.map((e) => `.${e}`).join(',');
+
+function fmtBytes(n) {
+  if (n == null) return '';
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${Math.round(n / 1024)} KB`;
+  return `${(n / (1024 * 1024)).toFixed(1)} MB`;
+}
+function dataExtOk(name) {
+  const e = (String(name).toLowerCase().match(/\.([^.]+)$/) || [, ''])[1];
+  return DATA_EXT_LIST.includes(e);
+}
+
+function renderData(data) {
+  const el = document.getElementById('data');
+  if (!el) return;
+  el.hidden = false;
+  const files = (data.mockData && data.mockData.files) || [];
+  const list = files.length
+    ? files.map((f) => `<div class="src-card">
+        <div class="src-card-top">
+          <span class="src-kind data-ext">${esc(String(f.ext || 'data').toUpperCase())}</span>
+          <span class="src-name">${esc(f.name)}</span>
+          ${f.size != null ? `<span class="data-size">${esc(fmtBytes(f.size))}</span>` : ''}
+          <span class="grow"></span>
+          ${f.htmlUrl ? `<a class="src-link" href="${esc(f.htmlUrl)}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}
+        </div>
+      </div>`).join('')
+    : `<div class="src-empty">No mock data yet. Drop the customer's <strong>CSV, Excel or JSON</strong> here — the engineer's <code>/vibe-data-prep</code> turns it into the prototype's data layer during Build.</div>`;
+
+  el.innerHTML = `
+    <div class="gate gate-data">
+      <div class="gate-head">
+        <h2>Mock data <span class="pill pill-grey">${files.length} file${files.length === 1 ? '' : 's'}</span></h2>
+        <div class="gate-counts">→ sources/sample-data/ · powers the prototype</div>
+      </div>
+      <p class="dz-intro">The structured data that <strong>powers the prototype</strong> the engineer builds — separate from the Sources above, which ground what the AI <em>writes</em>. Drop the customer's <strong>CSV / Excel / JSON</strong> here; it syncs to the repo and the engineer's <code>/vibe-data-prep</code> turns it into typed models during Build.</p>
+      <div class="data-warn">🔒 <strong>Mock or anonymised data only</strong> — never real customer PII. The Data Prep agent enforces a hard guardrail on names, emails, IDs and addresses; keep it clean from the start.</div>
+      <div class="dropzone" id="data-dropzone" tabindex="0" role="button" aria-label="Drop CSV, Excel or JSON, or click to browse">
+        <div class="dz-icon">⬇</div>
+        <div class="dz-main">Drop CSV, Excel or JSON here</div>
+        <div class="dz-sub">Structured/tabular data only · kept raw for the engineer · or click to browse</div>
+        <input type="file" id="data-input" multiple hidden accept="${DATA_ACCEPT}" />
+      </div>
+      <div class="data-status" id="data-status" hidden></div>
+      <div class="src-list">${list}</div>
+    </div>`;
+  wireDataBucket();
+}
+
+function wireDataBucket() {
+  const dz = document.getElementById('data-dropzone');
+  const input = document.getElementById('data-input');
+  if (!dz || !input) return;
+  dz.addEventListener('click', () => input.click());
+  dz.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+  dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('dz-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dz-over'));
+  dz.addEventListener('drop', (e) => {
+    e.preventDefault(); dz.classList.remove('dz-over');
+    if (e.dataTransfer.files.length) uploadDataFiles(e.dataTransfer.files);
+  });
+  input.addEventListener('change', () => { if (input.files.length) uploadDataFiles(input.files); input.value = ''; });
+}
+
+async function uploadDataFiles(fileList) {
+  const status = document.getElementById('data-status');
+  const set = (m, cls = '', busy = false) => { status.hidden = false; status.className = `data-status ${cls}`; status.innerHTML = (busy ? '<span class="spin"></span>' : '') + esc(m); };
+  const files = [...fileList];
+  const bad = files.filter((f) => !dataExtOk(f.name));
+  if (bad.length)
+    return set(`Only CSV, Excel and JSON are accepted here — ${bad.map((f) => f.name).join(', ')} ${bad.length === 1 ? "isn't" : "aren't"} structured data. Add documents as a Source instead.`, 'err');
+  let ok = 0;
+  for (const file of files) {
+    set(`Staging ${file.name}…`, '', true);
+    try {
+      const dataBase64 = await readFileB64(file);
+      const r = await fetch('/api/data', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kebab, filename: file.name, dataBase64 }),
+      });
+      const b = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(b.error || 'Could not stage that file.');
+      ok++;
+    } catch (e) { return set(e.message, 'err'); }
+  }
+  banner(`✅ ${ok} data file${ok === 1 ? '' : 's'} staged for the engineer — synced to the repo.`, 'ok');
+  await load();
+}
+
 async function load() {
   if (!kebab) { document.getElementById('gates').innerHTML = '<p class="err">No engagement specified.</p>'; return; }
   let data;
@@ -1181,6 +1277,7 @@ async function load() {
   document.getElementById('gates').innerHTML =
     gateBlock('Discover', data.gates.discover, discoverDs);
   renderDisrupt(data);
+  renderData(data);
 
   document.querySelectorAll('.btn-view').forEach((b) =>
     b.addEventListener('click', () => openViewer(b.dataset.file)));

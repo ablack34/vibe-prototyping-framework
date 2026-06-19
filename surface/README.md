@@ -31,6 +31,11 @@ engine running headless in GitHub Actions.
 - **Run the Disrupt workshop** — draft the pre-reads, drop what you bring back from
   the offline co-creation session into a dedicated workshop-capture bucket, then
   generate the post-workshop chain in its required order.
+- **Stage mock data** — drop the customer's **CSV / Excel / JSON** into a dedicated
+  Mock-data bucket. Files commit raw to `sources/sample-data/` (no conversion — kept
+  intact for the engineer) so `/vibe-data-prep` can turn them into the prototype's
+  typed data layer during Build. Distinct from the Source bucket: sources *ground*
+  what the AI writes; mock data *powers* what the prototype shows. PII advisory built in.
 - **Review & approve** — read every source and deliverable in-app (with provenance
   showing what fed what) and sign a deliverable off, writing the sign-off into the
   repo's `gates.json`.
@@ -77,7 +82,8 @@ Optional environment overrides:
 ## Scope
 
 The surface covers the **designer/PM-owned phases (1–3)** — capturing sources and
-generating/approving the **Preparation, Discover and Disrupt** deliverables. Build and
+generating/approving the **Preparation, Discover and Disrupt** deliverables, plus
+**staging the mock data** the engineer's `/vibe-data-prep` consumes. Build and
 Deliver (engineer-owned) stay in VS Code / the repo.
 
 Adding a new web-runnable step is a one-line `FILE_PROMPT` entry in `server.mjs` plus
