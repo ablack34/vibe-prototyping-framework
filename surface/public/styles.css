@@ -284,6 +284,14 @@ main.dash { max-width: 1040px; }
 .st-stale { color: #fb923c; }
 .st-missing { color: var(--muted); }
 .card-actions { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+/* Generator transparency: the agent + prompt a Generate/Regenerate dispatches. */
+.gen-meta { display: flex; align-items: center; gap: 6px; margin: 2px 0 9px; font-size: 11px; color: var(--muted); line-height: 1.3; }
+.gen-meta-ico { font-size: 11px; line-height: 1; opacity: .75; flex: none; }
+.gen-meta-txt { min-width: 0; overflow-wrap: anywhere; }
+.gen-meta-agent { color: var(--text); font-weight: 600; }
+.gen-meta code { font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 10.5px; color: var(--accent); background: rgba(110, 168, 254, 0.10); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; }
+.run-meta { color: var(--muted); font-weight: 500; }
+.run-meta code { font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 11px; color: var(--accent); }
 .btn-view { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; margin: 0; }
 .btn-view:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
 .btn-view:disabled { opacity: .4; cursor: not-allowed; }

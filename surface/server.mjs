@@ -28,7 +28,7 @@
 import { createServer } from 'node:http';
 import { execSync, execFile } from 'node:child_process';
 import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -627,7 +627,8 @@ async function boardDetailLocal(kebab) {
   } catch { /* none pasted back yet */ }
   const prepGate = await assemblePrep(deliverables, repoFetch, kebab, researchResults.length);
   const bySource = attachDeliverableProvenance(deliverables, [...workshopSources, ...researchResults].map((s) => s.path));
-  const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
+  const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md`, ...genMetaFor('PROJECT-CONTEXT.md') };
+  attachGenMeta(deliverables);
   return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, preparation: { gate: prepGate, researchResults }, mockData: { files: await listMockDataLocal() }, provenance: { bySource }, model: '', models: ENGINE_MODELS };
 }
 
@@ -665,7 +666,8 @@ async function boardDetail(kebab) {
   // ground in. It isn't a graded gate, so surface its presence separately so the
   // designer can synthesize it (from sources) before generating deliverables.
   const ctxPath = `engagement/${kebab}/PROJECT-CONTEXT.md`;
-  const context = { present: (await fetchRepoFile(rec.repo, ctxPath)) != null, path: ctxPath };
+  const context = { present: (await fetchRepoFile(rec.repo, ctxPath)) != null, path: ctxPath, ...genMetaFor('PROJECT-CONTEXT.md') };
+  attachGenMeta(deliverables);
   return {
     kebab,
     name: rec.name || kebab,
@@ -731,6 +733,41 @@ const DISRUPT_PROMPTS = new Set([
 const PREP_PROMPTS = new Set([
   'vibe-engagement-brief', 'vibe-customer-brief', 'vibe-research', 'vibe-schedule',
 ]);
+
+// ---- generator transparency -------------------------------------------------
+// Surface the exact agent + prompt each "Generate" runs, so the designer can see
+// what's working under the hood. The agent is the prompt file's `agent:`
+// frontmatter — the very binding the headless runner resolves at run time
+// (scripts/resolve-prompt.mjs → .vibe/agent.txt → `copilot --agent`). We read it
+// from the prompts shipped inside the image (REPO_ROOT/.github/prompts) and cache,
+// so the board reflects the live binding and can never drift from a hardcoded copy.
+const _agentCache = new Map();
+function agentForPrompt(promptId) {
+  if (!promptId) return null;
+  if (_agentCache.has(promptId)) return _agentCache.get(promptId);
+  let agent = null;
+  try {
+    const txt = readFileSync(join(REPO_ROOT, '.github', 'prompts', `${promptId}.prompt.md`), 'utf8');
+    const fm = txt.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    const am = fm && fm[1].match(/^agent:\s*(.+)$/m);
+    if (am) agent = am[1].trim().replace(/^["']|["']$/g, '');
+  } catch { /* prompt not in image (e.g. older engagement repo) — leave null */ }
+  _agentCache.set(promptId, agent);
+  return agent;
+}
+// { prompt, agent } for a deliverable file — nulls when no generator is wired.
+function genMetaFor(file) {
+  const prompt = FILE_PROMPT[file] || null;
+  return { prompt, agent: prompt ? agentForPrompt(prompt) : null };
+}
+// Stamp every generatable card with the agent + prompt that produces it.
+function attachGenMeta(deliverables) {
+  for (const d of deliverables) {
+    const { prompt, agent } = genMetaFor(d.file);
+    if (prompt) { d.prompt = prompt; d.agent = agent; }
+  }
+  return deliverables;
+}
 
 async function runPhase(input) {
   const kebab = String(input.kebab || '').trim();

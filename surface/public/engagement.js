@@ -104,6 +104,18 @@ function cardState(d) {
   return ['Awaiting approval', 'st-await'];
 }
 
+// Transparency: name the exact agent + prompt a Generate/Regenerate runs. Always
+// visible on generatable cards so the designer can see what's working under the hood.
+// Reads the live binding the server resolved from the prompt's `agent:` frontmatter.
+function genCaption(meta) {
+  if (!meta || !meta.prompt) return '';
+  const agent = esc(meta.agent || 'VIBE engine');
+  const prompt = esc(meta.prompt);
+  return `<div class="gen-meta" title="Clicking Generate dispatches the headless VIBE engine in this engagement's repo (GitHub Actions → run-phase.yml): the ${agent} agent running the ${prompt} prompt.">`
+    + `<span class="gen-meta-ico">⚙️</span><span class="gen-meta-txt">Runs <span class="gen-meta-agent">${agent}</span> · <code>${prompt}</code></span>`
+    + `</div>`;
+}
+
 function deliverableCard(d) {
   const [state, stateCls] = cardState(d);
   return `<div class="dcard ${d.present ? '' : 'dcard-empty'}">
@@ -113,6 +125,7 @@ function deliverableCard(d) {
     </div>
     <div class="card-state ${stateCls}">${state}</div>
     ${d.present ? provSummary(d) : ''}
+    ${genCaption(d)}
     <div class="card-actions">
       <button class="btn-view" data-file="${d.file}" ${d.present ? '' : 'disabled'}>View</button>
       ${!d.present && GENERATABLE.has(d.file) ? `<button class="btn-gen" data-gen="${d.file}"><span class="gen-ico">✨</span><span class="gen-txt">Generate</span></button>` : ''}
@@ -170,6 +183,7 @@ function disruptCard(d) {
     <div class="card-state ${stateCls}">${esc(state)}</div>
     ${d.present ? provSummary(d) : ''}
     ${lock}${sparkHint}
+    ${genCaption(d)}
     <div class="card-actions">${actions}</div>
   </div>`;
 }
@@ -241,6 +255,7 @@ function preparationCard(d) {
     <div class="card-state ${stateCls}">${esc(state)}</div>
     ${d.present ? provSummary(d) : ''}
     ${lock}${pasteHint}
+    ${genCaption(d)}
     <div class="card-actions">${actions}</div>
   </div>`;
 }
@@ -565,13 +580,13 @@ function renderContext() {
         <span class="grow"></span>
         <button class="src-view" data-srcpath="${path}">View</button>
         <button class="btn-gen btn-soft" data-gen="PROJECT-CONTEXT.md"><span class="gen-ico">↻</span><span class="gen-txt">Re-synthesize</span></button>
-      </div>`;
+      </div>${genCaption(CONTEXT)}`;
   } else if (hasSources) {
     body = `<div class="ctx-row">
         <span class="ctx-copy"><strong>Step 1 — synthesize your project context.</strong> The engine reads every source and builds <code>PROJECT-CONTEXT.md</code>, the single source of truth your Discover deliverables ground in. Do this before you generate them.</span>
         <span class="grow"></span>
         <button class="btn-gen" data-gen="PROJECT-CONTEXT.md"><span class="gen-ico">✨</span><span class="gen-txt">Synthesize context</span></button>
-      </div>`;
+      </div>${genCaption(CONTEXT)}`;
   } else {
     body = `<div class="ctx-row ctx-empty">
         <span class="ctx-copy">Add your customer's sources above, then synthesize the <strong>project context</strong> that grounds every Discover deliverable.</span>
@@ -1089,6 +1104,12 @@ async function generate(file) {
   const isDisrupt = d && d.gate === 'disrupt';
   const isPrep = d && d.gate === 'preparation';
   const grounded = SOURCES.length > 0;
+  // Transparency: name the agent + prompt this run dispatches (same binding shown on
+  // the card). PROJECT-CONTEXT.md isn't a deliverable card, so fall back to CONTEXT.
+  const gm = (d && d.prompt) ? d : (file === 'PROJECT-CONTEXT.md' ? CONTEXT : null);
+  const runsNote = (gm && gm.prompt)
+    ? ` <span class="run-meta">· ${esc(gm.agent || 'VIBE engine')} running <code>${esc(gm.prompt)}</code></span>`
+    : '';
   // Disrupt deliverables ground in the signed-off Discover deliverables + workshop
   // captures, never the Contoso seed; Preparation grounds in the designer's sources &
   // briefs — so the "demo data" caveat only applies to Discover with no sources added.
@@ -1097,7 +1118,7 @@ async function generate(file) {
     : isPrep
       ? 'from your sources &amp; briefs'
       : (grounded ? 'from your sources' : '(Contoso demo data — no sources added)');
-  banner(`<span class="spin"></span> Generating <strong>${esc(title)}</strong> ${groundNote} — dispatching the engine…`, 'busy');
+  banner(`<span class="spin"></span> Generating <strong>${esc(title)}</strong> ${groundNote} — dispatching the engine…${runsNote}`, 'busy');
 
   let priorId = null;
   try { priorId = (await (await fetch(`/api/run/status?kebab=${kebab}`)).json()).databaseId || null; } catch { /* none yet */ }
@@ -1124,9 +1145,9 @@ async function generate(file) {
     const link = run.url ? ` <a href="${run.url}" target="_blank" rel="noopener">view run ↗</a>` : '';
 
     if (!isNew) {
-      banner(`<span class="spin"></span> Generating <strong>${title}</strong> — queuing the run…`, 'busy');
+      banner(`<span class="spin"></span> Generating <strong>${title}</strong> — queuing the run…${runsNote}`, 'busy');
     } else if (run.status !== 'completed') {
-      banner(`<span class="spin"></span> Generating <strong>${title}</strong> — engine running in GitHub Actions (${run.status})…${link}`, 'busy');
+      banner(`<span class="spin"></span> Generating <strong>${title}</strong> — engine running in GitHub Actions (${run.status})…${runsNote}${link}`, 'busy');
     } else {
       clearInterval(poll);
       RUNNING = false;
