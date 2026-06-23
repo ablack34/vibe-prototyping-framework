@@ -55,6 +55,10 @@ jobs:
           ENABLE_AUTH: ${{ inputs.enableAuth }}
           AUTH_CLIENT_ID: ${{ secrets.AUTH_CLIENT_ID }}
           AUTH_CLIENT_SECRET: ${{ secrets.AUTH_CLIENT_SECRET }}
+          OAUTH_CLIENT_ID: ${{ vars.SURFACE_OAUTH_CLIENT_ID }}
+          OAUTH_CLIENT_SECRET: ${{ secrets.SURFACE_OAUTH_CLIENT_SECRET }}
+          OAUTH_BASE_URL: ${{ vars.SURFACE_BASE_URL }}
+          OAUTH_ALLOWED_LOGINS: ${{ vars.SURFACE_ALLOWED_LOGINS }}
         run: |
           set -euo pipefail
           appName="ca-${ENV_NAME}"
@@ -83,6 +87,22 @@ jobs:
           # the service token can write. The store then survives restarts/redeploys.
           if [ -n "${STORE_REPO}" ]; then
             params+=(storeRepo="$STORE_REPO")
+          fi
+          # Per-user GitHub sign-in (multi-user mode). Set the repo variable
+          # SURFACE_OAUTH_CLIENT_ID + secret SURFACE_OAUTH_CLIENT_SECRET (from a GitHub
+          # OAuth App whose callback is https://<fqdn>/auth/callback, scopes repo+workflow)
+          # to require each designer to sign in with their own GitHub identity. Recommended
+          # to also pin SURFACE_BASE_URL=https://<fqdn> so the OAuth redirect_uri is exact.
+          # Optionally restrict access with SURFACE_ALLOWED_LOGINS=login1,login2. When the
+          # client id/secret are unset the surface runs in legacy single-user mode.
+          if [ -n "${OAUTH_CLIENT_ID}" ] && [ -n "${OAUTH_CLIENT_SECRET}" ]; then
+            params+=(oauthClientId="$OAUTH_CLIENT_ID" oauthClientSecret="$OAUTH_CLIENT_SECRET")
+            if [ -n "${OAUTH_BASE_URL}" ]; then
+              params+=(baseUrl="$OAUTH_BASE_URL")
+            fi
+            if [ -n "${OAUTH_ALLOWED_LOGINS}" ]; then
+              params+=(allowedLogins="$OAUTH_ALLOWED_LOGINS")
+            fi
           fi
 
           az deployment sub create \

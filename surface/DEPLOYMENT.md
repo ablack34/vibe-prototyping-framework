@@ -55,6 +55,50 @@ properties make that true, and each one becomes a task when we host it:
 > *read results* — so it stays small. State is one local pointer file
 > (`surface/.engagements.json`); everything real lives in GitHub.
 
+## Per-user GitHub sign-in (multi-user mode)
+
+The "runs as you" model above is the **legacy single-user mode**: one shared service identity,
+no sign-in wall, so anyone with the URL acts as the owner. That is fine for a solo pilot but is
+the wrong shape the moment a second designer needs it — their engagements would land in the
+owner's account and the owner's free-text "owner" field could ask GitHub to create a repo in an
+account it has no rights to (the original colleague-facing error).
+
+The surface therefore supports an opt-in **multi-user mode** where every designer signs in with
+their **own GitHub identity** via OAuth. It is **dual-mode with zero regression**:
+
+| | Legacy mode | Multi-user mode |
+|---|---|---|
+| **Trigger** | `OAUTH_CLIENT_ID` / `OAUTH_CLIENT_SECRET` **unset** | both **set** |
+| **Sign-in** | none (runs as the service identity) | full-page GitHub sign-in gate |
+| **Engagement owner** | honors the free-text `owner` field | **forced** to the signed-in user (free-text ignored) |
+| **Engine token** | service token mirrored into the repo | the signed-in user's token (their Copilot seat) |
+| **Visibility** | all engagements | each designer sees **only their own** |
+
+The shared private **pointer store** (`SURFACE_STORE_REPO`, e.g. `ablack34/vibe-surface-state`)
+is always accessed with the **service token**; everything else (repo creation, dispatch, status,
+sign-off, sources) runs as the **acting (signed-in) user**. Records are tagged `createdBy`, and
+cross-user ids resolve to 404 — no data leak.
+
+> **Each designer needs their own Copilot seat.** Per-user identity means the engine runs on the
+> signed-in user's token, which must carry a Copilot CLI seat.
+
+### Configure it
+
+1. **Register a GitHub OAuth App** (Settings → Developer settings → OAuth Apps → New):
+   - **Homepage URL:** `https://<fqdn>`
+   - **Authorization callback URL:** `https://<fqdn>/auth/callback` (must match exactly)
+   - After creating, **Generate a new client secret**. Collect the **Client ID** + **secret**.
+   - The app requests the `repo workflow` scopes at sign-in.
+2. **Set the config** (Bicep params or pipeline vars/secrets):
+   - `oauthClientId` ← repo var `SURFACE_OAUTH_CLIENT_ID`
+   - `oauthClientSecret` ← repo secret `SURFACE_OAUTH_CLIENT_SECRET` (stored in Key Vault as
+     `github-oauth-client-secret`, surfaced to the container as a secretRef)
+   - `baseUrl` ← repo var `SURFACE_BASE_URL` = `https://<fqdn>` (pins the OAuth `redirect_uri`)
+   - `allowedLogins` ← repo var `SURFACE_ALLOWED_LOGINS` = comma-separated allow-list (optional;
+     empty = any GitHub user who can sign in)
+
+Unset the client id/secret to fall back to legacy mode with byte-for-byte the old behavior.
+
 ## Target architecture
 
 ```mermaid

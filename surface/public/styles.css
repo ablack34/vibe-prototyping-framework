@@ -495,6 +495,80 @@ main.dash { max-width: 1040px; }
 .rr-capture textarea { width: 100%; box-sizing: border-box; }
 .rr-file-btn { cursor: pointer; }
 
+/* ─── Per-user GitHub sign-in ──────────────────────────────────────────────── */
+/* Full-page gate shown when sign-in is required and there's no session. */
+.auth-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: radial-gradient(1200px 600px at 70% -10%, #1b2030 0%, var(--bg) 55%);
+}
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 36px 34px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.auth-logo {
+  font-size: 34px;
+  color: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.auth-card h1 { font-size: 21px; margin: 10px 0 12px; }
+.auth-sub { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 0 0 22px; }
+.auth-err {
+  color: var(--red);
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-size: 13px;
+  margin: 0 0 18px;
+}
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+}
+.auth-btn:hover { filter: brightness(1.08); }
+
+/* Identity chip in the top bar once signed in. */
+.id-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 8px 5px 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel-2);
+}
+.id-avatar { width: 26px; height: 26px; border-radius: 50%; display: block; }
+.id-name { font-size: 13px; font-weight: 600; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.id-signout { font-size: 12px; color: var(--muted); text-decoration: none; padding-left: 8px; border-left: 1px solid var(--line); }
+.id-signout:hover { color: var(--accent); }
+
+/* Owner field locked to the signed-in account in multi-user mode. */
+input.locked { opacity: 0.75; cursor: not-allowed; }
+
+
 /* Mock data: raw CSV/Excel/JSON staged for the engineer's /vibe-data-prep. Amber
    accents (not source-blue) so it reads as a distinct, prototype-bound bucket. */
 .gate-data { position: relative; }

@@ -1413,4 +1413,10 @@ document.addEventListener('click', (e) => {
   }
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
-load();
+
+async function boot() {
+  const me = await vibeEnsureAuth();
+  if (!me) return; // sign-in gate is showing — stop here
+  load();
+}
+boot();
