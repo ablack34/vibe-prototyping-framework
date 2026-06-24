@@ -64,6 +64,19 @@ param storeRepo string = ''
 @description('Path within storeRepo for the engagement store JSON.')
 param storePath string = 'engagements.json'
 
+@description('Optional GitHub OAuth App client ID for per-user GitHub sign-in. Empty = legacy single-user mode (everyone acts as the service token — today\'s behaviour).')
+param oauthClientId string = ''
+
+@description('GitHub OAuth App client secret — required only when oauthClientId is set. Stored in Key Vault and read by the surface managed identity.')
+@secure()
+param oauthClientSecret string = ''
+
+@description('Public base URL of the surface (https://<fqdn>) used to build the OAuth redirect_uri. Set this to the deployed FQDN so it exactly matches the OAuth App callback. Empty = derive from the forwarded host header.')
+param baseUrl string = ''
+
+@description('Optional comma/space-separated allow-list of GitHub logins permitted to sign in. Empty = any GitHub user.')
+param allowedLogins string = ''
+
 @description('Tags applied to all resources')
 param tags object = {
   project: 'vibe-surface'
@@ -135,6 +148,7 @@ module keyvault 'modules/keyvault.bicep' = {
     tags: tags
     serviceToken: serviceToken
     kvReaderPrincipalId: identity.outputs.principalId
+    oauthClientSecret: oauthClientSecret
   }
 }
 
@@ -161,6 +175,10 @@ module app 'modules/container-app.bicep' = {
     authClientId: authClientId
     authClientSecret: authClientSecret
     authTenantId: authTenantId
+    oauthClientId: oauthClientId
+    oauthClientSecretUri: keyvault.outputs.oauthClientSecretUri
+    baseUrl: baseUrl
+    allowedLogins: allowedLogins
   }
 }
 

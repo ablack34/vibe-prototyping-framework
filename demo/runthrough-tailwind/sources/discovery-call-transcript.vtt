@@ -1,0 +1,173 @@
+WEBVTT
+NOTE
+Meeting: [VIBE] Tailwind Traders — Discovery Call
+Date: 2026-06-23
+Duration: 47 min
+Recording: Recorded - Transcript available
+Participants:
+  Tom Bryce (Microsoft, Account Executive)
+  Adam Black (Microsoft, S42 Engagement Lead)
+  Elena Marsh (Tailwind, Director Digital Customer Experience) - sponsor
+  Maya Okafor (Tailwind, Returns Team Lead, Bristol)
+  Dev Patel (Tailwind, Head of Reverse Logistics)
+  Raj Singh (Tailwind, Finance Business Partner)
+
+1
+00:00:11.000 --> 00:00:24.000
+<v Tom Bryce>Thanks everyone. Quick agenda: Adam will explain how Studio 42 runs, then we mostly want to listen — understand returns from Maya and Dev's side of the desk. We've read Elena's brief so we won't make you repeat the basics.
+
+2
+00:00:24.500 --> 00:00:33.000
+<v Elena Marsh>Perfect. And please be blunt with them, Maya. There's no point doing this if we sugar-coat how bad the queue gets.
+
+3
+00:00:33.500 --> 00:00:46.000
+<v Adam Black>That's exactly what we want. Maya, can you walk me through what actually happens when a return lands in your queue on a normal Tuesday morning? Step by step, like I'm a new starter.
+
+4
+00:00:46.500 --> 00:01:08.000
+<v Maya Okafor>Right. So the customer's already printed a label from the returns portal and posted the item back. When it physically arrives at the warehouse, Dev's team scans it and it pops into ReturnDesk as a row in our queue. The agent opens the row. They see the order number, the item, and a free-text box where the customer typed why they're returning it.
+
+5
+00:01:08.500 --> 00:01:21.000
+<v Adam Black>So the first thing the agent reads is the customer's own words. What do those actually look like?
+
+6
+00:01:21.500 --> 00:01:44.000
+<v Maya Okafor>All over the place. "Too small." "Didn't fit." "Looked nothing like the photo." "Bought two to compare, sending one back." "Faulty zip." Some are one word, some are an essay. Then the agent has to map that to a reason code in a dropdown that has forty-something options. Half of them overlap. So when they're busy they just pick "Other" and move on.
+
+7
+00:01:44.500 --> 00:01:52.000
+<v Adam Black>And how often is it "Other"?
+
+8
+00:01:52.500 --> 00:02:06.000
+<v Maya Okafor>Forty-one percent last quarter. I pulled the number because it makes me want to cry. It means four out of ten returns, we have no real idea why they came back. Elena asks me "why are tents coming back" and I genuinely can't tell her.
+
+9
+00:02:06.500 --> 00:02:18.000
+<v Elena Marsh>And that's the bit that kills me. We can't fix what we can't see. The whole reason coding exists is to feed it back to buying and product — and it's noise.
+
+10
+00:02:18.500 --> 00:02:33.000
+<v Adam Black>OK. So agent reads the note, picks a code — or "Other." Then what? What's the next decision?
+
+11
+00:02:33.500 --> 00:02:55.000
+<v Maya Okafor>Then they decide the refund. Most go through fine. But the agent's also meant to spot if something's off — like, is this the fifth pair of boots this person's returned this month? Is the item actually faulty or did they just wear it for a festival and send it back? We call it wardrobing. We've no system for it. It's whatever the agent happens to notice.
+
+12
+00:02:55.500 --> 00:03:10.000
+<v Raj Singh>And that's where the money goes. Our best estimate is two-point-three million a year in returns abuse — wardrobing, serial returners, "item not as described" that's really buyer's remorse. We catch a fraction of it, and only by luck.
+
+13
+00:03:10.500 --> 00:03:19.000
+<v Adam Black>Raj, how did you get to two-point-three?
+
+14
+00:03:19.500 --> 00:03:38.000
+<v Raj Singh>Sampled a month of high-value returns and had two analysts manually review them. Roughly six percent of returns value showed clear abuse signals — same customer, same category, repeated, item worn. Extrapolated across the year. It's conservative if anything, because we only looked at the obvious ones.
+
+15
+00:03:38.500 --> 00:03:51.000
+<v Adam Black>Dev, let's get to the physical item. The agent's approved the refund. What happens to the actual boot or tent?
+
+16
+00:03:51.500 --> 00:04:16.000
+<v Dev Patel>This is my headache. The agent picks a disposition — restock, refurbish, liquidate, or recycle. Restock means it goes back to sellable stock. Refurb means it needs cleaning or repackaging. Liquidate is we sell it to a clearance partner for pennies. Recycle is bin it. The problem is the agent's guessing from a desk, they can't see the item. So a tent that's perfectly fine gets liquidated, or a genuinely damaged jacket gets put back on the shelf and the next customer gets a nasty surprise.
+
+17
+00:04:16.500 --> 00:04:27.000
+<v Adam Black>How often is the disposition wrong?
+
+18
+00:04:27.500 --> 00:04:44.000
+<v Dev Patel>When we audited it, about thirty percent were sub-optimal. Either we destroyed value — binned or liquidated something resellable — or we restocked something we shouldn't have and it came straight back. Both cost us. The resellable-thrown-away one is the painful one, that's pure margin gone.
+
+19
+00:04:44.500 --> 00:04:58.000
+<v Adam Black>So just to play it back: agent reads a free-text note, guesses a code, eyeballs for fraud with no tools, and picks a disposition for an item they can't see. Four judgement calls, all manual, nineteen thousand times a month.
+
+20
+00:04:58.500 --> 00:05:05.000
+<v Maya Okafor>When you say it like that it sounds insane. Yeah. That's the job.
+
+21
+00:05:05.500 --> 00:05:19.000
+<v Adam Black>How long does one return take an agent, start to finish?
+
+22
+00:05:19.500 --> 00:05:37.000
+<v Maya Okafor>A clean one, two or three minutes. A messy one — high value, looks dodgy, vague reason — can be fifteen, because they're digging through the customer's order history in a separate screen, messaging me, sometimes phoning the customer. And the refund itself sits in a queue, so the customer waits nine days on average to see their money.
+
+23
+00:05:37.500 --> 00:05:46.000
+<v Adam Black>Nine days. What does that do to the customer?
+
+24
+00:05:46.500 --> 00:06:04.000
+<v Elena Marsh>They hate us. Returns NPS is minus twelve. It's our worst score by a distance. Twenty-eight percent of people who return something tell us in the survey they won't shop with us again. For a brand that sells itself on service, that's existential. A return shouldn't be the thing that loses a customer.
+
+25
+00:06:04.500 --> 00:06:18.000
+<v Adam Black>Maya, what does peak do to all this? Black Friday, January?
+
+26
+00:06:18.500 --> 00:06:40.000
+<v Maya Okafor>It breaks us. Normal month is nineteen thousand returns. Last January the queue hit forty thousand. Refunds went from nine days to nearly three weeks. We pull people off other teams who don't know the reason codes, so "Other" goes up, fraud detection basically stops because nobody has time to look, and disposition just becomes "restock everything" to clear the floor. Every quality problem we have gets worse exactly when volume's highest.
+
+27
+00:06:40.500 --> 00:06:52.000
+<v Adam Black>That's really useful. Elena mentioned a tool you bought in 2023 — what was the gap there?
+
+28
+00:06:52.500 --> 00:07:10.000
+<v Elena Marsh>It was sold as intelligent returns. What it actually does is print labels and give the customer a self-service portal to start the return. Fine, as far as it goes. But it does nothing once the item's coming back — no reason classification, no fraud signal, no disposition help. The hard part, the part Maya's team does, it doesn't touch.
+
+29
+00:07:10.500 --> 00:07:25.000
+<v Maya Okafor>And honestly that's why I'm wary of this. We were promised smart last time. I don't need a robot deciding refunds. My team are good. I need them to stop drowning.
+
+30
+00:07:25.500 --> 00:07:44.000
+<v Adam Black>That's the most important thing anyone's said today, Maya. We're not here to replace your agents' judgement. The picture in my head is an assistant that does the first pass — reads the note, proposes a reason code with a confidence score, raises a hand if it smells like fraud and tells you why, and suggests a disposition with a reason. Your agent confirms, edits, or overrides. Always.
+
+31
+00:07:44.500 --> 00:07:52.000
+<v Maya Okafor>If it shows me why, I'll listen. If it's a magic number with no explanation, the team won't trust it and neither will I.
+
+32
+00:07:52.500 --> 00:08:03.000
+<v Raj Singh>Same from finance. If we flag a customer as a serial returner, we have to be able to justify it. To them, and to compliance. No black boxes.
+
+33
+00:08:03.500 --> 00:08:16.000
+<v Adam Black>Agreed, and that's a hard design constraint, not a nice-to-have. Explainable on every suggestion. Dev, for disposition — what would the assistant need to know to suggest the right one?
+
+34
+00:08:16.500 --> 00:08:34.000
+<v Dev Patel>Category and value matter a lot. A forty-pound fleece that's "too small" with the tags on — that's a clean restock. A used two-hundred-pound stove that's "faulty" needs refurb assessment. Electricals have safety rules. If it knew the product, the reason, the condition the customer reported, and the item's margin, it could get most of them right. The edge cases come to a human, fine.
+
+35
+00:08:34.500 --> 00:08:46.000
+<v Adam Black>And all of this — you can give us anonymised exports to work from? We won't touch your live systems for the prototype.
+
+36
+00:08:46.500 --> 00:09:02.000
+<v Dev Patel>Yes. I can pull a representative slice of returns with the free-text reasons, the product catalogue with return rates and margins, and a customer file with order and return counts. Anonymised. Raj's team flagged the known serial returners in that file so you've got something to train against.
+
+37
+00:09:02.500 --> 00:09:11.000
+<v Elena Marsh>What I need at the end of four weeks, Adam, is something I can put in front of Maya's team and they go "yes, that, I'd use that." Not a deck.
+
+38
+00:09:11.500 --> 00:09:23.000
+<v Adam Black>That's exactly what you'll get — a working prototype on mock data, with the explainability baked in, that Maya's team can click through. And the evidence to back the numbers for your September board.
+
+39
+00:09:23.500 --> 00:09:31.000
+<v Maya Okafor>Then I'm in. Cautiously. Show me the "why" and I'll bring the team.
+
+40
+00:09:31.500 --> 00:09:40.000
+<v Adam Black>That's the deal. We'll start with the personas and the current journey so everyone agrees on the problem before anyone says the word "concept." Thank you all — this was exactly the detail we needed.

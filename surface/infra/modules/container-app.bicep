@@ -56,8 +56,21 @@ param authClientSecret string = ''
 @description('Tenant allowed to sign in')
 param authTenantId string
 
+@description('Optional GitHub OAuth App client ID for per-user GitHub sign-in. Empty = legacy single-user mode (acts as the service token).')
+param oauthClientId string = ''
+
+@description('Unversioned Key Vault secret URI holding the GitHub OAuth App client secret. Required when oauthClientId is set.')
+param oauthClientSecretUri string = ''
+
+@description('Public base URL of the surface (https://<fqdn>) used to build the OAuth redirect_uri. Empty = derive from the forwarded host header.')
+param baseUrl string = ''
+
+@description('Optional comma/space-separated allow-list of GitHub logins permitted to sign in. Empty = any GitHub user.')
+param allowedLogins string = ''
+
 var storageMountName = 'engagements'
 var enableAuth = !empty(authClientId)
+var enableOAuth = !empty(oauthClientId) && !empty(oauthClientSecretUri)
 
 resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
   name: logAnalyticsName
@@ -124,6 +137,35 @@ var authSecrets = enableAuth ? [
     value: authClientSecret
   }
 ] : []
+// Per-user GitHub sign-in: the OAuth App client secret, pulled from Key Vault by
+// the same managed identity that reads the service token.
+var oauthSecrets = enableOAuth ? [
+  {
+    name: 'oauth-client-secret'
+    keyVaultUrl: oauthClientSecretUri
+    identity: userAssignedIdentityId
+  }
+] : []
+// Env vars that switch the server from legacy single-user mode into per-user
+// GitHub sign-in. Empty array when not configured → server stays in legacy mode.
+var oauthEnv = enableOAuth ? [
+  {
+    name: 'OAUTH_CLIENT_ID'
+    value: oauthClientId
+  }
+  {
+    name: 'OAUTH_CLIENT_SECRET'
+    secretRef: 'oauth-client-secret'
+  }
+  {
+    name: 'BASE_URL'
+    value: baseUrl
+  }
+  {
+    name: 'ALLOWED_LOGINS'
+    value: allowedLogins
+  }
+] : []
 
 resource app 'Microsoft.App/containerApps@2024-03-01' = {
   name: name
@@ -151,7 +193,7 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
           identity: userAssignedIdentityId
         }
       ]
-      secrets: concat(baseSecrets, authSecrets)
+      secrets: concat(baseSecrets, authSecrets, oauthSecrets)
     }
     template: {
       containers: [
@@ -162,7 +204,7 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
             cpu: json('1.0')
             memory: '2Gi'
           }
-          env: [
+          env: concat([
             {
               name: 'PORT'
               value: string(containerPort)
@@ -187,7 +229,7 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = {
               name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
               value: appInsightsConnectionString
             }
-          ]
+          ], oauthEnv)
           volumeMounts: dataVolumeMounts
         }
       ]

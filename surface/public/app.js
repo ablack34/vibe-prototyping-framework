@@ -163,6 +163,20 @@ $('form').addEventListener('submit', async (ev) => {
   }
 });
 
-loadConfig();
-loadList();
-loadBoard();
+async function init() {
+  const me = await vibeEnsureAuth();
+  if (!me) return; // sign-in gate is showing — stop here
+  // In multi-user mode every engagement is created in the signed-in designer's own
+  // account, so lock the owner field to their login (the server enforces this too).
+  if (me.authRequired && me.login) {
+    const o = $('owner');
+    o.value = me.login;
+    o.readOnly = true;
+    o.classList.add('locked');
+    o.title = 'Engagements are always created in your own GitHub account.';
+  }
+  loadConfig();
+  loadList();
+  loadBoard();
+}
+init();

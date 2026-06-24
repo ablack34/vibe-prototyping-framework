@@ -28,12 +28,13 @@
 import { createServer } from 'node:http';
 import { execSync, execFile } from 'node:child_process';
 import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname } from 'node:path';
 import { tmpdir } from 'node:os';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, randomBytes } from 'node:crypto';
 import { promisify } from 'node:util';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { computeGates, computeGatesFromContents, extractProvenance, GATES, signoff, lowestGrade } from '../scripts/gates-lib.mjs';
 import { tidyRepo } from './tidy-repo.mjs';
 const execFileP = promisify(execFile);
@@ -47,22 +48,51 @@ const TEMPLATE_REPO = process.env.TEMPLATE_REPO || 'vibe-prototyping-framework';
 const STORE = process.env.STORE || join(__dir, '.engagements.json');
 const PUBLIC = join(__dir, 'public');
 
-let cachedToken = null;
-function token() {
-  if (!cachedToken) cachedToken = execSync('gh auth token', { encoding: 'utf8' }).trim();
-  return cachedToken;
+// ─── Identity model ──────────────────────────────────────────────────────────
+// The surface has TWO GitHub identities:
+//   • Service — the surface's own account (GH_TOKEN in the container, or the local
+//     `gh auth` login). It owns ONLY the shared, private engagement-pointer store.
+//     It is NEVER used to touch a designer's engagement, so nothing a designer does
+//     can ever land on it.
+//   • Per-user — the signed-in designer's OAuth token, carried implicitly through the
+//     async call tree (AsyncLocalStorage) so every gh() / gh-CLI call acts as THEM.
+//     This is what makes a designer's engagement land in the designer's OWN account
+//     and run on the designer's OWN Copilot seat.
+// When OAuth isn't configured the surface runs in legacy single-user mode: the
+// service identity is also the acting identity, exactly as before (local dev / MVP).
+const OAUTH = !!(process.env.OAUTH_CLIENT_ID && process.env.OAUTH_CLIENT_SECRET);
+
+let cachedServiceToken = null;
+function serviceToken() {
+  if (process.env.GH_TOKEN) return process.env.GH_TOKEN;
+  if (!cachedServiceToken) cachedServiceToken = execSync('gh auth token', { encoding: 'utf8' }).trim();
+  return cachedServiceToken;
 }
-let cachedLogin = null;
-function login() {
-  if (!cachedLogin) cachedLogin = execSync('gh api user --jq .login', { encoding: 'utf8' }).trim();
-  return cachedLogin;
+let cachedServiceLogin = null;
+function serviceLogin() {
+  if (!cachedServiceLogin) {
+    try { cachedServiceLogin = execSync('gh api user --jq .login', { encoding: 'utf8', env: { ...process.env, GH_TOKEN: serviceToken() } }).trim(); }
+    catch { cachedServiceLogin = ''; }
+  }
+  return cachedServiceLogin;
 }
 
-async function gh(path, { method = 'GET', body } = {}) {
+// The signed-in designer for the current request (null outside a request, or in
+// legacy mode). Set by the request handler via authCtx.run().
+const authCtx = new AsyncLocalStorage();
+const currentUser = () => authCtx.getStore() || null;
+// Acting identity = signed-in designer when in a request, else the service account.
+const actingToken = () => currentUser()?.token || serviceToken();
+const actingLogin = () => currentUser()?.login || serviceLogin();
+// Env for `gh` CLI shell-outs, so they act as the acting identity (GH_TOKEN
+// overrides any stored auth in the container/host).
+const ghEnv = (tok = actingToken()) => ({ ...process.env, GH_TOKEN: tok });
+
+async function gh(path, { method = 'GET', body, service = false } = {}) {
   const res = await fetch(`https://api.github.com${path}`, {
     method,
     headers: {
-      Authorization: `Bearer ${token()}`,
+      Authorization: `Bearer ${service ? serviceToken() : actingToken()}`,
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
       'Content-Type': 'application/json',
@@ -98,7 +128,7 @@ const storeContentsPath = STORE_PATH.split('/').filter(Boolean).map(encodeURICom
 let storeSha = null;
 
 async function readStoreGit() {
-  const { status, json } = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`);
+  const { status, json } = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`, { service: true });
   if (status === 404) { storeSha = null; return []; }
   if (status >= 300 || !json) throw new Error(`store read failed (${status})`);
   storeSha = json.sha || null;
@@ -114,10 +144,10 @@ async function writeStoreGit(list) {
   for (let attempt = 0; attempt < 2; attempt += 1) {
     const body = { message: 'surface: update engagement store', content };
     if (storeSha) body.sha = storeSha;
-    const { status, json } = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`, { method: 'PUT', body });
+    const { status, json } = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`, { method: 'PUT', body, service: true });
     if (status < 300) { storeSha = (json && json.content && json.content.sha) || null; return; }
     if ((status === 409 || status === 422) && attempt === 0) {
-      const cur = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`);
+      const cur = await gh(`/repos/${STORE_REPO}/contents/${storeContentsPath}`, { service: true });
       storeSha = (cur.status === 200 && cur.json) ? (cur.json.sha || null) : null;
       continue;
     }
@@ -134,6 +164,25 @@ async function writeStore(list) {
   if (STORE_REPO) return writeStoreGit(list);
   await mkdir(dirname(STORE), { recursive: true });
   await writeFile(STORE, JSON.stringify(list, null, 2));
+}
+
+// ─── Per-user isolation ──────────────────────────────────────────────────────
+// The store holds EVERY designer's engagement pointers in one shared list, but a
+// designer must only ever see (and act on) their own. In legacy single-user mode
+// (OAuth off) there is only one identity, so everything is "owned". In multi-user
+// mode an engagement is owned by the signed-in designer whose login matches its
+// createdBy (GitHub logins are case-insensitive). Cross-user lookups return null,
+// so another designer's id resolves to a 404 — never a data leak.
+function owns(rec) {
+  if (!OAUTH) return true;
+  const me = actingLogin();
+  return !!me && String(rec.createdBy || '').toLowerCase() === me.toLowerCase();
+}
+const mine = (list) => list.filter(owns);
+async function visibleStore() { return mine(await readStore()); }
+async function findRec(id) {
+  const rec = (await readStore()).find((r) => (r.id || '') === id);
+  return rec && owns(rec) ? rec : null;
 }
 
 // Curated set of engine models the facilitator can pick from in the web surface.
@@ -162,16 +211,16 @@ async function engineShipped(fullName) {
   return false;
 }
 
-// Mirror the signed-in user's token into the new repo as the engine secret.
+// Mirror the acting designer's token into the new repo as the engine secret.
 // gh reads the value from STDIN when --body is omitted, so it never hits argv.
 function setRepoSecret(fullName, name, value) {
-  execSync(`gh secret set ${name} --repo ${fullName}`, { input: value, stdio: ['pipe', 'pipe', 'pipe'] });
+  execSync(`gh secret set ${name} --repo ${fullName}`, { input: value, env: ghEnv(), stdio: ['pipe', 'pipe', 'pipe'] });
 }
 
 // Best-effort: is Actions enabled on the repo? null if we couldn't tell.
 function actionsEnabled(fullName) {
   try {
-    return execSync(`gh api /repos/${fullName}/actions/permissions --jq .enabled`, { encoding: 'utf8' }).trim() === 'true';
+    return execSync(`gh api /repos/${fullName}/actions/permissions --jq .enabled`, { encoding: 'utf8', env: ghEnv() }).trim() === 'true';
   } catch { return null; }
 }
 
@@ -213,9 +262,13 @@ async function createEngagement(input) {
   if (!/^[a-z0-9][a-z0-9-]*$/.test(repoName))
     return { code: 400, body: { error: `Could not derive a valid repo name from "${displayName}".` } };
 
-  const owner = String(input.owner || login()).trim();
+  // In multi-user mode every engagement is created in the signed-in designer's OWN
+  // account using THEIR token — never under another user (which GitHub rejects, the
+  // original foot-gun). In legacy single-user mode we keep honouring an explicit
+  // owner (e.g. an org the operator can push to), defaulting to the service account.
+  const owner = OAUTH ? actingLogin() : (String(input.owner || '').trim() || actingLogin());
   if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/.test(owner))
-    return { code: 400, body: { error: `Invalid owner "${owner}".` } };
+    return { code: 400, body: { error: OAUTH ? `Could not determine your GitHub account ("${owner}").` : `Invalid owner "${owner}".` } };
 
   const isPrivate = input.private !== false;
 
@@ -242,6 +295,15 @@ async function createEngagement(input) {
         },
       };
     }
+    if (/cannot create a repository/i.test(raw) || gen.status === 403) {
+      return {
+        code: 403,
+        body: {
+          error: `Couldn’t create the engagement under "${owner}".`,
+          detail: `Your GitHub account needs permission to create a repository there, and your sign-in must grant the "repo" scope. (${raw})`,
+        },
+      };
+    }
     return { code: gen.status === 422 ? 409 : 502, body: { error: raw, detail } };
   }
 
@@ -255,18 +317,18 @@ async function createEngagement(input) {
   let tidied = false;
   try {
     const t = await tidyRepo(repo.full_name, {
-      token: token(),
+      token: actingToken(),
       defaultBranch: repo.default_branch || 'main',
       keepEngagement: kebab(displayName),
     });
     tidied = !!t.ok;
   } catch { tidied = false; }
 
-  // The engine (run-phase.yml) needs a Copilot-enabled token to run in the new
-  // repo's Actions. Mirror the signed-in user's token in as a repo secret so the
-  // "Generate" button can dispatch a phase with no further setup.
+  // The engine (run-phase.yml) runs the Copilot CLI as whoever owns this token, so
+  // mirror the acting designer's own token in as the repo secret — the engine then
+  // runs on THEIR Copilot seat, in THEIR repo, with no further setup.
   let secretSet = false;
-  try { setRepoSecret(repo.full_name, 'COPILOT_GITHUB_TOKEN', token()); secretSet = true; }
+  try { setRepoSecret(repo.full_name, 'COPILOT_GITHUB_TOKEN', actingToken()); secretSet = true; }
   catch { secretSet = false; }
   const actionsOn = actionsEnabled(repo.full_name);
 
@@ -281,7 +343,7 @@ async function createEngagement(input) {
     secretSet,
     actionsEnabled: actionsOn,
     createdAt: new Date().toISOString(),
-    createdBy: login(),
+    createdBy: actingLogin(),
   };
   const store = await readStore();
   store.unshift(record);
@@ -552,7 +614,7 @@ async function boardSummaryLocal() {
 // with gate state read live from that engagement's own repo (its committed
 // gates.json). A repo with no phase run yet shows as NOT_STARTED.
 async function boardSummary() {
-  const store = await readStore();
+  const store = await visibleStore();
   const out = [];
   for (const rec of store) {
     const id = rec.id || kebab(rec.name || '');
@@ -627,15 +689,15 @@ async function boardDetailLocal(kebab) {
   } catch { /* none pasted back yet */ }
   const prepGate = await assemblePrep(deliverables, repoFetch, kebab, researchResults.length);
   const bySource = attachDeliverableProvenance(deliverables, [...workshopSources, ...researchResults].map((s) => s.path));
-  const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md` };
+  const context = { present: existsSync(join(dir, 'PROJECT-CONTEXT.md')), path: `engagement/${kebab}/PROJECT-CONTEXT.md`, ...genMetaFor('PROJECT-CONTEXT.md') };
+  attachGenMeta(deliverables);
   return { kebab, gates: g.gates, handoffReady: g.handoffReady, commitSha: g.commitSha, deliverables, context, disrupt: { gate: g.gates.disrupt, workshopSources }, preparation: { gate: prepGate, researchResults }, mockData: { files: await listMockDataLocal() }, provenance: { bySource }, model: '', models: ENGINE_MODELS };
 }
 
 // Primary detail: gate state + rendered deliverables read from the engagement's
 // own repo via the Contents API.
 async function boardDetail(kebab) {
-  const store = await readStore();
-  const rec = store.find((r) => (r.id || '') === kebab);
+  const rec = await findRec(kebab);
   if (!rec || !rec.repo) return null;
   const g = (await repoGates(rec.repo, kebab)) || emptyGates();
   const deliverables = deliverablesFrom(g);
@@ -665,7 +727,8 @@ async function boardDetail(kebab) {
   // ground in. It isn't a graded gate, so surface its presence separately so the
   // designer can synthesize it (from sources) before generating deliverables.
   const ctxPath = `engagement/${kebab}/PROJECT-CONTEXT.md`;
-  const context = { present: (await fetchRepoFile(rec.repo, ctxPath)) != null, path: ctxPath };
+  const context = { present: (await fetchRepoFile(rec.repo, ctxPath)) != null, path: ctxPath, ...genMetaFor('PROJECT-CONTEXT.md') };
+  attachGenMeta(deliverables);
   return {
     kebab,
     name: rec.name || kebab,
@@ -732,13 +795,48 @@ const PREP_PROMPTS = new Set([
   'vibe-engagement-brief', 'vibe-customer-brief', 'vibe-research', 'vibe-schedule',
 ]);
 
+// ---- generator transparency -------------------------------------------------
+// Surface the exact agent + prompt each "Generate" runs, so the designer can see
+// what's working under the hood. The agent is the prompt file's `agent:`
+// frontmatter — the very binding the headless runner resolves at run time
+// (scripts/resolve-prompt.mjs → .vibe/agent.txt → `copilot --agent`). We read it
+// from the prompts shipped inside the image (REPO_ROOT/.github/prompts) and cache,
+// so the board reflects the live binding and can never drift from a hardcoded copy.
+const _agentCache = new Map();
+function agentForPrompt(promptId) {
+  if (!promptId) return null;
+  if (_agentCache.has(promptId)) return _agentCache.get(promptId);
+  let agent = null;
+  try {
+    const txt = readFileSync(join(REPO_ROOT, '.github', 'prompts', `${promptId}.prompt.md`), 'utf8');
+    const fm = txt.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    const am = fm && fm[1].match(/^agent:\s*(.+)$/m);
+    if (am) agent = am[1].trim().replace(/^["']|["']$/g, '');
+  } catch { /* prompt not in image (e.g. older engagement repo) — leave null */ }
+  _agentCache.set(promptId, agent);
+  return agent;
+}
+// { prompt, agent } for a deliverable file — nulls when no generator is wired.
+function genMetaFor(file) {
+  const prompt = FILE_PROMPT[file] || null;
+  return { prompt, agent: prompt ? agentForPrompt(prompt) : null };
+}
+// Stamp every generatable card with the agent + prompt that produces it.
+function attachGenMeta(deliverables) {
+  for (const d of deliverables) {
+    const { prompt, agent } = genMetaFor(d.file);
+    if (prompt) { d.prompt = prompt; d.agent = agent; }
+  }
+  return deliverables;
+}
+
 async function runPhase(input) {
   const kebab = String(input.kebab || '').trim();
   const file = String(input.file || '').trim();
   const prompt = FILE_PROMPT[file];
   if (!kebab) return { code: 400, body: { error: 'Engagement is required.' } };
   if (!prompt) return { code: 400, body: { error: `No generator is wired for "${file}".` } };
-  const rec = (await readStore()).find((r) => (r.id || '') === kebab);
+  const rec = await findRec(kebab);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
   // Once the designer has added real sources, stop seeding the Contoso demo so
   // the engine grounds the deliverable in their materials. The frontend passes
@@ -755,7 +853,7 @@ async function runPhase(input) {
   try {
     execSync(
       `gh workflow run run-phase.yml --repo ${rec.repo} -f prompt=${prompt} -f engagement=${kebab} -f seed_demo=${seed}${modelArg}`,
-      { stdio: 'pipe' },
+      { stdio: 'pipe', env: ghEnv() },
     );
   } catch (e) {
     return { code: 502, body: { error: 'Could not dispatch the run.', detail: String(e.stderr || e.message || e).trim() } };
@@ -771,19 +869,19 @@ async function setModel(input) {
   if (!isKnownModel(model)) return { code: 400, body: { error: `Unknown model "${model}".` } };
   const store = await readStore();
   const rec = store.find((r) => (r.id || '') === kebab);
-  if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
+  if (!rec || !rec.repo || !owns(rec)) return { code: 404, body: { error: 'Engagement not found.' } };
   rec.model = model;
   await writeStore(store);
   return { code: 200, body: { ok: true, model } };
 }
 
 async function runStatus(kebab) {
-  const rec = (await readStore()).find((r) => (r.id || '') === kebab);
+  const rec = await findRec(kebab);
   if (!rec || !rec.repo) return null;
   try {
     const out = execSync(
       `gh run list --repo ${rec.repo} --workflow run-phase.yml --limit 1 --json databaseId,status,conclusion,url,createdAt`,
-      { encoding: 'utf8' },
+      { encoding: 'utf8', env: ghEnv() },
     );
     return JSON.parse(out)[0] || null;
   } catch { return null; }
@@ -798,11 +896,13 @@ async function runStatus(kebab) {
 // "signed off" the moment the board reloads.
 
 function userDisplayName() {
+  const u = currentUser();
+  if (u && u.name) return u.name;
   try {
-    const n = execSync('gh api user --jq .name', { encoding: 'utf8' }).trim();
+    const n = execSync('gh api user --jq .name', { encoding: 'utf8', env: ghEnv() }).trim();
     if (n && n !== 'null' && n !== '') return n;
   } catch { /* fall back to login */ }
-  return login();
+  return actingLogin();
 }
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -876,7 +976,7 @@ async function approveDeliverable(input) {
   const file = String(input.file || '').trim();
   if (!id) return { code: 400, body: { error: 'Engagement is required.' } };
   if (!APPROVABLE[file]) return { code: 400, body: { error: `Unknown deliverable "${file}".` } };
-  const rec = (await readStore()).find((r) => (r.id || '') === id);
+  const rec = await findRec(id);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
 
   const path = `engagement/${id}/${file}`;
@@ -1064,7 +1164,7 @@ async function addSource(input) {
   const spec = SOURCE_KINDS[kind];
   if (!spec) return { code: 400, body: { error: `Unknown source type "${kind}".` } };
   if (!spec.single && !name) return { code: 400, body: { error: `A name is required for a ${spec.label.toLowerCase()}.` } };
-  const rec = (await readStore()).find((r) => (r.id || '') === id);
+  const rec = await findRec(id);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
 
   // Resolve the grounding text + (for converted uploads) the raw original.
@@ -1216,7 +1316,7 @@ async function addMockData(input) {
   if (!buffer.length) return { code: 400, body: { error: 'The uploaded file was empty.' } };
   if (buffer.length > 25 * 1024 * 1024)
     return { code: 413, body: { error: 'That file is larger than 25 MB. Trim or split it before staging.' } };
-  const rec = (await readStore()).find((r) => (r.id || '') === id);
+  const rec = await findRec(id);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
 
   // 1) Raw original → sources/sample-data/ (untouched bytes for Build).
@@ -1276,14 +1376,175 @@ async function serveStatic(res, urlPath) {
   });
 }
 
-const server = createServer(async (req, res) => {
+// ─── GitHub sign-in (OAuth) ──────────────────────────────────────────────────
+// Off unless OAUTH_CLIENT_ID + OAUTH_CLIENT_SECRET are set → legacy single-user
+// mode (local dev / today's container). When on, each designer signs in with
+// their OWN GitHub account; we keep a short-lived server-side session keyed by an
+// HttpOnly cookie and carry their token through the request via authCtx so every
+// engagement op lands in THEIR account and runs on THEIR Copilot seat.
+const OAUTH_SCOPE = process.env.OAUTH_SCOPE || 'repo workflow';
+// Optional allow-list of logins (comma/space separated). Empty = any GitHub user.
+const ALLOWED_LOGINS = new Set(
+  String(process.env.ALLOWED_LOGINS || '')
+    .split(/[\s,]+/).map((s) => s.trim().toLowerCase()).filter(Boolean),
+);
+const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12h
+const sessions = new Map();    // sid   -> { token, login, name, exp }
+const oauthStates = new Map(); // state -> exp  (CSRF guard for the login round-trip)
+const newId = (bytes = 24) => randomBytes(bytes).toString('base64url');
+
+function parseCookies(req) {
+  const out = {};
+  for (const part of String(req.headers.cookie || '').split(';')) {
+    const i = part.indexOf('=');
+    if (i < 0) continue;
+    out[part.slice(0, i).trim()] = decodeURIComponent(part.slice(i + 1).trim());
+  }
+  return out;
+}
+function isHttps(req) {
+  const xf = String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim();
+  return xf ? xf === 'https' : !!req.socket?.encrypted;
+}
+function setCookie(res, name, value, { maxAge, req } = {}) {
+  const bits = [`${name}=${encodeURIComponent(value)}`, 'Path=/', 'HttpOnly', 'SameSite=Lax'];
+  if (req && isHttps(req)) bits.push('Secure');
+  if (maxAge != null) bits.push(`Max-Age=${maxAge}`);
+  const prev = res.getHeader('Set-Cookie');
+  res.setHeader('Set-Cookie', prev ? [].concat(prev, bits.join('; ')) : bits.join('; '));
+}
+// Public origin for building the OAuth redirect_uri. Behind Container Apps the
+// real host arrives in x-forwarded-*; BASE_URL pins it explicitly when set.
+function baseUrl(req) {
+  if (process.env.BASE_URL) return process.env.BASE_URL.replace(/\/$/, '');
+  const proto = isHttps(req) ? 'https' : 'http';
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || `localhost:${PORT}`).split(',')[0].trim();
+  return `${proto}://${host}`;
+}
+function pruneSessions() {
+  const now = Date.now();
+  for (const [k, v] of sessions) if (v.exp <= now) sessions.delete(k);
+  for (const [k, exp] of oauthStates) if (exp <= now) oauthStates.delete(k);
+}
+// The signed-in designer for this request, or null. Sync (reads cookie + map).
+function sessionFor(req) {
+  if (!OAUTH) return null;
+  const sid = parseCookies(req)['vibe_sid'];
+  if (!sid) return null;
+  const s = sessions.get(sid);
+  if (!s) return null;
+  if (s.exp <= Date.now()) { sessions.delete(sid); return null; }
+  return { sid, token: s.token, login: s.login, name: s.name };
+}
+// /api/me payload — drives the frontend's sign-in gate + identity chip.
+function meBody(req) {
+  if (!OAUTH) return { authRequired: false, user: { login: actingLogin(), name: userDisplayName() } };
+  const s = sessionFor(req);
+  return s
+    ? { authRequired: true, user: { login: s.login, name: s.name } }
+    : { authRequired: true, user: null };
+}
+function authError(res, msg) {
+  res.writeHead(302, { Location: `/?auth_error=${encodeURIComponent(msg)}` });
+  return res.end();
+}
+
+// /auth/login → bounce to GitHub; /auth/callback → exchange code, create session;
+// /auth/logout → drop it. No-op (404) when sign-in is off.
+async function handleAuth(req, res, url) {
+  if (!OAUTH) return send(res, 404, { error: 'Sign-in is not enabled on this surface.' });
+  pruneSessions();
+
+  if (url.pathname === '/auth/login') {
+    const state = newId(18);
+    oauthStates.set(state, Date.now() + 1000 * 60 * 10);
+    setCookie(res, 'vibe_oauth_state', state, { maxAge: 600, req });
+    const auth = new URL('https://github.com/login/oauth/authorize');
+    auth.searchParams.set('client_id', process.env.OAUTH_CLIENT_ID);
+    auth.searchParams.set('redirect_uri', `${baseUrl(req)}/auth/callback`);
+    auth.searchParams.set('scope', OAUTH_SCOPE);
+    auth.searchParams.set('state', state);
+    auth.searchParams.set('allow_signup', 'false');
+    res.writeHead(302, { Location: auth.toString() });
+    return res.end();
+  }
+
+  if (url.pathname === '/auth/callback') {
+    const code = url.searchParams.get('code');
+    const state = url.searchParams.get('state');
+    const expect = parseCookies(req)['vibe_oauth_state'];
+    setCookie(res, 'vibe_oauth_state', '', { maxAge: 0, req });
+    if (!code || !state || !expect || state !== expect || !oauthStates.has(state))
+      return authError(res, 'Sign-in could not be verified. Please try again.');
+    oauthStates.delete(state);
+    let token, login, name;
+    try {
+      const tokRes = await fetch('https://github.com/login/oauth/access_token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json', 'User-Agent': 'vibe-surface' },
+        body: new URLSearchParams({
+          client_id: process.env.OAUTH_CLIENT_ID,
+          client_secret: process.env.OAUTH_CLIENT_SECRET,
+          code,
+          redirect_uri: `${baseUrl(req)}/auth/callback`,
+        }).toString(),
+      });
+      token = (await tokRes.json()).access_token;
+      if (!token) return authError(res, 'GitHub did not return an access token.');
+      const uRes = await fetch('https://api.github.com/user', {
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'vibe-surface' },
+      });
+      if (!uRes.ok) return authError(res, 'Could not read your GitHub profile.');
+      const u = await uRes.json();
+      login = u.login; name = u.name || u.login;
+    } catch {
+      return authError(res, 'Sign-in failed talking to GitHub. Please try again.');
+    }
+    if (ALLOWED_LOGINS.size && !ALLOWED_LOGINS.has(String(login).toLowerCase()))
+      return authError(res, `Your GitHub account (${login}) isn’t on the allow-list for this surface.`);
+    const sid = newId(24);
+    sessions.set(sid, { token, login, name, exp: Date.now() + SESSION_TTL_MS });
+    setCookie(res, 'vibe_sid', sid, { maxAge: Math.floor(SESSION_TTL_MS / 1000), req });
+    res.writeHead(302, { Location: '/' });
+    return res.end();
+  }
+
+  if (url.pathname === '/auth/logout') {
+    const sid = parseCookies(req)['vibe_sid'];
+    if (sid) sessions.delete(sid);
+    setCookie(res, 'vibe_sid', '', { maxAge: 0, req });
+    if (req.method === 'POST') return send(res, 200, { ok: true });
+    res.writeHead(302, { Location: '/' });
+    return res.end();
+  }
+
+  return send(res, 404, { error: 'Unknown auth route.' });
+}
+
+const server = createServer((req, res) => {
+  // Resolve the signed-in designer from their session cookie (null in legacy mode)
+  // and run the whole request inside that identity so every gh()/CLI call acts as
+  // them. Set fresh per request, so requests never bleed identity into each other.
+  const session = sessionFor(req);
+  authCtx.run(session, async () => {
   try {
     const url = new URL(req.url, `http://localhost:${PORT}`);
+
+    // GitHub sign-in round-trip + "who am I" — always reachable (even unauthenticated).
+    if (url.pathname.startsWith('/auth/')) return await handleAuth(req, res, url);
+    if (req.method === 'GET' && url.pathname === '/api/me') return send(res, 200, meBody(req));
+
+    // When sign-in is ON, every API call needs a session (except the two public,
+    // identity-light endpoints above + /api/config). Static assets stay public so
+    // the SPA shell can load and render its own sign-in gate.
+    if (OAUTH && url.pathname.startsWith('/api/') && url.pathname !== '/api/config' && !session)
+      return send(res, 401, { error: 'Sign in with GitHub to continue.', authRequired: true });
+
     if (req.method === 'GET' && url.pathname === '/api/config')
-      return send(res, 200, { template: `${TEMPLATE_OWNER}/${TEMPLATE_REPO}`, defaultOwner: login() });
+      return send(res, 200, { template: `${TEMPLATE_OWNER}/${TEMPLATE_REPO}`, defaultOwner: OAUTH ? (session ? session.login : null) : actingLogin() });
 
     if (req.method === 'GET' && url.pathname === '/api/engagements')
-      return send(res, 200, await readStore());
+      return send(res, 200, await visibleStore());
 
     if (req.method === 'POST' && url.pathname === '/api/engagements') {
       let raw = '';
@@ -1294,12 +1555,12 @@ const server = createServer(async (req, res) => {
     }
 
     if (req.method === 'GET' && url.pathname === '/api/board')
-      return send(res, 200, url.searchParams.get('source') === 'local'
+      return send(res, 200, (!OAUTH && url.searchParams.get('source') === 'local')
         ? await boardSummaryLocal() : await boardSummary());
 
     const detail = url.pathname.match(/^\/api\/board\/([A-Za-z0-9][A-Za-z0-9-]*)$/);
     if (req.method === 'GET' && detail) {
-      const data = url.searchParams.get('source') === 'local'
+      const data = (!OAUTH && url.searchParams.get('source') === 'local')
         ? await boardDetailLocal(detail[1]) : await boardDetail(detail[1]);
       return data ? send(res, 200, data) : send(res, 404, { error: 'Engagement not found' });
     }
@@ -1333,7 +1594,7 @@ const server = createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/api/sources') {
       const id = url.searchParams.get('kebab');
-      const rec = (await readStore()).find((r) => (r.id || '') === id);
+      const rec = await findRec(id);
       if (!rec || !rec.repo) return send(res, 404, { error: 'Engagement not found' });
       return send(res, 200, { sources: await listSources(rec), kinds: sourceKindMeta() });
     }
@@ -1343,7 +1604,7 @@ const server = createServer(async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/api/source') {
       const id = url.searchParams.get('kebab');
       const path = url.searchParams.get('path') || '';
-      const rec = (await readStore()).find((r) => (r.id || '') === id);
+      const rec = await findRec(id);
       if (!rec || !rec.repo) return send(res, 404, { error: 'Engagement not found' });
       if (path.includes('..') || !(path.startsWith('sources/') || path.startsWith(`engagement/${id}/`)))
         return send(res, 400, { error: 'Invalid source path.' });
@@ -1363,7 +1624,7 @@ const server = createServer(async (req, res) => {
     // /vibe-data-prep agent. GET lists what's staged; POST commits a raw file.
     if (req.method === 'GET' && url.pathname === '/api/data') {
       const id = url.searchParams.get('kebab');
-      const rec = (await readStore()).find((r) => (r.id || '') === id);
+      const rec = await findRec(id);
       if (!rec || !rec.repo) return send(res, 404, { error: 'Engagement not found' });
       return send(res, 200, { files: await listMockData(rec) });
     }
@@ -1381,12 +1642,14 @@ const server = createServer(async (req, res) => {
   } catch (err) {
     return send(res, 500, { error: String(err?.message || err) });
   }
+  });
 });
 
 server.listen(PORT, async () => {
   await mkdir(PUBLIC, { recursive: true });
   console.log(`\n  VIBE Web Surface — provisioning`);
   console.log(`  template : ${TEMPLATE_OWNER}/${TEMPLATE_REPO}`);
-  try { console.log(`  as user  : ${login()}`); } catch { console.log('  as user  : (gh not authenticated!)'); }
+  try { console.log(`  service  : ${serviceLogin()}${OAUTH ? '  (per-user GitHub sign-in ON)' : '  (legacy single-user mode)'}`); }
+  catch { console.log('  service  : (gh not authenticated!)'); }
   console.log(`  open     : http://localhost:${PORT}\n`);
 });
