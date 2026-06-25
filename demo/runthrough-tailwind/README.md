@@ -43,7 +43,7 @@ Drag all **5 files from `sources/`** onto the Sources dropzone (or click to pick
 > The Sources dropzone is deliberately first on the page so a facilitator is prompted to gather evidence **up front**.
 
 ### 3. Add the data → **Mock data** dropzone (just below Sources)
-Drag all **4 files from `mock-data/`** onto the Mock data dropzone. These are the customer's structured prototype data — but the surface **cross-grounds** them: each file is committed twice, once as raw data for the engineer's Build phase **and** once as a Markdown twin that also grounds Discover. So `returns.csv` doesn't just feed the prototype later; its free-text reasons feed personas / problem-statement / journey *now*. Each file shows a **✓ grounds Discover** badge once staged.
+Drag all **4 files from `mock-data/`** onto the Mock data dropzone. These are the customer's structured prototype data — but the surface **cross-grounds** them: each file is committed twice, once as raw data for the engineer's Design & Develop phase **and** once as a Markdown twin that also grounds Discover. So `returns.csv` doesn't just feed the prototype later; its free-text reasons feed personas / problem-statement / journey *now*. Each file shows a **✓ grounds Discover** badge once staged.
 
 > You don't need to add the CSVs to Sources as well — the Mock data dropzone already grounds them into Discover. Add each file once.
 

@@ -8,7 +8,7 @@ title: What to Expect (Walkthrough)
 This page shows you what each phase **actually looks like** when you run it against the Contoso Field Services demo fixture. No video required — just realistic excerpts of what each agent produces so you know what "good" looks like before your first real engagement.
 
 :::tip Run it yourself
-Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through **Preparation → Discover → Disrupt → Build → Deliver**. Try it.
+Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through **Preparation → Discover → Disrupt → Design & Develop → Deliver**. Try it.
 :::
 
 :::info Prefer M365 Notebook?
@@ -92,7 +92,7 @@ What the agent does in the background:
 3. Cross-references the answers to detect contradictions
 4. Grades each of the 9 readiness fields A/B/C
 5. Writes `engagement/contoso-dispatcher-ai/discovery-summary.md`
-6. Checks whether the three required Discover deliverables already exist (the demo fixture pre-seeds them)
+6. Generates the three required Discover deliverables fresh — `personas.md`, `problem-statement.md`, `current-state-journey.md` — via `/vibe-personas`, `/vibe-problem-statement`, `/vibe-current-journey`, in that order (the demo seeds Preparation outputs only; these three are **not** pre-seeded — generating them live is the point of the demo)
 
 What you see (excerpt):
 
@@ -133,7 +133,7 @@ Grades — 3 required Discover deliverables:
    as the first thing to lock with the customer.
 ```
 
-If you want to see the three deliverable prompts fire fresh instead of using the pre-seeded files, delete `personas.md`, `problem-statement.md`, and `current-state-journey.md` from `engagement/contoso-dispatcher-ai/` and run them in order:
+`@VIBE Discover` runs those three deliverable prompts for you. To run them individually instead — or to regenerate one after editing a source — invoke them in the same order (`/vibe-problem-statement` and `/vibe-current-journey` fail fast if `personas.md` is missing):
 
 ```
 /vibe-personas              # always first — Bartosz, Anya, Marek personas with sourced quotes
@@ -141,7 +141,7 @@ If you want to see the three deliverable prompts fire fresh instead of using the
 /vibe-current-journey       # Mermaid + stages + Top 3 ranked pains (feeds the Disrupt workshop)
 ```
 
-**Time spent:** ~3 minutes of agent runtime + ~2 minutes for you to read it. Running the three deliverable prompts fresh adds ~5 minutes total.
+**Time spent:** ~5-8 minutes of agent runtime — it reads every source and generates the three deliverables — plus a couple of minutes for you to read the output.
 
 ---
 
@@ -174,7 +174,7 @@ No agent runs. Humans co-create. The facilitator captures notes, sticky-note pho
 
 The post-workshop sequence is strict: workshop-record first → selected-concept (future-journey + storyboard both anchor to it) → future-journey (storyboard cross-references the redesigned stages, so it has to run first) → storyboard (last; the engineering contract).
 
-The **storyboard** is the flagship Disrupt deliverable — scene-by-scene narrative (Setup → Challenge → Encounter → Solution → Impact) that the engineer reads to write the engineering brief as their first Build task.
+The **storyboard** is the flagship Disrupt deliverable — scene-by-scene narrative (Setup → Challenge → Encounter → Solution → Impact) that the engineer reads to write the engineering brief as their first Design & Develop task.
 
 ```
 # Storyboard — Dispatcher Radar (selected concept)
@@ -207,9 +207,9 @@ Scene 5 · Impact
 
 ---
 
-## Phase 4 · Build (Engineer)
+## Phase 4 · Design & Develop (Engineer)
 
-The engineer `git pull`s and reads `engagement/contoso-dispatcher-ai/storyboard.md` (the Disrupt contract), `selected-concept.md` (the chosen form factor), and `future-state-journey.md` (the redesigned user flow). Their **first Build task** is to write `engagement/contoso-dispatcher-ai/engineering-brief.md` from those three files using `templates/engineering-brief.md` as the scaffold. Every must-have feature in the brief has to trace to a scene in the storyboard. Squad lead signs it off.
+The engineer `git pull`s and reads `engagement/contoso-dispatcher-ai/storyboard.md` (the Disrupt contract), `selected-concept.md` (the chosen form factor), and `future-state-journey.md` (the redesigned user flow). Their **first Design & Develop task** is to write `engagement/contoso-dispatcher-ai/engineering-brief.md` from those three files using `templates/engineering-brief.md` as the scaffold. Every must-have feature in the brief has to trace to a scene in the storyboard. Squad lead signs it off.
 
 Then:
 
@@ -249,7 +249,7 @@ This is an engineer-facing deployment **plan**, not an auto-deploy. For C1 it wa
 You click **📦 Generate Deliverables**. The Deliver agent walks you through the handoff package one section at a time — you approve each one:
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: deliver · Build complete
+📍 Contoso Field Services — dispatcher-ai · Phase: deliver · Design & Develop complete
 
 I'll build engagement/contoso-dispatcher-ai/handoff-data.json with you,
 one section at a time. We'll do:
@@ -290,7 +290,7 @@ Once approved, the final `handoff-data.json` contains everything the customer's 
 | Preparation | ~5 min | Week 0 (~3-5 days) |
 | Discover | ~5 min | Week 1 (1-3 days) |
 | Disrupt | ~15 min | Week 2 (1 day workshop + ~1 day synthesis) |
-| Build (web app) | ~30 min to scaffold | 5-10 days |
+| Design & Develop (web app) | ~30 min to scaffold | 5-10 days |
 | Deliver | ~45 min | Week 4 (1-2 days) |
 
 The framework's value isn't speed in the demo — it's that the framework keeps the **real** engagement on rails so no one has to remember what comes next.

@@ -41,11 +41,11 @@ Use this:
 | **Disrupt deliverable: selected-concept.md** | `engagement/<name>/selected-concept.md` exists, signed off by sponsor, Grade B+ | **critical** for Disrupt close |
 | **Disrupt deliverable: storyboard.md** | `engagement/<name>/storyboard.md` exists with ≥3 scenes, Grade B+ | **critical** for Disrupt close |
 | **Disrupt deliverable: future-state-journey.md** | `engagement/<name>/future-state-journey.md` exists with ≥3 stages, Top 3 improvements map 1:1 to current-state Top 3 pains, Grade B+ | **critical** for Disrupt close |
-| Engineering brief present | `engineering-brief.md` exists in `engagement/<name>/` if state says Build has started — written by the engineer from storyboard.md + selected-concept.md + future-state-journey.md | **critical** for Build |
+| Engineering brief present | `engineering-brief.md` exists in `engagement/<name>/` if state says Design & Develop has started — written by the engineer from storyboard.md + selected-concept.md + future-state-journey.md | **critical** for Design & Develop |
 | Combined PRD fresh (optional) | If `engagement/<name>/prd.md` exists, the embedded source SHAs match the current SHAs of `selected-concept.md` and `engineering-brief.md` | warn — PRD is stale, re-run `/vibe-prd` |
 | Form-factor declared | `selected-concept.md` includes a clear `formFactor` value | warn |
-| Data prepped (web-app only) | If form factor is `webapp`, `scaffold/data/` has typed models | warn for web-app Build |
-| Scaffold builds (web-app only) | `npm run build` in `scaffold/web/` and `dotnet build` in `scaffold/api/` succeed | warn for web-app Build |
+| Data prepped (web-app only) | If form factor is `webapp`, `scaffold/data/` has typed models | warn for web-app Design & Develop |
+| Scaffold builds (web-app only) | `npm run build` in `scaffold/web/` and `dotnet build` in `scaffold/api/` succeed | warn for web-app Design & Develop |
 | Deployment URL captured | If `state.json` claims deployment, URL is recorded and reachable | warn for Deliver |
 | Check-in log present | `templates/CHECK-IN-NOTES.md` has at least one entry if state claims demos happened | info |
 | Handoff data complete | `engagement/<name>/handoff-data.json` has all five sections (vision, roadmap, backlog, limitations, about) if state says Deliver is complete | **critical** for Deliver |

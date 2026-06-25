@@ -1,9 +1,9 @@
 ---
-sidebar_position: 6
+sidebar_position: 4
 title: For Leadership
 ---
 
-# Adopting the Harness — For Leadership
+# The Delivery Harness — For Leadership
 
 <div className="hero-banner">
   <div className="hero-banner-content">
@@ -40,146 +40,118 @@ title: For Leadership
   </div>
 </div>
 
-To scale AI-first consulting, we don't need a new offering. We need a **delivery harness** — codified prompts, agents, and instructions that turn the VIBE methodology into a repeatable, AI-assisted workflow. See [Scaling VIBE](/why-vibe/scaling-vibe) for the full concept.
+To scale AI-first consulting, we don't need a new offering. We need to remove the throughput tax.
 
 ---
 
-## What changes for the team
+## What's a delivery harness?
 
-The harness moves VIBE methodology from people's heads into tooling. The delivery person facilitates workshops and captures sources. The harness does the paperwork.
+Same idea as a test harness for code — a **delivery harness** is the codified tooling that turns a methodology into an executable workflow.
 
-<div className="phase-grid">
-  <div className="phase-card">
-    <div className="phase-number">01</div>
-    <h3>Preparation</h3>
-    <p>Harness drafts both briefs from sources, kicks off dual-path research (public web + M365 tenant), generates the full 4-week meeting schedule.</p>
-    <div className="phase-who">👥 TPM / Designer</div>
+The VIBE methodology used to live in people's heads. New team members learned by shadowing others. Quality varied by who was leading the engagement. The harness moves that methodology *into tooling* — so every team member is empowered to deliver high-quality outcomes.
+
+<div className="problem-grid">
+  <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-start)'}}>
+    <h3>📋 Opinionated prompts</h3>
+    <p>30 prompts that encode the full VIBE engagement workflow — kickoff to handoff. The TPM or engineer runs them by typing one command.</p>
   </div>
-  <div className="phase-card">
-    <div className="phase-number">02</div>
-    <h3>Discover</h3>
-    <p>Harness extracts context from Teams transcripts, customer documents, and questionnaires. Auto-fills <code>PROJECT-CONTEXT.md</code>.</p>
-    <div className="phase-who">👥 TPM / Designer</div>
+  <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-end)'}}>
+    <h3>🤖 Specialized agents</h3>
+    <p>7 agents, each with a clear role, defined inputs/outputs, and quality gates. Agents generate documents from sources — the delivery person reviews, not writes.</p>
   </div>
-  <div className="phase-card">
-    <div className="phase-number">03</div>
-    <h3>Disrupt</h3>
-    <p>Week 2 workshop with the customer. Harness drafts the agenda, generates 2-3 concept candidates + Spark prompts pre-workshop, then captures the workshop record and produces future-journey + storyboard.</p>
-    <div className="phase-who">👥 Delivery team + customer</div>
-  </div>
-  <div className="phase-card">
-    <div className="phase-number">04</div>
-    <h3>Build</h3>
-    <p>Engineer receives a structured brief. Builds from the concept, not from scratch. Check-in feedback captured automatically.</p>
-    <div className="phase-who">🔧 Engineer</div>
-  </div>
-  <div className="phase-card">
-    <div className="phase-number">05</div>
-    <h3>Deliver</h3>
-    <p>Harness generates handoff package step by step: vision, roadmap, backlog, limitations — all validated for consistency.</p>
-    <div className="phase-who">👥 Anyone</div>
+  <div className="problem-card" style={{borderTopColor: '#10b981'}}>
+    <h3>📐 Templates &amp; validation</h3>
+    <p>Standardized artifacts for every engagement — and cross-reference validation gates that check consistency before anything reaches the customer.</p>
   </div>
 </div>
 
-**4 of 5 phases run without an engineer.** A TPM or designer drives most of the engagement independently. Engineering capacity stops being the bottleneck.
-
 ---
 
-## Before vs. after harness adoption
+## Why it matters
 
-| | Before | After |
-|---|---|---|
-| **Context capture** | Manual meeting notes, scattered emails | Auto-extracted from Teams transcripts |
-| **Documentation** | TPM writes `PROJECT-CONTEXT.md` from scratch | Harness generates from sources, TPM reviews |
-| **Requirements** | Varies by person, inconsistent format | Evidence-based, source-cited, quality-graded |
-| **Concept exploration** | Drifts to "another web dashboard" | 2-3 validated concepts across form factors |
-| **Engineering handoff** | Verbal briefing, "figure it out" | Structured engineering brief with screen specs and data mapping |
-| **Handoff package** | Manual slide deck, incomplete backlog | Auto-generated `handoff-data.json` with cross-reference validation |
-| **Time to first prototype concept** | 1-2 weeks (await engineer) | 2-3 days (TPM drives Preparation → Discover → Disrupt) |
-| **New team member onboarding** | Shadow someone for 2 engagements | Follow the prompts — onboarding *is* engagement #1 |
-
-See [What the Harness Changes](/why-vibe/impact) for the full qualitative breakdown and the HVE patterns the harness embeds.
-
----
-
-## The floor we're raising
-
-The harness codifies the patterns from the VIBE engagements that already worked.
-
-<div className="case-study">
-
-### Siemens Healthineers — $19M Deal · $140M 5yr Consumption
-
-Diagnostic imaging AI partnership. Studio 42 delivered pre-sales, field research, product design, and responsible AI assessment. The harness codifies the processes that made this engagement successful — and makes them reachable on every VIBE engagement, not just the ones with our most experienced delivery teams.
-
-> "S42 was instrumental to deliver experiences that cater for the high stakes environment we operate in." — Martin K., Product Manager
-
-</div>
-
-<div className="case-study">
-
-### Coca-Cola Hellenic — Live Workshop Prototyping
-
-Prototype built and iterated live during an onsite workshop in Athens. The harness's `/vibe-capture` and `/vibe-check-in` workflows automate exactly this pattern — capturing insights in real time and feeding them into the prototype iteration cycle.
-
-</div>
-
-See [Case studies](/why-vibe/case-studies) for the full set of VIBE engagements that set the standard.
-
----
-
-## The ask
-
-<div className="contrast-grid">
-  <div className="contrast-card not" style={{borderLeftColor: 'var(--s42-gradient-start)'}}>
-    <h3>Adopt the harness</h3>
-    <p>Approve <strong>graduated adoption</strong> of the harness as default tooling on the next <strong>3 qualifying VIBE engagements</strong>. After the third, we either formalize it as standard Studio 42 tooling or iterate based on what we learn.</p>
-  </div>
-  <div className="contrast-card not" style={{borderLeftColor: 'var(--s42-gradient-end)'}}>
-    <h3>The investment</h3>
-    <p><strong>$0 build cost — already built.</strong> The harness, documentation site, demo fixture, and agents are complete and runnable today. The 3 engagements run on existing pipeline — no incremental delivery cost.</p>
-  </div>
-  <div className="contrast-card not" style={{borderLeftColor: '#10b981'}}>
-    <h3>What we measure</h3>
-    <p>Time-to-first-prototype · Lead receptiveness ("would use again") · Customer NPS · Harness gaps surfaced during real engagements.</p>
-  </div>
-</div>
-
-This is *graduated adoption*, not a validation pilot. We're not testing whether VIBE works — we're scaling how we deliver it.
-
-:::info The full pitch package
-Detailed economics, deck outline, demo script, and ROI scenarios are in the [pitch/ folder](https://github.com/ablack34/vibe-prototyping-framework/tree/main/pitch) (internal-only). This page is the public summary.
-:::
-
----
-
-## Why adopt a harness — why not let experienced delivery teams keep doing what they do?
-
-Three reasons:
-
-1. **Scale.** Delivery expertise is scarce. The harness empowers every team member to deliver high-quality outcomes, which means we can run more VIBE engagements without doubling Studio 42 headcount.
-2. **Consistency.** Today's VIBE delivery quality varies by who's leading the engagement. The harness encodes our best practices into the tooling — so every customer gets the Siemens-standard engagement, not a coin flip.
-3. **Empowerment.** Non-engineers can drive 4 of 6 phases independently. We stop blocking on engineering capacity. AI-first consulting becomes a TPM-led practice, not an engineer-bottlenecked one.
-
----
-
-## How to experience the harness
+VIBE works — the constraint isn't quality, it's throughput. The harness removes the throughput tax three ways.
 
 <div className="value-grid">
   <div className="value-card">
-    <div className="value-icon">⚡</div>
-    <h3>Try it yourself</h3>
-    <p>Two-minute <a href="/getting-started/setup">setup</a> + type <code>/vibe-demo</code>. The harness walks a full Contoso engagement against a fully-formed fixture.</p>
+    <div className="value-icon">📈</div>
+    <h3>Scale</h3>
+    <p>Delivery expertise is scarce. The harness empowers <em>every</em> team member to deliver high-quality outcomes — so we can run more VIBE engagements without doubling Studio 42 headcount.</p>
   </div>
+  <div className="value-card">
+    <div className="value-icon">🎯</div>
+    <h3>Consistency</h3>
+    <p>Today's quality varies by who's leading the engagement. The harness encodes best practices into the tooling — every customer gets the Siemens-standard engagement, not a coin flip.</p>
+  </div>
+  <div className="value-card">
+    <div className="value-icon">👥</div>
+    <h3>Empowerment</h3>
+    <p>4 of 5 phases run without an engineer. AI-first consulting becomes a TPM-led practice — engineers stop being the bottleneck and start being the multiplier.</p>
+  </div>
+</div>
+
+---
+
+## What changes with the harness
+
+| | Without the harness | With the harness |
+|---|---|---|
+| **Methodology lives** | In experienced team members' heads | In prompts, agents, templates, validation gates |
+| **Context capture** | Manual meeting notes, scattered emails | Auto-extracted from Teams transcripts |
+| **Documentation** | TPM writes from scratch (4–6 hours per artifact) | Agent generates from sources, TPM reviews (~15 min) |
+| **Concept exploration** | Drifts to "another web dashboard" | 2–3 validated concepts across form factors |
+| **Engineering handoff** | Verbal briefing, "figure it out" | Structured brief with screen specs and data mapping |
+| **Handoff package** | Manual slide deck, incomplete backlog | Validated `handoff-data.json` — every claim source-cited |
+| **Time to first concept** | 1–2 weeks (await engineer) | 2–3 days (TPM drives Preparation → Discover → Disrupt) |
+| **New team member onboarding** | Shadow someone for 2 engagements | Follow the prompts — onboarding *is* engagement #1 |
+
+---
+
+## What the harness replaces
+
+| Manual delivery task | Now automated by |
+|----------------------|------------------|
+| Taking meeting notes | `/vibe-transcript` extracts from Teams recordings |
+| Writing discovery questions | `/vibe-questionnaire` generates Microsoft Forms |
+| Synthesizing scattered findings | `/vibe-consolidate` reads all sources |
+| Brainstorming prototype approaches | `/vibe-concepts` generates multi-form-factor candidates for the Disrupt workshop |
+| Writing ADO work items | `/vibe-backlog-gen` creates Epics → Features → Stories |
+| Producing handoff documentation | `/vibe-handoff` generates the full package |
+| "What should I do next?" | `@VIBE Engagement Lead` always knows |
+
+The harness automates the non-creative work so the team can focus on the parts that require empathy, creativity, and domain expertise.
+
+---
+
+## Built on Hypervelocity Engineering
+
+The harness embeds Microsoft ISE's **Hypervelocity Engineering (HVE)** patterns — opinionated prompts, specialized agents, evidence-based decisions, and human-in-the-loop refinement — so quality lives in the tooling, not in tribal knowledge.
+
+> "Without trusted sources that include reliable code, context, and opinionated prompts, agents won't do their best work."
+> — Hypervelocity Engineering, Microsoft ISE
+
+The payoff: traditional prototyping is **person-dependent** — quality varies by who's on the team. HVE-powered prototyping is **process-dependent** — **any team member produces consistent, high-quality engagement artifacts, regardless of prior experience.**
+
+---
+
+## Try the harness yourself
+
+You don't have to take any of this on faith. The harness ships with a complete demo fixture — Contoso Field Services, a €12M HVAC dispatcher scenario — so you can walk a full VIBE engagement end-to-end in about 15 minutes.
+
+<div className="value-grid">
   <div className="value-card">
     <div className="value-icon">🎬</div>
-    <h3>See the walkthrough</h3>
-    <p>The <a href="/getting-started/walkthrough">walkthrough guide</a> shows realistic harness output at every phase of the engagement.</p>
+    <h3>1 — Set up VS Code</h3>
+    <p>Follow the <a href="/getting-started/setup">two-minute setup guide</a> to clone the framework and open it in VS Code with Copilot.</p>
   </div>
   <div className="value-card">
-    <div className="value-icon">📖</div>
-    <h3>Read the concept</h3>
-    <p><a href="/why-vibe/scaling-vibe">Scaling VIBE</a> explains what a delivery harness is and what's in this one.</p>
+    <div className="value-icon">⚡</div>
+    <h3>2 — Seed the demo</h3>
+    <p>Type <code>/vibe-demo</code> in Copilot Chat (Agent mode). The harness copies the Contoso fixture into your engagement folder.</p>
+  </div>
+  <div className="value-card">
+    <div className="value-icon">▶️</div>
+    <h3>3 — Run the engagement</h3>
+    <p>Click the prompts the agent suggests: Preparation → Discover → Disrupt → Design & Develop → Deliver. Watch the artifacts populate.</p>
   </div>
   <div className="value-card">
     <div className="value-icon">💬</div>
@@ -187,3 +159,11 @@ Three reasons:
     <p>Built by the team, for the team. Let's discuss what adopting the harness looks like on your next VIBE engagement.</p>
   </div>
 </div>
+
+---
+
+## See also
+
+- [The 5 phases](/why-vibe/process) — what each step of a VIBE engagement looks like
+- [Case studies](/why-vibe/case-studies) — the VIBE engagements that set the standard
+- [Walkthrough](/getting-started/walkthrough) — what each phase produces, with realistic agent output

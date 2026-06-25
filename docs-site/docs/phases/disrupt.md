@@ -7,7 +7,7 @@ title: "Phase 3: Disrupt"
 
 **Who:** Delivery team + customer (in the room together) · **Duration:** Week 2 (one workshop day + ~2 days of pre/post-workshop work)
 
-> 🎬 **The one phase where the customer is in the room co-creating with us.** Disrupt produces — in a single workshop day — the signed-off concept, future-state journey, and storyboard the engineer needs to start Build.
+> 🎬 **The one phase where the customer is in the room co-creating with us.** Disrupt produces — in a single workshop day — the signed-off concept, future-state journey, and storyboard the engineer needs to start Design & Develop.
 
 ## The Key Question
 
@@ -33,7 +33,7 @@ No agent runs during the workshop — humans co-create. Capture notes, sticky-no
 3. **`/vibe-workshop-record`** — synthesize `sources/workshop/` into a structured `workshop-record.md` (decisions, key quotes, parked items, action items, Discover edits surfaced).
 4. **`/vibe-selected-concept`** — record the canonical chosen concept. Four selection modes: single candidate, hybrid of candidates, new concept that emerged in the room, or no decision (the prompt blocks rather than writing a bad file). **Must run before steps 5 and 6** — both anchor to it. Steps 5 and 6 are also strictly ordered: step 5 (future-journey) before step 6 (storyboard), because storyboard cross-references the redesigned journey stages.
 5. **`/vibe-future-journey`** — counterpart to `current-state-journey.md`. Same persona, redesigned journey with the prototype in place. Top 3 improvements map 1:1 to the Top 3 current-state pains.
-6. **`/vibe-storyboard`** — scene-by-scene narrative (Setup → Challenge → Encounter → Solution → Impact). **This is the contract handed to engineering** — the engineer reads it to write the engineering brief as their first Build task.
+6. **`/vibe-storyboard`** — scene-by-scene narrative (Setup → Challenge → Encounter → Solution → Impact). **This is the contract handed to engineering** — the engineer reads it to write the engineering brief as their first Design & Develop task.
 
 ## Key Commands
 
@@ -60,7 +60,7 @@ No agent runs during the workshop — humans co-create. Capture notes, sticky-no
 
 ## Disrupt Gate (closes the phase)
 
-The `@VIBE Engagement Lead` opens **Phase 4: Build** when:
+The `@VIBE Engagement Lead` opens **Phase 4: Design & Develop** when:
 
 - `selectedConcept`, `storyboard`, and `futureStateJourney` are all at **Grade B or higher**
 - `workshopRecord` is **signed off by the customer lead**
@@ -71,7 +71,7 @@ The DISRUPT DELIVERABLES dashboard block surfaces `N/6 at Grade B+` whenever the
 
 - **Not a research phase** — Discover already happened; Disrupt acts on its findings
 - **Not a long phase** — one workshop day plus ~2 days of pre/post-workshop work. If it stretches, something's off (usually Discover wasn't actually closed)
-- **Not an engineering deep-dive** — the engineer writes the engineering brief as their first Build task. Disrupt produces the inputs (storyboard + selected-concept + future-state-journey), not the implementation plan
+- **Not an engineering deep-dive** — the engineer writes the engineering brief as their first Design & Develop task. Disrupt produces the inputs (storyboard + selected-concept + future-state-journey), not the implementation plan
 
 ## Tips
 

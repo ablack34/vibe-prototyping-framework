@@ -19,7 +19,7 @@ if ($missing.Count -gt 0) {
     Write-Host "  Missing engineer tools:" -ForegroundColor Red
     $missing | ForEach-Object { Write-Host "    • $_" -ForegroundColor Red }
     Write-Host ""
-    Write-Host "  start.ps1 is for the Build phase only — see docs-site setup guide." -ForegroundColor Yellow
+    Write-Host "  start.ps1 is for the Design & Develop phase only — see docs-site setup guide." -ForegroundColor Yellow
     exit 1
 }
 

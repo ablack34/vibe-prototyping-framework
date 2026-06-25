@@ -1,6 +1,6 @@
 # Engineering Brief
 
-> **Technical deliverable. Written by the engineer as their first Build task.**
+> **Technical deliverable. Written by the engineer as their first Design & Develop task.**
 >
 > Pair with the Disrupt customer-signed artifacts — [selected-concept.md](selected-concept.md), [storyboard.md](storyboard.md), [future-state-journey.md](future-state-journey.md) — and the Discover deliverables (personas + problem-statement) for a complete picture of what to build.
 >
@@ -104,7 +104,7 @@ Things the Disrupt deliverables couldn't resolve and the engineer needs to decid
 - {{QUESTION_1}}
 - {{QUESTION_2}}
 
-## Acceptance for Handoff to Build
+## Acceptance for Handoff to Design & Develop
 
 The brief is complete when:
 

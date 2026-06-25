@@ -114,7 +114,7 @@ Three reasons, big and clear:
 >
 > *Two — consistency.* Today's quality is a coin flip depending on who's on the engagement. The harness encodes our best practices into the tooling, so every customer gets the Siemens-standard engagement. Not 'pretty good if you got the right TPM.'
 >
-> *Three — empowerment.* Two of the five phases — Discover and Disrupt — now run TPM-led with AI doing the paperwork; the engineer joins for Build. AI-first consulting becomes a TPM-led practice. Engineers stop being the bottleneck and start being the multiplier."
+> *Three — empowerment.* Two of the five phases — Discover and Disrupt — now run TPM-led with AI doing the paperwork; the engineer joins for Design & Develop. AI-first consulting becomes a TPM-led practice. Engineers stop being the bottleneck and start being the multiplier."
 
 **Don't:** Make this sound like a demotion for engineers. Frame it as engineers spending time on the prototype, not the paperwork.
 
@@ -188,7 +188,7 @@ Three short scenarios:
 
 > **TPM on a new VIBE engagement** — Day 1: kickoff transcript in, `PROJECT-CONTEXT.md` out by lunch. Day 3: validated concept selected. Day 5: engineering brief handed off.
 
-> **Engineer on a Build phase** — Receives a structured brief with screen specs and data mapping, not a verbal "figure it out." Spends Day 1 building, not interviewing.
+> **Engineer on a Design & Develop phase** — Receives a structured brief with screen specs and data mapping, not a verbal "figure it out." Spends Day 1 building, not interviewing.
 
 > **Lead at handoff** — `handoff-data.json` validates internally before the customer sees it. Roadmap, backlog, limitations, vision — every claim source-cited.
 
@@ -255,7 +255,7 @@ DECISION POINT
 
 - **Harness architecture overview** — what's in `.github/`, how agents are wired, where state lives
 - **The 14 prompts and 7 agents** — list with one-line descriptions (from [docs site reference](../docs-site/docs/reference/prompts.md))
-- **HVE alignment** — task pipeline, evidence-based decisions, opinionated prompts (from [impact.md](../docs-site/docs/why-vibe/impact.md))
+- **HVE alignment** — task pipeline, evidence-based decisions, opinionated prompts (from [the For Leadership page](../docs-site/docs/why-vibe/leadership.md))
 - **Risk register** — what could go wrong in adoption and how it's mitigated (see [demo-script.md](demo-script.md) Q&A section for objection handlers)
 - **Comparison: harness-enabled VIBE vs incumbent SI approach** — 4-week prototype vs 9-month roadmap PDF (from Contoso scenario)
 

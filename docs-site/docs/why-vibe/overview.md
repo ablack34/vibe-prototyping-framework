@@ -17,7 +17,7 @@ VIBE Prototyping accelerates presales by transforming early-stage ideas into fun
 
 Leveraging Microsoft's full suite of design assets and engineering rigor, this approach ensures every solution is **custom-built, validated with real users, and delivered in actual code** — not just concepts.
 
-By evolving proven design thinking methods, this service helps us identify and solve the right problems, evaluate concepts, and deliver tangible business outcomes.
+It evolves proven design-thinking methods to identify and solve the *right* problems, validate concepts, and deliver tangible business outcomes.
 
 > Studio 42's offering is not just another standard workshop or demo — it's a **state-of-the-art AI-First Envisioning and Prototyping** engagement designed to deliver real impact.
 
@@ -127,5 +127,5 @@ By evolving proven design thinking methods, this service helps us identify and s
 ---
 
 :::tip How we deliver VIBE at scale
-VIBE Prototyping is the Studio 42 offering. The **[delivery harness](/why-vibe/scaling-vibe)** is the tooling we wrap around it so any TPM–engineer pair can deliver to senior-team standard. The next page explains what the harness is and why it matters.
+VIBE Prototyping is the Studio 42 offering. The **[delivery harness](/why-vibe/leadership)** is the tooling we wrap around it so any TPM–engineer pair can deliver to senior-team standard. That page explains what the harness is and why it matters.
 :::

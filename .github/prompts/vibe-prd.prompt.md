@@ -29,7 +29,7 @@ The combined PRD is **never edited directly.** If a stakeholder wants a change, 
 | Vendor onboarding or procurement gate needs a formal PRD | **Yes** |
 | Squad just wants the source documents and the engineer is happy | No — skip it |
 | Disrupt deliverables aren't all populated yet | No — finish Disrupt first |
-| The engineer hasn't written `engineering-brief.md` yet | No — Build's first task is to write it |
+| The engineer hasn't written `engineering-brief.md` yet | No — Design & Develop's first task is to write it |
 
 ## Inputs
 
@@ -44,7 +44,7 @@ Before running, all of these must be true. If any is missing, stop and tell the 
 |--------------|--------------|------------|
 | Discover deliverables exist | `personas.md` and `problem-statement.md` exist in `engagement/{{engagement-name}}/` with real content | Run `@VIBE Discover` first |
 | Disrupt deliverables exist | `selected-concept.md`, `storyboard.md`, `future-state-journey.md` exist in `engagement/{{engagement-name}}/` with real content (signed off) | Run `@VIBE Disrupt` first |
-| Engineering brief exists | `engagement/{{engagement-name}}/engineering-brief.md` exists with real content (Concept Summary not a placeholder, must-haves filled in) | Engineer's first Build task is to write this — ask them to draft it from selected-concept.md + storyboard.md + future-state-journey.md |
+| Engineering brief exists | `engagement/{{engagement-name}}/engineering-brief.md` exists with real content (Concept Summary not a placeholder, must-haves filled in) | Engineer's first Design & Develop task is to write this — ask them to draft it from selected-concept.md + storyboard.md + future-state-journey.md |
 | Engagement folder exists | `engagement/{{engagement-name}}/` is present | Run `/vibe-kickoff` first |
 
 ## Required Steps

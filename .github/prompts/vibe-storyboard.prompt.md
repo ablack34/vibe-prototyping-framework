@@ -41,10 +41,10 @@ If `future-state-journey.md` doesn't exist but `selected-concept.md` does, proce
 1. **Cap the grade at B** — concept-only storyboards cannot reach Grade A because they can't cross-reference the redesigned journey stages.
 2. **Add a durable marker block at the top of `engagement/{{engagement-kebab}}/storyboard.md`** (immediately after the title):
    ```markdown
-   > **⚠️ Concept-only generation** — `future-state-journey.md` did not exist when this storyboard was drafted. Run `/vibe-future-journey` then re-run `/vibe-storyboard` to cross-reference the new journey stages and lift this artifact to Grade A. `@VIBE Disrupt` and `@VIBE Engagement Lead` treat the presence of this block as a "stale storyboard" signal and will block Move to Build until it's re-run.
+   > **⚠️ Concept-only generation** — `future-state-journey.md` did not exist when this storyboard was drafted. Run `/vibe-future-journey` then re-run `/vibe-storyboard` to cross-reference the new journey stages and lift this artifact to Grade A. `@VIBE Disrupt` and `@VIBE Engagement Lead` treat the presence of this block as a "stale storyboard" signal and will block Move to Design & Develop until it's re-run.
    ```
 3. **Set `state.json.readiness.disrupt.storyboard.generatedFrom = "concept-only"`** so the orchestrator can detect staleness without parsing the markdown. (A successful re-run with future-state-journey.md present sets this to `"concept+journey"` and removes the marker block.)
-4. End with: `👉 NEXT: Storyboard at Grade B (concept-only). Run /vibe-future-journey, then re-run /vibe-storyboard to lift to A and unblock Move to Build.`
+4. End with: `👉 NEXT: Storyboard at Grade B (concept-only). Run /vibe-future-journey, then re-run /vibe-storyboard to lift to A and unblock Move to Design & Develop.`
 
 ### Step 3 — Identify the arc
 
@@ -109,7 +109,7 @@ Present:
 
 End with one of these directives:
 
-- If Grade A: `👉 NEXT: Storyboard is the contract — get customer sign-off, then the engineer can start Design & Develop. The engineer's first Build task: write engineering-brief.md from storyboard.md + selected-concept.md + future-state-journey.md.`
+- If Grade A: `👉 NEXT: Storyboard is the contract — get customer sign-off, then the engineer can start Design & Develop. The engineer's first Design & Develop task: write engineering-brief.md from storyboard.md + selected-concept.md + future-state-journey.md.`
 - If Grade B: `👉 NEXT: Storyboard is workable. To lift to A: attach visuals (sketches, Figma frames, or Spark screenshots) for scenes {list}. Customer sign-off can happen in parallel.`
 - If Grade C: `👉 NEXT: Storyboard needs more scenes / better sourcing — {specific gaps}. Run the gap-fix prompt(s) and re-run /vibe-storyboard.`
 

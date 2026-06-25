@@ -5,10 +5,10 @@ This repo is a VIBE Prototyping engagement workspace. It provides AI agents, pro
 ## The Process (5 Phases)
 
 ```
-Preparation → Discover → Disrupt → Build → Deliver
+Preparation → Discover → Disrupt → Design & Develop → Deliver
 ```
 
-The post-Discover path is the **Disrupt** Week-2 customer co-creation workshop, which produces the contract (selected-concept + storyboard + future-state-journey) the engineer takes into Build.
+The post-Discover path is the **Disrupt** Week-2 customer co-creation workshop, which produces the contract (selected-concept + storyboard + future-state-journey) the engineer takes into Design & Develop.
 
 ## Essential Prompts
 
@@ -28,8 +28,8 @@ The post-Discover path is the **Disrupt** Week-2 customer co-creation workshop, 
 | Disrupt | `/vibe-future-journey` | Counterpart to current-state-journey with the prototype in place. Must run before storyboard (storyboard cross-references the redesigned journey stages) |
 | Disrupt | `/vibe-storyboard` | Scene-by-scene visual narrative — the contract handed to engineering. Last Disrupt deliverable; reads selected-concept.md + future-state-journey.md |
 | Anytime | `/vibe-consolidate` | Reconciliation pass — refresh decision log + open questions, flag conflicts (never rewrites signed-off artifacts) |
-| Build | `/vibe-prototype-scaffold` | Scaffold the prototype from the engineering brief |
-| Build | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
+| Design & Develop | `/vibe-prototype-scaffold` | Scaffold the prototype from the engineering brief |
+| Design & Develop | `/vibe-deploy` | Form-factor-aware deployment guidance for the engineer |
 | Deliver | `/vibe-backlog-gen` | Generate ADO backlog |
 | Deliver | `/vibe-handoff` | Final deliverables package |
 | Anytime | `@VIBE Engagement Lead` | Tells you what to do next |
@@ -40,7 +40,7 @@ The post-Discover path is the **Disrupt** Week-2 customer co-creation workshop, 
 
 - **The delivery person facilitates, the AI does the paperwork** — documents are auto-generated from sources, never manually filled
 - **Every document is an output, not an input form** — agents read sources, produce documents, ask the user to review and approve
-- **Discover and Disrupt are non-technical** — no architecture or tech stack discussion (tech-stack thinking starts when the engineer writes `engineering-brief.md` at the start of Build)
+- **Discover and Disrupt are non-technical** — no architecture or tech stack discussion (tech-stack thinking starts when the engineer writes `engineering-brief.md` at the start of Design & Develop)
 - **Concept generation explores multiple form factors** — not just web apps. Conversational, agentic, Copilot extensions, low-code, etc.
 - **AI must be essential in every concept** — not bolted on
 - **All prototypes use mock data** — no live system connections
@@ -89,7 +89,7 @@ future-state-journey.md                                                MUST run 
                                                                        caps it at Grade B "concept-only" and
                                                                        forces a re-run)
 
-storyboard + selected + future       ──▶  engineering-brief.md       (engineer writes as first Build task)
+storyboard + selected + future       ──▶  engineering-brief.md       (engineer writes as first Design & Develop task)
 
 engineering-brief.md                 ──▶  solution-design.md
 customer data files                  ──▶  prototype code
