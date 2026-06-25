@@ -5,13 +5,13 @@ title: The VIBE Process
 
 # The VIBE Phases
 
-VIBE Prototyping follows a structured workflow across multiple phases. The recommended path is **Preparation → Discover → Disrupt → Build → Deliver**. The first three phases don't require an engineer — the TPM or designer can drive them.
+VIBE Prototyping follows a structured workflow across multiple phases. The recommended path is **Preparation → Discover → Disrupt → Design & Develop → Deliver**. Only **Design & Develop** requires an engineer — anyone on the team can drive the rest.
 
 <div className="phase-grid">
   <div className="phase-card">
     <div className="phase-number">01</div>
     <h3>Preparation</h3>
-    <p>Land the engagement well. Draft both briefs, run dual-path customer research, schedule all 4 weeks of meetings — before kickoff.</p>
+    <p>Land the engagement well. Draft both briefs, run dual-path customer research, schedule all 7 meetings — before kickoff.</p>
     <div className="phase-who">👥 Anyone · Week 0 (3-5 days)</div>
   </div>
   <div className="phase-card">
@@ -28,7 +28,7 @@ VIBE Prototyping follows a structured workflow across multiple phases. The recom
   </div>
   <div className="phase-card">
     <div className="phase-number">04</div>
-    <h3>Build</h3>
+    <h3>Design & Develop</h3>
     <p>Engineer the prototype with real data, deploy to Azure, iterate on customer feedback.</p>
     <div className="phase-who">🔧 Engineer · 5-10 days</div>
   </div>
@@ -105,7 +105,7 @@ VIBE Prototyping follows a structured workflow across multiple phases. The recom
 | Role | Source | Responsibility |
 |------|--------|---------------|
 | Technical Product Manager | Studio 42 | Drives Preparation, Discover, Disrupt (with the customer), Deliver |
-| Dev Engineer | Studio 42 | Leads Build phase |
+| Dev Engineer | Studio 42 | Leads Design & Develop phase |
 | Designer | Studio 42 | UX research, concept development |
 | Data Scientist | EAG | Data analysis, AI model guidance |
 | Architect | ISD/EAG | Technical architecture review |

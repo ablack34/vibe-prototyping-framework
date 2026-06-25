@@ -34,7 +34,7 @@ const sidebars: SidebarsConfig = {
         'phases/preparation',
         'phases/discover',
         'phases/disrupt',
-        'phases/build',
+        'phases/design-develop',
         'phases/deliver',
       ],
     },

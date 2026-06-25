@@ -69,7 +69,7 @@ The harness moves VIBE methodology from people's heads into tooling. The deliver
   </div>
   <div className="phase-card">
     <div className="phase-number">04</div>
-    <h3>Build</h3>
+    <h3>Design & Develop</h3>
     <p>Engineer receives a structured brief. Builds from the concept, not from scratch. Check-in feedback captured automatically.</p>
     <div className="phase-who">🔧 Engineer</div>
   </div>
@@ -153,13 +153,13 @@ Detailed economics, deck outline, demo script, and ROI scenarios are in the [pit
 
 ---
 
-## Why adopt a harness — why not let experienced delivery teams keep doing what they do?
+## Why a harness — not just our experienced teams?
 
 Three reasons:
 
-1. **Scale.** Delivery expertise is scarce. The harness empowers every team member to deliver high-quality outcomes, which means we can run more VIBE engagements without doubling Studio 42 headcount.
-2. **Consistency.** Today's VIBE delivery quality varies by who's leading the engagement. The harness encodes our best practices into the tooling — so every customer gets the Siemens-standard engagement, not a coin flip.
-3. **Empowerment.** Non-engineers can drive 4 of 6 phases independently. We stop blocking on engineering capacity. AI-first consulting becomes a TPM-led practice, not an engineer-bottlenecked one.
+1. **Scale.** Delivery expertise is scarce. The harness lets every team member deliver to standard — so we run more VIBE engagements without doubling Studio 42 headcount.
+2. **Consistency.** Today, delivery quality varies by who's leading. The harness encodes our best practices into the tooling — every customer gets the Siemens-standard engagement, not a coin flip.
+3. **Empowerment.** Non-engineers drive 4 of 5 phases independently. Engineering capacity stops being the bottleneck — AI-first consulting becomes a TPM-led practice.
 
 ---
 

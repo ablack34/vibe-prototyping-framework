@@ -18,11 +18,11 @@ These cover the main engagement flow:
 | `/vibe-questionnaire` | Discover | Generates M365 Copilot prompts for the account team and customer questionnaires |
 | `/vibe-transcript` | Discover | Extracts context from Teams recordings automatically |
 | `/vibe-workshop-agenda` + `/vibe-concepts` | Disrupt | Pre-workshop: facilitator agenda + 2-3 candidate concepts and Spark prompts |
-| `/vibe-storyboard` | Disrupt | Post-workshop: the storyboard the engineer reads to start Build |
-| `/vibe-deploy` | Build | Form-factor-aware deployment guidance for the engineer |
+| `/vibe-storyboard` | Disrupt | Post-workshop: the storyboard the engineer reads to start Design & Develop |
+| `/vibe-deploy` | Design & Develop | Form-factor-aware deployment guidance for the engineer |
 | `/vibe-handoff` | Deliver | Generates roadmap, backlog, and handoff package |
 
-:::note Build-phase prompts
+:::note Design & Develop prompts
 `/vibe-data-prep` and `/vibe-prototype-scaffold` are useful when the chosen concept is a web-app. Other form factors (conversational, agentic, Copilot extension, low-code) skip them — the engineer scaffolds directly in Copilot Studio, Foundry Agents, M365 Agents Toolkit, or Power Platform.
 :::
 
@@ -44,13 +44,13 @@ These cover the main engagement flow:
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
 | `/vibe-context` | Synthesize or refresh `engagement/<name>/PROJECT-CONTEXT.md` (the single source of truth) from all sources. **Run before the three Discover deliverables** — they ground in this file | `engagement` (optional) |
-| `/vibe-questionnaire` | Generate Microsoft Forms questionnaires | `type` (optional: customer/account/both) |
+| `/vibe-questionnaire` | Generate Microsoft Forms questionnaires | `type` (optional: customer/account/both), `engagement` (optional) |
 | `/vibe-transcript` | Process Teams meeting transcripts | `engagement`, `dateRange`, `participants`, `type` (discovery/check-in) |
 | `/vibe-capture` | Quick insight capture during meetings | `note` (required), `speaker`, `category` |
 | `/vibe-personas` | Generate `engagement/<name>/personas.md` from sources — one persona per H2, sourced quotes, A/B/C grading per persona. **Required Discover deliverable #1.** Run before `/vibe-problem-statement` and `/vibe-current-journey` (both anchor to the primary persona) | `engagement` (optional) |
 | `/vibe-problem-statement` | Generate `engagement/<name>/problem-statement.md` in the formal "I am / I'm trying to / But / Because / which results in" shape, with cited evidence per blank. **Required Discover deliverable #2.** Fails fast if `personas.md` doesn't exist yet | `engagement` (optional) |
 | `/vibe-current-journey` | Generate `engagement/<name>/current-state-journey.md` — Mermaid flowchart + stages table + Top 3 ranked pain points (the ranked pains feed the Disrupt workshop). **Required Discover deliverable #3.** Fails fast if `personas.md` doesn't exist yet | `engagement` (optional) |
-| `/vibe-check-in` | Process customer check-in feedback | `source` (notes/transcript) |
+| `/vibe-check-in` | Process customer check-in feedback | `source` (optional: notes/transcript), `engagement` (optional) |
 | `/vibe-consolidate` | Consolidate all findings | `engagement` |
 
 ### Disrupt Phase (Week 2 workshop)
@@ -66,7 +66,7 @@ The Disrupt phase is the one phase where the customer is in the room co-creating
 | `/vibe-future-journey` | Generate `engagement/<name>/future-state-journey.md` — counterpart to `current-state-journey.md`. Same persona, redesigned journey with the prototype in place. Top 3 improvements map 1:1 to the Top 3 current-state pains | `engagement` (optional) |
 | `/vibe-storyboard` | Generate `engagement/<name>/storyboard.md` — scene-by-scene visual narrative (Setup → Challenge → Encounter → Solution → Impact). **The contract between Disrupt and Design & Develop** — the engineer reads this to write the engineering brief | `engagement` (optional) |
 
-### Build Phase
+### Design & Develop Phase
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
@@ -85,12 +85,12 @@ The Disrupt phase is the one phase where the customer is in the room co-creating
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
-| `/vibe-prd` | Generate a combined PRD by merging the six canonical source files (`problem-statement.md`, `personas.md` from Discover; `selected-concept.md`, `storyboard.md`, `future-state-journey.md` from Disrupt; `engineering-brief.md` from Build) into `engagement/<name>/prd.md`. Optionally validates via `@PRD Builder`. Only run when a stakeholder needs a single combined PRD document — the six source files remain the canonical source of truth. | `engagement` (optional), `validate` (optional: `true`/`false`, default `false`) |
+| `/vibe-prd` | Generate a combined PRD by merging the six canonical source files (`problem-statement.md`, `personas.md` from Discover; `selected-concept.md`, `storyboard.md`, `future-state-journey.md` from Disrupt; `engineering-brief.md` from Design & Develop) into `engagement/<name>/prd.md`. Optionally validates via `@PRD Builder`. Only run when a stakeholder needs a single combined PRD document — the six source files remain the canonical source of truth. | `engagement` (optional), `validate` (optional: `true`/`false`, default `false`) |
 
 ### Utility
 
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
-| `/vibe-new` | Create a new engagement repo from the template | `customer` (required), `engagement` (required), `size` |
+| `/vibe-new` | Create a new engagement repo from the template | `customer` (required), `engagement` (required) |
 | `/vibe-demo` | Seed the engagement with the Contoso Field Services fixture so every phase can be demonstrated end-to-end without a real customer | `demo` (optional, defaults to `contoso`) |
 | `/vibe-doctor` | Health-check the engagement (missing artifacts, stale state, form-factor mismatches) and recommend the single highest-value next step | `engagement` (optional) |

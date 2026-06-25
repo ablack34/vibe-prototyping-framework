@@ -85,10 +85,10 @@ If you're presenting remotely, share the VS Code window only — not the full de
 - [`engagement/contoso-dispatcher-ai/workshop-record.md`](../engagement/) — what happened, who said what
 - [`engagement/contoso-dispatcher-ai/selected-concept.md`](../engagement/) — the customer-signed concept
 - [`engagement/contoso-dispatcher-ai/future-state-journey.md`](../engagement/) — how the persona uses the solution end-to-end
-- [`engagement/contoso-dispatcher-ai/storyboard.md`](../engagement/) — **the engineer's contract for Build**
+- [`engagement/contoso-dispatcher-ai/storyboard.md`](../engagement/) — **the engineer's contract for Design & Develop**
 
 **Highlight the storyboard:**
-> "This is what changes the Build phase. Today, an engineer joins a VIBE engagement and has to interview the TPM to extract what's already in everyone else's heads. With the harness, they get this on Day 1: signed-off concept, scene-by-scene storyboard, customer voice baked in. They start building immediately. Engineer time becomes prototype time."
+> "This is what changes the Design & Develop phase. Today, an engineer joins a VIBE engagement and has to interview the TPM to extract what's already in everyone else's heads. With the harness, they get this on Day 1: signed-off concept, scene-by-scene storyboard, customer voice baked in. They start building immediately. Engineer time becomes prototype time."
 
 ---
 

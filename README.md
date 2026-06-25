@@ -2,7 +2,7 @@
 
 > Accelerating presales with AI prototyping to unlock business potential at speed.
 
-A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery team (typically one TPM/designer and one engineer) through a structured workflow — **Preparation → Discover → Disrupt → Build → Deliver** — using AI agents in VS Code that tell you exactly what to do next.
+A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a delivery team (typically one TPM/designer and one engineer) through a structured workflow — **Preparation → Discover → Disrupt → Design & Develop → Deliver** — using AI agents in VS Code that tell you exactly what to do next.
 
 **You don't need to be technical, you just need a +1.**
 

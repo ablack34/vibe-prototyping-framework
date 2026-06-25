@@ -149,13 +149,13 @@ Outputs land in `engagement/<your-engagement>/`:
 - `workshop-record.md` — the structured synthesis of what happened
 - `selected-concept.md` — the concept the customer picked
 - `future-state-journey.md` — Mermaid diagram of the post-prototype journey
-- `storyboard.md` — **the engineer's primary input for Build**
+- `storyboard.md` — **the engineer's primary input for Design & Develop**
 
-## Step 7: Build (Engineer)
+## Step 7: Design & Develop (Engineer)
 
-The engineer `git pull`s and reads `engagement/<your-engagement>/storyboard.md` (the contract from Disrupt) plus `selected-concept.md` (the chosen form factor) and `future-state-journey.md` (the redesigned user flow). Their first Build task is to write `engagement/<your-engagement>/engineering-brief.md` from those three files (template at `templates/engineering-brief.md`) and get squad-lead sign-off.
+The engineer `git pull`s and reads `engagement/<your-engagement>/storyboard.md` (the contract from Disrupt) plus `selected-concept.md` (the chosen form factor) and `future-state-journey.md` (the redesigned user flow). Their first Design & Develop task is to write `engagement/<your-engagement>/engineering-brief.md` from those three files (template at `templates/engineering-brief.md`) and get squad-lead sign-off.
 
-Build steps vary by form factor — but typically:
+Implementation steps vary by form factor — but typically:
 
 ```
 /vibe-data-prep

@@ -41,7 +41,7 @@ Copy `templates/PROJECT-CONTEXT.md` to `engagement/{{engagement-kebab}}/PROJECT-
 - **§10 Open Questions** — genuine gaps you hit while synthesizing (anything you marked `[needs follow-up]` becomes a row here).
 - **§11 Session Resume Prompt** — fill the customer/project names.
 
-**Leave §4 Tech Stack untouched** — it is determined after the Disrupt workshop and filled by the engineer in Build. Leave the **§8 personas summary** and **§8.5 journey summary** as links to their canonical files; those tables are maintained by `/vibe-personas` and `/vibe-current-journey` once those deliverables exist.
+**Leave §4 Tech Stack untouched** — it is determined after the Disrupt workshop and filled by the engineer in Design & Develop. Leave the **§8 personas summary** and **§8.5 journey summary** as links to their canonical files; those tables are maintained by `/vibe-personas` and `/vibe-current-journey` once those deliverables exist.
 
 ### Step 3 — Ground every claim
 

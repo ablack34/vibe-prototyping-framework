@@ -1,13 +1,13 @@
 ---
 sidebar_position: 4
-title: "Phase 4: Build"
+title: "Phase 4: Design & Develop"
 ---
 
-# Phase 4: Build (Design & Develop)
+# Phase 4: Design & Develop
 
 **Who:** Engineer (with TPM/designer support) · **Duration:** 5-10 days
 
-This is where technology enters the picture. The engineer picks up the storyboard, selected concept, and future-state journey from Disrupt and writes their own `engagement/<name>/engineering-brief.md` as their first Build task.
+This is where technology enters the picture. The engineer picks up the storyboard, selected concept, and future-state journey from Disrupt and writes their own `engagement/<name>/engineering-brief.md` as their first Design & Develop task.
 
 ## How It Works
 
@@ -22,7 +22,7 @@ The engineer produces `solution-design.md` covering:
 - Architecture decisions (informed by the selected concept and engineering brief)
 - Technology choices (confirmed or adjusted from concept suggestions)
 - Data model based on available customer data
-- Build phases ordered by customer value
+- Implementation phases ordered by customer value
 - Risk inventory
 
 ### 2. Prepare Data

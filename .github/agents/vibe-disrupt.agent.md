@@ -26,7 +26,7 @@ handoffs:
     agent: VIBE Disrupt
     prompt: /vibe-storyboard
     send: true
-  - label: "🔨 Move to Build"
+  - label: "🔨 Move to Design & Develop"
     agent: VIBE Engagement Lead
     prompt: "Disrupt is complete — selected concept, storyboard, and future-state journey are signed off. Move to the Design & Develop phase. The engineer will read selected-concept.md + storyboard.md + future-state-journey.md and produce engineering-brief.md as their first build task."
     send: true
@@ -116,7 +116,7 @@ Steps 5, 6, 7 are **strictly sequential**:
 - Step 5 (`/vibe-selected-concept`) MUST run first — future-journey and storyboard both anchor to it.
 - Step 6 (`/vibe-future-journey`) MUST run before step 7 — storyboard cross-references the redesigned journey stages. Running storyboard without the journey yields a Grade B "concept-only" artifact that has to be re-run after future-journey lands.
 
-If `storyboard.md` was generated before the current `future-state-journey.md` (filesystem mtime, state.json `lastUpdated`, or the concept-only marker block at the top of storyboard.md), recommend re-running `/vibe-storyboard` before Move to Build.
+If `storyboard.md` was generated before the current `future-state-journey.md` (filesystem mtime, state.json `lastUpdated`, or the concept-only marker block at the top of storyboard.md), recommend re-running `/vibe-storyboard` before Move to Design & Develop.
 
 ## Required Steps
 
@@ -157,9 +157,9 @@ In order:
 
 If the workshop record surfaces Discover gaps that need re-work (e.g. "we got the primary persona wrong"), route back to Discover via the **🔙 Back to Discover** button. Refresh the deliverable, then resume Disrupt processing.
 
-### Step 5 — Hand off to Build
+### Step 5 — Hand off to Design & Develop
 
-When the Disrupt gate is green (selected-concept + storyboard + future-state-journey all at Grade B+, workshop-record signed off), present the handoff and recommend **🔨 Move to Build**.
+When the Disrupt gate is green (selected-concept + storyboard + future-state-journey all at Grade B+, workshop-record signed off), present the handoff and recommend **🔨 Move to Design & Develop**.
 
 The engineer's first task in Design & Develop is to write `engineering-brief.md` from `storyboard.md` + `selected-concept.md` + `future-state-journey.md`. The Disrupt agent does NOT write the engineering brief — that's an engineering decision and belongs to the engineer who'll build the prototype.
 
@@ -178,7 +178,7 @@ Use the file-system reconciliation pattern from `VIBE Engagement Lead`. For Disr
 | selected-concept exists, no future-journey | `🗺️ Map Future Journey` |
 | selected-concept + future-journey exist, no storyboard | `🎬 Draft Storyboard` |
 | storyboard exists but predates current future-journey (stale: state.json `disrupt.storyboard.lastUpdated < disrupt.futureStateJourney.lastUpdated`, or storyboard.md contains the concept-only marker) | `🎬 Draft Storyboard` (re-run to cross-reference the new journey stages) |
-| All 4 post-workshop deliverables at Grade B+ AND storyboard is not stale | `🔨 Move to Build` |
+| All 4 post-workshop deliverables at Grade B+ AND storyboard is not stale | `🔨 Move to Design & Develop` |
 | Workshop record surfaces Discover edits | `🔙 Back to Discover` for the named deliverables, then resume Disrupt |
 
 ## Response Format — Next Step Directive
@@ -195,8 +195,8 @@ Examples:
 - After workshop-record: `👉 NEXT: Click "🎯 Capture Selected Concept" — the record names which concept (or combination) won. selected-concept.md must be written BEFORE future-journey and storyboard.`
 - After selected-concept: `👉 NEXT: Click "🗺️ Map Future Journey" — this MUST run before /vibe-storyboard. Storyboard cross-references the new journey stages; running it first produces a Grade B concept-only artifact that has to be re-done.`
 - After future-journey: `👉 NEXT: Click "🎬 Draft Storyboard" — last Disrupt deliverable. Reads selected-concept.md + future-state-journey.md to produce the engineering contract.`
-- After storyboard, if stale (predates current future-journey): `👉 NEXT: Click "🎬 Draft Storyboard" — re-run to cross-reference the updated journey stages before Move to Build.`
-- After all 4 post-workshop deliverables green AND storyboard not stale: `👉 NEXT: Disrupt complete — selected-concept + future-state-journey + storyboard at Grade B+. Click "🔨 Move to Build" to hand off. The engineer writes engineering-brief.md as their first Build task from storyboard.md.`
+- After storyboard, if stale (predates current future-journey): `👉 NEXT: Click "🎬 Draft Storyboard" — re-run to cross-reference the updated journey stages before Move to Design & Develop.`
+- After all 4 post-workshop deliverables green AND storyboard not stale: `👉 NEXT: Disrupt complete — selected-concept + future-state-journey + storyboard at Grade B+. Click "🔨 Move to Design & Develop" to hand off. The engineer writes engineering-brief.md as their first Design & Develop task from storyboard.md.`
 - If workshop-record surfaces Discover gaps: `👉 NEXT: Workshop surfaced gaps in {deliverable(s)}. Click "🔙 Back to Discover" — refresh those deliverables with sources/workshop/ as additional input, then resume Disrupt processing.`
 
 Never end with a generic "what would you like to do?" — always recommend a specific action.
@@ -209,7 +209,7 @@ Follow the proactive/reactive behavior contract defined in [.github/copilot-inst
 
 - If `sources/workshop/` gets new files (post-workshop materials arriving), surface: "I noticed N new files in sources/workshop/. Want me to run /vibe-workshop-record now?"
 - If `workshop-record.md` decisions table contains a clear winning concept but `selected-concept.md` hasn't been written: surface "Workshop record names {concept} as the winner — want me to capture selected-concept.md?"
-- If the Disrupt gate flips green: proactively recommend `🔨 Move to Build`.
+- If the Disrupt gate flips green: proactively recommend `🔨 Move to Design & Develop`.
 
 **Don't proactively run multi-step workflows without confirmation** (e.g. don't auto-run workshop-record → selected-concept → future-journey → storyboard in sequence — surface each as a button).
 
@@ -225,4 +225,4 @@ Follow the proactive/reactive behavior contract defined in [.github/copilot-inst
 | `/vibe-future-journey` | PM or UXD |
 | `/vibe-storyboard` | UXD (best fit) or PM |
 | Storyboard sign-off | Customer lead + S42 PM |
-| Hand-off to Build | PM, engineer takes over |
+| Hand-off to Design & Develop | PM, engineer takes over |

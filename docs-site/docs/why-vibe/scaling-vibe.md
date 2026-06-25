@@ -26,7 +26,7 @@ The VIBE methodology used to live in people's heads. New team members learned by
 <div className="problem-grid">
   <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-start)'}}>
     <h3>📋 Opinionated prompts</h3>
-    <p>14 prompts that encode the full VIBE engagement workflow — kickoff to handoff. The TPM or engineer runs them by typing one command.</p>
+    <p>30 prompts that encode the full VIBE engagement workflow — kickoff to handoff. The TPM or engineer runs them by typing one command.</p>
   </div>
   <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-end)'}}>
     <h3>🤖 Specialized agents</h3>
@@ -100,7 +100,7 @@ You don't have to take any of this on faith. The harness ships with a complete d
   <div className="value-card">
     <div className="value-icon">▶️</div>
     <h3>3 — Run the engagement</h3>
-    <p>Click the prompts the agent suggests: Preparation → Discover → Disrupt → Build → Deliver. Watch the artifacts populate.</p>
+    <p>Click the prompts the agent suggests: Preparation → Discover → Disrupt → Design & Develop → Deliver. Watch the artifacts populate.</p>
   </div>
   <div className="value-card">
     <div className="value-icon">📖</div>
@@ -113,7 +113,7 @@ You don't have to take any of this on faith. The harness ships with a complete d
 
 ## See also
 
-- [The 6 phases](/why-vibe/process) — what each step of a VIBE engagement looks like
+- [The 5 phases](/why-vibe/process) — what each step of a VIBE engagement looks like
 - [What the harness changes](/why-vibe/impact) — concrete before/after for the team
 - [For leadership](/why-vibe/leadership) — the case for adopting the harness as default tooling
 - [Case studies](/why-vibe/case-studies) — the VIBE engagements that set the standard

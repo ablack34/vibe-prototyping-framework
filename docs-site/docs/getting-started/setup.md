@@ -22,7 +22,7 @@ Install from the VS Code marketplace:
 
 1. Open VS Code
 2. Press `Ctrl+Shift+X` (Extensions)
-3. Search for **"HVE Core"**
+3. Search for **"HVE-Core"**
 4. Install the extension (v3.2+)
 
 ### 3. Get Comfortable With Copilot Chat Modes
@@ -37,9 +37,9 @@ VIBE prompts only work in **Agent mode**. Open Copilot Chat (`Ctrl+Shift+I`) and
 
 If you type `/` and don't see `/vibe-*` prompts, you're in the wrong mode — switch to Agent.
 
-### 4. (Engineers only) Tooling for Build
+### 4. (Engineers only) Tooling for Design & Develop
 
-Engineers also need these for the Build phase, but they can install on demand:
+Engineers also need these for the Design & Develop phase, but they can install on demand:
 
 - **Node.js 22+** — `winget install OpenJS.NodeJS.LTS`
 - **.NET 9 SDK** — `winget install Microsoft.DotNet.SDK.9`

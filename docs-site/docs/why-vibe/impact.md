@@ -45,11 +45,11 @@ ROI scenarios with $ figures and adoption cost analysis live in the [pitch packa
     <div className="stat-label">Phases a TPM can drive without an engineer</div>
   </div>
   <div className="stat-card">
-    <div className="stat-number">21</div>
+    <div className="stat-number">30</div>
     <div className="stat-label">AI-powered prompts encoding the workflow</div>
   </div>
   <div className="stat-card">
-    <div className="stat-number">8</div>
+    <div className="stat-number">7</div>
     <div className="stat-label">Specialized agents with defined I/O and quality gates</div>
   </div>
   <div className="stat-card">
@@ -86,7 +86,7 @@ The harness is built on **Hypervelocity Engineering** — Microsoft's methodolog
   <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-start)'}}>
     <h3>🔄 Task Pipeline</h3>
     <p><strong>HVE pattern:</strong> Research → Plan → Implement → Review</p>
-    <p><strong>In the harness:</strong> Engineers use the full HVE task pipeline (<code>/task-research</code> → <code>/task-plan</code> → <code>/task-implement</code> → <code>/task-review</code>) during the Build phase. Every feature is researched, planned, and validated — not just coded.</p>
+    <p><strong>In the harness:</strong> Engineers use the full HVE task pipeline (<code>/task-research</code> → <code>/task-plan</code> → <code>/task-implement</code> → <code>/task-review</code>) during the Design & Develop phase. Every feature is researched, planned, and validated — not just coded.</p>
   </div>
   <div className="problem-card" style={{borderTopColor: 'var(--s42-gradient-end)'}}>
     <h3>🤖 AI Agents as Specialists</h3>
@@ -96,7 +96,7 @@ The harness is built on **Hypervelocity Engineering** — Microsoft's methodolog
   <div className="problem-card" style={{borderTopColor: '#10b981'}}>
     <h3>📋 Opinionated Prompts</h3>
     <p><strong>HVE pattern:</strong> Codified, reusable workflows that encode best practices</p>
-    <p><strong>In the harness:</strong> 14 purpose-built prompts encode the entire VIBE engagement methodology. The TPM or designer executes complex workflows by typing a single command.</p>
+    <p><strong>In the harness:</strong> 30 purpose-built prompts encode the entire VIBE engagement methodology. The TPM or designer executes complex workflows by typing a single command.</p>
   </div>
   <div className="problem-card" style={{borderTopColor: '#f59e0b'}}>
     <h3>📐 Instructions as Guardrails</h3>
@@ -122,7 +122,7 @@ The harness is built on **Hypervelocity Engineering** — Microsoft's methodolog
 
 Traditional prototyping is **person-dependent** — quality varies by who's on the team. HVE-powered prototyping is **process-dependent** — quality is encoded in the agents, prompts, and validation gates.
 
-The result: **any team member with the harness produces consistent, high-quality engagement artifacts — regardless of prior experience** — because the best practices are built into the tooling, not just tribal knowledge.
+The result: **any team member produces consistent, high-quality engagement artifacts regardless of prior experience** — because best practices live in the tooling, not in tribal knowledge.
 
 ---
 
@@ -130,4 +130,4 @@ The result: **any team member with the harness produces consistent, high-quality
 
 - [Scaling VIBE — The Delivery Harness](/why-vibe/scaling-vibe) — what the harness is and why we need it
 - [For leadership](/why-vibe/leadership) — the case for adopting the harness as default tooling
-- [The 6 phases](/why-vibe/process) — how a VIBE engagement runs end-to-end
+- [The 5 phases](/why-vibe/process) — how a VIBE engagement runs end-to-end
