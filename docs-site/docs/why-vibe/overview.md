@@ -127,5 +127,5 @@ It evolves proven design-thinking methods to identify and solve the *right* prob
 ---
 
 :::tip How we deliver VIBE at scale
-VIBE Prototyping is the Studio 42 offering. The **[delivery harness](/why-vibe/scaling-vibe)** is the tooling we wrap around it so any TPM–engineer pair can deliver to senior-team standard. The next page explains what the harness is and why it matters.
+VIBE Prototyping is the Studio 42 offering. The **[delivery harness](/why-vibe/leadership)** is the tooling we wrap around it so any TPM–engineer pair can deliver to senior-team standard. That page explains what the harness is and why it matters.
 :::

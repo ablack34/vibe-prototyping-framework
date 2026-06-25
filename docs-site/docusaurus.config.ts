@@ -24,6 +24,18 @@ const config: Config = {
     locales: ['en'],
   },
 
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          { from: '/why-vibe/scaling-vibe', to: '/why-vibe/leadership' },
+          { from: '/why-vibe/impact', to: '/why-vibe/leadership' },
+        ],
+      },
+    ],
+  ],
+
   presets: [
     [
       'classic',

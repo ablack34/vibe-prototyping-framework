@@ -255,7 +255,7 @@ DECISION POINT
 
 - **Harness architecture overview** — what's in `.github/`, how agents are wired, where state lives
 - **The 14 prompts and 7 agents** — list with one-line descriptions (from [docs site reference](../docs-site/docs/reference/prompts.md))
-- **HVE alignment** — task pipeline, evidence-based decisions, opinionated prompts (from [impact.md](../docs-site/docs/why-vibe/impact.md))
+- **HVE alignment** — task pipeline, evidence-based decisions, opinionated prompts (from [the For Leadership page](../docs-site/docs/why-vibe/leadership.md))
 - **Risk register** — what could go wrong in adoption and how it's mitigated (see [demo-script.md](demo-script.md) Q&A section for objection handlers)
 - **Comparison: harness-enabled VIBE vs incumbent SI approach** — 4-week prototype vs 9-month roadmap PDF (from Contoso scenario)
 
