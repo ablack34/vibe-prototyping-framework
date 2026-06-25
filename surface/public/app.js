@@ -90,9 +90,11 @@ function boardCard(e) {
     ? '<span class="bc-warn" title="Engine secret not set on this repo — phases cannot run until it is reprovisioned">⚠ not runnable</span>'
     : '';
   const href = `/engagement.html?kebab=${encodeURIComponent(e.kebab)}${SOURCE === 'local' ? '&source=local' : ''}`;
-  return `<a class="board-card" href="${href}">
+  const label = escapeHtml(e.name || e.kebab);
+  return `<div class="board-card-wrap">
+    <a class="board-card" href="${href}">
     <div class="bc-main">
-      <div class="bc-name">${escapeHtml(e.name || e.kebab)} ${warn}</div>
+      <div class="bc-name">${label} ${warn}</div>
       ${repoLine}
       <div class="bc-gates">Discover ${boardPill(e.gates.discover.status)} &nbsp; Disrupt ${boardPill(e.gates.disrupt.status)}</div>
     </div>
@@ -100,7 +102,9 @@ function boardCard(e) {
       <div class="bc-dots" title="${present}/${total} deliverables generated">${dots(e.deliverables)}</div>
       <div class="bc-foot">${handoff}<span class="bc-open">Open dashboard →</span></div>
     </div>
-  </a>`;
+    </a>
+    <button class="bc-remove" type="button" data-kebab="${escapeHtml(e.kebab)}" data-name="${label}" title="Remove from this board (does not delete the GitHub repo)" aria-label="Remove ${label} from board">×</button>
+  </div>`;
 }
 
 async function loadBoard() {
@@ -119,6 +123,35 @@ async function loadBoard() {
     box.innerHTML = `<p class="muted empty">Could not load board: ${escapeHtml(String(e.message || e))}</p>`;
   }
 }
+
+async function removeEngagement(kebab, name) {
+  const ok = confirm(
+    `Remove "${name}" from this board?\n\n` +
+    `This only forgets the pointer on this surface. It does NOT delete the ` +
+    `GitHub repository or any of its contents.`
+  );
+  if (!ok) return;
+  try {
+    const res = await fetch(`/api/engagements/${encodeURIComponent(kebab)}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(`Could not remove "${name}": ${data.error || ('HTTP ' + res.status)}`);
+      return;
+    }
+    loadBoard();
+    loadList();
+  } catch (err) {
+    alert(`Could not remove "${name}": ${err.message || err}`);
+  }
+}
+
+$('board').addEventListener('click', (ev) => {
+  const btn = ev.target.closest('.bc-remove');
+  if (!btn) return;
+  ev.preventDefault();
+  ev.stopPropagation();
+  removeEngagement(btn.dataset.kebab, btn.dataset.name);
+});
 
 $('name').addEventListener('input', updatePreview);
 $('owner').addEventListener('input', updatePreview);

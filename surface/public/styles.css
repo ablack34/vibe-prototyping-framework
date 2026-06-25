@@ -180,6 +180,19 @@ button:disabled { opacity: 0.55; cursor: progress; }
   padding: 16px 18px; text-decoration: none; color: var(--text); transition: border-color .15s;
 }
 .board-card:hover { border-color: var(--accent); }
+.board-card-wrap { position: relative; }
+.board-card { padding-right: 46px; }
+.bc-remove {
+  position: absolute; top: 50%; right: 12px; transform: translateY(-50%);
+  width: 24px; height: 24px; padding: 0; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); border-radius: 7px;
+  background: var(--panel); color: var(--muted);
+  font-size: 16px; cursor: pointer;
+  transition: color .12s, border-color .12s, background .12s;
+}
+.bc-remove:hover { color: #ff6b6b; border-color: #ff6b6b; background: var(--panel-2); }
+.bc-remove:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .bc-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
 .bc-repo { font-size: 11px; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; margin-bottom: 6px; }
 .bc-warn { font-size: 11px; font-weight: 600; color: #f0b429; margin-left: 6px; }
