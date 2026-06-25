@@ -43,7 +43,7 @@ Categorize each source as `customer-authored`, `customer-quoted`, or `s42-narrat
 Fill `engagement/{{engagement-kebab}}/customer-brief.md` following its structure. Critical rules:
 
 - **First-person, plain language.** "We have 280 technicians," not "The customer operates a workforce of 280 technicians."
-- **Quote directly when possible.** If the customer said "dispatchers get yelled at by customers" in a transcript, use that line, with `[quoted from transcript-kickoff.md, 11:42]`.
+- **Quote directly when possible.** If the customer said "agents spend longer hunting for the order than processing the return" in a transcript, use that line, with `[quoted from transcript-kickoff.md, 11:42]`.
 - **Mark assumptions explicitly.** Anything you inferred without direct evidence: `[assumed]`.
 - **No solutioning.** The brief is the problem in their words. Solutions live in `selected-concept.md` later.
 - **No consulting-speak.** "Synergies", "leverage", "optimize" — strip them out.

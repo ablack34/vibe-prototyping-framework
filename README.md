@@ -13,7 +13,7 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 ## Start a New Engagement
 
 1. Click **"Use this template" → "Create a new repository"** at the top of this page.
-2. Name it `<customer>-<engagement>` (e.g. `contoso-field-scheduling`), make it private, and clone it locally.
+2. Name it `<customer>-<engagement>` (e.g. `tailwind-returns-ai`), make it private, and clone it locally.
 3. Open in VS Code, open Copilot Chat (`Ctrl+Shift+I`), switch to **Agent mode**, and run:
 
    ```
@@ -63,7 +63,7 @@ You can run a full engagement end-to-end against a fixture customer before doing
 /vibe-demo
 ```
 
-This seeds [`sources/`](sources/) with the **Contoso Field Services — Dispatcher AI** fixture (customer brief, questionnaire responses, two Teams transcripts, three CSVs) and creates `engagement/contoso-dispatcher-ai/` with a filled `PROJECT-CONTEXT.md` plus a populated `customer-brief.md` and a blank-scaffold `engagement-brief.md` (so `@VIBE Preparation` has real work to do). The three Discover deliverables (personas, problem statement, current-state journey) are **not** pre-seeded — they're generated fresh when you run `@VIBE Discover` so you can see the agent actually work. From there `@VIBE Discover`, `@VIBE Disrupt`, and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/contoso/`](demo/contoso/).
+This seeds [`sources/`](sources/) with the **Tailwind Traders — Returns Assist AI** fixture (customer brief, questionnaire responses, two Teams transcripts, four CSVs) and creates `engagement/tailwind-returns-ai/` with a filled `PROJECT-CONTEXT.md` plus a populated `customer-brief.md` and a blank-scaffold `engagement-brief.md` (so `@VIBE Preparation` has real work to do). The three Discover deliverables (personas, problem statement, current-state journey) are **not** pre-seeded — they're generated fresh when you run `@VIBE Discover` so you can see the agent actually work. From there `@VIBE Discover`, `@VIBE Disrupt`, and `/vibe-handoff` all have real source material to work on — you can see each phase fire in 1–5 minutes. The fixture lives in [`demo/tailwind/`](demo/tailwind/).
 
 ---
 

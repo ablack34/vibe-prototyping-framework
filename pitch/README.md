@@ -66,7 +66,7 @@ If you need a different audience version, copy the relevant artifact, rename it 
 | [docs-site/docs/why-vibe/leadership.md](../docs-site/docs/why-vibe/leadership.md) | 1-pager spine, deck slides 1-4 |
 | [docs-site/docs/why-vibe/case-studies.md](../docs-site/docs/why-vibe/case-studies.md) | Deck slide 6 (Siemens, Coca-Cola) |
 | [docs-site/docs/why-vibe/leadership.md](../docs-site/docs/why-vibe/leadership.md) | Deck slide 2, 1-pager proof column |
-| [demo/contoso/customer-brief.md](../demo/contoso/customer-brief.md) | Deck slide 5, demo script, ROI grounding |
+| [demo/tailwind/customer-brief.md](../demo/tailwind/customer-brief.md) | Deck slide 5, demo script, ROI grounding |
 
 If any of those source files change materially, sanity-check the artifacts in this folder before reusing.
 

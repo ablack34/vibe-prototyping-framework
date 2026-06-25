@@ -1,0 +1,23 @@
+customer_id,region,signup_date,orders_12m,returns_12m,return_rate_pct,lifetime_value_gbp,serial_returner_flag,preferred_channel
+C-1001,South West,2021-03-14,18,3,17,1240.5,no,online
+C-1002,London,2019-11-02,42,6,14,3890.0,no,online
+C-1003,Scotland,2022-06-21,9,1,11,410.2,no,store
+C-1004,Wales,2020-08-09,27,5,19,1755.75,no,online
+C-1005,North West,2023-01-30,6,2,33,295.0,no,online
+C-1006,Midlands,2018-05-17,55,9,16,4620.1,no,online
+C-1007,London,2021-09-12,14,11,79,820.0,yes,online
+C-1008,South East,2022-12-04,11,1,9,640.3,no,online
+C-1009,Ireland,2020-02-28,33,4,12,2110.0,no,store
+C-1010,North East,2023-04-19,7,2,29,330.99,no,online
+C-1011,South West,2019-07-23,48,7,15,3320.0,no,online
+C-1012,Scotland,2021-10-05,15,2,13,905.4,no,online
+C-1013,London,2020-11-16,22,15,68,1480.0,yes,online
+C-1014,Midlands,2022-03-08,19,3,16,1190.0,no,online
+C-1015,South East,2018-09-14,61,8,13,5240.0,no,online
+C-1016,Wales,2023-02-11,5,1,20,210.0,no,store
+C-1017,North West,2021-05-29,26,4,15,1670.5,no,online
+C-1018,London,2022-08-22,13,2,15,780.0,no,online
+C-1019,South East,2020-04-03,9,7,78,1950.0,yes,online
+C-1020,Ireland,2021-12-19,17,3,18,1020.0,no,online
+C-1021,Scotland,2023-03-27,8,2,25,395.0,no,online
+C-1022,Midlands,2019-10-08,37,5,14,2480.0,no,online

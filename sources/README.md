@@ -3,7 +3,7 @@
 Drop customer-provided materials and captured workshop notes here. The `@VIBE Discover` agent reads everything in this folder as its **first step** before asking any questions.
 
 :::tip Just want to try the framework?
-Run `/vibe-demo` in Copilot Chat — it copies the **Contoso Field Services** fixture (customer brief, two questionnaires, two transcripts, three CSVs) into this folder so you can run every phase end-to-end without a real customer. Source: [`demo/contoso/`](../demo/contoso/).
+Run `/vibe-demo` in Copilot Chat — it copies the **Tailwind Traders** fixture (customer brief, two questionnaires, two transcripts, four CSVs) into this folder so you can run every phase end-to-end without a real customer. Source: [`demo/tailwind/`](../demo/tailwind/).
 :::
 
 ## What Goes Here

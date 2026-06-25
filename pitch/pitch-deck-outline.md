@@ -122,16 +122,16 @@ Three reasons, big and clear:
 
 ---
 
-## Slide 5 — Contoso in action (1.5 min)
+## Slide 5 — Tailwind in action (1.5 min)
 
 **Title:** *"The harness, end-to-end. Today."*
 
 **What to show:**
-- Screenshot of the docs site (or Contoso `customer-brief.md`) showing the €12M scenario
+- Screenshot of the docs site (or Tailwind `customer-brief.md`) showing the £14M returns-cost scenario
 - Inset: list of artifacts the demo produces (`PROJECT-CONTEXT.md`, `selected-concept.md`, `storyboard.md`, `engineering-brief.md`, scaffold code, `handoff-data.json`)
 
 **What to say:**
-> "There's a Contoso Field Services fixture in the harness — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief modeled on the kind of VIBE engagement we run today. Type `/vibe-demo`, hit enter, and the harness walks the full engagement — Discover, Disrupt, storyboard, handoff package — against a fully-formed scenario.
+> "There's a Tailwind Traders fixture in the harness — £14M annual returns cost, £5-6M addressable pain, return/customer/product datasets, and a 4-week pilot brief modelled on the kind of VIBE engagement we run today. Type `/vibe-demo`, hit enter, and the harness walks the full engagement — Discover, Disrupt, storyboard, handoff package — against a fully-formed scenario.
 >
 > I'm not asking you to take this on faith. Anyone in this room can run it in 15 minutes. I'd love to walk you through it after this meeting."
 
@@ -257,7 +257,7 @@ DECISION POINT
 - **The 14 prompts and 7 agents** — list with one-line descriptions (from [docs site reference](../docs-site/docs/reference/prompts.md))
 - **HVE alignment** — task pipeline, evidence-based decisions, opinionated prompts (from [the For Leadership page](../docs-site/docs/why-vibe/leadership.md))
 - **Risk register** — what could go wrong in adoption and how it's mitigated (see [demo-script.md](demo-script.md) Q&A section for objection handlers)
-- **Comparison: harness-enabled VIBE vs incumbent SI approach** — 4-week prototype vs 9-month roadmap PDF (from Contoso scenario)
+- **Comparison: harness-enabled VIBE vs incumbent approach** — 4-week prototype before September peak planning vs another roadmap PDF or label-printer tool (from Tailwind scenario)
 
 ---
 
@@ -269,7 +269,7 @@ DECISION POINT
 | 2 — Time today | 1:30 | 2:30 |
 | 3 — What's a harness | 1:30 | 4:00 |
 | 4 — Why adopt ⭐ | 2:30 | 6:30 |
-| 5 — Contoso | 1:30 | 8:00 |
+| 5 — Tailwind | 1:30 | 8:00 |
 | 6 — Floor we're raising | 1:00 | 9:00 |
 | 7 — Economics | 1:00 | 10:00 |
 | 8 — Team scenarios | 1:30 | 11:30 |

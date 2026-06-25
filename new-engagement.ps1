@@ -9,7 +9,7 @@
     
     Prerequisites: gh CLI (authenticated), VS Code, Node.js, .NET 9 SDK
 .PARAMETER Customer
-    Customer name (e.g., "Contoso")
+    Customer name (e.g., "Tailwind Traders")
 .PARAMETER Engagement
     Short engagement name (e.g., "field-scheduling"). Used for the repo name.
 .PARAMETER Owner
@@ -21,7 +21,7 @@
 .PARAMETER Location
     Local directory to clone into. Defaults to ~/repos/
 .EXAMPLE
-    .\new-engagement.ps1 -Customer "Contoso" -Engagement "field-scheduling"
+    .\new-engagement.ps1 -Customer "Tailwind Traders" -Engagement "returns-ai"
 .EXAMPLE
     .\new-engagement.ps1 -Customer "Northwind" -Engagement "inventory-ai" -Owner "my-org"
 .EXAMPLE

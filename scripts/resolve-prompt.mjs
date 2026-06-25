@@ -12,7 +12,7 @@
 //
 // Usage:
 //   node scripts/resolve-prompt.mjs <promptId> [key=value ...]
-//   node scripts/resolve-prompt.mjs vibe-personas engagement=contoso
+//   node scripts/resolve-prompt.mjs vibe-personas engagement=tailwind
 //
 // Repo root defaults to cwd; override with VIBE_REPO env or --repo=<path>.
 

@@ -36,7 +36,7 @@ If multiple personas have meaningfully different problem statements, capture the
 
 Copy `templates/problem-statement.md` to `engagement/{{engagement-kebab}}/problem-statement.md`. For each blank:
 
-- **I am [target user]** — name the persona AND their role: "a Contoso emergency-call dispatcher", not just "a user". Source: persona file.
+- **I am [target user]** — name the persona AND their role: "a Tailwind Traders returns agent", not just "a user". Source: persona file.
 - **I'm trying to [objective]** — the job-to-be-done in active voice. "assign the right technician to each emergency call within SLA". Source: transcripts / questionnaire / persona JTBD.
 - **But [challenges]** — the concrete blocker, in plain language. "I can't see which technicians have the parts and skills needed in real time". Source: transcripts / persona pains.
 - **Because [why challenges exist]** — the root cause. "our dispatch tool only shows location, and SAP/Excel inventory is updated nightly". Source: PROJECT-CONTEXT.md Section 5 (Current State) / transcripts.
@@ -45,7 +45,7 @@ Copy `templates/problem-statement.md` to `engagement/{{engagement-kebab}}/proble
 Critical rules:
 
 - **Quote directly when possible** — if the customer said "we get yelled at by customers" in a transcript, use that line with `[quoted from transcript-kickoff.md, 11:42]`
-- **No solutioning** — the problem statement describes the problem, not the answer. Don't say "but I don't have an AI dispatcher" — say "but I can't see what's available in real time"
+- **No solutioning** — the problem statement describes the problem, not the answer. Don't say "but I don't have an AI returns assistant" — say "but I can't see why the item really came back"
 - **No consulting-speak** — "synergies", "leverage", "optimize" — strip them out
 - **Quantify the impact when you can** — $X cost, Y% rework, Z minutes per call. If only an emotional impact is sourced (e.g. "customers get angry"), use that and mark it `[emotional impact — no quantified $ figure yet]`
 

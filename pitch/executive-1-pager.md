@@ -31,7 +31,7 @@ To scale AI-first consulting, we don't need a new offering. We need a **delivery
 
 ## Proof you can see today
 
-- **Run it yourself**: `/vibe-demo` in any clone of the template seeds a full Contoso Field Services scenario — €12M addressable customer pain, three CSV datasets, a 4-week pilot brief — and walks Preparation → Discover → Disrupt → Design & Develop → Deliver end-to-end
+- **Run it yourself**: `/vibe-demo` in any clone of the template seeds a full Tailwind Traders returns scenario — £14M annual returns cost, £5-6M addressable pain, return/customer/product datasets, a 4-week pilot brief — and walks Preparation → Discover → Disrupt → Design & Develop → Deliver end-to-end
 - **Browse the docs**: [https://wonderful-flower-0a2a87e03.7.azurestaticapps.net](https://wonderful-flower-0a2a87e03.7.azurestaticapps.net)
 - **Track record**: the harness codifies the patterns that delivered Siemens, Novartis, and Coca-Cola. **The floor we're raising.**
 

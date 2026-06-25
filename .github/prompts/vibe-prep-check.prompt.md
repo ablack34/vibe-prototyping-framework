@@ -37,7 +37,7 @@ Report results as a table with three columns (`Check`, `Status`, `Action`). Use:
 Example:
 
 ```
-📍 Contoso Field Services — Dispatcher AI · Phase: preparation · Prep readiness: 6/9
+📍 Tailwind Traders — Returns Assist AI · Phase: preparation · Prep readiness: 6/9
 
 🩺 Prep Check
 

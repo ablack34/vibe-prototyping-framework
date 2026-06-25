@@ -15,7 +15,7 @@ Create a new VIBE Prototyping engagement workspace. This prompt handles everythi
 
 ## Inputs
 
-- ${input:customer}: (Required) Customer name (e.g., "Contoso").
+- ${input:customer}: (Required) Customer name (e.g., "Tailwind Traders").
 - ${input:engagement}: (Required) Short engagement name (e.g., "field-scheduling").
 
 ---

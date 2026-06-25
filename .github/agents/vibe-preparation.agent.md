@@ -93,7 +93,7 @@ Show the grading dashboard like:
 ```
 PREPARATION READINESS — QUALITY GRADED
   ✅ A — engagement-brief.md: filled, squad named, 3 risks with mitigation
-  ✅ B — customer-brief.md: filled from sources, awaiting Sandra's sign-off
+  ✅ B — customer-brief.md: filled from sources, awaiting Elena's sign-off
   ⚠️ B — customerResearch: public research complete (7 cited sources); M365 paste-back outstanding
   ✅ A — meetingSchedule: 7 meetings drafted with copy-paste invites
   ✅ A — existingDocs: 4 customer-authored docs ingested

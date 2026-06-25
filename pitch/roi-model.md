@@ -185,6 +185,6 @@ If you need to add a new scenario (e.g., "What if we charged customers for harne
 - "20+ hours of manual documentation per engagement" — from [docs-site/docs/why-vibe/leadership.md](../docs-site/docs/why-vibe/leadership.md), "The Problem" section
 - "40% of engagement time spent on docs" — same source
 - Siemens $19M deal / $140M 5yr consumption — from [docs-site/docs/why-vibe/case-studies.md](../docs-site/docs/why-vibe/case-studies.md) (not used in ROI math; only as context for "what a VIBE engagement can be worth")
-- Contoso €12M addressable pain — from [demo/contoso/customer-brief.md](../demo/contoso/customer-brief.md) (illustrative customer-side ROI; not used in Studio 42 ROI math)
+- Tailwind £14M annual returns cost / £5-6M addressable pain — from [demo/tailwind/customer-brief.md](../demo/tailwind/customer-brief.md) (illustrative customer-side ROI; not used in Studio 42 ROI math)
 - Blended hourly rate ($250) — **placeholder, not sourced**. Replace before sharing externally.
 - VIBE engagement volume (15/yr) — **placeholder, not sourced**. Replace before sharing externally.

@@ -135,7 +135,7 @@ The payoff: traditional prototyping is **person-dependent** — quality varies b
 
 ## Try the harness yourself
 
-You don't have to take any of this on faith. The harness ships with a complete demo fixture — Contoso Field Services, a €12M HVAC dispatcher scenario — so you can walk a full VIBE engagement end-to-end in about 15 minutes.
+You don't have to take any of this on faith. The harness ships with a complete demo fixture — Tailwind Traders, a returns-and-refunds operations scenario for a £480M UK retailer — so you can walk a full VIBE engagement end-to-end in about 15 minutes.
 
 <div className="value-grid">
   <div className="value-card">
@@ -146,7 +146,7 @@ You don't have to take any of this on faith. The harness ships with a complete d
   <div className="value-card">
     <div className="value-icon">⚡</div>
     <h3>2 — Seed the demo</h3>
-    <p>Type <code>/vibe-demo</code> in Copilot Chat (Agent mode). The harness copies the Contoso fixture into your engagement folder.</p>
+    <p>Type <code>/vibe-demo</code> in Copilot Chat (Agent mode). The harness copies the Tailwind Traders fixture into your engagement folder.</p>
   </div>
   <div className="value-card">
     <div className="value-icon">▶️</div>

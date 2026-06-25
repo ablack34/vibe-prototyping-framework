@@ -20,7 +20,7 @@ on:
         type: string
         default: cloudtest
       seed_demo:
-        description: Seed demo/contoso sources first (for a self-contained proof)
+        description: Seed demo/tailwind sources first (for a self-contained proof)
         type: boolean
         default: true
       model:
@@ -55,10 +55,10 @@ jobs:
           ENG="engagement/${ENGAGEMENT}"
           mkdir -p "$ENG" sources sources/research
           # Transcripts + questionnaires + research give the engine real signal to read.
-          cp demo/contoso/transcript-*.md sources/ 2>/dev/null || true
-          cp demo/contoso/customer-brief.md "$ENG/" 2>/dev/null || true
-          cp demo/contoso/questionnaire-customer-pre.md sources/questionnaire-responses.md 2>/dev/null || true
-          cp demo/contoso/research/research-summary.md sources/research/ 2>/dev/null || true
+          cp demo/tailwind/transcript-*.md sources/ 2>/dev/null || true
+          cp demo/tailwind/customer-brief.md "$ENG/" 2>/dev/null || true
+          cp demo/tailwind/questionnaire-customer-pre.md sources/questionnaire-responses.md 2>/dev/null || true
+          cp demo/tailwind/research/research-summary.md sources/research/ 2>/dev/null || true
           echo "Seeded sources for engagement '${ENGAGEMENT}':"
           ls -R sources "$ENG" || true
 
