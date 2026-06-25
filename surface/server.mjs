@@ -9,6 +9,7 @@
 //   GET  /api/engagements      -> the local pointer store (engagement -> repo)
 //   POST /api/engagements      -> create a repo from the template, verify the engine
 //                                 shipped, record the pointer, return the repo.
+//   DELETE /api/engagements/<id> -> forget the local pointer (never touches the repo)
 //   GET  /api/board            -> engagements (from the pointer store) with live gate
 //                                 state read from each engagement's own repo
 //   GET  /api/board/<kebab>    -> one engagement: gates + rendered deliverables
@@ -350,6 +351,19 @@ async function createEngagement(input) {
   await writeStore(store);
 
   return { code: 201, body: record };
+}
+
+// Forget an engagement pointer (owner-checked). Removes only the local registry
+// record; it never touches the GitHub repo, which stays the source of truth. Used
+// to clear stale rows after a repo is deleted or archived on GitHub.
+async function removeEngagement(id) {
+  const kebab = String(id || '').trim();
+  if (!kebab) return { code: 400, body: { error: 'Engagement id is required.' } };
+  const store = await readStore();
+  const rec = store.find((r) => (r.id || '') === kebab && owns(r));
+  if (!rec) return { code: 404, body: { error: 'Engagement not found.' } };
+  await writeStore(store.filter((r) => r !== rec));
+  return { code: 200, body: { ok: true, id: kebab, repo: rec.repo } };
 }
 
 // ---- dashboard: local engagements + live gate state ----
@@ -1551,6 +1565,12 @@ const server = createServer((req, res) => {
       for await (const chunk of req) raw += chunk;
       const input = raw ? JSON.parse(raw) : {};
       const { code, body } = await createEngagement(input);
+      return send(res, code, body);
+    }
+
+    const delEng = url.pathname.match(/^\/api\/engagements\/([A-Za-z0-9][A-Za-z0-9-]*)$/);
+    if (req.method === 'DELETE' && delEng) {
+      const { code, body } = await removeEngagement(delEng[1]);
       return send(res, code, body);
     }
 
