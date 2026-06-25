@@ -1,7 +1,7 @@
 ---
 description: "Seed the engagement with the Tailwind Traders demo fixtures so you can run a full VIBE engagement end-to-end without a real customer"
 agent: "VIBE Engagement Lead"
-argument-hint: "[demo=tailwind]"
+argument-hint: "[demo=tailwind] [engagement=<kebab>]"
 ---
 
 # VIBE Demo
@@ -11,28 +11,39 @@ Seed the engagement with a complete fixture so you can demonstrate every phase o
 ## Inputs
 
 - ${input:demo:tailwind}: (Optional, defaults to `tailwind`) Which demo fixture to load. Today only `tailwind` (Tailwind Traders — Returns Assist AI) is available.
+- ${input:engagement}: (Optional) The engagement folder to seed, as a kebab-case slug. Leave it blank to derive the folder from the repository name (Step 1) so the seeded files land in the same `engagement/<kebab>/` folder the web surface reads.
 
 ## What this does
 
-1. Confirms with the user that loading the demo will populate `sources/` and `engagement/tailwind-returns-ai/` (pre-filled Preparation outputs only — Discover deliverables get generated fresh by the agents).
+1. Resolves the engagement folder `engagement/{{engagement-kebab}}/` from the repo name (Step 1) so the seed lands where the web surface reads it, then confirms with the user that loading the demo will populate `sources/` and that folder (pre-filled Preparation outputs only — Discover deliverables get generated fresh by the agents).
 2. Copies `demo/<demo>/*.md` and `demo/<demo>/voice-of-customer.txt` (excluding the demo's own README) into `sources/` so the agents pick them up just like real customer-supplied sources.
 3. Copies `demo/<demo>/sample-data/*.csv` into `sources/sample-data/` (so `/vibe-data-prep` can later typify them into `scaffold/data/`).
-4. Creates `engagement/tailwind-returns-ai/` with three pre-filled Preparation artifacts (`PROJECT-CONTEXT.md`, `customer-brief.md`, and an empty `engagement-brief.md` scaffold that `@VIBE Preparation` will fill).
-5. Creates `.copilot-tracking/vibe/tailwind-returns-ai/state.json` exactly as `/vibe-kickoff` would.
+4. Creates `engagement/{{engagement-kebab}}/` with three pre-filled Preparation artifacts (`PROJECT-CONTEXT.md`, `customer-brief.md`, and an empty `engagement-brief.md` scaffold that `@VIBE Preparation` will fill).
+5. Creates `.copilot-tracking/vibe/{{engagement-kebab}}/state.json` exactly as `/vibe-kickoff` would.
 6. Tells the user the recommended sequence to demonstrate every phase.
 
 ## Requirements
 
-### Step 0 — Confirm
+### Step 1 — Resolve the engagement folder
 
-If `engagement/` already contains any directory other than what we're about to create, **stop** and ask the user whether to:
+Every artifact this demo writes lives under `engagement/{{engagement-kebab}}/`. Resolve `{{engagement-kebab}}` **before copying anything** so the seeded files land in the same folder the web surface reads — the surface keys an engagement off its **repository name**, so the folder must match it:
+
+1. If the user passed `${input:engagement}`, kebab-case it and use that.
+2. Otherwise derive it from the repo: run `git remote get-url origin`, take the last path segment, strip a trailing `.git`, and lower-case it. Use that value **unless** it is `vibe-prototyping-framework` (you're in the framework template itself, not a provisioned engagement repo).
+3. If there is no git remote, or step 2 yielded `vibe-prototyping-framework`, fall back to `tailwind-returns-ai`.
+
+Use the resolved value everywhere below, and record it as `engagementKebab` in `state.json`, so every downstream agent resolves the same folder. The Tailwind **content** (customer, problem, personas) is identical regardless of the folder name — only the folder follows your repo.
+
+### Step 2 — Confirm
+
+If `engagement/` already contains the resolved `{{engagement-kebab}}/` folder with content, or any other engagement directory, **stop** and ask the user whether to:
 
 - Continue and overwrite (delete the existing engagement folder and proceed)
 - Cancel
 
 Do not proceed silently — demos overwrite work.
 
-### Step 1 — Locate the fixture
+### Step 3 — Locate the fixture
 
 The demo files live in `demo/${input:demo}/`. If that directory doesn't exist, list the available demos under `demo/` and stop.
 
@@ -41,7 +52,7 @@ For the `tailwind` demo specifically, the layout is:
 ```
 demo/tailwind/
 ├── README.md                            (do NOT copy — it's the demo's own docs)
-├── customer-brief.md                    → sources/customer-brief.md   AND  → engagement/tailwind-returns-ai/customer-brief.md
+├── customer-brief.md                    → sources/customer-brief.md   AND  → engagement/{{engagement-kebab}}/customer-brief.md
 ├── meeting-templates.md                 → sources/meeting-templates.md (full 7-meeting schedule)
 ├── questionnaire-account-team.md        → sources/questionnaire-account-team.md
 ├── questionnaire-customer-pre.md        → sources/questionnaire-customer-pre.md
@@ -61,17 +72,17 @@ demo/tailwind/
                                           (returns.csv, products.csv, customers.csv, reason-codes.csv)
 ```
 
-### Step 2 — Copy
+### Step 4 — Copy
 
 Copy every file listed above into `sources/` (preserve filenames). Create `sources/sample-data/` and `sources/research/` if they don't exist.
 
-`customer-brief.md` is special: copy it into BOTH `sources/customer-brief.md` (so `@VIBE Discover` and `@VIBE Disrupt` see it as a source) AND `engagement/tailwind-returns-ai/customer-brief.md` (so `@VIBE Preparation` sees a populated brief without re-running `/vibe-customer-brief`). **Never write into `templates/`** — `templates/customer-brief.md` is a blank scaffold and must stay untouched.
+`customer-brief.md` is special: copy it into BOTH `sources/customer-brief.md` (so `@VIBE Discover` and `@VIBE Disrupt` see it as a source) AND `engagement/{{engagement-kebab}}/customer-brief.md` (so `@VIBE Preparation` sees a populated brief without re-running `/vibe-customer-brief`). **Never write into `templates/`** — `templates/customer-brief.md` is a blank scaffold and must stay untouched.
 
-**Do NOT copy `discover-outputs/*` anywhere.** Those files in `demo/tailwind/discover-outputs/` are reference examples only — they show what `@VIBE Discover` is expected to produce when it runs against the demo's `sources/`. The whole point of the demo is that the user invokes `@VIBE Discover` and watches it generate `personas.md`, `problem-statement.md`, and `current-state-journey.md` fresh in `engagement/tailwind-returns-ai/`. Pre-seeding them would short-circuit Discover and route the user straight to Disrupt with nothing to look at — defeating the purpose of the demo.
+**Do NOT copy `discover-outputs/*` anywhere.** Those files in `demo/tailwind/discover-outputs/` are reference examples only — they show what `@VIBE Discover` is expected to produce when it runs against the demo's `sources/`. The whole point of the demo is that the user invokes `@VIBE Discover` and watches it generate `personas.md`, `problem-statement.md`, and `current-state-journey.md` fresh in `engagement/{{engagement-kebab}}/`. Pre-seeding them would short-circuit Discover and route the user straight to Disrupt with nothing to look at — defeating the purpose of the demo.
 
-### Step 3 — Pre-fill engagement artifacts
+### Step 5 — Pre-fill engagement artifacts
 
-For the `tailwind` demo, create `engagement/tailwind-returns-ai/PROJECT-CONTEXT.md` by copying `templates/PROJECT-CONTEXT.md` and filling it with:
+For the `tailwind` demo, create `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` by copying `templates/PROJECT-CONTEXT.md` and filling it with:
 
 - Customer: `Tailwind Traders`
 - Engagement: `Returns Assist AI`
@@ -80,21 +91,21 @@ For the `tailwind` demo, create `engagement/tailwind-returns-ai/PROJECT-CONTEXT.
 - Technical contact: `Dev Patel, Head of Reverse Logistics`
 - Account team contact: `Tom Bryce`
 
-Also copy `templates/engagement-brief.md` to `engagement/tailwind-returns-ai/engagement-brief.md` as a blank scaffold (placeholders intact) so `@VIBE Preparation` has something to populate when it runs. Don't pre-fill it — Preparation generating the brief from sources is the demo's first real piece of agent work.
+Also copy `templates/engagement-brief.md` to `engagement/{{engagement-kebab}}/engagement-brief.md` as a blank scaffold (placeholders intact) so `@VIBE Preparation` has something to populate when it runs. Don't pre-fill it — Preparation generating the brief from sources is the demo's first real piece of agent work.
 
 Leave the remaining PROJECT-CONTEXT fields empty — they'll fill in as the discovery and disrupt agents process the sources.
 
-**Never modify any file in `templates/`** — those are blank scaffolds. Every filled artifact lives in `engagement/tailwind-returns-ai/`.
+**Never modify any file in `templates/`** — those are blank scaffolds. Every filled artifact lives in `engagement/{{engagement-kebab}}/`.
 
-### Step 4 — Initialize engagement structure
+### Step 6 — Initialize engagement structure
 
 Create:
 
-- `engagement/tailwind-returns-ai/` (committed shared artifacts — empty for now, agents will populate)
-- `.copilot-tracking/vibe/tailwind-returns-ai/state.json` with the following shape (uses `currentPhase`, not `phase`, to match the Engagement Lead schema):
+- `engagement/{{engagement-kebab}}/` (committed shared artifacts — empty for now, agents will populate)
+- `.copilot-tracking/vibe/{{engagement-kebab}}/state.json` with the following shape (uses `currentPhase`, not `phase`, to match the Engagement Lead schema):
   - `customer: "Tailwind Traders"`
   - `engagement: "Returns Assist AI"`
-  - `engagementKebab: "tailwind-returns-ai"`
+  - `engagementKebab: "{{engagement-kebab}}"` (the value resolved in Step 1)
   - `currentPhase: "preparation"` — Preparation runs first. The readiness block below is pre-filled at Grade A because the brief/research/schedule files are seeded, so running `@VIBE Preparation` will print a 7/7 dashboard and hand off to Discover. **Discover deliverables are NOT pre-seeded** — `@VIBE Discover` is expected to generate them fresh, which is where the user sees real agent work for the first time.
   - `createdAt: <now>`
   - `demoFixture: "tailwind"`
@@ -111,7 +122,7 @@ Create:
   - `readiness.discover` — leave this block OUT entirely (or set all sub-fields to `{ "status": "empty", "grade": null }`). The deliverables don't exist yet; the file-system reconciliation logic will populate them as Discover writes each file.
   - 9 Discovery readiness fields — leave OUT entirely (or set all to `{ "status": "empty", "grade": null }`). They'll be populated as Discover processes sources/ and writes deliverables.
 
-### Step 5 — Tell the user what to do next
+### Step 7 — Tell the user what to do next
 
 Show this summary:
 
@@ -140,10 +151,10 @@ Show this summary:
    reference. They're the answer key, not pre-populated state.)
 
 📁 Initialized:
-   • engagement/tailwind-returns-ai/PROJECT-CONTEXT.md  pre-filled with Tailwind details
-   • engagement/tailwind-returns-ai/customer-brief.md   seeded with Elena's customer-voice brief
-   • engagement/tailwind-returns-ai/engagement-brief.md blank scaffold — @VIBE Preparation fills this
-   • .copilot-tracking/vibe/tailwind-returns-ai/state.json  per-user state
+   • engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md  pre-filled with Tailwind details
+   • engagement/{{engagement-kebab}}/customer-brief.md   seeded with Elena's customer-voice brief
+   • engagement/{{engagement-kebab}}/engagement-brief.md blank scaffold — @VIBE Preparation fills this
+   • .copilot-tracking/vibe/{{engagement-kebab}}/state.json  per-user state
      (phase=preparation, prep readiness 7/7 at Grade A since the briefs and research
       are pre-seeded. Discover readiness is empty — that's where you'll see real
       agent work happen first.)
