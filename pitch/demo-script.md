@@ -13,7 +13,7 @@
 - [ ] Fresh clone of `vibe-prototyping-framework` open in VS Code (no prior engagement state)
 - [ ] Copilot Chat open in Agent mode, panel docked right
 - [ ] [https://wonderful-flower-0a2a87e03.7.azurestaticapps.net](https://wonderful-flower-0a2a87e03.7.azurestaticapps.net) open in a browser tab
-- [ ] [demo/contoso/customer-brief.md](../demo/contoso/customer-brief.md) open in a second VS Code tab
+- [ ] [demo/tailwind/customer-brief.md](../demo/tailwind/customer-brief.md) open in a second VS Code tab
 - [ ] Screen at a presentable zoom (Ctrl+= twice from default)
 - [ ] Notifications muted, calendar reminders snoozed
 - [ ] Phone face-down
@@ -26,16 +26,16 @@ If you're presenting remotely, share the VS Code window only — not the full de
 
 ### 0:00-2:00 — Frame the scenario
 
-**Show:** [demo/contoso/customer-brief.md](../demo/contoso/customer-brief.md) (the Contoso brief) in VS Code
+**Show:** [demo/tailwind/customer-brief.md](../demo/tailwind/customer-brief.md) (the Tailwind brief) in VS Code
 
 **Say:**
-> "Quick scenario. Contoso Field Services — HVAC company across EMEA, 280 technicians, 14 dispatchers in Warsaw matching ~180 work orders a day to the right tech using a 2008 ASP.NET system. SLA breaches cost them €4M in penalties last year, another €6M in lost renewals. Total addressable pain: roughly €12M annually.
+> "Quick scenario. Tailwind Traders — a Bristol-headquartered outdoor, home, and garden retailer with about £480M revenue and 1.3M online orders a year. Returns are 18% of orders — roughly 19,000 a month — and 22 Bristol agents process every one by hand in a 2012 tool called ReturnDesk. Average refunds take 9 days, 41% of returns are coded 'Other', and finance estimates £2.3M a year in fraud and leakage. Total returns cost: roughly £14M annually, with £5-6M addressable.
 >
-> Their incumbent SI quoted 9 months for a roadmap PDF. The CIO wants something tangible in 4 weeks. This is a fairly typical VIBE engagement scenario.
+> Their sponsor wants something tangible before September peak planning — not another smart-looking label printer or roadmap PDF. This is a fairly typical VIBE engagement scenario.
 >
 > What I'm going to do is run this VIBE engagement through the harness — from raw customer brief to engineering-ready prototype concept — in about 12 minutes. The harness does what we already do, just faster and more consistently."
 
-**Why this works:** Establishes stakes. €12M, 4-week deadline, beat the incumbent — anyone in the room understands those numbers. Positions VIBE as the existing offering and the harness as the accelerator.
+**Why this works:** Establishes stakes. £14M annual cost, £5-6M addressable, September deadline, overcome failed prior tools — anyone in the room understands those numbers. Positions VIBE as the existing offering and the harness as the accelerator.
 
 ---
 
@@ -49,9 +49,9 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Wait** for the agent to confirm. When it asks "ok to proceed?" → "yes".
 
 **Say (while it runs):**
-> "One command. The harness is copying the Contoso fixture into `sources/` — the customer brief, two questionnaires, two transcripts, three CSV files. It's also pre-filling `PROJECT-CONTEXT.md` with the customer details and creating the engagement folder structure. This is the equivalent of about 90 minutes of setup that a TPM would normally do by hand before they can even start the engagement."
+> "One command. The harness is copying the Tailwind fixture into `sources/` — the customer brief, questionnaires, transcripts, return data, product data, customer data, and the reason-code taxonomy. It's also pre-filling `PROJECT-CONTEXT.md` with the customer details and creating the engagement folder structure. It seeds Preparation only; the three Discover deliverables are generated live in the next step. This is the equivalent of about 90 minutes of setup that a TPM would normally do by hand before they can even start the engagement."
 
-**Show when done:** The `sources/` folder populated, `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` with Sandra Holtz / Matthias Köhler filled in.
+**Show when done:** The `sources/` folder populated, `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` with Elena Marsh / Dev Patel filled in.
 
 ---
 
@@ -64,7 +64,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 >
 > This is the part where TPMs today spend 4-6 hours synthesizing notes. The harness does it in about 90 seconds, and every claim is source-cited so the TPM can verify. The TPM still owns the output — they just don't write it from scratch."
 
-**Show when done:** The generated [`engagement/contoso-dispatcher-ai/PROJECT-CONTEXT.md`](../engagement/) — point at the source citations and the A/B/C grading.
+**Show when done:** The generated [`engagement/tailwind-returns-ai/PROJECT-CONTEXT.md`](../engagement/) — point at the source citations and the A/B/C grading.
 
 **Pause for questions.** This is usually where someone asks "but does it hallucinate?" — answer: "yes, AI can. That's why every field is graded and source-cited. A C-grade field is a flag for the TPM to ask the customer, not something we trust at face value."
 
@@ -77,18 +77,18 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Say (while it runs):**
 > "Disrupt is the Week 2 customer co-creation workshop — it replaces what we used to split into Define and Ideate. The agent generates the workshop agenda anchored to Discover findings, drafts 2-3 candidate concepts plus Spark prompts the facilitator pastes into GitHub Spark live in the room, then captures the workshop outcome. The customer picks the concept; the agent generates the future-state journey and the storyboard.
 >
-> This is the consistency thing from slide 4 of the deck — without the harness, our default ideation answer drifts toward 'another web dashboard.' With the harness, every engagement explicitly evaluates web, agentic, conversational, Copilot extension, and low-code paths. For dispatch, the answer is probably web + an agent — but the harness forces the explicit consideration every time, on every engagement."
+> This is the consistency thing from slide 4 of the deck — without the harness, our default ideation answer drifts toward 'another web dashboard.' With the harness, every engagement explicitly evaluates web, agentic, conversational, Copilot extension, and low-code paths. For returns, the selected concept is an assistive web app with AI explanations — but the harness forces the explicit consideration every time, on every engagement."
 
 **Show when done:**
-- [`engagement/contoso-dispatcher-ai/workshop-agenda.md`](../engagement/) — facilitator agenda
-- [`engagement/contoso-dispatcher-ai/spark-prompts.md`](../engagement/) — what the facilitator pastes into Spark live in the room
-- [`engagement/contoso-dispatcher-ai/workshop-record.md`](../engagement/) — what happened, who said what
-- [`engagement/contoso-dispatcher-ai/selected-concept.md`](../engagement/) — the customer-signed concept
-- [`engagement/contoso-dispatcher-ai/future-state-journey.md`](../engagement/) — how the persona uses the solution end-to-end
-- [`engagement/contoso-dispatcher-ai/storyboard.md`](../engagement/) — **the engineer's contract for Design & Develop**
+- [`engagement/tailwind-returns-ai/workshop-agenda.md`](../engagement/) — facilitator agenda
+- [`engagement/tailwind-returns-ai/spark-prompts.md`](../engagement/) — what the facilitator pastes into Spark live in the room
+- [`engagement/tailwind-returns-ai/workshop-record.md`](../engagement/) — what happened, who said what
+- [`engagement/tailwind-returns-ai/selected-concept.md`](../engagement/) — the customer-signed concept
+- [`engagement/tailwind-returns-ai/future-state-journey.md`](../engagement/) — how the persona uses the solution end-to-end
+- [`engagement/tailwind-returns-ai/storyboard.md`](../engagement/) — **the engineer's contract for Design & Develop**
 
 **Highlight the storyboard:**
-> "This is what changes the Design & Develop phase. Today, an engineer joins a VIBE engagement and has to interview the TPM to extract what's already in everyone else's heads. With the harness, they get this on Day 1: signed-off concept, scene-by-scene storyboard, customer voice baked in. They start building immediately. Engineer time becomes prototype time."
+> "This is what changes the Design & Develop phase. Today, an engineer joins a VIBE engagement and has to interview the TPM to extract what's already in everyone else's heads. With the harness, they get this on Day 1: signed-off concept, scene-by-scene storyboard, customer voice baked in. Here the on-screen story is concrete: Maya's Bristol returns desk opens a queue with ambiguous 'Other'-coded returns, a suspected serial returner, and a legitimate customer who bought three tents to compare. Returns Assist suggests a disposition, reason code, and fraud-risk flag with an explanation; the agent accepts or overrides; the three-tents return is correctly not flagged; and the camping-stove gas leak is escalated rather than auto-processed. Engineer time becomes prototype time."
 
 ---
 
@@ -97,7 +97,7 @@ If you're presenting remotely, share the VS Code window only — not the full de
 **Show:** Either run `/vibe-handoff` if you have time, or jump to a pre-baked example of `handoff-data.json` from a prior demo run.
 
 **Say:**
-> "Final piece. The Deliver phase generates `handoff-data.json` — a single source of truth for the customer handoff. Vision, roadmap, backlog (Epics/Features/Stories), known limitations, demo notes. Every claim cross-references back to its source artifact. If the vision says 'reduce dispatcher decision time from 6 min to 60s,' that traces back to the Sandra Holtz quote in the kickoff transcript.
+> "Final piece. The Deliver phase generates `handoff-data.json` — a single source of truth for the customer handoff. Vision, roadmap, backlog (Epics/Features/Stories), known limitations, demo notes. Every claim cross-references back to its source artifact. If the vision says 'reduce refund cycle time from 9 days to under 3,' that traces back to Elena Marsh's customer brief and the kickoff transcript.
 >
 > Today, the VIBE handoff is a slide deck the TPM stays up late writing. With the harness, it's a validated package the agents have already checked for consistency before the customer sees it. Same VIBE artifact, lower delivery cost, higher quality floor."
 

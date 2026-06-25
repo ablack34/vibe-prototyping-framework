@@ -122,10 +122,10 @@ Gather context for the search. Check `state.json` first for pre-registered meeti
 
 | Query Strategy | Example | Why |
 |---------------|---------|-----|
-| By customer name | "meetings about Contoso" | Catches well-named meetings |
+| By customer name | "meetings about Tailwind Traders" | Catches well-named meetings |
 | By participant names | "meetings with Jane Smith and Bob Chen in the last 2 weeks" | Catches poorly-named meetings if you know who attended |
 | By date range + topic | "meetings about scheduling in the last week" | Catches meetings where the customer name wasn't mentioned |
-| By registered meeting names | "meeting called [VIBE] Contoso — Kickoff" | Catches meetings that follow the naming convention |
+| By registered meeting names | "meeting called [VIBE] Tailwind Traders — Kickoff" | Catches meetings that follow the naming convention |
 
 Run 2-3 queries using different signals. Deduplicate results by date + participants. Present the combined results as a numbered list for user selection. Identify participants and infer authority tiers.
 

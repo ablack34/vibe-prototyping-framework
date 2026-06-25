@@ -758,7 +758,7 @@ async function boardDetail(kebab) {
 // writes the deliverable + gates.json back, and the board re-reads it.
 const FILE_PROMPT = {
   // Preparation (Week-0). The two briefs ground in sources/ + each other; research and
-  // schedule ground in the briefs + PROJECT-CONTEXT. None ever re-seed Contoso
+  // schedule ground in the briefs + PROJECT-CONTEXT. None ever re-seed Tailwind
   // (PREP_PROMPTS forces seed_demo=false). customer-public.md and research-summary.md
   // both dispatch the one idempotent vibe-research prompt: it writes the public brief +
   // the M365 paste-out prompt first, then synthesises the summary once the M365
@@ -768,13 +768,13 @@ const FILE_PROMPT = {
   'customer-public.md': 'vibe-research',
   'research-summary.md': 'vibe-research',
   'meeting-templates.md': 'vibe-schedule',
-  // Discover (grounds in sources/, optionally the Contoso demo seed).
+  // Discover (grounds in sources/, optionally the Tailwind demo seed).
   'PROJECT-CONTEXT.md': 'vibe-context',
   'personas.md': 'vibe-personas',
   'problem-statement.md': 'vibe-problem-statement',
   'current-state-journey.md': 'vibe-current-journey',
   // Disrupt (Week-2 workshop). These ground in the Discover deliverables already
-  // in the repo + the designer's workshop captures — never the Contoso seed — so
+  // in the repo + the designer's workshop captures — never the Tailwind seed — so
   // runPhase forces seed_demo=false for them (see DISRUPT_PROMPTS).
   'workshop-agenda.md': 'vibe-workshop-agenda',
   'ideation-concepts.md': 'vibe-concepts',
@@ -783,14 +783,14 @@ const FILE_PROMPT = {
   'future-state-journey.md': 'vibe-future-journey',
   'storyboard.md': 'vibe-storyboard',
 };
-// The Disrupt generators must never re-seed the Contoso demo sources: by Disrupt
+// The Disrupt generators must never re-seed the Tailwind demo sources: by Disrupt
 // the grounding is the engagement's own Discover deliverables + workshop captures.
 const DISRUPT_PROMPTS = new Set([
   'vibe-workshop-agenda', 'vibe-concepts', 'vibe-workshop-record',
   'vibe-selected-concept', 'vibe-future-journey', 'vibe-storyboard',
 ]);
 // Preparation generators ground in the designer's sources + the briefs, never the
-// Contoso seed, so they also force seed_demo=false.
+// Tailwind seed, so they also force seed_demo=false.
 const PREP_PROMPTS = new Set([
   'vibe-engagement-brief', 'vibe-customer-brief', 'vibe-research', 'vibe-schedule',
 ]);
@@ -838,12 +838,12 @@ async function runPhase(input) {
   if (!prompt) return { code: 400, body: { error: `No generator is wired for "${file}".` } };
   const rec = await findRec(kebab);
   if (!rec || !rec.repo) return { code: 404, body: { error: 'Engagement not found.' } };
-  // Once the designer has added real sources, stop seeding the Contoso demo so
+  // Once the designer has added real sources, stop seeding the Tailwind demo so
   // the engine grounds the deliverable in their materials. The frontend passes
   // seedDemo explicitly; default to true to preserve the canned-demo flow. Disrupt and
   // Preparation generators never seed — they ground in the engagement's own materials
   // (Discover deliverables + workshop captures, or the designer's sources + briefs), so
-  // re-seeding Contoso would only add noise.
+  // re-seeding Tailwind would only add noise.
   const seed = (DISRUPT_PROMPTS.has(prompt) || PREP_PROMPTS.has(prompt) || input.seedDemo === false) ? 'false' : 'true';
   // Per-engagement model override. Empty/default → omit -f model so the engine uses
   // the Copilot CLI default. Only pass a known, non-empty id (the workflow exposes a
@@ -1217,7 +1217,7 @@ async function addSource(input) {
   const put = await putRepoFile(rec.repo, path, Buffer.from(content, 'utf8').toString('base64'), msg);
   if (!put.ok) return { code: 502, body: { error: 'Could not save the source.', detail: put.detail } };
 
-  // Mark the engagement as source-backed so Generate stops seeding Contoso.
+  // Mark the engagement as source-backed so Generate stops seeding Tailwind.
   try {
     const store = await readStore();
     const r = store.find((x) => (x.id || '') === id);
@@ -1303,7 +1303,7 @@ const groundName = (safe) => {
 // sources/sample-data/ (the prototype's data layer, read by /vibe-data-prep at Build)
 // and a readable grounding twin to sources/data-<stem>.md (so the same data also
 // informs the Discover deliverables). Because it now grounds, it flips sourcesAdded
-// like any real source, so Generate stops seeding Contoso.
+// like any real source, so Generate stops seeding Tailwind.
 async function addMockData(input) {
   const id = String(input.kebab || '').trim();
   const filename = String(input.filename || '').trim();
@@ -1344,7 +1344,7 @@ async function addMockData(input) {
     grounded = gp.ok;
   }
 
-  // Data now grounds Discover, so it counts as a real source → stop seeding Contoso.
+  // Data now grounds Discover, so it counts as a real source → stop seeding Tailwind.
   try {
     const store = await readStore();
     const r = store.find((x) => (x.id || '') === id);

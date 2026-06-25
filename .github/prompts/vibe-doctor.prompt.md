@@ -50,7 +50,7 @@ Use this:
 | Check-in log present | `templates/CHECK-IN-NOTES.md` has at least one entry if state claims demos happened | info |
 | Handoff data complete | `engagement/<name>/handoff-data.json` has all five sections (vision, roadmap, backlog, limitations, about) if state says Deliver is complete | **critical** for Deliver |
 | MCP servers enabled | At least one `mcp_workiq_*`, `mcp_github_*`, `mcp_ado_*`, or `mcp_foundry_*` tool is available | info — point user at `/reference/mcp` |
-| Demo fixture markers | If state.json has `demoFixture: contoso`, sources/ contains the expected demo files | info |
+| Demo fixture markers | If state.json has `demoFixture: tailwind`, sources/ contains the expected demo files | info |
 
 > **Preparation tip:** for a focused Week-0-only health check, use `/vibe-prep-check`. It's a strict subset of this prompt scoped to the Preparation rows above, and faster to run when you just want to know "is Prep done?".
 
@@ -70,7 +70,7 @@ End with **two distinct recommendations**:
 Example output:
 
 ```
-📍 Contoso Field Services — Dispatcher AI · Phase: discover · Discovery readiness: 8/9 · Deliverables: 2/3 · Sources: 7 files
+📍 Tailwind Traders — Returns Assist AI · Phase: discover · Discovery readiness: 8/9 · Deliverables: 2/3 · Sources: 7 files
 
 🩺 Doctor results
 

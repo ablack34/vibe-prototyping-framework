@@ -5,7 +5,7 @@ title: What to Expect (Walkthrough)
 
 # What to Expect — A Phase-by-Phase Walkthrough
 
-This page shows you what each phase **actually looks like** when you run it against the Contoso Field Services demo fixture. No video required — just realistic excerpts of what each agent produces so you know what "good" looks like before your first real engagement.
+This page shows you what each phase **actually looks like** when you run it against the Tailwind Traders demo fixture. No video required — just realistic excerpts of what each agent produces so you know what "good" looks like before your first real engagement.
 
 :::tip Run it yourself
 Everything below comes from running `/vibe-demo` in a fresh engagement repo, then following the buttons through **Preparation → Discover → Disrupt → Design & Develop → Deliver**. Try it.
@@ -22,19 +22,19 @@ This walkthrough is for the **VS Code** surface — the primary way to run VIBE.
 You run:
 
 ```
-/vibe-kickoff customer="Contoso Field Services" problem="HVAC dispatcher AI to reduce SLA breaches"
+/vibe-kickoff customer="Tailwind Traders" problem="AI assistant to speed up and de-risk returns disposition and refunds"
 ```
 
 What you see in Copilot Chat:
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: preparation · Preparation readiness: 1/7 · Sources: 0 files
+📍 Tailwind Traders — tailwind-returns-ai · Phase: preparation · Preparation readiness: 1/7 · Sources: 0 files
 
-✅ Engagement created: Contoso Field Services — dispatcher-ai
+✅ Engagement created: Tailwind Traders — tailwind-returns-ai
 
 📁 Files created:
-  • .copilot-tracking/vibe/contoso-dispatcher-ai/state.json (per-user, gitignored)
-  • engagement/contoso-dispatcher-ai/ (committed — agent outputs land here)
+  • .copilot-tracking/vibe/tailwind-returns-ai/state.json (per-user, gitignored)
+  • engagement/tailwind-returns-ai/ (committed — agent outputs land here)
   • engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md (filled in)
   • engagement/{{engagement-kebab}}/engagement-brief.md (S42-internal — drafted from the inputs)
   • engagement/{{engagement-kebab}}/customer-brief.md (customer-voice — placeholder for the customer to fill or for /vibe-customer-brief to draft from sources)
@@ -54,7 +54,7 @@ You click **🛠 Begin Preparation** (or type `@VIBE Preparation`). The Preparat
 What you see (excerpt):
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: preparation · Preparation readiness: 2/7 · Sources: 0 files
+📍 Tailwind Traders — tailwind-returns-ai · Phase: preparation · Preparation readiness: 2/7 · Sources: 0 files
 
 Preparation readiness:
   Engagement brief        B   Drafted from /vibe-kickoff inputs — needs commercial/squad context
@@ -91,25 +91,31 @@ What the agent does in the background:
 2. Reads everything in parallel
 3. Cross-references the answers to detect contradictions
 4. Grades each of the 9 readiness fields A/B/C
-5. Writes `engagement/contoso-dispatcher-ai/discovery-summary.md`
+5. Writes `engagement/tailwind-returns-ai/discovery-summary.md`
 6. Generates the three required Discover deliverables fresh — `personas.md`, `problem-statement.md`, `current-state-journey.md` — via `/vibe-personas`, `/vibe-problem-statement`, `/vibe-current-journey`, in that order (the demo seeds Preparation outputs only; these three are **not** pre-seeded — generating them live is the point of the demo)
 
 What you see (excerpt):
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: discover · Discovery readiness: 8/9 · Discover deliverables: 3/3 at B+
+📍 Tailwind Traders — tailwind-returns-ai · Phase: discover · Discovery readiness: 8/9 · Discover deliverables: 3/3 at B+
 
-Discovery summary written to engagement/contoso-dispatcher-ai/discovery-summary.md.
+Discovery summary written to engagement/tailwind-returns-ai/discovery-summary.md.
 
 Highlights:
-  • Sandra (COO) framed the win as €4M/yr penalties + ~€3M/yr lost renewals
-    (€6.3M over 2 years per customer-brief.md) — a $50M problem
-  • Bartosz (front-line dispatcher) and Sandra both prioritised "tell me which tech" over everything else
-  • Surprise insight from Workshop 1: Anya (customer service) says 80 of 120 weekly escalations
-    are "you didn't tell me" — suggests SLA early-warning may be a stronger first deliverable
-    than the assignment recommender
-  • Hard constraint: refrigerant > 3kg requires non-expired CAT I or II certification (Klaus, F-Gas)
-  • Unionised dispatchers — framing must be "augmentation not automation"
+  • Elena (Director, Digital CX) framed the win as faster refunds, recovered margin,
+    and protected NPS: 18% of orders return ≈ 19,000/month, all handled manually by
+    22 Bristol agents in ReturnDesk (2012); average refund is 9 days vs target <3
+  • Returns NPS is −12, 28% of returners say they won't shop again, 41% of returns
+    are coded "Other", fraud/leakage is ≈ £2.3M/yr, ~30% are mis-dispositioned,
+    and all-in returns cost is ≈ £14M/yr with £5–6M addressable
+  • Surprise insight from Workshop 1: the 41% "Other" coding hides rich free text —
+    fourteen of forty-two sample rows were blank even when the customer note clearly
+    indicated size, fault, wardrobing, or legitimate comparison shopping
+  • Hard constraint: AI stays assistive and human-in-the-loop — never auto-refund or
+    auto-dispose — because safety cases like R-50021 and fraud edge cases need human
+    judgement; all-Microsoft, mock data only
+  • Maya's team fears performance management by AI — framing must be "augmentation
+    not automation", with visible explanations and override controls
 
 Grades — 9 readiness fields:
   Problem statement      A   Target users           A
@@ -122,10 +128,10 @@ Grades — 9 readiness fields:
   Constraints            A
 
 Grades — 3 required Discover deliverables:
-  personas.md                 B   3 personas (Bartosz A, Anya B, Marek B) — lowest wins
-                                  ("Anya and Marek lack direct quotes; ride-along scheduled")
-  problem-statement.md        A   Signed off by Sandra and Bartosz
-  current-state-journey.md    A   8 stages, Mermaid + table, signed off by Bartosz
+  personas.md                 B   3 personas (Maya A, Callum B, Elena B) — lowest wins
+                                  (Callum and Elena need one more direct quote each)
+  problem-statement.md        A   Signed off by Elena and Maya
+  current-state-journey.md    A   8 stages, Mermaid + table, signed off by Maya
 
 👉 NEXT: Both Discover gates are green (7+/9 readiness at B+, 3/3 deliverables at B+).
    Click "🎬 Begin Disrupt Workshop" to start the Week 2 customer co-creation
@@ -136,7 +142,7 @@ Grades — 3 required Discover deliverables:
 `@VIBE Discover` runs those three deliverable prompts for you. To run them individually instead — or to regenerate one after editing a source — invoke them in the same order (`/vibe-problem-statement` and `/vibe-current-journey` fail fast if `personas.md` is missing):
 
 ```
-/vibe-personas              # always first — Bartosz, Anya, Marek personas with sourced quotes
+/vibe-personas              # always first — Maya, Callum, Elena personas with sourced quotes
 /vibe-problem-statement     # anchors to the primary persona; fails fast if personas.md missing
 /vibe-current-journey       # Mermaid + stages + Top 3 ranked pains (feeds the Disrupt workshop)
 ```
@@ -156,12 +162,12 @@ The agenda is anchored to the actual Discover deliverables (no generic activitie
 ```
 | #  | Concept                          | Form factor              | AI essential? | Wow |
 |----|----------------------------------|--------------------------|---------------|-----|
-| C1 | Dispatcher Radar (web app)       | React + .NET on Azure    | Yes — risk    | ⭐⭐⭐ |
-|    |                                  |                          | scoring +     |     |
-|    |                                  |                          | recommender   |     |
-| C2 | Dispatcher Co-pilot (Teams)      | Copilot Studio bot       | Yes — chat    | ⭐⭐⭐ |
-| C3 | Auto-router (agentic)            | Foundry Agents           | Yes — full    | ⭐⭐⭐⭐|
-|    |                                  |                          | autonomous    |     |
+| C1 | Returns Assist (web app)         | React + .NET on Azure    | Yes — reason  | ⭐⭐⭐⭐|
+|    |                                  |                          | code + risk   |     |
+|    |                                  |                          | explanation   |     |
+| C2 | Disposition Copilot (Teams)      | Copilot Studio bot       | Yes — chat    | ⭐⭐⭐ |
+| C3 | Auto-triage agent (agentic)      | Foundry Agents           | Yes — advisory| ⭐⭐  |
+|    |                                  |                          | autonomy      |     |
 ```
 
 The `/vibe-concepts` prompt also writes `spark-prompts.md` — copy-paste-ready prompts the facilitator drops into [GitHub Spark](https://spark.github.com) live in the workshop so the customer sees clickable mockups of all 2-3 candidates within 20 minutes.
@@ -174,33 +180,38 @@ No agent runs. Humans co-create. The facilitator captures notes, sticky-note pho
 
 The post-workshop sequence is strict: workshop-record first → selected-concept (future-journey + storyboard both anchor to it) → future-journey (storyboard cross-references the redesigned stages, so it has to run first) → storyboard (last; the engineering contract).
 
-The **storyboard** is the flagship Disrupt deliverable — scene-by-scene narrative (Setup → Challenge → Encounter → Solution → Impact) that the engineer reads to write the engineering brief as their first Design & Develop task.
+The **storyboard** is the flagship Disrupt deliverable — scene-by-scene narrative (Context → Challenge → Encounter → Solution → Impact) that the engineer reads to write the engineering brief as their first Design & Develop task.
 
 ```
-# Storyboard — Dispatcher Radar (selected concept)
+# Storyboard — Returns Assist (selected concept)
 
-Scene 1 · Setup — 07:42 Monday
-  Bartosz arrives. 142 work orders in the queue, 18 with weekend escalations.
-  The "what do I look at first?" problem is the daily pain.
+Scene 1 · Context — 08:41 Monday
+  Maya opens the Bristol returns desk queue: ambiguous "Other"-coded rows,
+  repeat-return concerns, and one safety-sensitive item are all waiting.
+  The daily pain is deciding quickly without losing human judgement.
 
-Scene 2 · Challenge — 07:45
-  Three Platinum sites breaching SLA within 4 hours. Bartosz has to triage
-  manually across Salesforce + WhatsApp + the route-optimization tool —
-  ~6 minutes per order × 18 escalations = an hour gone before coffee.
+Scene 2 · Challenge — 08:44
+  Callum is stuck between C-1007's worn Trailmaster boot returns, C-1013's
+  wardrobing pattern, C-1019's electronics "faulty" / no-fault-found history,
+  and R-50021 — a DuoFlame Camping Stove returned for a gas leak.
 
-Scene 3 · Encounter — 07:46 (with Dispatcher Radar)
-  Dispatcher Radar shows the queue colour-coded by SLA risk. The three
-  Platinum breaches are red, sorted to the top, with a 1-line explanation:
-  "Site 4421, F-Gas tech needed, only Marek/Tomasz qualified in zone."
+Scene 3 · Encounter — 08:45 (with Returns Assist)
+  Returns Assist reads the return note, product, reported condition, customer
+  history, and taxonomy. It suggests a reason code with confidence, a
+  disposition (restock / refurbish / liquidate / recycle), and an advisory
+  risk flag with "why am I seeing this?" evidence.
 
-Scene 4 · Solution — 07:47-07:52
-  Bartosz clicks the top red card. Top-3 technician recommendation shows
-  with confidence scores and travel time. Marek is #1 — Bartosz assigns
-  in one click. Audit-trail entry is written automatically.
+Scene 4 · Solution — 08:46-08:51
+  For C-1007 it suggests SIZE-SMALL, flags repeat worn-boot behaviour, and
+  recommends liquidate/recycle based on worn soles. For R-50021 it escalates
+  safety review and recycle — no auto-refund. For R-50031/R-50032 it explains
+  that "bought 3 tents to compare" is legitimate comparison shopping, suggests
+  restock, and shows no fraud flag. Callum accepts, edits, or escalates.
 
 Scene 5 · Impact
-  18 escalations triaged in ~9 minutes (vs ~110 today). Sandra's metric
-  ">30% reduction in Platinum+Gold breaches" becomes plausible.
+  Maya's team clears the hard judgement work faster while staying in control:
+  fewer "Other" codes, fairer risk prompts, safer escalations, and a credible
+  path from 9-day refunds toward the under-3-day target.
 ```
 
 **Time spent (post-workshop):** ~10-15 minutes of agent runtime for all four post-workshop prompts, plus ~30-45 minutes for the team to review, edit, and customer-sign the workshop-record and selected-concept.
@@ -209,7 +220,7 @@ Scene 5 · Impact
 
 ## Phase 4 · Design & Develop (Engineer)
 
-The engineer `git pull`s and reads `engagement/contoso-dispatcher-ai/storyboard.md` (the Disrupt contract), `selected-concept.md` (the chosen form factor), and `future-state-journey.md` (the redesigned user flow). Their **first Design & Develop task** is to write `engagement/contoso-dispatcher-ai/engineering-brief.md` from those three files using `templates/engineering-brief.md` as the scaffold. Every must-have feature in the brief has to trace to a scene in the storyboard. Squad lead signs it off.
+The engineer `git pull`s and reads `engagement/tailwind-returns-ai/storyboard.md` (the Disrupt contract), `selected-concept.md` (the chosen form factor), and `future-state-journey.md` (the redesigned user flow). Their **first Design & Develop task** is to write `engagement/tailwind-returns-ai/engineering-brief.md` from those three files using `templates/engineering-brief.md` as the scaffold. Every must-have feature in the brief has to trace to a scene in the storyboard. Squad lead signs it off.
 
 Then:
 
@@ -219,9 +230,9 @@ Then:
 
 …which scans `sources/sample-data/*.csv` and produces:
 
-- `scaffold/web/src/types/contoso.ts` — TypeScript interfaces matching the CSV columns
-- `scaffold/api/Models/Contoso.cs` — C# records
-- `scaffold/api/Services/ContosoDataService.cs` — typed CSV loaders
+- `scaffold/web/src/types/tailwind.ts` — TypeScript interfaces matching the CSV columns
+- `scaffold/api/Models/Tailwind.cs` — C# records
+- `scaffold/api/Services/TailwindDataService.cs` — typed CSV loaders
 - `scaffold/data/README.md` — schema doc
 
 Then:
@@ -249,9 +260,9 @@ This is an engineer-facing deployment **plan**, not an auto-deploy. For C1 it wa
 You click **📦 Generate Deliverables**. The Deliver agent walks you through the handoff package one section at a time — you approve each one:
 
 ```
-📍 Contoso Field Services — dispatcher-ai · Phase: deliver · Design & Develop complete
+📍 Tailwind Traders — tailwind-returns-ai · Phase: deliver · Design & Develop complete
 
-I'll build engagement/contoso-dispatcher-ai/handoff-data.json with you,
+I'll build engagement/tailwind-returns-ai/handoff-data.json with you,
 one section at a time. We'll do:
 
   1. Vision  →  2. Roadmap  →  3. Backlog  →  4. Limitations  →  5. About
@@ -259,11 +270,12 @@ one section at a time. We'll do:
 Starting with #1 (Vision). Here's a draft based on selected-concept.md,
 storyboard.md, engineering-brief.md, and check-in feedback:
 
-  "Eliminate SLA-breach surprises and put dispatchers back in control of
-   complex assignment decisions. Within 6 months, reduce Platinum+Gold
-   breaches by >30%, cut dispatcher decision-time per order from ~6 min
-   to <60 sec, and produce a regulator-ready audit trail for every
-   refrigerant-related assignment. Augmentation, not automation."
+  "Help Tailwind's returns agents make faster, fairer, explainable return
+   decisions while staying in control. Within 6 months, move average refunds
+   from 9 days toward under 3, reduce "Other" coding from 41% toward under
+   10%, surface defensible serial-returner signals, and recover margin through
+   better restock / refurbish / liquidate / recycle guidance. Augmentation,
+   not automation."
 
 Does this read right? Edit suggestions welcome before we lock it in.
 
@@ -273,7 +285,7 @@ Does this read right? Edit suggestions welcome before we lock it in.
 Once approved, the final `handoff-data.json` contains everything the customer's team needs to take the prototype forward. To also push the backlog to Azure DevOps:
 
 ```
-/vibe-backlog-gen project="Contoso Field Services"
+/vibe-backlog-gen project="Tailwind Traders"
 ```
 
 …creates the Epic / Feature / User Story hierarchy in ADO directly.
@@ -294,3 +306,4 @@ Once approved, the final `handoff-data.json` contains everything the customer's 
 | Deliver | ~45 min | Week 4 (1-2 days) |
 
 The framework's value isn't speed in the demo — it's that the framework keeps the **real** engagement on rails so no one has to remember what comes next.
+

@@ -30,7 +30,7 @@ This is the document the **Disrupt workshop transforms** into a future-state jou
 
 This journey maps **one persona** doing **one task** — always the primary persona from `personas.md`. If a secondary persona has a meaningfully different journey, capture it as a separate stages table inside the same file under a `## Secondary persona journey` heading. The canonical filename is always `current-state-journey.md` — the state.json schema, doctor checks, Disrupt inputs, and Discover gate all expect that single file.
 
-The task is the JTBD from the persona file. For a Contoso dispatcher persona, it's "respond to an emergency call and dispatch the right technician". For a clinician persona, it's "review a patient's chart and decide next action". One task per file.
+The task is the JTBD from the persona file. For a Tailwind Traders returns-team-lead persona, it's "process a returned item and decide the right disposition". For a clinician persona, it's "review a patient's chart and decide next action". One task per file.
 
 ### Step 3 — Extract stages from sources
 

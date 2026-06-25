@@ -34,7 +34,7 @@ The post-Discover path is the **Disrupt** Week-2 customer co-creation workshop, 
 | Deliver | `/vibe-handoff` | Final deliverables package |
 | Anytime | `@VIBE Engagement Lead` | Tells you what to do next |
 | Anytime | `/vibe-doctor` | Health-check the engagement and recommend the single highest-value next step |
-| Demo | `/vibe-demo` | Seed the engagement with the Contoso fixture so every phase can be run end-to-end without a real customer |
+| Demo | `/vibe-demo` | Seed the engagement with the Tailwind Traders fixture so every phase can be run end-to-end without a real customer |
 
 ## Key Rules
 

@@ -515,7 +515,7 @@ function renderSources() {
         </div>
         ${usedByHtml(s)}
       </div>`).join('')
-    : `<div class="src-empty">No sources yet — <strong>Generate</strong> will fall back to the Contoso demo data. Add your customer's materials to ground the deliverables in their world.</div>`;
+    : `<div class="src-empty">No sources yet — <strong>Generate</strong> will fall back to the Tailwind demo data. Add your customer's materials to ground the deliverables in their world.</div>`;
   const opts = Object.entries(SRC_KINDS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('');
 
   el.innerHTML = `
@@ -1111,13 +1111,13 @@ async function generate(file) {
     ? ` <span class="run-meta">· ${esc(gm.agent || 'VIBE engine')} running <code>${esc(gm.prompt)}</code></span>`
     : '';
   // Disrupt deliverables ground in the signed-off Discover deliverables + workshop
-  // captures, never the Contoso seed; Preparation grounds in the designer's sources &
+  // captures, never the Tailwind seed; Preparation grounds in the designer's sources &
   // briefs — so the "demo data" caveat only applies to Discover with no sources added.
   const groundNote = isDisrupt
     ? 'from your Discover deliverables &amp; workshop captures'
     : isPrep
       ? 'from your sources &amp; briefs'
-      : (grounded ? 'from your sources' : '(Contoso demo data — no sources added)');
+      : (grounded ? 'from your sources' : '(Tailwind demo data — no sources added)');
   banner(`<span class="spin"></span> Generating <strong>${esc(title)}</strong> ${groundNote} — dispatching the engine…${runsNote}`, 'busy');
 
   let priorId = null;

@@ -51,13 +51,13 @@ If you get stuck at any point, see the [first-run confusion troubleshooting](/re
 
 ## Step 1: Create the Workspace
 
-On the [framework's GitHub page](https://github.com/ablack34/vibe-prototyping-framework), click **["Use this template" → "Create a new repository"](https://github.com/ablack34/vibe-prototyping-framework/generate)**. Name it `<customer>-<engagement>` (e.g., `contoso-field-scheduling`) and make it private.
+On the [framework's GitHub page](https://github.com/ablack34/vibe-prototyping-framework), click **["Use this template" → "Create a new repository"](https://github.com/ablack34/vibe-prototyping-framework/generate)**. Name it `<customer>-<engagement>` (e.g., `tailwind-returns-ai`) and make it private.
 
 Then clone it locally and open in VS Code:
 
 ```powershell
-git clone https://github.com/<your-org>/contoso-field-scheduling
-code contoso-field-scheduling
+git clone https://github.com/<your-org>/tailwind-returns-ai
+code tailwind-returns-ai
 ```
 
 :::tip Already inside another engagement?

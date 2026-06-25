@@ -136,7 +136,7 @@ section (`renderPreparation` in `engagement.js`) renders three groups:
    `sources/meeting-templates.md`.
 
 Like Disrupt, Preparation runs always dispatch `seed_demo=false`: they ground in the
-designer's real sources and briefs, never the Contoso seed. Because the research and
+designer's real sources and briefs, never the Tailwind seed. Because the research and
 schedule prompts write into `sources/` (not `engagement/`), `run-phase.yml` widens its
 verify + commit steps to stage `sources/` **on grounded runs only** — on a demo run,
 `sources/` holds seeded inputs that must never be committed back.
@@ -166,7 +166,7 @@ Only `selected-concept`, `future-state-journey` and `storyboard` are in
 record) are **not** gated — `server.mjs` grades them inline with the *same*
 `lowestGrade`/`signoff` exports the CLI uses (`evalSupport`/`assembleDisrupt`), so
 the web and CLI views can't drift. Disrupt runs always dispatch `seed_demo=false`:
-they ground in the Discover deliverables and workshop captures, never the Contoso
+they ground in the Discover deliverables and workshop captures, never the Tailwind
 seed.
 
 ### The Mock-data bucket (data that does double duty)
@@ -186,7 +186,7 @@ split stays legible, but each staged file is committed **twice**, for its two jo
    personas, pain points and the current-state journey.
 
 Because it now grounds, `addMockData` flips `sourcesAdded` like any real source (Generate
-stops seeding Contoso), and each board entry carries a `grounded` flag the UI renders as a
+stops seeding Tailwind), and each board entry carries a `grounded` flag the UI renders as a
 **"✓ grounds Discover"** / **"raw only"** badge. The grounding twins are excluded from the
 Sources list (`classifySource` skips `data-*.md`) so a file is never double-listed across
 the two buckets. A PDF or Word file still isn't structured data, so the bucket rejects it
@@ -227,7 +227,7 @@ pasted text notes             ──┘                            current-state
   original and the extracted `.md` (the one the engine cites) are committed.
 - **Grounding.** When sources exist, the surface dispatches with `seed_demo=false`
   so the engine grounds in the designer's materials. With no sources it falls back
-  to the bundled Contoso demo (`demo/contoso/`) so the flow is always runnable.
+  to the bundled Tailwind demo (`demo/tailwind/`) so the flow is always runnable.
 - **Provenance.** The board parses each deliverable's citations back to the
   `sources/` files that fed it (`attachDeliverableProvenance`), so every source card
   shows *"Used by …"* and every deliverable shows what it was generated from.

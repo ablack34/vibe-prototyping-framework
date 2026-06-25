@@ -92,5 +92,5 @@ The Disrupt phase is the one phase where the customer is in the room co-creating
 | Prompt | Description | Inputs |
 |--------|-------------|--------|
 | `/vibe-new` | Create a new engagement repo from the template | `customer` (required), `engagement` (required) |
-| `/vibe-demo` | Seed the engagement with the Contoso Field Services fixture so every phase can be demonstrated end-to-end without a real customer | `demo` (optional, defaults to `contoso`) |
+| `/vibe-demo` | Seed the engagement with the Tailwind Traders returns fixture so every phase can be demonstrated end-to-end without a real customer | `demo` (optional, defaults to `tailwind`) |
 | `/vibe-doctor` | Health-check the engagement (missing artifacts, stale state, form-factor mismatches) and recommend the single highest-value next step | `engagement` (optional) |

@@ -71,7 +71,7 @@ These checks are prose-level and require human eyes. Walk this list before openi
    - File-copy table: add the fixture copy
    - State.json seeding block: pre-grade the new field
    - Narration: mention it in the recommended flow
-7. **Demo fixture** — `demo/contoso/<deliverable-path>` with realistic content
+7. **Demo fixture** — `demo/tailwind/<deliverable-path>` with realistic content
 8. **`.github/copilot-instructions.md`**:
    - Source → Document Flow diagram
    - Agent I/O table row for the producing agent

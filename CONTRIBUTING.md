@@ -13,7 +13,7 @@ This repo is the **template** that every engagement repo is created from. Change
 | Tweak the global agent rules | [`.github/copilot-instructions.md`](.github/copilot-instructions.md) |
 | Improve user-facing docs | [`docs-site/docs/`](docs-site/docs/) |
 | Update the scaffold templates | [`scaffold/`](scaffold/) |
-| Adjust the Contoso demo fixture | [`demo/contoso/`](demo/contoso/) |
+| Adjust the Tailwind demo fixture | [`demo/tailwind/`](demo/tailwind/) |
 | Add an MCP server pre-config | [`.vscode/mcp.json`](.vscode/mcp.json) |
 
 ## Quality Bar
@@ -33,7 +33,7 @@ Three reliable ways:
 
 1. **Demo loop** — In a fresh engagement repo created from this template, run `/vibe-demo` then walk through whichever phase you touched. You should see realistic output.
 2. **Doctor sweep** — `/vibe-doctor` should still pass on a fresh `/vibe-demo` engagement. If your change introduces a new artifact, add a check for it.
-3. **Prompt test** — Open the modified `.prompt.md` and ask Copilot Chat in Agent mode to follow it literally against the Contoso demo fixture. The output should make sense without any context outside the engagement repo.
+3. **Prompt test** — Open the modified `.prompt.md` and ask Copilot Chat in Agent mode to follow it literally against the Tailwind demo fixture. The output should make sense without any context outside the engagement repo.
 
 ## Pull Request Checklist
 
@@ -54,7 +54,7 @@ Open a GitHub issue with:
 - What you expected vs what happened
 - A snippet from `engagement/<name>/state.json` if relevant
 
-If you can reproduce it with `/vibe-demo` against the Contoso fixture, that's the fastest path to a fix.
+If you can reproduce it with `/vibe-demo` against the Tailwind fixture, that's the fastest path to a fix.
 
 ## License
 

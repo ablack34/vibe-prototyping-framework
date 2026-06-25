@@ -1,0 +1,43 @@
+return_id,order_id,order_date,return_date,customer_id,sku,product_name,category,unit_price_gbp,qty,return_value_gbp,channel,reason_text,reason_code,condition_reported,days_to_refund,disposition,refund_status,agent_id
+R-50012,O-88231,2026-05-02,2026-05-06,C-1001,FLC-COZ-GRY,Cosy Fleece Pullover,Clothing,39.99,1,39.99,online,"Too small, needed the next size up",SIZE-SMALL,"new, tags on",4,restock,refunded,A-04
+R-50013,O-88410,2026-05-03,2026-05-15,C-1002,TNT-2P-GRN,Summit 2-Person Tent,Camping,189.99,1,189.99,online,"Looked nothing like the photo, much darker green",COLOUR-DIFF,new,12,restock,refunded,A-02
+R-50014,O-88455,2026-05-03,2026-05-19,C-1007,BOOT-MTR-BRN,Trailmaster Walking Boot,Footwear,129.99,1,129.99,online,too small,,"soles dirty, worn",16,liquidate,refunded,A-07
+R-50015,O-88502,2026-05-04,2026-05-08,C-1004,JKT-RNX-BLU,Rainex Waterproof Jacket,Clothing,89.99,1,89.99,online,"Zip broke on second use, faulty",FAULTY,"used, faulty",4,refurbish,refunded,A-04
+R-50016,O-88560,2026-05-05,2026-05-22,C-1013,JKT-RNX-BLU,Rainex Waterproof Jacket,Clothing,89.99,1,89.99,online,Didn't suit me,,"smells of perfume, worn",17,liquidate,refunded,A-11
+R-50017,O-88599,2026-05-05,2026-05-09,C-1006,RKS-45L-BLK,Voyager 45L Rucksack,Bags,99.99,1,99.99,online,"Bought two colours to compare, returning this one",CHANGED-MIND,"new, tags on",4,restock,refunded,A-02
+R-50018,O-88634,2026-05-06,2026-05-25,C-1019,HDP-NCN-BLK,Noise-Cancelling Headphones,Electronics,89.99,1,89.99,online,"faulty, won't pair",,no fault found on test,19,restock,refunded,A-09
+R-50019,O-88688,2026-05-06,2026-05-10,C-1009,DUV-TOG-WHT,13.5 Tog Duvet King,Home,49.99,1,49.99,online,"Changed mind, too warm for summer",CHANGED-MIND,"opened, hygiene seal broken",4,recycle,refunded,A-04
+R-50020,O-88701,2026-05-07,2026-05-28,C-1007,BOOT-MTR-BRN,Trailmaster Walking Boot,Footwear,129.99,1,129.99,online,didn't fit,,"worn outdoors, mud",21,liquidate,refunded,A-07
+R-50021,O-88745,2026-05-08,2026-05-12,C-1011,STV-DUO-SLV,DuoFlame Camping Stove,Cooking,199.99,1,199.99,online,"Gas leak on first use, extremely dangerous, please investigate",FAULTY,"faulty, safety",4,recycle,refunded,A-02
+R-50022,O-88790,2026-05-08,2026-05-13,C-1003,SOCK-MER-GRY,Merino Hiking Socks 3pk,Clothing,16.99,1,16.99,store,Wrong size in pack,NOT-AS-DESC,opened,5,recycle,refunded,A-05
+R-50023,O-88822,2026-05-09,2026-05-13,C-1014,GAZ-3M-CRM,Garden Gazebo 3m,Garden,149.99,1,149.99,online,"Missing two poles, couldn't build it",FAULTY,incomplete,4,refurbish,refunded,A-04
+R-50024,O-88876,2026-05-09,2026-05-30,C-1013,TRS-CRG-KHK,Cargo Trousers,Clothing,44.99,1,44.99,online,not for me,,"worn, tags removed",21,liquidate,refunded,A-11
+R-50025,O-88901,2026-05-10,2026-05-14,C-1015,KTL-15L-SLV,1.5L Electric Kettle,Home,32.99,1,32.99,online,"Arrived dented, damaged box",DAMAGED-TRANSIT,damaged packaging,4,refurbish,refunded,A-02
+R-50026,O-88934,2026-05-10,2026-05-15,C-1005,CHR-FLD-RED,Folding Camp Chair,Camping,34.99,1,34.99,online,Ordered by mistake,CHANGED-MIND,"new, sealed",5,restock,refunded,A-08
+R-50027,O-88970,2026-05-11,2026-05-15,C-1001,BOOT-MTR-BRN,Trailmaster Walking Boot,Footwear,129.99,1,129.99,online,"Half a size too big, otherwise lovely",SIZE-LARGE,"new, tags on",4,restock,refunded,A-04
+R-50028,O-89004,2026-05-11,2026-05-29,C-1019,WCH-FIT-BLK,Fitness Watch,Electronics,79.99,1,79.99,online,stopped working,,no fault found,18,restock,refunded,A-09
+R-50029,O-89050,2026-05-12,2026-05-16,C-1017,HOS-25M-GRN,Expandable Garden Hose 25m,Garden,24.99,1,24.99,online,Leaks at the connector,FAULTY,used,4,recycle,refunded,A-02
+R-50030,O-89087,2026-05-12,2026-05-17,C-1010,FLC-COZ-GRY,Cosy Fleece Pullover,Clothing,39.99,1,39.99,online,Colour faded after one wash,QUALITY,"washed, worn",5,liquidate,refunded,A-08
+R-50031,O-89122,2026-05-13,2026-05-17,C-1002,TNT-2P-GRN,Summit 2-Person Tent,Camping,189.99,1,189.99,online,"bought 3 tents to compare for a group trip, keeping one",,new,4,restock,refunded,A-02
+R-50032,O-89155,2026-05-13,2026-05-18,C-1022,TNT-2P-GRN,Summit 2-Person Tent,Camping,189.99,1,189.99,online,"bought 3 tents to compare for a group trip, keeping one",,new,5,restock,refunded,A-02
+R-50033,O-89190,2026-05-14,2026-05-18,C-1012,PIL-MEM-WHT,Memory Foam Pillow,Home,29.99,1,29.99,online,"Too firm, hurt my neck",,"opened, hygiene seal broken",4,recycle,refunded,A-08
+R-50034,O-89233,2026-05-14,2026-06-03,C-1013,JKT-RNX-BLU,Rainex Waterproof Jacket,Clothing,89.99,1,89.99,online,didn't like it,,"worn once, event smell",20,liquidate,refunded,A-11
+R-50035,O-89271,2026-05-15,2026-05-19,C-1006,SLP-3S-GRN,ThermaRest 3-Season Sleeping Bag,Camping,79.99,1,79.99,online,"Not warm enough as described, rated to 0C but freezing",NOT-AS-DESC,"used, clean",4,refurbish,refunded,A-04
+R-50036,O-89308,2026-05-15,2026-05-20,C-1020,LMP-DSK-BLK,LED Desk Lamp,Home,27.99,1,27.99,online,"Flickers, electrical fault",FAULTY,faulty,5,recycle,refunded,A-02
+R-50037,O-89344,2026-05-16,2026-06-04,C-1007,BOOT-MTR-BRN,Trailmaster Walking Boot,Footwear,129.99,1,129.99,online,wrong size,,"heavily worn, resoled?",19,recycle,refunded,A-07
+R-50038,O-89380,2026-05-16,2026-05-21,C-1018,WTB-1L-BLU,1L Insulated Water Bottle,Accessories,17.99,1,17.99,online,"Lid doesn't seal, leaks in my bag",FAULTY,used,5,recycle,refunded,A-08
+R-50039,O-89415,2026-05-17,2026-05-21,C-1011,COOL-30L-BLU,Coolbox 30L,Camping,54.99,1,54.99,online,Smaller than it looked online,NOT-AS-DESC,new,4,restock,refunded,A-04
+R-50040,O-89450,2026-05-17,2026-05-22,C-1008,GLV-INS-BLK,Insulated Gloves,Clothing,19.99,1,19.99,online,Unwanted gift,GIFT,"new, tags on",5,restock,refunded,A-08
+R-50041,O-89488,2026-05-18,2026-06-06,C-1019,HDP-NCN-BLK,Noise-Cancelling Headphones,Electronics,89.99,1,89.99,online,faulty again,,no fault found on test,19,restock,pending,A-09
+R-50042,O-89522,2026-05-18,2026-05-23,C-1015,BBQ-KET-BLK,Kettle Charcoal BBQ,Garden,119.99,1,119.99,online,"Rusty out of the box, poor quality",QUALITY,used,5,liquidate,refunded,A-02
+R-50043,O-89560,2026-05-19,2026-05-23,C-1004,TRS-CRG-KHK,Cargo Trousers,Clothing,44.99,1,44.99,online,Too long in the leg,SIZE-LARGE,"new, tags on",4,restock,refunded,A-04
+R-50044,O-89599,2026-05-19,2026-05-24,C-1021,JKT-RNX-BLU,Rainex Waterproof Jacket,Clothing,89.99,1,89.99,online,"Arrived late, no longer needed for my trip",LATE,new,5,restock,refunded,A-08
+R-50045,O-89633,2026-05-20,2026-05-24,C-1002,RKS-45L-BLK,Voyager 45L Rucksack,Bags,99.99,1,99.99,online,"Straps uncomfortable, dug into shoulders",QUALITY,"used, clean",4,refurbish,refunded,A-02
+R-50046,O-89670,2026-05-20,2026-06-08,C-1013,FLC-COZ-GRY,Cosy Fleece Pullover,Clothing,39.99,1,39.99,online,nope,,"worn, makeup stains",19,liquidate,refunded,A-11
+R-50047,O-89708,2026-05-21,2026-05-25,C-1017,STV-DUO-SLV,DuoFlame Camping Stove,Cooking,199.99,1,199.99,online,"Changed my mind, going for a different model",CHANGED-MIND,"new, sealed",4,restock,refunded,A-04
+R-50048,O-89744,2026-05-21,2026-05-26,C-1009,DUV-TOG-WHT,13.5 Tog Duvet King,Home,49.99,1,49.99,store,Too thin for the tog rating stated,NOT-AS-DESC,"opened, hygiene seal broken",5,recycle,refunded,A-05
+R-50049,O-89780,2026-05-22,2026-05-26,C-1006,WCH-FIT-BLK,Fitness Watch,Electronics,79.99,1,79.99,online,Screen scratched easily within a day,QUALITY,used,4,liquidate,refunded,A-02
+R-50050,O-89815,2026-05-22,2026-06-10,C-1007,TRS-CRG-KHK,Cargo Trousers,Clothing,44.99,1,44.99,online,too small,,"worn, washed",19,liquidate,refunded,A-07
+R-50051,O-89850,2026-05-23,2026-05-27,C-1014,CHR-FLD-RED,Folding Camp Chair,Camping,34.99,1,34.99,online,One leg bent on first sit,FAULTY,faulty,4,recycle,refunded,A-04
+R-50052,O-89886,2026-05-23,2026-05-28,C-1018,SOCK-MER-GRY,Merino Hiking Socks 3pk,Clothing,16.99,1,16.99,online,"itchy, not real merino",QUALITY,opened,5,recycle,refunded,A-08
+R-50053,O-89920,2026-05-24,2026-05-28,C-1011,GAZ-3M-CRM,Garden Gazebo 3m,Garden,149.99,1,149.99,online,"Blew over in light wind, flimsy",QUALITY,used,4,liquidate,refunded,A-02

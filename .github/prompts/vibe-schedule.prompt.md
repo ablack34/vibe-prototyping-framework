@@ -41,11 +41,11 @@ For each row, produce a fenced block that the user can copy directly into Outloo
 ```markdown
 ### Week 2 — Disrupt Workshop
 
-**Title**: `[VIBE] Contoso Field Services — Disrupt Workshop`
+**Title**: `[VIBE] Tailwind Traders — Disrupt Workshop`
 **Duration**: 2-3 hours (block 3 to be safe)
-**Date**: 2026-06-18 14:00–17:00 CET   ← omit if no workshopDate provided; use "Week 2" instead
+**Date**: 2026-07-01 14:00–17:00 BST   ← omit if no workshopDate provided; use "Week 2" instead
 **Attendees**:
-- Required: Sandra Holtz (sponsor), Matthias Köhler (tech), 2-4 dispatchers
+- Required: Elena Marsh (sponsor), Dev Patel (tech), 2-4 returns agents
 - Required from Studio 42: TPM, engineer, designer
 - Optional: Account team lead
 

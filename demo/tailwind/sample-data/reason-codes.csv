@@ -1,0 +1,14 @@
+reason_code,label,description,typical_disposition,fraud_watch,notes
+SIZE-SMALL,Too small,Item did not fit; customer needed a larger size,restock,maybe,"Repeated 'too small' on worn items is a serial-returner signal (see C-1007 boots)"
+SIZE-LARGE,Too large,Item did not fit; customer needed a smaller size,restock,no,Usually genuine; item normally returns in new condition
+COLOUR-DIFF,Colour differs,Colour received did not match the website listing,restock,no,"Cluster on one SKU points to a misleading product photo, not customer fault"
+NOT-AS-DESC,Not as described,Item materially differs from the listing (spec, capacity, material),refurbish,no,Feeds product-content fixes; distinct from QUALITY
+QUALITY,Quality below expectation,Item works but build/material quality disappointed,liquidate,no,Often non-restockable once used; candidate for liquidation
+FAULTY,Faulty / not working,Item is defective or unsafe on arrival or first use,refurbish,no,"SAFETY sub-cases must be escalated to a human, never auto-processed (see R-50021 stove gas leak)"
+DAMAGED-TRANSIT,Damaged in transit,Item arrived physically damaged or with damaged packaging,refurbish,no,Routes to carrier-claims process; check packaging condition
+CHANGED-MIND,Changed mind,Customer no longer wants the item; no fault,restock,no,Restockable only if returned new with tags/seal intact
+GIFT,Unwanted gift,Gift the recipient did not want,restock,no,Typically new condition; straightforward restock
+LATE,Arrived too late,Delivery missed the customer's deadline,restock,no,Signals a fulfilment/delivery issue upstream of returns
+COMPARE,Bought multiple to compare,Customer ordered several variants/sizes intending to keep one,restock,no,"Legitimate behaviour (see R-50017/R-50031/R-50032) — must NOT be flagged as abuse"
+NO-FAULT-FOUND,No fault found,Returned as faulty but tests clean on inspection,restock,yes,"Repeat 'faulty' electronics with no fault found is an abuse signal (see C-1019)"
+OTHER,Other / uncoded,Catch-all used when the agent cannot quickly map the free-text to a code,unknown,maybe,"The problem code: ~41% of returns land here, erasing analytics. The assistant's job is to read reason_text and replace OTHER with the right code + a confidence score"

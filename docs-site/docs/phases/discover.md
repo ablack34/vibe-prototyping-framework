@@ -70,7 +70,7 @@ The engagement lead tracks nine fields. Discovery's first gate is **7 of 9 fille
 The second gate is **3 of 3 deliverables at Grade B+** (see [Required Deliverables](#required-deliverables) above). The `@VIBE Discover` agent's status banner shows both gates, e.g.:
 
 ```
-📍 Contoso · Phase: discover · Discovery readiness: 8/9 · Discover deliverables: 2/3 at B+
+📍 Tailwind Traders · Phase: discover · Discovery readiness: 8/9 · Discover deliverables: 2/3 at B+
 ```
 
 ## Tips
