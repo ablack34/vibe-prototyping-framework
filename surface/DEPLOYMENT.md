@@ -96,6 +96,12 @@ cross-user ids resolve to 404 — no data leak.
    - `baseUrl` ← repo var `SURFACE_BASE_URL` = `https://<fqdn>` (pins the OAuth `redirect_uri`)
    - `allowedLogins` ← repo var `SURFACE_ALLOWED_LOGINS` = comma-separated allow-list (optional;
      empty = any GitHub user who can sign in)
+   - `adminLogins` ← repo var `SURFACE_ADMIN_LOGINS` = comma-separated permanent admins (optional).
+     Admins manage the allow-list at runtime from the in-app **Access** screen (top-bar link),
+     persisted to `access.json` in the durable store. Permanent admins can never be removed from
+     the web (prevents lockout); they're implicitly allowed to sign in. Other admins can be added
+     or removed in-app. Env vars only **seed** the lists the first time — after that `access.json`
+     is the source of truth. Set at least one (e.g. `ablack34`) so someone can open the screen.
 
 Unset the client id/secret to fall back to legacy mode with byte-for-byte the old behavior.
 

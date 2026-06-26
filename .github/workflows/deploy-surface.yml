@@ -59,6 +59,7 @@ jobs:
           OAUTH_CLIENT_SECRET: ${{ secrets.SURFACE_OAUTH_CLIENT_SECRET }}
           OAUTH_BASE_URL: ${{ vars.SURFACE_BASE_URL }}
           OAUTH_ALLOWED_LOGINS: ${{ vars.SURFACE_ALLOWED_LOGINS }}
+          OAUTH_ADMIN_LOGINS: ${{ vars.SURFACE_ADMIN_LOGINS }}
         run: |
           set -euo pipefail
           appName="ca-${ENV_NAME}"
@@ -93,8 +94,10 @@ jobs:
           # OAuth App whose callback is https://<fqdn>/auth/callback, scopes repo+workflow)
           # to require each designer to sign in with their own GitHub identity. Recommended
           # to also pin SURFACE_BASE_URL=https://<fqdn> so the OAuth redirect_uri is exact.
-          # Optionally restrict access with SURFACE_ALLOWED_LOGINS=login1,login2. When the
-          # client id/secret are unset the surface runs in legacy single-user mode.
+          # Optionally restrict access with SURFACE_ALLOWED_LOGINS=login1,login2 and grant
+          # permanent admins with SURFACE_ADMIN_LOGINS=login1 (they manage the allow-list
+          # in-app and can never be locked out). When the client id/secret are unset the
+          # surface runs in legacy single-user mode.
           if [ -n "${OAUTH_CLIENT_ID}" ] && [ -n "${OAUTH_CLIENT_SECRET}" ]; then
             params+=(oauthClientId="$OAUTH_CLIENT_ID" oauthClientSecret="$OAUTH_CLIENT_SECRET")
             if [ -n "${OAUTH_BASE_URL}" ]; then
@@ -102,6 +105,9 @@ jobs:
             fi
             if [ -n "${OAUTH_ALLOWED_LOGINS}" ]; then
               params+=(allowedLogins="$OAUTH_ALLOWED_LOGINS")
+            fi
+            if [ -n "${OAUTH_ADMIN_LOGINS}" ]; then
+              params+=(adminLogins="$OAUTH_ADMIN_LOGINS")
             fi
           fi
 

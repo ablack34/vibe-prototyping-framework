@@ -277,6 +277,8 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 | `GET /api/run/status` | Latest `run-phase.yml` run status for an engagement |
 | `POST /api/model` | Persist the engagement's engine model (`{ kebab, model }`); validated against the `ENGINE_MODELS` allowlist (`''` = Copilot CLI default). Every subsequent run uses it |
 | `POST /api/approve` | Record a web sign-off on a deliverable (Discover + the two sign-off-capable Disrupt artifacts) |
+| `GET /api/access` | **Admin-only.** Return the runtime allow-list + admin list (`{ allowedLogins, adminLogins, rootAdmins, me }`) from `access.json`. 403 for non-admins |
+| `POST /api/access` | **Admin-only.** Mutate the lists (`{ action: addAllowed\|removeAllowed\|addAdmin\|removeAdmin, login }`). Permanent (root) admins can't be removed; a last-admin guard prevents emptying the admin list. Persists to the durable store |
 | `GET /api/sources` | List an engagement's sources (+ kinds metadata) |
 | `GET /api/source` | Fetch one source/deliverable's markdown (scoped to `sources/` or `engagement/<id>/`) |
 | `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown). `kind:'workshop'` routes to `sources/workshop/` for Disrupt captures; `kind:'m365-results'` routes to `sources/research/m365-researcher-results.md` for the Preparation research paste-back |
@@ -290,6 +292,8 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 | `surface/server.mjs` | Zero-dependency Node HTTP server: routes, GitHub calls, run dispatch, source ingest |
 | `surface/public/index.html` + `app.js` | Landing page: engagement list + "New engagement" |
 | `surface/public/engagement.html` + `engagement.js` | The engagement dashboard (timeline, gates, deliverable cards, sources bucket, context band, **Preparation section + research paste-back bucket**, **Disrupt section + workshop bucket**, **Mock-data bucket**, viewer) |
+| `surface/public/access.html` + `access.js` | Admin **Access** screen: manage the sign-in allow-list + admin list (admins only) |
+| `surface/public/auth.js` | Shared sign-in gate + top-bar identity chip; renders the **Access** link for admins |
 | `surface/public/markdown.js` | Tiny client-side Markdown renderer for the viewer |
 | `surface/public/styles.css` | All styling (dark theme, design-token `:root` vars) |
 | `surface/tidy-repo.mjs` | Post-provision cleanup of a generated engagement repo |
