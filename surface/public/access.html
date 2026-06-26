@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIBE — Access</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <div>
+        <div class="brand-title">VIBE Web Surface</div>
+        <div class="brand-sub">Access — who can sign in</div>
+      </div>
+    </div>
+    <a class="back-link" href="/">← Back to engagements</a>
+  </header>
+
+  <main>
+    <section class="card">
+      <h1>Access control</h1>
+      <p class="muted" id="intro">Loading…</p>
+      <div id="denied" class="status err" hidden></div>
+    </section>
+
+    <div id="panels" hidden>
+      <section class="card">
+        <div class="list-head">
+          <h2>Admins</h2>
+          <span class="muted small">Can manage this page</span>
+        </div>
+        <p class="muted small">
+          Admins can add or remove anyone here and promote others to admin. Permanent
+          admins (set by the operator via <code>ADMIN_LOGINS</code>) wear a lock and
+          can’t be removed from the web.
+        </p>
+        <div id="admins" class="access-list"></div>
+        <form class="access-add" data-list="admin" autocomplete="off">
+          <input type="text" name="login" placeholder="GitHub username" autocomplete="off" />
+          <button type="submit">Add admin</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="list-head">
+          <h2>Allowed to sign in</h2>
+          <span class="muted small" id="allowed-count"></span>
+        </div>
+        <p class="muted small">
+          Only these GitHub accounts can sign in to the surface.
+          <strong id="open-note" hidden>The list is empty, so anyone with a GitHub account can sign in right now.</strong>
+        </p>
+        <div id="allowed" class="access-list"></div>
+        <form class="access-add" data-list="allowed" autocomplete="off">
+          <input type="text" name="login" placeholder="GitHub username" autocomplete="off" />
+          <button type="submit">Add user</button>
+        </form>
+      </section>
+    </div>
+
+    <div id="toast" class="status" hidden></div>
+  </main>
+
+  <script src="/auth.js"></script>
+  <script src="/access.js"></script>
+</body>
+</html>

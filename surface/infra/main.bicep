@@ -77,6 +77,9 @@ param baseUrl string = ''
 @description('Optional comma/space-separated allow-list of GitHub logins permitted to sign in. Empty = any GitHub user.')
 param allowedLogins string = ''
 
+@description('Optional comma/space-separated list of GitHub logins who are permanent admins (can manage the allow-list from the in-app Access screen and can never be removed there). Empty = no permanent admins (manage admins entirely in-app).')
+param adminLogins string = ''
+
 @description('Tags applied to all resources')
 param tags object = {
   project: 'vibe-surface'
@@ -179,6 +182,7 @@ module app 'modules/container-app.bicep' = {
     oauthClientSecretUri: keyvault.outputs.oauthClientSecretUri
     baseUrl: baseUrl
     allowedLogins: allowedLogins
+    adminLogins: adminLogins
   }
 }
 

@@ -581,6 +581,62 @@ main.dash { max-width: 1040px; }
 /* Owner field locked to the signed-in account in multi-user mode. */
 input.locked { opacity: 0.75; cursor: not-allowed; }
 
+/* ── Access admin screen ───────────────────────────────────────────────── */
+.id-admin {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel-2);
+}
+.id-admin:hover { border-color: var(--accent); }
+.back-link { font-size: 13px; color: var(--muted); text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+
+.access-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 4px 0 18px; }
+.access-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px 5px 5px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel-2);
+}
+.access-tag.me { border-color: var(--accent); }
+.access-av { width: 24px; height: 24px; border-radius: 50%; display: block; }
+.access-login { font-size: 13px; font-weight: 600; }
+.access-you { color: var(--muted); font-weight: 400; }
+.access-badge {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.access-rm {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+.access-rm:hover { color: #fff; background: var(--red); border-color: var(--red); }
+.access-add { display: flex; gap: 10px; align-items: stretch; }
+.access-add input[type="text"] { margin: 0; flex: 1; }
+.access-add button { margin: 0; white-space: nowrap; }
+
 
 /* Mock data: raw CSV/Excel/JSON staged for the engineer's /vibe-data-prep. Amber
    accents (not source-blue) so it reads as a distinct, prototype-bound bucket. */

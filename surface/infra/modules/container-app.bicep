@@ -68,6 +68,9 @@ param baseUrl string = ''
 @description('Optional comma/space-separated allow-list of GitHub logins permitted to sign in. Empty = any GitHub user.')
 param allowedLogins string = ''
 
+@description('Optional comma/space-separated list of permanent admin GitHub logins (manage the allow-list in-app; never removable from the web). Empty = no permanent admins.')
+param adminLogins string = ''
+
 var storageMountName = 'engagements'
 var enableAuth = !empty(authClientId)
 var enableOAuth = !empty(oauthClientId) && !empty(oauthClientSecretUri)
@@ -164,6 +167,10 @@ var oauthEnv = enableOAuth ? [
   {
     name: 'ALLOWED_LOGINS'
     value: allowedLogins
+  }
+  {
+    name: 'ADMIN_LOGINS'
+    value: adminLogins
   }
 ] : []
 

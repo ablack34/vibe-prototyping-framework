@@ -72,6 +72,23 @@
     bar.appendChild(chip);
   }
 
+  // Admins get an "Access" entry point in the top bar (manage who can sign in).
+  // Idempotent + shared by both pages, so it shows wherever the top bar renders.
+  function renderAdminLink(user) {
+    if (!user || !user.isAdmin) return;
+    if (document.getElementById('vibe-admin-link')) return;
+    if (location.pathname === '/access.html') return; // already on the page
+    const bar = document.querySelector('.topbar');
+    if (!bar) return;
+    const a = document.createElement('a');
+    a.id = 'vibe-admin-link';
+    a.className = 'id-admin';
+    a.href = '/access.html';
+    a.textContent = 'Access';
+    a.title = 'Manage who can sign in';
+    bar.appendChild(a);
+  }
+
   window.vibeEnsureAuth = async function () {
     if (cached) return cached;
     let me;
@@ -80,11 +97,13 @@
 
     if (!me.authRequired) {
       cached = Object.assign({ authRequired: false }, me.user || { login: '', name: '' });
+      renderAdminLink(cached);
       return cached;
     }
     if (me.user) {
       renderChip(me.user);
       cached = Object.assign({ authRequired: true }, me.user);
+      renderAdminLink(cached);
       return cached;
     }
     renderGate(takeAuthError());

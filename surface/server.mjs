@@ -186,6 +186,119 @@ async function findRec(id) {
   return rec && owns(rec) ? rec : null;
 }
 
+// ─── Access control: who can sign in + who can administer the list ───────────
+// The allow-list AND the admin-list are runtime-mutable and live in the durable
+// store (a small committed `access.json` when STORE_REPO is set, else a sibling
+// local file). Admins curate them from the in-app Access screen with NO redeploy.
+// The ALLOWED_LOGINS / ADMIN_LOGINS env vars only SEED the doc the first time it is
+// created; after that the doc is the source of truth. ROOT_ADMINS (from ADMIN_LOGINS)
+// are permanent — always admins, never removable in the UI — so the operator can
+// never be locked out of their own surface.
+const seedLogins = (v) => [...new Set(String(v || '').split(/[\s,]+/).map((s) => s.trim().toLowerCase()).filter(Boolean))];
+const ENV_ALLOWED = seedLogins(process.env.ALLOWED_LOGINS);
+const ROOT_ADMINS = new Set(seedLogins(process.env.ADMIN_LOGINS));
+const GH_LOGIN_RE = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i; // GitHub username grammar
+const ACCESS_PATH = process.env.STORE_ACCESS_PATH || 'access.json';
+const accessContentsPath = ACCESS_PATH.split('/').filter(Boolean).map(encodeURIComponent).join('/');
+const ACCESS_STORE = process.env.ACCESS_STORE || join(dirname(STORE), 'access.json');
+let accessSha = null;
+// In-memory mirror so the sync predicates (isAdminLogin/isAllowedLogin, /api/me)
+// don't have to await a git round-trip on every request. Refreshed on every read/write.
+let accessCache = { allowedLogins: [], adminLogins: [] };
+
+function normalizeAccess(doc) {
+  const pick = (k) => (Array.isArray(doc && doc[k]) ? doc[k] : []);
+  return { allowedLogins: seedLogins(pick('allowedLogins').join(' ')), adminLogins: seedLogins(pick('adminLogins').join(' ')) };
+}
+
+async function readAccessGit() {
+  const { status, json } = await gh(`/repos/${STORE_REPO}/contents/${accessContentsPath}`, { service: true });
+  if (status === 404) { accessSha = null; return null; }
+  if (status >= 300 || !json) throw new Error(`access read failed (${status})`);
+  accessSha = json.sha || null;
+  try { return JSON.parse(Buffer.from(json.content || '', json.encoding || 'base64').toString('utf8')); }
+  catch { return null; }
+}
+async function writeAccessGit(doc) {
+  const content = Buffer.from(JSON.stringify(doc, null, 2), 'utf8').toString('base64');
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const body = { message: 'surface: update access list', content };
+    if (accessSha) body.sha = accessSha;
+    const { status, json } = await gh(`/repos/${STORE_REPO}/contents/${accessContentsPath}`, { method: 'PUT', body, service: true });
+    if (status < 300) { accessSha = (json && json.content && json.content.sha) || null; return; }
+    if ((status === 409 || status === 422) && attempt === 0) {
+      const cur = await gh(`/repos/${STORE_REPO}/contents/${accessContentsPath}`, { service: true });
+      accessSha = (cur.status === 200 && cur.json) ? (cur.json.sha || null) : null;
+      continue;
+    }
+    throw new Error(`access write failed (${status})`);
+  }
+}
+async function readAccessRaw() {
+  if (STORE_REPO) return readAccessGit();
+  if (!existsSync(ACCESS_STORE)) return null;
+  try { return JSON.parse(await readFile(ACCESS_STORE, 'utf8')); } catch { return null; }
+}
+async function writeAccessRaw(doc) {
+  if (STORE_REPO) return writeAccessGit(doc);
+  await mkdir(dirname(ACCESS_STORE), { recursive: true });
+  await writeFile(ACCESS_STORE, JSON.stringify(doc, null, 2));
+}
+// Read the durable access doc, seeding it from the env vars the FIRST time only.
+// Always refreshes accessCache so the sync predicates see the latest state.
+async function readAccess() {
+  let doc = await readAccessRaw();
+  if (!doc) {
+    doc = { allowedLogins: ENV_ALLOWED, adminLogins: [] };
+    try { await writeAccessRaw(doc); } catch { /* cache is still seeded below; persist again on next write */ }
+  }
+  accessCache = normalizeAccess(doc);
+  return accessCache;
+}
+async function writeAccess(doc) {
+  accessCache = normalizeAccess(doc);
+  await writeAccessRaw(accessCache);
+  return accessCache;
+}
+// Sync predicates over the cached doc (+ permanent root admins). In legacy single-
+// user mode there is one trusted local identity, so it is always the admin.
+function isAdminLogin(login) {
+  if (!OAUTH) return true;
+  const l = String(login || '').toLowerCase();
+  if (!l) return false;
+  return ROOT_ADMINS.has(l) || accessCache.adminLogins.includes(l);
+}
+function isAllowedLogin(login) {
+  const l = String(login || '').toLowerCase();
+  if (!accessCache.allowedLogins.length) return true; // empty list = open to any GitHub user
+  return accessCache.allowedLogins.includes(l) || isAdminLogin(l); // admins are always allowed in
+}
+function accessView(doc) {
+  return { allowedLogins: doc.allowedLogins, adminLogins: doc.adminLogins, rootAdmins: [...ROOT_ADMINS], oauth: OAUTH };
+}
+// Mutate the access lists from the Access screen. Admin-only — the caller guards.
+async function updateAccess(input) {
+  const action = String(input.action || '').trim();
+  const login = String(input.login || '').trim().toLowerCase();
+  if (!['addAllowed', 'removeAllowed', 'addAdmin', 'removeAdmin'].includes(action))
+    return { code: 400, body: { error: 'Unknown action.' } };
+  if (!GH_LOGIN_RE.test(login)) return { code: 400, body: { error: 'Enter a valid GitHub username.' } };
+  const doc = await readAccess();
+  const allowed = new Set(doc.allowedLogins);
+  const admins = new Set(doc.adminLogins);
+  if (action === 'addAllowed') allowed.add(login);
+  else if (action === 'removeAllowed') allowed.delete(login);
+  else if (action === 'addAdmin') { admins.add(login); allowed.add(login); } // an admin must be able to sign in
+  else if (action === 'removeAdmin') {
+    if (ROOT_ADMINS.has(login)) return { code: 400, body: { error: `${login} is a permanent admin (set via ADMIN_LOGINS) and can’t be removed here.` } };
+    if (!ROOT_ADMINS.size && admins.size <= 1 && admins.has(login))
+      return { code: 400, body: { error: 'Can’t remove the last admin — add another admin first (or set ADMIN_LOGINS).' } };
+    admins.delete(login);
+  }
+  const next = await writeAccess({ allowedLogins: [...allowed], adminLogins: [...admins] });
+  return { code: 200, body: accessView(next) };
+}
+
 // Curated set of engine models the facilitator can pick from in the web surface.
 // id '' means "don't pass --model" → the Copilot CLI default (Claude Sonnet 4.5).
 // The chosen id is passed to run-phase.yml as `-f model=<id>`, which the workflow
@@ -1397,11 +1510,8 @@ async function serveStatic(res, urlPath) {
 // HttpOnly cookie and carry their token through the request via authCtx so every
 // engagement op lands in THEIR account and runs on THEIR Copilot seat.
 const OAUTH_SCOPE = process.env.OAUTH_SCOPE || 'repo workflow';
-// Optional allow-list of logins (comma/space separated). Empty = any GitHub user.
-const ALLOWED_LOGINS = new Set(
-  String(process.env.ALLOWED_LOGINS || '')
-    .split(/[\s,]+/).map((s) => s.trim().toLowerCase()).filter(Boolean),
-);
+// The allow-list now lives in the durable access store (see the Access-control
+// section above): runtime-mutable and seeded once from ALLOWED_LOGINS / ADMIN_LOGINS.
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12h
 const sessions = new Map();    // sid   -> { token, login, name, exp }
 const oauthStates = new Map(); // state -> exp  (CSRF guard for the login round-trip)
@@ -1452,10 +1562,10 @@ function sessionFor(req) {
 }
 // /api/me payload — drives the frontend's sign-in gate + identity chip.
 function meBody(req) {
-  if (!OAUTH) return { authRequired: false, user: { login: actingLogin(), name: userDisplayName() } };
+  if (!OAUTH) return { authRequired: false, user: { login: actingLogin(), name: userDisplayName(), isAdmin: true } };
   const s = sessionFor(req);
   return s
-    ? { authRequired: true, user: { login: s.login, name: s.name } }
+    ? { authRequired: true, user: { login: s.login, name: s.name, isAdmin: isAdminLogin(s.login) } }
     : { authRequired: true, user: null };
 }
 function authError(res, msg) {
@@ -1514,8 +1624,9 @@ async function handleAuth(req, res, url) {
     } catch {
       return authError(res, 'Sign-in failed talking to GitHub. Please try again.');
     }
-    if (ALLOWED_LOGINS.size && !ALLOWED_LOGINS.has(String(login).toLowerCase()))
-      return authError(res, `Your GitHub account (${login}) isn’t on the allow-list for this surface.`);
+    try { await readAccess(); } catch { /* fall back to the cached list if the store is briefly unreachable */ }
+    if (!isAllowedLogin(login))
+      return authError(res, `Your GitHub account (${login}) isn’t on the allow-list for this surface. Ask an admin to add you.`);
     const sid = newId(24);
     sessions.set(sid, { token, login, name, exp: Date.now() + SESSION_TTL_MS });
     setCookie(res, 'vibe_sid', sid, { maxAge: Math.floor(SESSION_TTL_MS / 1000), req });
@@ -1612,6 +1723,21 @@ const server = createServer((req, res) => {
       return send(res, code, body);
     }
 
+    // Access administration — who can sign in + who can manage the list. Admin-only.
+    if (url.pathname === '/api/access') {
+      const meLogin = OAUTH ? (session && session.login) : actingLogin();
+      if (!isAdminLogin(meLogin)) return send(res, 403, { error: 'You need to be an admin to manage access.' });
+      if (req.method === 'GET')
+        return send(res, 200, { ...accessView(await readAccess()), me: String(meLogin || '').toLowerCase() });
+      if (req.method === 'POST') {
+        let raw = '';
+        for await (const chunk of req) raw += chunk;
+        const input = raw ? JSON.parse(raw) : {};
+        const { code, body } = await updateAccess(input);
+        return send(res, code, body.error ? body : { ...body, me: String(meLogin || '').toLowerCase() });
+      }
+    }
+
     if (req.method === 'GET' && url.pathname === '/api/sources') {
       const id = url.searchParams.get('kebab');
       const rec = await findRec(id);
@@ -1667,6 +1793,7 @@ const server = createServer((req, res) => {
 
 server.listen(PORT, async () => {
   await mkdir(PUBLIC, { recursive: true });
+  try { await readAccess(); } catch { /* access doc seeds lazily on the first sign-in */ }
   console.log(`\n  VIBE Web Surface — provisioning`);
   console.log(`  template : ${TEMPLATE_OWNER}/${TEMPLATE_REPO}`);
   try { console.log(`  service  : ${serviceLogin()}${OAUTH ? '  (per-user GitHub sign-in ON)' : '  (legacy single-user mode)'}`); }
