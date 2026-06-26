@@ -32,6 +32,9 @@ Thumbs.db
 
 # VIBE Web Surface — local pointer store (per-user, not the source of truth)
 surface/.engagements.json
+# VIBE Web Surface — local access store (allow-list + admins) when running in
+# legacy/local mode with the default STORE path; runtime state, not source of truth
+surface/access.json
 
 # VIBE runner scratch (composed invocation)
 .vibe/
