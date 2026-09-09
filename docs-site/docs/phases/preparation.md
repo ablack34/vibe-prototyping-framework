@@ -37,6 +37,7 @@ The pattern is the same as Spark and Copilot Studio prompts elsewhere in the fra
 | `/vibe-kickoff` | Day 0 | Creates the engagement, drafts both briefs, generates the full 4-week schedule |
 | `/vibe-customer-brief` | Whenever the customer voice needs updating | Drafts or refreshes `engagement/{{engagement-kebab}}/customer-brief.md` from sources |
 | `/vibe-research` | After both briefs exist | Dual-path research — public web (auto) plus the M365 paste-back prompt |
+| `/vibe-collate` | When the customer has a tenant footprint | Crawls M365 via work-iq and returns a reviewable inventory of real artifacts (meetings, chats, decks, emails) to curate into `sources/` |
 | `/vibe-schedule` | After both briefs exist | Regenerates the 4-week schedule (including the named Disrupt Workshop) |
 | `@VIBE Preparation` | Anytime during Week 0 | Source-first orchestrator — ingests everything, shows the dashboard, drafts what's missing |
 | `/vibe-prep-check` | End of Week 0 | Focused 7-field readiness check before moving to Discover |

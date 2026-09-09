@@ -44,6 +44,7 @@ A GitHub template repo for **Studio 42 VIBE Prototyping** engagements. Guides a 
 |------|-----------|-------------|
 | **Start** | `/vibe-kickoff` | Creates the engagement, both briefs (S42-internal + customer voice), and the full 4-week meeting schedule |
 | **During Prep** | `/vibe-research` | Dual-path deep customer research — public web (auto, in-CLI) plus a ready-to-paste prompt for M365 Copilot's Researcher agent |
+| **Crawl M365** | `/vibe-collate` | Crawl the tenant via work-iq and return a reviewable inventory of real engagement artifacts (meetings, chats, decks, emails) to curate into `sources/` |
 | **Send forms** | `/vibe-questionnaire` | M365 Copilot prompts for the account-team and customer questionnaires |
 | **After meetings** | `/vibe-transcript` | Extracts context from Teams recordings automatically |
 | **Before Disrupt workshop** | `/vibe-workshop-agenda` + `/vibe-concepts` | The facilitator agenda anchored to Discover findings, plus 2-3 candidate concepts + Spark prompts for the workshop |

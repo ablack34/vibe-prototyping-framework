@@ -36,6 +36,7 @@ These cover the main engagement flow:
 | `/vibe-engagement-brief` | Generate or refresh `engagement/{{engagement-kebab}}/engagement-brief.md` (Studio 42's internal scoping view) from account-team sources | `engagement` (optional) |
 | `/vibe-customer-brief` | Generate or refresh `engagement/{{engagement-kebab}}/customer-brief.md` (the customer's own voice) from sources | `engagement` (optional) |
 | `/vibe-research` | Dual-path deep customer research — runs `@Task Researcher` for public web (Path A) and generates a paste-back prompt for **M365 Copilot's Researcher** agent (Path B). Synthesises both into `sources/research/research-summary.md` when both inputs exist | `engagement` (optional) |
+| `/vibe-collate` | Crawl the M365 tenant via **work-iq** for everything related to the engagement (meetings, Teams chats, files, emails) and produce a reviewable source inventory in `.copilot-tracking/` that the user curates into `sources/`. Live-tool complement to `/vibe-research` Path B — collate finds *what artifacts exist*, research tells you *what they mean* | `engagement` (optional), `participants`, `dateRange` |
 | `/vibe-schedule` | Generate the full 4-week meeting schedule (kickoff, 2× discover, disrupt workshop, 2× check-in, handoff) into `sources/meeting-templates.md` | `engagement` (optional) |
 | `/vibe-prep-check` | Focused 7-field readiness check before moving to Discover (strict subset of `/vibe-doctor`) | `engagement` (optional) |
 
