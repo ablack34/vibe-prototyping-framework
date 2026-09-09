@@ -15,6 +15,7 @@ let CONTEXT = { present: false, path: '' };
 let RUNNING = false;
 let SOURCES = [];
 let SRC_KINDS = {};
+let COLLATE_ITEMS = []; // parsed /vibe-collate handoff items awaiting add-to-sources
 let PROVENANCE = { bySource: {} };
 let UPLOAD_QUEUE = [];
 let UPQ_ID = 0;
@@ -558,7 +559,8 @@ function renderSources() {
         <button type="submit" class="btn-save-src">Add source</button>
       </div>
       <div class="src-status" id="src-status" hidden></div>
-    </form>`;
+    </form>
+    ${renderCollateBucket()}`;
   wireSources();
   renderContext();
 }
@@ -625,6 +627,7 @@ function wireSources() {
     });
   }
   renderQueue();
+  wireCollateBucket();
 
   // The paste-text form (quick entry for text the designer types/pastes).
   if (!form || !toggle) return;
@@ -644,6 +647,171 @@ function wireSources() {
     form.hidden = true; toggle.textContent = '✎ Add text note';
   });
   form.addEventListener('submit', (e) => { e.preventDefault(); saveSource(); });
+}
+
+// ---- Collate from M365: paste-back of a /vibe-collate run --------------------
+// work-iq (the tenant crawl behind /vibe-collate) needs the designer's live M365
+// sign-in, which only exists in the Copilot CLI — never in this browser or the
+// headless Actions engine. So the surface can't run the crawl itself; instead the
+// designer runs /vibe-collate in the CLI, which prints a JSON "handoff" of what it
+// found, and pastes it here. Each full-content item becomes a real source under
+// sources/m365/ (committed via the same /api/sources path as a dropped file);
+// partial/link-only items are shown as links to open, download and drop in above.
+const COLLATE_ACCESS = { full: 'Full content', partial: 'Partial', reference: 'Reference', transcript: 'Transcript' };
+
+function renderCollateItemRow(it, i) {
+  const badge = COLLATE_ACCESS[it.accessLevel] || 'Source';
+  const meta = [it.type, it.date, Array.isArray(it.people) ? it.people.join(', ') : it.people]
+    .filter(Boolean).map(esc).join(' · ');
+  const canAdd = it.accessLevel === 'full' && typeof it.content === 'string' && it.content.trim();
+  let action;
+  if (it.added) action = '<span class="ci-done">✓ Added</span>';
+  else if (canAdd) action = `<button class="btn-m365 ci-add" data-ci="${i}">＋ Add to sources</button>`;
+  else if (it.link) action = `<a class="src-link" href="${esc(it.link)}" target="_blank" rel="noopener">Open ↗</a>`;
+  else action = '<span class="ci-note">download &amp; drop above</span>';
+  return `<div class="src-card src-card-sm">
+      <div class="src-card-top">
+        <span class="src-kind">${esc(badge)}</span>
+        <span class="src-name">${esc(it.title || 'Untitled')}</span>
+        <span class="grow"></span>
+        ${action}
+      </div>
+      ${meta ? `<div class="ci-meta">${meta}</div>` : ''}
+    </div>`;
+}
+
+function renderCollateBucket() {
+  const cmd = `/vibe-collate engagement=${kebab}`;
+  const nFull = COLLATE_ITEMS.filter((it) => !it.added && it.accessLevel === 'full' && it.content && String(it.content).trim()).length;
+  const body = COLLATE_ITEMS.length
+    ? `<div class="src-list">${COLLATE_ITEMS.map(renderCollateItemRow).join('')}</div>
+       <div class="collate-bulk">
+         <button type="button" class="btn-ghost collate-clear">Clear</button>
+         <span class="grow"></span>
+         ${nFull ? `<button type="button" class="btn-save-src ci-add-all">＋ Add all ${nFull} full-content item${nFull === 1 ? '' : 's'}</button>` : ''}
+       </div>`
+    : `<div class="src-empty">Nothing pasted yet. Run the command above in your Copilot CLI, then paste the <strong>handoff</strong> block it prints (it starts with <code>{ "engagement"</code>) below.</div>`;
+  return `
+    <div class="dz-capture collate-capture">
+      <div class="dz-group-head">
+        <h3>🧲 Collate from M365</h3>
+        <span class="dz-group-sub">Pull meetings, chats, decks &amp; emails for this engagement out of your tenant — via work-iq in the Copilot CLI</span>
+      </div>
+      <div class="collate-cmd">
+        <code>${esc(cmd)}</code>
+        <button type="button" class="btn-m365 collate-copy" data-cmd="${esc(cmd)}">📋 Copy</button>
+      </div>
+      <p class="collate-why">work-iq needs your live M365 sign-in, so the crawl runs in the Copilot CLI — not the browser. It prints a handoff block; paste it below and I'll add each full-content item to <code>sources/</code>. Partial or link-only items show a link — open, download and drop them in the bucket above.</p>
+      ${body}
+      <form class="src-form collate-form" id="collate-form">
+        <label>Paste the collate handoff
+          <textarea id="collate-content" rows="5" placeholder="Paste the JSON handoff block printed by /vibe-collate here…"></textarea>
+        </label>
+        <div class="src-actions">
+          <span class="grow"></span>
+          <button type="submit" class="btn-save-src">Parse handoff</button>
+        </div>
+        <div class="src-status" id="collate-status" hidden></div>
+      </form>
+    </div>`;
+}
+
+// Pull the item list out of a pasted handoff — a fenced ```json block, or a bare
+// JSON object/array. Tolerant of surrounding prose so a whole CLI reply can be pasted.
+function parseCollateHandoff(text) {
+  const t = String(text || '').trim();
+  if (!t) throw new Error('Paste the handoff block printed by /vibe-collate first.');
+  let jsonText = null;
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fence) jsonText = fence[1].trim();
+  if (!jsonText) {
+    // No fence — grab the outermost JSON value, object {…} or array […], whichever
+    // opens first (so a top-level array isn't mistaken for its first inner object).
+    const spans = [];
+    const ob = t.indexOf('{'); const oe = t.lastIndexOf('}');
+    if (ob !== -1 && oe > ob) spans.push([ob, oe]);
+    const ab = t.indexOf('['); const ae = t.lastIndexOf(']');
+    if (ab !== -1 && ae > ab) spans.push([ab, ae]);
+    spans.sort((x, y) => x[0] - y[0]);
+    if (spans.length) jsonText = t.slice(spans[0][0], spans[0][1] + 1);
+  }
+  if (!jsonText) throw new Error("Couldn't find a JSON handoff block in that paste — copy the whole block, braces included.");
+  let obj;
+  try { obj = JSON.parse(jsonText); }
+  catch { throw new Error("That handoff block isn't valid JSON — copy the whole block exactly as /vibe-collate printed it."); }
+  const raw = Array.isArray(obj) ? obj : (Array.isArray(obj.items) ? obj.items : null);
+  if (!raw || !raw.length) throw new Error('The handoff has no items in it.');
+  return raw.map((it) => ({
+    title: String(it.title || it.subject || 'Untitled'),
+    type: it.type || '',
+    accessLevel: String(it.accessLevel || it.access || '').toLowerCase(),
+    date: it.date || '',
+    people: it.people || it.participants || [],
+    link: it.link || it.url || '',
+    content: typeof it.content === 'string' ? it.content : null,
+    added: false,
+  }));
+}
+
+async function addCollateItem(i) {
+  const it = COLLATE_ITEMS[i];
+  if (!it || it.added) return;
+  const status = document.getElementById('collate-status');
+  const setStatus = (m, cls = '') => { if (status) { status.hidden = false; status.className = `src-status ${cls}`; status.textContent = m; } };
+  if (!(it.content && String(it.content).trim())) return setStatus(`“${it.title}” has no captured content — open it and drop the file in the bucket above.`, 'err');
+  const header = `> Captured from work-iq via /vibe-collate\n> ${it.title}${it.date ? ` · ${it.date}` : ''}${it.link ? `\n> ${it.link}` : ''}\n\n`;
+  setStatus(`Adding “${it.title}”…`);
+  try {
+    const r = await fetch('/api/sources', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kebab, kind: 'm365', name: it.title, content: header + it.content }),
+    });
+    const b = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(b.error || 'Could not add that source.');
+    it.added = true;
+    banner(`✅ Added “${it.title}” to sources.`, 'ok');
+    await loadSources();
+  } catch (e) { setStatus(e.message, 'err'); }
+}
+
+async function addAllCollateItems() {
+  // Sequential — parallel commits race on the engagement repo branch.
+  for (let i = 0; i < COLLATE_ITEMS.length; i++) {
+    const it = COLLATE_ITEMS[i];
+    if (!it.added && it.accessLevel === 'full' && it.content && String(it.content).trim()) {
+      await addCollateItem(i);
+    }
+  }
+}
+
+function wireCollateBucket() {
+  const card = document.querySelector('.collate-capture');
+  if (!card) return;
+  const copy = card.querySelector('.collate-copy');
+  if (copy) copy.addEventListener('click', async () => {
+    const txt = copy.getAttribute('data-cmd') || '';
+    try { await navigator.clipboard.writeText(txt); banner('📋 Command copied — paste it into your Copilot CLI (VS Code) to run the crawl.', 'ok'); }
+    catch { banner('Couldn’t access the clipboard — select the command and copy it manually.', 'err'); }
+  });
+  const form = document.getElementById('collate-form');
+  if (form) form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const status = document.getElementById('collate-status');
+    try {
+      COLLATE_ITEMS = parseCollateHandoff(document.getElementById('collate-content').value);
+      renderSources();
+      const n = COLLATE_ITEMS.length;
+      banner(`🧲 Parsed ${n} item${n === 1 ? '' : 's'} from the handoff — add the full-content ones to sources.`, 'ok');
+    } catch (err) {
+      if (status) { status.hidden = false; status.className = 'src-status err'; status.textContent = err.message; }
+    }
+  });
+  card.addEventListener('click', (e) => {
+    const add = e.target.closest('.ci-add');
+    if (add) { addCollateItem(Number(add.getAttribute('data-ci'))); return; }
+    if (e.target.closest('.ci-add-all')) { addAllCollateItems(); return; }
+    if (e.target.closest('.collate-clear')) { COLLATE_ITEMS = []; renderSources(); }
+  });
 }
 
 // ---- the upload bucket: auto-detect, queue, convert-on-upload --------------

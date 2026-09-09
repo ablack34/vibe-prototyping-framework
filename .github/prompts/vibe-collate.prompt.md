@@ -121,6 +121,37 @@ For the items the user selects:
 
 Never attempt to download raw binary files (`.pptx`, `.mp4`, `.loop`) programmatically — work-iq returns references/links, not file bytes. Capturing is for text content work-iq can already read.
 
+### Step 4b — Surface handoff (for web-app users)
+
+The hosted VIBE **web surface** can't run work-iq (the tool needs your live M365 sign-in, which only exists in the Copilot CLI). So the surface's **Sources → 🧲 Collate from M365** card works by paste-back: you run this prompt in the CLI, then paste a machine-readable handoff into the card, which commits each full-content item into `sources/m365/` for you — no git required.
+
+After Step 4, **always also emit a fenced `json` block** (in addition to the human-readable summary) so a surface user can copy it straight into that card. Include every item you presented — full-content items carry their captured `content`; download/transcript items carry `null` content plus their `link`:
+
+```json
+{
+  "engagement": "{{engagement-kebab}}",
+  "crawledAt": "{{ISO date}}",
+  "items": [
+    {
+      "title": "Shawna added you to the team!",
+      "type": "email",
+      "accessLevel": "full",
+      "date": "2026-09-02",
+      "people": ["Shawna", "Adam"],
+      "link": "https://…",
+      "content": "The full captured email/recap/thread text as Markdown. Required when accessLevel is \"full\"; use null for partial/reference/transcript items."
+    }
+  ]
+}
+```
+
+Rules for the handoff block:
+
+- `accessLevel` is one of `full` | `partial` | `reference` | `transcript` — the surface uses it to decide whether it can add the item directly (`full`) or must show a download/transcript link.
+- Only `full` items need `content`; keep it to the text work-iq actually returned (never fabricate). For everything else set `content` to `null` and rely on `link`.
+- One entry per item/version-family, matching the inventory table. Keep it to the items the user selected plus any they may still want — don't dump the whole tenant.
+- Emit the block even if `content` is null for every item (the surface still renders them as download links).
+
 ### Step 5 — Update readiness + provenance
 
 - Bump `readiness.preparation.existingDocs` to reflect newly-captured/queued customer docs (grade per the Preparation rubric — 3+ docs = A, 1–2 = B).
