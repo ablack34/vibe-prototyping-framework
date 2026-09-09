@@ -6,6 +6,10 @@ handoffs:
     agent: VIBE Transcript Analyst
     prompt: "Process meeting transcripts to extract engagement context."
     send: true
+  - label: "🧲 Collate M365 Sources"
+    agent: VIBE Preparation
+    prompt: /vibe-collate
+    send: true
   - label: "👤 Draft Personas"
     agent: VIBE Discover
     prompt: /vibe-personas
@@ -143,6 +147,8 @@ If work-iq-mcp is available, hand off to `VIBE Transcript Analyst` to search for
 
 If work-iq-mcp is not configured, note this and continue.
 
+If `sources/` is thin, suggest `/vibe-collate` — it crawls the tenant via work-iq for the whole engagement footprint (meetings, chats, decks, emails), not just transcripts, and returns a reviewable inventory of artifacts to pull into `sources/`. Useful mid-engagement whenever a readiness field is stuck because no source answers it.
+
 **1f. Check existing PROJECT-CONTEXT.md**
 
 Read `engagement/{{engagement-kebab}}/PROJECT-CONTEXT.md` for any fields already filled during kickoff.
@@ -194,6 +200,8 @@ For each field still marked as `empty` or `partial`:
 - Suggest where the answer might come from ("Could the account team answer this?" or "This might be in the customer's RFP")
 
 Do NOT dump all questions at once. Ask about the highest-priority gaps first (problem statement → target users → business impact → data inventory).
+
+Before treating a gap as a question for the user, consider **🧲 Collate M365 Sources** (`/vibe-collate`) — if the customer has a tenant footprint, the answer may already sit in an un-ingested meeting, chat, or deck. Crawl first, ask second. (This differs from the Researcher call-out below, which is for *external/public* gaps, and from Teams Facilitator, which fixes *future* meetings.)
 
 If 2 or fewer fields are empty, present them together. If more, group by theme and work through them conversationally.
 
@@ -268,7 +276,7 @@ Examples:
 - After personas drafted, problem statement missing: `👉 NEXT: Click "🎯 Draft Problem Statement" — anchored to {primary-persona-name}, fills the formal "I am / trying to / But / Because / which results in" template.`
 - After personas + problem statement drafted, journey missing: `👉 NEXT: Click "🗺️ Map Current Journey" — produces a Mermaid + stages table for how {primary-persona-name} does the task today. Last Discover deliverable.`
 - After completing discovery (all gates green): `👉 NEXT: Click "🎬 Begin Disrupt Workshop" below — the customer co-creates the prototype concept in a Week 2 workshop. Send the 3 Discover deliverables to {{sponsor}} for sign-off first.`
-- After processing one source with more available: `👉 NEXT: Drop more customer documents in sources/ and tell me, or click "🎙️ Process Transcript" to pull meeting context.`
+- After processing one source with more available: `👉 NEXT: Drop more customer documents in sources/ and tell me, click "🎙️ Process Transcript" to pull meeting context, or click "🧲 Collate M365 Sources" to crawl the tenant for artifacts you haven't ingested yet.`
 - When UX research would help: `👉 NEXT: Click "👤 UX Research" to create journey maps from the pain points we've identified.`
 
 Never end with a generic "what would you like to do?" — always recommend a specific action.
