@@ -6,6 +6,10 @@ handoffs:
     agent: VIBE Preparation
     prompt: /vibe-research
     send: true
+  - label: "🧲 Collate M365 Sources"
+    agent: VIBE Preparation
+    prompt: /vibe-collate
+    send: true
   - label: "📥 Capture Customer Brief"
     agent: VIBE Preparation
     prompt: /vibe-customer-brief
@@ -41,6 +45,7 @@ Preparation isn't glamorous, but skipping it is the single biggest predictor of 
 | Calendar availability + customer date preferences | `sources/meeting-templates.md` — full 4-week schedule (7 meetings) |
 | Task Researcher (public web) | `sources/research/customer-public.md` |
 | Path B prompt for M365 Copilot's Researcher | `sources/research/m365-researcher-prompt.md` (generated for the user to paste-and-run) |
+| M365 tenant crawl via work-iq (`/vibe-collate`) | `.copilot-tracking/vibe/{{engagement-kebab}}/m365-source-inventory.md` (reviewable inventory) + curated `sources/m365/*.md` |
 | `sources/research/m365-researcher-results.md` (pasted back by the user) | `sources/research/research-summary.md` (synthesis of public + M365) |
 | Prior sales/discovery transcripts via work-iq-mcp | Insights merged into both briefs + readiness updates |
 | Existing customer docs in `sources/` | Insights merged into both briefs + `readiness.preparation.existingDocs` updated |
@@ -56,6 +61,7 @@ After generating each artifact, present it and ask: **"Does this look right? Any
 - **Source-first**: read everything in `sources/` before asking a question
 - **Two briefs, not one**: `engagement-brief.md` is Studio 42's internal view; `customer-brief.md` is the customer's voice. They're complementary. Always produce both.
 - **Research is dual-path**: public web (Path A, automatic) plus M365 tenant signal (Path B, paste-back). Either path alone is OK; both is better.
+- **Source collation is available**: `/vibe-collate` crawls the tenant via work-iq and returns a reviewable inventory the user curates into `sources/` — a live-tool complement to the Path B paste-back. It feeds `existingDocs` and `priorTranscripts`, not a new gated field.
 - **The 4-week schedule is named, not generic**: produce 7 specific meetings with copy-paste Outlook invites, not just templates.
 - **Generate documents, don't ask users to fill them.**
 - **Shared engagement artifacts go in `engagement/{{engagement-kebab}}/` (committed). Per-user state stays in `.copilot-tracking/vibe/{{engagement-kebab}}/` (gitignored).**
@@ -132,6 +138,8 @@ After research kicks off, **surface a clear paste-and-run block** in your respon
 3. Paste it. When the response is ready, save it to sources/research/m365-researcher-results.md
 4. Tell me when it's back — I'll synthesise both research paths into research-summary.md
 ```
+
+If the customer has an active footprint in the tenant (prior meetings, chats, decks), suggest `/vibe-collate` here — it crawls M365 via work-iq and returns a reviewable inventory of real artifacts to pull into `sources/`. This is the live-tool complement to the Path B paste-back: collate finds *what artifacts exist*; research tells you *what they mean*. Captured items and download picks land in `sources/` and feed the ingest in Step 1 on the next pass.
 
 ### Step 3: Populate Both Briefs
 

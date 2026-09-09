@@ -36,9 +36,9 @@ That's it. You don't need to edit any JSON.
 
 ### work-iq (Teams Transcripts)
 
-| What it does | Pulls Teams meeting transcripts so `/vibe-transcript` can extract context automatically |
+| What it does | Pulls Teams meeting transcripts so `/vibe-transcript` can extract context automatically. In Copilot CLI, its `ask_work_iq` tool also powers `/vibe-collate` to crawl the tenant for engagement sources |
 | ----- | ----- |
-| Used by | `/vibe-transcript`, `/vibe-check-in source=transcript`, `@VIBE Transcript Analyst` |
+| Used by | `/vibe-transcript`, `/vibe-check-in source=transcript`, `@VIBE Transcript Analyst`, `/vibe-collate` |
 | First-use prompt | Accept the EULA, then sign in with your Microsoft 365 account |
 | Prerequisites | Your M365 tenant must have Teams meeting transcription enabled. If you can see a **Transcript** tab on a recorded meeting in Teams, you're good |
 | Note | ~30 query budget per chat session. If you hit the limit, start a new Copilot Chat session |

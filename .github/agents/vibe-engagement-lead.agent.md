@@ -14,6 +14,10 @@ handoffs:
     agent: VIBE Preparation
     prompt: "Begin the preparation phase for this engagement. Read all sources, generate both briefs, kick off /vibe-research, and produce the full meeting schedule."
     send: true
+  - label: "🧲 Collate M365 Sources"
+    agent: VIBE Preparation
+    prompt: /vibe-collate
+    send: true
   - label: "🔍 Start Discovery"
     agent: VIBE Discover
     prompt: "Begin the discovery phase for this engagement."
@@ -379,6 +383,7 @@ A disrupt deliverable counts toward `N/6` only when its grade is `A` or `B` (wor
 
 - If briefs are placeholders only: suggest clicking **🛠 Begin Preparation** so the agent can draft them from kickoff inputs
 - If no research yet: suggest **🛠 Begin Preparation** (it kicks off `/vibe-research` automatically)
+- If the customer has a tenant footprint (prior meetings, chats, decks) and sources are thin: suggest **🧲 Collate M365 Sources** — `/vibe-collate` crawls M365 via work-iq and returns a reviewable inventory to pull into `sources/`
 - If M365 Researcher prompt is generated but `m365-researcher-results.md` isn't pasted back: tell the user to run the prompt in M365 Copilot and paste the response
 - If all 7 readiness fields are Grade B or higher: suggest moving to Discover via **🔍 Start Discovery**
 - If gaps remain: list each gap with a specific action to close it (often: run `/vibe-prep-check` for a detailed view)
