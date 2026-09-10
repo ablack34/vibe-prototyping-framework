@@ -135,16 +135,17 @@ section (`renderPreparation` in `engagement.js`) renders three groups:
 3. **Meeting schedule** — `vibe-schedule` lays out the 4-week cadence to
    `sources/meeting-templates.md`.
 
-**Collating existing tenant sources** is a second paste-back loop, but it feeds the
-*Sources* bucket rather than a Preparation card. `/vibe-collate` crawls the customer's
-Microsoft 365 tenant with **work-iq** — which needs the designer's live M365 sign-in, so
-(like WorkIQ transcript search) it only runs in the **Copilot CLI**, never in this browser
-or the headless Actions engine. The Sources panel therefore shows a **🧲 Collate from
-M365** card (`renderCollateBucket` in `engagement.js`) that hands the designer the exact
-CLI command and accepts the JSON *handoff* the run prints back. Each full-content item in
-that handoff is committed straight into `sources/m365/` (source kind `m365`) via `POST
-/api/sources`, so it grounds Discover like any dropped file; partial/reference items
-surface as links to open, download and drop into the bucket above.
+**Collating existing tenant sources** feeds the *Sources* bucket rather than a Preparation
+card, and runs entirely in the CLI. `/vibe-collate` crawls the customer's Microsoft 365
+tenant with **work-iq** — which needs the designer's live M365 sign-in, so (like WorkIQ
+transcript search) it only runs in the **Copilot CLI**, never in this browser or the
+headless Actions engine. Rather than a browser card, the run **writes its results straight
+into the engagement**: full-content items become readable `sources/m365/*.md` files and
+link-only items (downloads, transcripts) become short reference stubs carrying the link,
+all committed and pushed to the engagement repo. The surface simply lists them (source
+kind `m365`, labelled "M365 source"), so they ground Discover like any dropped file and the
+designer opens the link-only ones to download and upload. There's no paste-back or browser
+add affordance — the CLI owns writing them.
 
 Like Disrupt, Preparation runs always dispatch `seed_demo=false`: they ground in the
 designer's real sources and briefs, never the Tailwind seed. Because the research and
@@ -292,7 +293,7 @@ All state-changing routes act on the engagement's repo under your `gh` identity.
 | `POST /api/access` | **Admin-only.** Mutate the lists (`{ action: addAllowed\|removeAllowed\|addAdmin\|removeAdmin, login }`). Permanent (root) admins can't be removed; a last-admin guard prevents emptying the admin list. Persists to the durable store |
 | `GET /api/sources` | List an engagement's sources (+ kinds metadata) |
 | `GET /api/source` | Fetch one source/deliverable's markdown (scoped to `sources/` or `engagement/<id>/`) |
-| `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown). `kind:'workshop'` routes to `sources/workshop/` for Disrupt captures; `kind:'m365'` routes to `sources/m365/` for `/vibe-collate` handoff items; `kind:'m365-results'` routes to `sources/research/m365-researcher-results.md` for the Preparation research paste-back |
+| `POST /api/sources` | Add a source (text or uploaded file; Office/PDF → MarkItDown). `kind:'workshop'` routes to `sources/workshop/` for Disrupt captures; `kind:'m365'` routes to `sources/m365/` (the location `/vibe-collate` writes collated tenant sources to from the CLI); `kind:'m365-results'` routes to `sources/research/m365-researcher-results.md` for the Preparation research paste-back |
 | `GET /api/data` | List an engagement's staged mock data (raw files under `sources/sample-data/`), each flagged `grounded` when its `sources/data-<stem>.md` Discover twin exists |
 | `POST /api/data` | Stage a CSV/Excel/JSON file. Commits the raw original to `sources/sample-data/` (for `/vibe-data-prep`) **and** a Markdown/JSON grounding twin to `sources/data-<stem>.md` (so it also grounds Discover); flips `sourcesAdded`. Non-data formats are rejected (415) |
 
