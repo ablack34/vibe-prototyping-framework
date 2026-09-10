@@ -26,7 +26,7 @@ Unlike `/vibe-research`, which produces *synthesised intelligence* (account hist
 | File | Path | Committed? | Content |
 |---|---|---|---|
 | Source inventory | `.copilot-tracking/vibe/{{engagement-kebab}}/m365-source-inventory.md` | **No (gitignored)** | The full manifest — every discovered item with links, access level, and ingest route |
-| Captured sources | `sources/m365/*.md` | Yes | Full-content items the user ticked, pulled inline from work-iq (email bodies, meeting recaps, chat snippets) |
+| Captured sources | `sources/m365/*.md` | Yes (committed + pushed) | The items the user ticked — full text where work-iq can read it (emails, recaps, chats), plus link-bearing **reference stubs** for downloads/transcripts. Committed and pushed so they appear in the web surface's Sources panel. |
 
 The **inventory is deliberately gitignored** — it exposes internal email subjects, colleague names, and private OneDrive/SharePoint URLs. Only the curated content the user promotes into `sources/m365/` gets committed.
 
@@ -113,44 +113,25 @@ Then present the list to the user in chat as a numbered set grouped by route, an
 
 ### Step 4 — Pass 2: Act on the user's selection
 
-For the items the user selects:
+Every selected item lands as a file under `sources/m365/` — its full text where work-iq can read it, or a **reference stub** carrying the link where it can't. That way each item appears in the engagement's Sources list (the web surface included) as either a ready-to-read source or a one-click link to open, download, and upload.
 
-- **📝 capture** — run one `ask_work_iq` follow-up per item (batch where possible) to pull the full content (email body, meeting recap, chat thread), and write it to `sources/m365/<date>-<slug>.md` with a provenance header (`> Captured from work-iq: <title> · <date> · <link>`). Count each pull against the budget.
-- **🎙️ transcript** — don't pull it here. List the meeting(s) and recommend `/vibe-transcript` (or hand off to `@VIBE Transcript Analyst`), which already does tier-weighted extraction.
-- **⬇️ download** — produce a compact **download checklist**: title + clickable link + suggested `sources/` filename. The user downloads and drops these in; `@VIBE Preparation`/`@VIBE Discover` ingest them on the next pass.
+For each selected item, by route:
 
-Never attempt to download raw binary files (`.pptx`, `.mp4`, `.loop`) programmatically — work-iq returns references/links, not file bytes. Capturing is for text content work-iq can already read.
+- **📝 capture** — run one `ask_work_iq` follow-up per item (batch where possible) to pull the full content (email body, meeting recap, chat thread), and write it to `sources/m365/<date>-<slug>.md` with a provenance header (`> Captured from work-iq: <title> · <date> · <link>`) followed by the content. Count each pull against the budget.
+- **⬇️ download** (partial / reference / snippet) — **don't** pull bytes. Write a short **reference stub** to `sources/m365/<date>-<slug>.md`: the same provenance header, then a `> ⬇️ Not captured inline — open the link above, download the file, and add it here.` note. The stub makes the item and its link visible in the Sources list.
+- **🎙️ transcript** — write a stub the same way, with a `> 🎙️ Transcript available — open the link, then run /vibe-transcript to extract it.` note. Don't re-capture it here; `/vibe-transcript` (or `@VIBE Transcript Analyst`) does the tier-weighted extraction.
 
-### Step 4b — Surface handoff (for web-app users)
+Never attempt to download raw binary files (`.pptx`, `.mp4`, `.loop`) programmatically — work-iq returns references/links, not file bytes. Capturing is for text content work-iq can already read; everything else becomes a link-bearing stub.
 
-The hosted VIBE **web surface** can't run work-iq (the tool needs your live M365 sign-in, which only exists in the Copilot CLI). So the surface's **Sources → 🧲 Collate from M365** card works by paste-back: you run this prompt in the CLI, then paste a machine-readable handoff into the card, which commits each full-content item into `sources/m365/` for you — no git required.
+### Step 4b — Drop the sources into the engagement (so the surface shows them)
 
-After Step 4, **always also emit a fenced `json` block** (in addition to the human-readable summary) so a surface user can copy it straight into that card. Include every item you presented — full-content items carry their captured `content`; download/transcript items carry `null` content plus their `link`:
+The hosted VIBE **web surface** reads sources straight from the engagement repo — it can't run work-iq itself (that needs your live M365 sign-in, which only exists here in the Copilot CLI). So once Step 4 has written the `sources/m365/*.md` files, **commit and push them** so they show up there automatically:
 
-```json
-{
-  "engagement": "{{engagement-kebab}}",
-  "crawledAt": "{{ISO date}}",
-  "items": [
-    {
-      "title": "Shawna added you to the team!",
-      "type": "email",
-      "accessLevel": "full",
-      "date": "2026-09-02",
-      "people": ["Shawna", "Adam"],
-      "link": "https://…",
-      "content": "The full captured email/recap/thread text as Markdown. Required when accessLevel is \"full\"; use null for partial/reference/transcript items."
-    }
-  ]
-}
-```
+- Stage only the new/updated files under `sources/m365/` — never the gitignored inventory in `.copilot-tracking/`.
+- Commit with a clear message, e.g. `collate: add N M365 sources for {{engagement}}`.
+- Push to the branch the surface reads (the repo default, usually `main`).
 
-Rules for the handoff block:
-
-- `accessLevel` is one of `full` | `partial` | `reference` | `transcript` — the surface uses it to decide whether it can add the item directly (`full`) or must show a download/transcript link.
-- Only `full` items need `content`; keep it to the text work-iq actually returned (never fabricate). For everything else set `content` to `null` and rely on `link`.
-- One entry per item/version-family, matching the inventory table. Keep it to the items the user selected plus any they may still want — don't dump the whole tenant.
-- Emit the block even if `content` is null for every item (the surface still renders them as download links).
+They then appear in the surface's **Sources** panel with no paste-back, JSON, or sign-in — full captures as readable sources, link-only items as stubs with their download link. If the push fails (no write access or offline), say so and leave the files committed locally so the user can push manually; CLI-based Discover reads them either way.
 
 ### Step 5 — Update readiness + provenance
 
@@ -162,7 +143,7 @@ Do **not** invent new `state.json` fields — `/vibe-collate` feeds the existing
 
 ### Step 6 — Recommend the next step
 
-- If items were captured/queued: `👉 NEXT: Download the ⬇️ items from the checklist into sources/, then click "🛠 Begin Preparation" (or "📥 Capture Customer Brief") so I fold the new sources into the briefs. Run "🎙️ Process Transcript" for any meetings.`
+- If items were captured/queued: `👉 NEXT: The collated items now show in your Sources list (and the web surface). Open the ⬇️ link-only ones, download them, and add them; then click "🛠 Begin Preparation" (or "📥 Capture Customer Brief") so I fold the new sources into the briefs. Run "🎙️ Process Transcript" for any meetings.`
 - If transcripts dominate: `👉 NEXT: Click "🎙️ Process Transcript" — the strongest signal is in the recorded meetings.`
 - If nothing relevant was found: `👉 NEXT: Widen the scope (add participant names or a broader date window) and re-run /vibe-collate, or run /vibe-research for public + paste-back tenant signal.`
 

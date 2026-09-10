@@ -1201,11 +1201,11 @@ const SOURCE_KINDS = {
   // (workshop-record reads them). Surfaced in the Disrupt section, not the Discover
   // Sources bucket — so it's deliberately excluded from sourceKindMeta().
   'workshop': { label: 'Workshop capture', single: false, path: (id, slug) => `sources/workshop/${slug}.md` },
-  // Collated M365 sources: full-content items the designer pulled via /vibe-collate
-  // (run in the Copilot CLI, where work-iq + their M365 sign-in live) and added back
-  // through the Collate paste-back card. They live under sources/m365/ and are read by
-  // Discover like any other source, so they DO appear in the main Sources list — but the
-  // add affordance is the Collate card, so the kind is kept out of the generic dropdown.
+  // Collated M365 sources: items the designer pulled via /vibe-collate (run in the
+  // Copilot CLI, where work-iq + their M365 sign-in live), which writes them under
+  // sources/m365/ and commits them to the engagement repo. They're read by Discover like
+  // any other source, so they DO appear in the main Sources list — but there's no web add
+  // affordance (the CLI owns writing them), so the kind is kept out of the generic dropdown.
   'm365': { label: 'M365 source', single: false, path: (id, slug) => `sources/m365/${slug}.md` },
   // M365 Researcher paste-back: the result the designer copies out of M365 Copilot
   // and pastes back. Lives under sources/research/ so the engine reads it when
